@@ -49,10 +49,10 @@ public class Vms022ExportDataView extends AbstractXlsxView{
         InputStream is = null;
         Workbook wb = null;
         String filedoc = null;
-        String fileName = "";
+//        String fileName = "";
         try {
             Map<String, Object> map = (Map<String, Object>) model.get("param");
-            Map<String, Object> filters = (Map<String, Object>) map.get("input");
+//            Map<String, Object> filters = (Map<String, Object>) map.get("input");
             filedoc = GAVMS022_TEMPLATE_PATH + "RegistrationPartnerOutsourceTemplate.xlsx";
 
             is = new FileInputStream(filedoc);
@@ -217,16 +217,16 @@ public class Vms022ExportDataView extends AbstractXlsxView{
         response.setHeader("Content-Disposition", "attachment;filename=\"" + AhmStringUtil.concatWithDate(fileName, ".xlsx\""));
 
     }
-
-    private void createCellTitle(Workbook workbook, Row row, String obj, int col) {
-        CellStyle style = workbook.createCellStyle();
-        Font font = workbook.createFont();
-        font.setBold(true);
-        style.setFont(font);
-        Cell cell = row.createCell(col);
-        cell.setCellStyle(style);
-        cell.setCellValue(obj);
-    }
+//
+//    private void createCellTitle(Workbook workbook, Row row, String obj, int col) {
+//        CellStyle style = workbook.createCellStyle();
+//        Font font = workbook.createFont();
+//        font.setBold(true);
+//        style.setFont(font);
+//        Cell cell = row.createCell(col);
+//        cell.setCellStyle(style);
+//        cell.setCellValue(obj);
+//    }
 
     private void createCell(CellStyle style, Row row, Object obj, int cellNum, boolean isTime) {
         Cell cell = row.createCell(cellNum);

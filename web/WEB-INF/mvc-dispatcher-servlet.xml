@@ -13,30 +13,50 @@
         http://www.springframework.org/schema/tx 
         http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">   
     
-    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean" >
-        <property name="jndiName" value="jdbc/ahmpsDS"/>
-    </bean>   
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="jdbc/ahmpsDS" />
+    </bean>
+    
+    <bean id="dataSourceWfs" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="jdbc/mssqlwfsDS" />
+    </bean>
+    
+    <bean id="dataSourceB2e" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="jdbc/b2eDS" />
+    </bean>
+    
     <bean id="dataSourceHr" class="org.springframework.jndi.JndiObjectFactoryBean" >
         <property name="jndiName" value="jdbc/ahmhrDS"/>
     </bean>
         
-    <bean class="org.springframework.orm.hibernate4.HibernateTransactionManager" id="transactionManager">  
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">  
+        <property name="sessionFactory" ref="sessionFactory" />
     </bean>
     
-    <bean class="org.springframework.orm.hibernate4.HibernateTransactionManager" id="transactionManagerHr">
+    <bean id="transactionManagerB2e" class="org.springframework.orm.hibernate4.HibernateTransactionManager">  
+        <property name="sessionFactory" ref="sessionFactoryB2e" />
+        <qualifier value="b2e" />
+    </bean>
+    
+    <bean id="transactionManagerWfs" class="org.springframework.orm.hibernate4.HibernateTransactionManager">  
+        <property name="sessionFactory" ref="sessionFactoryWfs" />
+        <qualifier value="wfs" />
+    </bean>
+    
+    <bean id="transactionManagerHr" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactoryHr"/>
         <qualifier value="hr" />
     </bean>
-        
-    <bean class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" id="sessionFactory">        
-        <property name="packagesToScan" >
+    
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">        
+        <property name="packagesToScan">
             <list>
                 <value>id.co.ahm.jx.uam.app000.model</value>
                 <value>id.co.ahm.jx.sys.app000.model</value>
+                <value>id.co.ahm.ga.vms.app000.model</value>
             </list>
         </property>
-        <property name="dataSource" ref="dataSource"/>
+        <property name="dataSource" ref="dataSource" />
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>
@@ -46,38 +66,68 @@
         </property>
     </bean>
     
-    <bean class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" id="sessionFactoryHr">        
-        <property name="packagesToScan" >
+    <bean id="sessionFactoryB2e" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">        
+        <property name="packagesToScan">
             <list>
-                <value>id.co.ahm.ga.vms.app000.model</value>              
+                <value>id.co.ahm.jx.b2e.app000.model</value>                
             </list>
         </property>
-        <property name="dataSource" ref="dataSourceHr"/>
+        <property name="dataSource" ref="dataSourceB2e" />
         <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>           
-                <!--<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>-->
-                <!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
+            <props>               
+                <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.format_sql">true</prop>
             </props>
         </property>
     </bean>
-
+    
+    <bean id="sessionFactoryWfs" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">        
+        <property name="packagesToScan">
+            <list>
+                <value>id.co.ahm.ga.dwf.app000.model.wfs</value>                
+            </list>
+        </property>
+        <property name="dataSource" ref="dataSourceWfs" />
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" id="sessionFactoryHr">        
+        <property name="packagesToScan" >
+            <list>
+                <value>id.co.ahm.ga.spc.app000.model.hr</value>              
+            </list>
+        </property>
+        <property name="dataSource" ref="dataSourceHr"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+            </props>
+        </property>
+    </bean>
+ 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <!--Maksimal Upload 10 MB--> 
         <property name="maxUploadSize" value="10000000" />
     </bean>
-
-    <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->    
+ 
     <tx:annotation-driven />
     
     <context:component-scan base-package="id.co.ahm.jxf" />
     <context:component-scan base-package="id.co.ahm.jx" />
     <context:component-scan base-package="id.co.ahm.ga" />
-        
+    
+    
     <mvc:interceptors>
-        <bean class="id.co.ahm.jx.interceptor.Interceptor"/>
+        <bean class="id.co.ahm.jx.interceptor.Interceptor" />
     </mvc:interceptors>
     
     <mvc:annotation-driven />

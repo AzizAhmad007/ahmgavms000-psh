@@ -50,7 +50,7 @@ public class Vms022Rest {
     @Qualifier(value = "tokenPshUtil")
     private TokenPshUtil tokenPshUtil;
 
-    public final static String pathServer = "D:\\Download\\img\\";
+//    public final static String pathServer = "D:\\Download\\img\\";
 
     //Lov Outsource
 //    @RequestMapping(value = "show-outsource", method = RequestMethod.POST,

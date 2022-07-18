@@ -22,12 +22,6 @@ public interface Vms022Service {
     
     public DtoResponseWorkspace showPlant();
     
-//    public DtoResponsePaging showNrp(DtoParamPaging input);
-    
-//    public DtoResponsePaging showOutsource(DtoParamPaging input, VoUserCred user);
-    
-//    public DtoResponsePaging showCompany(DtoParamPaging input, VoUserCred user);
-    
     public DtoResponsePaging monitoring(DtoParamPaging input, VoUserCred user);
     
     public DtoResponsePaging lovPlant(DtoParamPaging input);
