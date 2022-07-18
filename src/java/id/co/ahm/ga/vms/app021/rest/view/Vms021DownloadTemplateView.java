@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package id.co.ahm.ga.vms.app022.rest.view;
+package id.co.ahm.ga.vms.app021.rest.view;
 
-import id.co.ahm.ga.vms.app022.constant.Vms022Constant;
-import id.co.ahm.ga.vms.app022.exception.Vms022Exception;
-import id.co.ahm.jxf.vo.VoUserCred;
+import id.co.ahm.ga.vms.app021.constant.Vms021Constant;
+import id.co.ahm.ga.vms.app021.exception.Vms021Exception;
+import id.co.ahm.jxf.vo.VoPstUserCred;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -25,7 +25,7 @@ import org.springframework.web.servlet.view.document.AbstractXlsView;
  *
  * @author ayik.op
  */
-public class Vms022DownloadTemplateView extends AbstractXlsView{
+public class Vms021DownloadTemplateView extends AbstractXlsView{
 
     @Override
     protected Workbook createWorkbook(Map<String, Object> model, HttpServletRequest request) {
@@ -33,21 +33,21 @@ public class Vms022DownloadTemplateView extends AbstractXlsView{
         InputStream is;
         try {
             Map<String, Object> map = (Map<String, Object>) model.get("param");
-            VoUserCred user = (VoUserCred) map.get("user");
-            if ("AHM".equalsIgnoreCase(user.getName())) {
-                pathFile = Vms022Constant.TEMPLATE_PATH_UPLOAD;
+            VoPstUserCred user = (VoPstUserCred) map.get("user");
+            if ("AHM".equalsIgnoreCase(user.getType())) {
+                pathFile = Vms021Constant.TEMPLATE_PATH_UPLOAD;
             } else {
-                pathFile = Vms022Constant.TEMPLATE_PATH_UPLOAD_EXTERNAL;
+                pathFile = Vms021Constant.TEMPLATE_PATH_UPLOAD_EXTERNAL;
             }
             is = new FileInputStream(pathFile);
             Workbook wb = WorkbookFactory.create(is);
             is.close();
             return wb;
         } catch (FileNotFoundException ex) {
-            throw new Vms022Exception("Failed to get file for download");
+            throw new Vms021Exception("Failed to get file for download");
         } catch (IOException | EncryptedDocumentException | InvalidFormatException ex) {
             ex.printStackTrace();
-            throw new Vms022Exception("Failed to get file for download");
+            throw new Vms021Exception("Failed to get file for download");
         }
     }
     

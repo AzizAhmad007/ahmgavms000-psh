@@ -1413,7 +1413,7 @@ public class Vms022ServiceImpl implements Vms022Service {
     }
 
     @Override
-    public DtoResponseWorkspace approve(List<Vms022VoMonitoring> getdata, VoUserCred VoUserCred) {
+    public DtoResponseWorkspace approve(List<Vms022VoMonitoring> getdata, VoUserCred voUserCred) {
         Map<String, Object> msg = new HashMap<>();
 
         if (!getdata.isEmpty()) {
@@ -1426,7 +1426,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                     if (mp != null) {
                         mp.setVotsstts("Active");
 //                        mp.setVotsstts("Waiting for Approval Security");
-                        vms022ahmhrntmHdrotsempsDao.update(mp, VoUserCred.getUserid());
+                        vms022ahmhrntmHdrotsempsDao.update(mp, voUserCred.getUserid());
                         return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, setMessage("Approve success"), null);
                     }
                 } catch (Exception e) {
@@ -1438,7 +1438,7 @@ public class Vms022ServiceImpl implements Vms022Service {
     }
 
     @Override
-    public DtoResponseWorkspace reject(List<Vms022VoMonitoring> getdata, VoUserCred VoUserCred) {
+    public DtoResponseWorkspace reject(List<Vms022VoMonitoring> getdata, VoUserCred voUserCred) {
         Map<String, Object> msg = new HashMap<>();
 
         if (!getdata.isEmpty()) {
@@ -1450,7 +1450,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                     AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
                     if (mp != null) {
                         mp.setVotsstts("Reject");
-                        vms022ahmhrntmHdrotsempsDao.update(mp, VoUserCred.getUserid());
+                        vms022ahmhrntmHdrotsempsDao.update(mp, voUserCred.getUserid());
                         return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, setMessage("Reject success"), null);
                     }
                 } catch (Exception e) {
