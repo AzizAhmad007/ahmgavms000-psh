@@ -81,7 +81,7 @@ public class Vms022Rest {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    DtoResponseWorkspace showPlant(@RequestHeader(value = CommonConstant.JXID, defaultValue = "") String token) {
+    DtoResponseWorkspace showPlant(@RequestHeader(value = "token", defaultValue = "") String token) {
         return vms022Service.showPlant();
     }
 
@@ -89,7 +89,7 @@ public class Vms022Rest {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    DtoResponsePaging lovPlant(@RequestHeader(value = CommonConstant.JXID, defaultValue = "") String token,
+    DtoResponsePaging lovPlant(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody DtoParamPaging input) {
         VoUserCred userCred = tokenPshUtil.getUserCred(token);
 
@@ -100,7 +100,7 @@ public class Vms022Rest {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    DtoResponsePaging lovGate(@RequestHeader(value = CommonConstant.JXID, defaultValue = "") String token,
+    DtoResponsePaging lovGate(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody DtoParamPaging input) {
         VoUserCred userCred = tokenPshUtil.getUserCred(token);
 
@@ -124,7 +124,7 @@ public class Vms022Rest {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    DtoResponse showMonitoring(@RequestHeader(value = CommonConstant.JXID, defaultValue = "") String token,
+    DtoResponse showMonitoring(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody DtoParamPaging input) {
         VoUserCred userCred = tokenPshUtil.getUserCred(token);
 
@@ -135,7 +135,7 @@ public class Vms022Rest {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    DtoResponseWorkspace approving(@RequestHeader(value = CommonConstant.JXID, defaultValue = "") String token,
+    DtoResponseWorkspace approving(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody List<Vms022VoMonitoring> input) {
         VoUserCred userCred = tokenPshUtil.getUserCred(token);
         
@@ -146,7 +146,7 @@ public class Vms022Rest {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    DtoResponseWorkspace rejecting(@RequestHeader(value = CommonConstant.JXID, defaultValue = "") String token,
+    DtoResponseWorkspace rejecting(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody List<Vms022VoMonitoring> input) {
         VoUserCred userCred = tokenPshUtil.getUserCred(token);
         
@@ -158,7 +158,7 @@ public class Vms022Rest {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    DtoResponse checkauth(@RequestHeader(value = CommonConstant.JXID, defaultValue = "") String token) {
+    DtoResponse checkauth(@RequestHeader(value = "token", defaultValue = "") String token) {
         String username = tokenPshUtil.getUserCred(token).getUsername();
         return vms022Service.getRoles(username);
     }
@@ -166,7 +166,7 @@ public class Vms022Rest {
     @RequestMapping(value = "export-excel", method = RequestMethod.GET)
     public void ModelAndView(HttpServletRequest request,
             HttpServletResponse response,
-            @RequestParam(name = CommonConstant.JXID, defaultValue = "") String token,
+            @RequestParam(name = "token", defaultValue = "") String token,
             @RequestParam Map<String, Object> mapParam) {
         DtoParamPaging input = new DtoParamPaging();
         input.setSearch(mapParam);
