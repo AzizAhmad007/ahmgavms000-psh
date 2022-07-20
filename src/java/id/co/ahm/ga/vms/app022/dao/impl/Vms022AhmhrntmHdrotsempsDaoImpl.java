@@ -511,7 +511,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    A.DLASTVAC, "
                 + "    A.VVACDTL, "
                 + "    A.VNTVS, "
-                + "    A.ROTSEMPSHS "
+                + "    RAWTOHEX(A.ROTSEMPSHS) "
                 + " from AHMHRNTM_HDROTSEMPS A, "
                 + "AHMHRNTM_MSTPICOTS B, AHMHRNTM_DTLOTSREGS C "
                 + " WHERE  "
