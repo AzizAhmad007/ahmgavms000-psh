@@ -30,13 +30,13 @@ public interface Vms022Service {
     
     public DtoResponseWorkspace showVacType();
     
-    public DtoResponse getRoles(String username);
-    
     public DtoResponseWorkspace approve(List<Vms022VoMonitoring> getdata, VoUserCred voUserCred);
     
     public DtoResponseWorkspace reject(List<Vms022VoMonitoring> getdata, VoUserCred voUserCred);
     
     Workbook exportToExcelMainData(DtoParamPaging dto);
+    
+    DtoResponse getRoleByUserLogin(String plants, VoUserCred user);
 
     
 }

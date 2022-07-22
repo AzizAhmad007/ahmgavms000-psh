@@ -118,4 +118,17 @@ public class Vms022ObjectDaoImpl extends DefaultHibernateDao<Object, Serializabl
         query.setParameter("USERNAME", username);
         return query.list();
     }
+    
+    @Override
+    public List<String> getPlantsByUserId(String plants) {
+        String sql = "SELECT D.VITEMNAME plantId "
+                + " FROM AHMMOERP_HDRSETTINGS H "
+                + " JOIN AHMMOERP_DTLSETTINGS d ON D.RSET_VID = H.VID AND D.BVALID='T' AND H.VID = 'AHMGAWMS_ROLE_PLANT'  "
+                + " WHERE "
+                + "   D.VITEMCODE IN (" + plants + ") OR '00000' = '" + plants+ "' ";
+        
+        Query query = getCurrentSession().createSQLQuery(sql);
+        List<String> l = (List<String>) query.list();
+        return l;
+    }
 }

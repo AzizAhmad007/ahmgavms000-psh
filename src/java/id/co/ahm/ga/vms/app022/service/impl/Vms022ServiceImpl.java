@@ -33,11 +33,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import id.co.ahm.ga.vms.app022.exception.Vms022Exception;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoFileAttachment;
+import id.co.ahm.jx.b2e.app000.dao.Ahmitb2eMstusrrolesDao;
+import id.co.ahm.jx.b2e.app000.model.Ahmitb2eMstusrroles;
+import id.co.ahm.jx.b2e.app000.model.Ahmitb2eMstusrrolesPk;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFCreationHelper;
@@ -66,6 +71,10 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Autowired
     @Qualifier("vms022ObjectDao")
     private Vms022ObjectDao vms022ObjectDao;
+
+    @Autowired
+    @Qualifier("ahmitb2eMstusrrolesDao")
+    private Ahmitb2eMstusrrolesDao ahmitb2eMstusrrolesDao;
 
     @Autowired
     @Qualifier("vms022ahmhrntmDtlprmgblsDao")
@@ -229,14 +238,60 @@ public class Vms022ServiceImpl implements Vms022Service {
 //        map.values().forEach(err -> list.addAll(err));
 //        return list;
 //    }
+    
+    private String userId(VoUserCred user) {
+        String domain = ""; 
+        if (user==null) return null;
+        if (!StringUtils.isEmpty(user.getDomain())) 
+            domain = user.getDomain() + "\\";
+        return domain + user.getUsername();         
+    }
 
     @Override
-    public DtoResponse getRoles(String username) {
-        Map<String, Object> msg = new HashMap<>();
-        boolean isValidRole = vms022ObjectDao.getRoles(username)
-                .contains("RO_GAVMS_OFCSECT");
-        msg.put("isValidRole", isValidRole);
-        return DtoHelper.constructResponse(StatusMsgEnum.SUKSES, msg, null);
+    public DtoResponse getRoleByUserLogin(String plants, VoUserCred user) {
+    List<Ahmitb2eMstusrroles> roles = ahmitb2eMstusrrolesDao.getListUserRole(userId(user));
+        List<String> useroles = new ArrayList<>();
+        List<String> userPlant = new ArrayList<>();
+        HashMap<String, Object> h = new HashMap<>();
+        if (roles != null && roles.size() > 0) {
+            for (Ahmitb2eMstusrroles r : roles) {
+                Ahmitb2eMstusrrolesPk k = r.getAhmitb2eMstusrrolesPk();
+                String role = k.getVroleid();
+                Pattern p = Pattern.compile("[A-Z_]+([0-9]+)");
+                Matcher m = p.matcher(role);
+                if (m.matches() && m.groupCount() > 0) {
+                    String plant = m.group(1);
+                    userPlant.add(plant);
+                }
+                useroles.add(role);
+            }
+        }
+        h.put("roles", String.join(" ", useroles));
+        h.put("plants", String.join(",", userPlant));
+        h.put("plants_db", plants);
+        if (!userPlant.isEmpty()) {
+            plants = String.join(",", userPlant);
+        } else {
+            plants = "00000";
+        }
+
+        List<String> l = new ArrayList<>();
+        if (!StringUtils.isEmpty(plants)) {
+            l = vms022ObjectDao.getPlantsByUserId(plants);
+        } 
+
+        boolean ok = (l != null && !l.isEmpty());
+        StatusMsgEnum e = (ok) ? StatusMsgEnum.SUKSES : StatusMsgEnum.GAGAL;
+
+        if (!ok) {
+            h.put("error", "Plant user tidak ditemukan");
+            h.put("plantIds", "");
+        } else {
+            h.put("success", "Plant user ada");
+            h.put("plantIds", l);
+        }
+
+        return DtoHelper.constructResponse(e, h, useroles);
     }
 
     @Override

@@ -22,4 +22,6 @@ public interface Vms022ObjectDao extends DefaultDao<Object, Serializable>{
     public List<Vms022VoLov> lovCompExternal(DtoParamPaging input, String userId, String type);
     
     public List<String> getRoles(String username);
+    
+    public List<String> getPlantsByUserId(String plants);
 }

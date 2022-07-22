@@ -16,9 +16,12 @@ import id.co.ahm.jxf.security.TokenPshUtil;
 import id.co.ahm.jxf.vo.VoUserCred;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -107,18 +110,6 @@ public class Vms022Rest {
         return vms022Service.lovGate(input);
     }
 
-    //Lov Nrp
-//    @RequestMapping(value = "show-nrp", method = RequestMethod.POST,
-//            consumes = {MediaType.APPLICATION_JSON_VALUE},
-//            produces = MediaType.APPLICATION_JSON_VALUE)
-//    public @ResponseBody
-//    DtoResponsePaging showNrp(@RequestHeader(value = CommonConstant.JXID, defaultValue = "") String token,
-//            @RequestBody DtoParamPaging input) {
-//        VoUserCred userCred = tokenPshUtil.getUserCred(token);
-//
-//        return vms022Service.showNrp(input);
-//    }
-
     //Monitoring
     @RequestMapping(value = "monitoring", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
@@ -154,13 +145,24 @@ public class Vms022Rest {
     }
     
 
-    @PostMapping(value = "check-auth",
-            consumes = {MediaType.APPLICATION_JSON_VALUE},
+    @RequestMapping(value = "get-roles-by-userid", method = RequestMethod.POST,
+            consumes = MediaType.ALL_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    DtoResponse checkauth(@RequestHeader(value = "token", defaultValue = "") String token) {
-        String username = tokenPshUtil.getUserCred(token).getUsername();
-        return vms022Service.getRoles(username);
+    DtoResponse getPlantByUserId(
+            @RequestHeader(value = "token", defaultValue = "") String token) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
+        List<String> roles = user.getListRole();
+        List<String> plants = new ArrayList<>();
+        if (roles != null && !roles.isEmpty()) {
+            for (String s : roles) {
+                Pattern p = Pattern.compile("[A-Z_]+([0-9]+)");
+                Matcher m = p.matcher(s);                
+                
+                plants.add("'" + ((m.matches() && m.groupCount() > 0)? m.group(1): s) + "'");
+            }
+        }
+        return vms022Service.getRoleByUserLogin(String.join(",", plants), user);
     }
 
     @RequestMapping(value = "export-excel", method = RequestMethod.GET)
