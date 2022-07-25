@@ -1,15 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package id.co.ahm.ga.vms.app022.exception;
 
 import id.co.ahm.jxf.vo.VoMessageWorkspace;
 
 /**
  *
- * @author ayik.op
+ * @author administator
  */
 public class Vms022Exception extends RuntimeException{
     
@@ -47,6 +42,5 @@ public class Vms022Exception extends RuntimeException{
     public void setErr(VoMessageWorkspace err) {
         this.err = err;
     }
-    
     
 }
