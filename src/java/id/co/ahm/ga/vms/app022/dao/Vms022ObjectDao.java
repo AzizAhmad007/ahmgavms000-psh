@@ -6,6 +6,7 @@
 package id.co.ahm.ga.vms.app022.dao;
 
 import id.co.ahm.jxf.dao.DefaultDao;
+import id.co.ahm.jxf.dao.HrDao;
 import java.io.Serializable;
 import java.util.List;
 
@@ -13,7 +14,5 @@ import java.util.List;
  *
  * @author ayik.op
  */
-public interface Vms022ObjectDao extends DefaultDao<Object, Serializable>{
-    
-    public List<String> getPlantsByUserId(String plants);
+public interface Vms022ObjectDao extends HrDao<Object, Serializable>{
 }

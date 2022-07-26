@@ -6,7 +6,6 @@
 package id.co.ahm.ga.vms.app022.vo;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  *

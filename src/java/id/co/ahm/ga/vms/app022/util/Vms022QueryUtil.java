@@ -5,14 +5,6 @@
  */
 package id.co.ahm.ga.vms.app022.util;
 
-import id.co.ahm.jxf.constant.CommonConstant;
-import id.co.ahm.jxf.dto.DtoParamPaging;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-
 /**
  *
  * @author ayik.op

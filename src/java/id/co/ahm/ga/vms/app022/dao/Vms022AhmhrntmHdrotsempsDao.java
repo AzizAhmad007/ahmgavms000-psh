@@ -17,9 +17,5 @@ import java.util.List;
  *
  * @author ayik.op
  */
-public interface Vms022AhmhrntmHdrotsempsDao extends DefaultDao<AhmhrntmHdrotsemps, AhmhrntmHdrotsempsPk>{
-    
-    List<Vms022VoMonitoring> searchMonitoring(DtoParamPaging dtoParamPaging);
-    
-    int countMonitoring(DtoParamPaging dtoParamPaging);
+public interface Vms022AhmhrntmHdrotsempsDao extends HrDao<AhmhrntmHdrotsemps, AhmhrntmHdrotsempsPk>{
 }
