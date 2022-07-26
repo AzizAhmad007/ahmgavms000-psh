@@ -19,24 +19,6 @@ import org.apache.poi.ss.usermodel.Workbook;
  * @author ayik.op
  */
 public interface Vms022Service {
-    
-    public DtoResponseWorkspace showPlant();
-    
-    public DtoResponsePaging monitoring(DtoParamPaging input, VoUserCred user);
-    
-    public DtoResponsePaging lovPlant(DtoParamPaging input);
-    
-    public DtoResponsePaging lovGate(DtoParamPaging input);
-    
-    public DtoResponseWorkspace showVacType();
-    
-    public DtoResponse getRoles(String username);
-    
-    public DtoResponseWorkspace approve(List<Vms022VoMonitoring> getdata, VoUserCred voUserCred);
-    
-    public DtoResponseWorkspace reject(List<Vms022VoMonitoring> getdata, VoUserCred voUserCred);
-    
-    Workbook exportToExcelMainData(DtoParamPaging dto);
-
-    
+       
+    DtoResponse getRoleByUserLogin(String plants, VoUserCred user);
 }

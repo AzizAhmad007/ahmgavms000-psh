@@ -15,12 +15,4 @@ import java.util.List;
  * @author ayik.op
  */
 public interface Vms022AhmhrntmDtlotsregsDao extends HrDao<AhmhrntmDtlotsregs, AhmhrntmDtlotsregsPk>{
-    
-    public int getLastSeq(String otsId, String nik, String regId);
-    
-    public List<String> getFileName(String otsId, String nik, String regId);
-    
-    public int getCount(String otsId, String nik, String regId);
-    
-    public List<String> getSeq(String otsId, String nik, String regId);
 }

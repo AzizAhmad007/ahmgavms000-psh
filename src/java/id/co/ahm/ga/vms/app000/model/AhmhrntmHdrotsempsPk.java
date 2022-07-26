@@ -17,9 +17,7 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Embeddable
 public class AhmhrntmHdrotsempsPk implements Serializable {
-
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    
     @Column(name = "ROTSEMPSHS", nullable = false, unique = true)
     private String rotsempshs;
 

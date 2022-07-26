@@ -5,7 +5,6 @@
  */
 package id.co.ahm.ga.vms.app022.vo;
 
-import java.sql.Blob;
 import java.util.Date;
 import java.util.List;
 
@@ -61,11 +60,11 @@ public class Vms022VoMonitoring {
     private String vmodi;
     private Date dmodi;
     
-    private List<Vms022VoLov> plants;
-    private List<Vms022VoLov> gates;
-    private List<Vms022VoLovNrp> nrps;
-    private List<Vms022VoFileAttachment> fileVaccines;
-    private List<Vms022VoFileAttachment> fileSk;
+//    private List<Vms022VoLov> plants;
+//    private List<Vms022VoLov> gates;
+//    private List<Vms022VoLovNrp> nrps;
+//    private List<Vms022VoFileAttachment> fileVaccines;
+//    private List<Vms022VoFileAttachment> fileSk;
 
     public String getVmodi() {
         return vmodi;
@@ -421,45 +420,45 @@ public class Vms022VoMonitoring {
         this.pic = pic;
     }
 
-    public List<Vms022VoLov> getPlants() {
-        return plants;
-    }
-
-    public void setPlants(List<Vms022VoLov> plants) {
-        this.plants = plants;
-    }
-
-    public List<Vms022VoLov> getGates() {
-        return gates;
-    }
-
-    public void setGates(List<Vms022VoLov> gates) {
-        this.gates = gates;
-    }
-
-    public List<Vms022VoLovNrp> getNrps() {
-        return nrps;
-    }
-
-    public void setNrps(List<Vms022VoLovNrp> nrps) {
-        this.nrps = nrps;
-    }
-
-    public List<Vms022VoFileAttachment> getFileVaccines() {
-        return fileVaccines;
-    }
-
-    public void setFileVaccines(List<Vms022VoFileAttachment> fileVaccines) {
-        this.fileVaccines = fileVaccines;
-    }
-
-    public List<Vms022VoFileAttachment> getFileSk() {
-        return fileSk;
-    }
-
-    public void setFileSk(List<Vms022VoFileAttachment> fileSk) {
-        this.fileSk = fileSk;
-    }
+//    public List<Vms022VoLov> getPlants() {
+//        return plants;
+//    }
+//
+//    public void setPlants(List<Vms022VoLov> plants) {
+//        this.plants = plants;
+//    }
+//
+//    public List<Vms022VoLov> getGates() {
+//        return gates;
+//    }
+//
+//    public void setGates(List<Vms022VoLov> gates) {
+//        this.gates = gates;
+//    }
+//
+//    public List<Vms022VoLovNrp> getNrps() {
+//        return nrps;
+//    }
+//
+//    public void setNrps(List<Vms022VoLovNrp> nrps) {
+//        this.nrps = nrps;
+//    }
+//
+//    public List<Vms022VoFileAttachment> getFileVaccines() {
+//        return fileVaccines;
+//    }
+//
+//    public void setFileVaccines(List<Vms022VoFileAttachment> fileVaccines) {
+//        this.fileVaccines = fileVaccines;
+//    }
+//
+//    public List<Vms022VoFileAttachment> getFileSk() {
+//        return fileSk;
+//    }
+//
+//    public void setFileSk(List<Vms022VoFileAttachment> fileSk) {
+//        this.fileSk = fileSk;
+//    }
 
     public String getAccess() {
         return access;

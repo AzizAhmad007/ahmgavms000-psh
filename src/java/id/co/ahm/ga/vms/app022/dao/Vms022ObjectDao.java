@@ -5,9 +5,7 @@
  */
 package id.co.ahm.ga.vms.app022.dao;
 
-import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
 import id.co.ahm.jxf.dao.DefaultDao;
-import id.co.ahm.jxf.dto.DtoParamPaging;
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,9 +15,5 @@ import java.util.List;
  */
 public interface Vms022ObjectDao extends DefaultDao<Object, Serializable>{
     
-    public int countLovCompExternal(DtoParamPaging input, String userId, String type);
-    
-    public List<Vms022VoLov> lovCompExternal(DtoParamPaging input, String userId, String type);
-    
-    public List<String> getRoles(String username);
+    public List<String> getPlantsByUserId(String plants);
 }

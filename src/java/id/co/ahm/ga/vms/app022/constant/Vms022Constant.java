@@ -27,4 +27,33 @@ public class Vms022Constant {
             + " AND ROL.VENABLEFLAG = 'Y' "
             + " AND RAC.IROLEINTID IN (SELECT IROLEINTID FROM AHMIPUAM_MSTUSERRLS WHERE VUSERNAME = :USERNAME) ";
     
+    public static final String SQL_MONITORING =
+            "select distinct " +
+"                     A.VOTSID as Outsource_ID, " +
+"                     A.VNAME as Outsource_Name, " +
+"                     A.VPERSID as NIK, " +
+"                     A.VOTSTYPE as Outsource_Type, " +
+"                     A.VCOMPANY as Outsource_Company, " +
+"                     A.VOTSSTTS as Outsource_status, " +
+"                     C.VPLANT as Plant, " +
+"                     A.VVACSTTS as Covid19VaccineStatus, " +
+"                     A.DBGNEFFDT as Periode_Begin, " +
+"                     A.DENDEFFDT as Periode_End, " +
+"                     A.NAHMCARDORI as PassNumberCard, " +
+"                     A.DPASSEXP as PassCardExpDate, " +
+"                     A.VMODI, " +
+"                     A.DMODI, " +
+"                     A.VEMPPHONE, " +
+"                     A.VJOBDTL, " +
+"                     A.VNOTE, " +
+"                     A.VVACTYPE, " +
+"                     A.DLASTVAC, " +
+"                     A.VVACDTL, " +
+"                     A.VNTVS, " +
+"                     A.ROTSEMPSHS " +
+"                  from AHMHRNTM_HDROTSEMPS A, " +
+"                 AHMHRNTM_MSTPICOTS B, AHMHRNTM_DTLOTSREGS C ";
+    
+    public static final String SQL_MONITORING_PARAM = 
+            "";
 }
