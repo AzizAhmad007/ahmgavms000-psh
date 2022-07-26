@@ -51,7 +51,6 @@
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">        
         <property name="packagesToScan">
             <list>
-                <value>id.co.ahm.jx.uam.app000.model</value>
                 <value>id.co.ahm.jx.sys.app000.model</value>
             </list>
         </property>
@@ -100,7 +99,6 @@
     <bean class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" id="sessionFactoryHr">        
         <property name="packagesToScan" >
             <list>
-                <value>id.co.ahm.ga.spc.app000.model.hr</value>
                 <value>id.co.ahm.ga.vms.app000.model</value>              
             </list>
         </property>
