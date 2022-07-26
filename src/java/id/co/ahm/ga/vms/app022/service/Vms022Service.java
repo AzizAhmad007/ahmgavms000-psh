@@ -9,6 +9,7 @@ import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponse;
 import id.co.ahm.jxf.dto.DtoResponsePaging;
+import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
 import id.co.ahm.jxf.vo.VoUserCred;
 import java.util.List;
@@ -21,4 +22,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 public interface Vms022Service {
        
     DtoResponse getRoleByUserLogin(String plants, VoUserCred user);
+
+    DtoResponsePagingWorkspace searchMonitoring(DtoParamPaging dtoParamPaging);
 }

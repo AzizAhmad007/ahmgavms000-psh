@@ -6,7 +6,9 @@
 package id.co.ahm.ga.vms.app022.rest;
 
 import id.co.ahm.ga.vms.app022.service.Vms022Service;
+import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponse;
+import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.security.TokenPshUtil;
 import id.co.ahm.jxf.vo.VoUserCred;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -57,4 +60,15 @@ public class Vms022Rest {
         }
         return vms022Service.getRoleByUserLogin(String.join(",", plants), user);
     }
+    
+    @RequestMapping(value = "search-monitoring", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponsePagingWorkspace searchMonitoring(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody DtoParamPaging dtoParam) {
+        return vms022Service.searchMonitoring(dtoParam);
+    }
+    
+    
 }

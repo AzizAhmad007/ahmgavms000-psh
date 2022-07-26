@@ -10,11 +10,15 @@ import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlprmgblsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmHdrotsempsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022ObjectDao;
 import id.co.ahm.ga.vms.app022.service.Vms022Service;
+import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.jx.b2e.app000.dao.Ahmitb2eMstusrrolesDao;
 import id.co.ahm.jx.b2e.app000.model.Ahmitb2eMstusrroles;
 import id.co.ahm.jx.b2e.app000.model.Ahmitb2eMstusrrolesPk;
 import id.co.ahm.jxf.constant.StatusMsgEnum;
+import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponse;
+import id.co.ahm.jxf.dto.DtoResponsePaging;
+import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.util.DtoHelper;
 import id.co.ahm.jxf.vo.VoUserCred;
 import java.util.ArrayList;
@@ -116,8 +120,16 @@ public class Vms022ServiceImpl implements Vms022Service {
             domain = user.getDomain() + "\\";
         return domain + user.getUsername();         
     }
+
+    @Override
+    public DtoResponsePagingWorkspace searchMonitoring(DtoParamPaging dtoParamPaging) {
+        int count = vms022ahmhrntmHdrotsempsDao.countMonitoring(dtoParamPaging);
+        List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.searchMonitoring(dtoParamPaging);
+        return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, null, null, list, count);
+    }
     
     
     //getRoleByUserLogin Phase end
+
 
 }
