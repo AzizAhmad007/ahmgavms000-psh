@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  *
- * @author ayik.op
+ * @author reza.mr
  */
 @Repository("vms022ahmhrntmDtlprmgblsDao")
 public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlprmgbls, String> implements Vms022AhmhrntmDtlprmgblsDao{

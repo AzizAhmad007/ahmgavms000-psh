@@ -7,7 +7,7 @@ package id.co.ahm.ga.vms.app022.constant;
 
 /**
  *
- * @author ayik.op
+ * @author reza.mr
  */
 public class Vms022Constant {
     

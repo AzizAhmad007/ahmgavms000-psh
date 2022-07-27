@@ -24,7 +24,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 /**
  *
- * @author ayik.op
+ * @author reza.mr
  */
 @DynamicInsert
 @DynamicUpdate

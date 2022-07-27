@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
- * @author ayik.op
+ * @author reza.mr
  */
 @ControllerAdvice(basePackageClasses = Vms022Rest.class)
 public class Vms022RestAdvice {

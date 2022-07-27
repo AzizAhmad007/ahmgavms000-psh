@@ -12,7 +12,7 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author ayik.op
+ * @author reza.mr
  */
 @Embeddable
 public class AhmhrntmDtlotsregsPk implements Serializable{

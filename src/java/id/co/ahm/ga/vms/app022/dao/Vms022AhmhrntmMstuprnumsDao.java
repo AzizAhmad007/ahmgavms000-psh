@@ -11,7 +11,7 @@ import id.co.ahm.ga.vms.app000.model.AhmhrntmMstuprnumsPk;
 
 /**
  *
- * @author ayik.op
+ * @author reza.mr
  */
 public interface Vms022AhmhrntmMstuprnumsDao extends HrDao<AhmhrntmMstuprnums, AhmhrntmMstuprnumsPk>{
     

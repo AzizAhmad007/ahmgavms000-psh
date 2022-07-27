@@ -7,7 +7,7 @@ package id.co.ahm.ga.vms.app022.service;
 
 /**
  *
- * @author ayik.op
+ * @author reza.mr
  */
 public interface Vms022Service {
 }

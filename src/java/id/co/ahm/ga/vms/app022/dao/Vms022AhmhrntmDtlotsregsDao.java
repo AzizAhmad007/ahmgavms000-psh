@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  *
- * @author ayik.op
+ * @author reza.mr
  */
 public interface Vms022AhmhrntmDtlotsregsDao extends HrDao<AhmhrntmDtlotsregs, AhmhrntmDtlotsregsPk>{
 }

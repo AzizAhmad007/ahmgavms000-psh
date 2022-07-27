@@ -18,7 +18,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 /**
  *
- * @author ayik.op
+ * @author reza.mr
  */
 @DynamicInsert
 @DynamicUpdate

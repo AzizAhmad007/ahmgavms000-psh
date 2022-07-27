@@ -9,7 +9,7 @@ import id.co.ahm.jxf.vo.VoMessageWorkspace;
 
 /**
  *
- * @author ayik.op
+ * @author reza.mr
  */
 public class Vms022Exception extends RuntimeException{
     

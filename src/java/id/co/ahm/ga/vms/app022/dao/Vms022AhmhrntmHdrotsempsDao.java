@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  *
- * @author ayik.op
+ * @author reza.mr
  */
 public interface Vms022AhmhrntmHdrotsempsDao extends HrDao<AhmhrntmHdrotsemps, AhmhrntmHdrotsempsPk>{
 }

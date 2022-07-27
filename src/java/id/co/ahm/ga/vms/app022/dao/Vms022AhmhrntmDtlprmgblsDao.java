@@ -10,7 +10,7 @@ import id.co.ahm.jxf.dao.HrDao;
 
 /**
  *
- * @author ayik.op
+ * @author reza.mr
  */
 public interface Vms022AhmhrntmDtlprmgblsDao extends HrDao<AhmhrntmDtlprmgbls, String>{
 }

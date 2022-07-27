@@ -13,7 +13,7 @@ import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmMstuprnumsDao;
 
 /**
  *
- * @author ayik.op
+ * @author reza.mr
  */
 @Repository("vms022ahmhrntmMstuprnumsDao")
 public class Vms022AhmhrntmMstuprnumsDaoImpl extends HrHibernateDao<AhmhrntmMstuprnums, AhmhrntmMstuprnumsPk> implements Vms022AhmhrntmMstuprnumsDao{
