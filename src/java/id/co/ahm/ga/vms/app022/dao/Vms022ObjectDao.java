@@ -5,7 +5,9 @@
  */
 package id.co.ahm.ga.vms.app022.dao;
 
+import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
 import id.co.ahm.jxf.dao.HrDao;
+import id.co.ahm.jxf.dto.DtoParamPaging;
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,5 +18,7 @@ import java.util.List;
 public interface Vms022ObjectDao extends HrDao<Object, Serializable>{
     
     public List<String> getPlantsByUserId(String plants);
+    
+    public List<Vms022VoLov> lovCompExternal(DtoParamPaging input, String userId, String type);
     
 }

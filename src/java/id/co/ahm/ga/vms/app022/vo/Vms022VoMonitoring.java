@@ -6,6 +6,7 @@
 package id.co.ahm.ga.vms.app022.vo;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -62,7 +63,7 @@ public class Vms022VoMonitoring {
 //    private List<Vms022VoLov> plants;
 //    private List<Vms022VoLov> gates;
 //    private List<Vms022VoLovNrp> nrps;
-//    private List<Vms022VoFileAttachment> fileVaccines;
+    private List<Vms022VoFileAttachment> fileVaccines;
 //    private List<Vms022VoFileAttachment> fileSk;
 
     public String getVmodi() {
@@ -443,13 +444,13 @@ public class Vms022VoMonitoring {
 //        this.nrps = nrps;
 //    }
 //
-//    public List<Vms022VoFileAttachment> getFileVaccines() {
-//        return fileVaccines;
-//    }
-//
-//    public void setFileVaccines(List<Vms022VoFileAttachment> fileVaccines) {
-//        this.fileVaccines = fileVaccines;
-//    }
+    public List<Vms022VoFileAttachment> getFileVaccines() {
+        return fileVaccines;
+    }
+
+    public void setFileVaccines(List<Vms022VoFileAttachment> fileVaccines) {
+        this.fileVaccines = fileVaccines;
+    }
 //
 //    public List<Vms022VoFileAttachment> getFileSk() {
 //        return fileSk;

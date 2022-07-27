@@ -18,4 +18,13 @@ import java.util.List;
  * @author reza.mr
  */
 public interface Vms022AhmhrntmHdrotsempsDao extends HrDao<AhmhrntmHdrotsemps, AhmhrntmHdrotsempsPk>{
+    
+    public List<Vms022VoMonitoring> getSearchData(DtoParamPaging input, String userId);
+    
+    public List<Vms022VoMonitoring> getSearchData2();
+    
+    public int countSearchData(DtoParamPaging input, String userId);
+    
+    public int countSearchData2();
+
 }

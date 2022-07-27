@@ -5,7 +5,10 @@
  */
 package id.co.ahm.ga.vms.app022.service;
 
+import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponse;
+import id.co.ahm.jxf.dto.DtoResponsePaging;
+import id.co.ahm.jxf.dto.DtoResponseWorkspace;
 import id.co.ahm.jxf.vo.VoUserCred;
 
 /**
@@ -15,4 +18,11 @@ import id.co.ahm.jxf.vo.VoUserCred;
 public interface Vms022Service {
     
     DtoResponse getRoleByUserLogin(String plants, VoUserCred user);
+    
+    DtoResponseWorkspace showPlant();
+    
+    DtoResponsePaging monitoring(DtoParamPaging input, VoUserCred userCred);
+    
+    DtoResponseWorkspace showMonitoring();
+
 }

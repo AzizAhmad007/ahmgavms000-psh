@@ -6,11 +6,17 @@
 package id.co.ahm.ga.vms.app022.dao;
 
 import id.co.ahm.ga.vms.app000.model.AhmhrntmDtlprmgbls;
+import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
 import id.co.ahm.jxf.dao.HrDao;
+import id.co.ahm.jxf.dto.DtoParamPaging;
+import java.util.List;
 
 /**
  *
  * @author reza.mr
  */
 public interface Vms022AhmhrntmDtlprmgblsDao extends HrDao<AhmhrntmDtlprmgbls, String>{
+    
+    public List<Vms022VoLov> lovPlant(DtoParamPaging input, Boolean isMonitoring);
+    
 }
