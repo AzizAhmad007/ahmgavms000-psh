@@ -43,6 +43,6 @@ public class Vms022Rest {
             ) {
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, null, null, null, 0);
     }
-    
+     
     
 }
