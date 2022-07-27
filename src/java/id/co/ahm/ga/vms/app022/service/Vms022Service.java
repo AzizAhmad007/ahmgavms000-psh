@@ -5,9 +5,14 @@
  */
 package id.co.ahm.ga.vms.app022.service;
 
+import id.co.ahm.jxf.dto.DtoResponse;
+import id.co.ahm.jxf.vo.VoUserCred;
+
 /**
  *
  * @author reza.mr
  */
 public interface Vms022Service {
+    
+    DtoResponse getRoleByUserLogin(String plants, VoUserCred user);
 }

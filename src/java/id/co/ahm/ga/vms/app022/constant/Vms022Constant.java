@@ -16,7 +16,10 @@ public class Vms022Constant {
     //public static final String TEMPLATE_PATH_UPLOAD = "D:\\Download\\template\\Template_Upload_PIC.xlsx"; /*Path lokal*/
     //public static final String TEMPLATE_PATH_UPLOAD_EXTERNAL = "D:\\Download\\template\\Template_Upload_Mitra.xlsx"; /*Path lokal*/
     
-    public static final String SQL_GET_USER_ROLES 
+    public static final String SQL_GET_PLANTS_BY_USERID =
+            "";
+    
+    public static final String SQL_GET_USER_ROLES_PST 
             = "SELECT ROL.VROLENAME "
             + "FROM AHMIPUAM_MSTROLEACCS RAC, AHMIPUAM_MSTMENUS MEN, AHMIPUAM_MSTROLES ROL "
             + "WHERE RAC.VENABLEFLAG = 'Y' "
