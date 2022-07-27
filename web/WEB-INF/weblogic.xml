@@ -8,7 +8,7 @@
                         http://xmlns.oracle.com/weblogic/weblogic-web-app/1.0/weblogic-web-app.xsd">
     
     <wls:weblogic-version>10.3.6</wls:weblogic-version>
-    <wls:context-root>/jx05/ahmgavms000-pst</wls:context-root>
+    <wls:context-root>/jx05/ahmgavms000-psh</wls:context-root>
     <wls:library-ref>
         <library-name>AHMJXLibraries</library-name>
         <specification-version>1.0</specification-version>
