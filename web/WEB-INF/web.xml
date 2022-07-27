@@ -16,11 +16,11 @@
     </servlet-mapping>
     
     <filter>
-        <filter-name>securityFilterPst</filter-name>
+        <filter-name>securityFilterPsh</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>securityFilterPst</filter-name>
+        <filter-name>securityFilterPsh</filter-name>
         <url-pattern>/rest/*</url-pattern>
     </filter-mapping>
     
