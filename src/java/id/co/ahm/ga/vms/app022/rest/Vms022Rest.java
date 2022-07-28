@@ -6,6 +6,7 @@
 package id.co.ahm.ga.vms.app022.rest;
 
 import id.co.ahm.ga.vms.app022.service.Vms022Service;
+import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.jxf.constant.StatusMsgEnum;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponse;
@@ -62,6 +63,7 @@ public class Vms022Rest {
     DtoResponse getPlantByUserId(
             @RequestHeader(value = "token", defaultValue = "") String token) {
         VoUserCred user = tokenPshUtil.getUserCred(token);
+        System.out.println("==== value dari vousercred = " + user);
         List<String> roles = user.getListRole();
         List<String> plants = new ArrayList<>();
         if (roles != null && !roles.isEmpty()) {
@@ -79,7 +81,8 @@ public class Vms022Rest {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    DtoResponseWorkspace showPlant(@RequestHeader(value = "token", defaultValue = "") String token) {
+    DtoResponseWorkspace showPlant(@RequestHeader(value = "token") String token) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
         return vms022Service.showPlant();
     }
     
@@ -89,8 +92,33 @@ public class Vms022Rest {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     DtoResponseWorkspace showMonitoring(@RequestHeader(value = "token", defaultValue = "") String token) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
 
         return vms022Service.showMonitoring();
+    }
+    
+    //success
+    @RequestMapping(value = "approve", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace approving(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody Vms022VoMonitoring getdata) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
+
+        return vms022Service.approve(getdata, user);
+    }
+    
+    //success
+    @RequestMapping(value = "reject", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace rejecting(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody Vms022VoMonitoring getdata) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
+
+        return vms022Service.reject(getdata, user);
     }
      
     

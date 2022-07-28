@@ -5,11 +5,13 @@
  */
 package id.co.ahm.ga.vms.app022.service;
 
+import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponse;
 import id.co.ahm.jxf.dto.DtoResponsePaging;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
 import id.co.ahm.jxf.vo.VoUserCred;
+import java.util.List;
 
 /**
  *
@@ -24,5 +26,9 @@ public interface Vms022Service {
     DtoResponsePaging monitoring(DtoParamPaging input, VoUserCred userCred);
     
     DtoResponseWorkspace showMonitoring();
+    
+    DtoResponseWorkspace approve(Vms022VoMonitoring getdata, VoUserCred userCred);
+    
+    DtoResponseWorkspace reject(Vms022VoMonitoring getdata, VoUserCred userCred);
 
 }

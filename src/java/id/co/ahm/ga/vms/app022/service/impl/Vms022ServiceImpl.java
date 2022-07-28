@@ -5,10 +5,13 @@
  */
 package id.co.ahm.ga.vms.app022.service.impl;
 
+import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsemps;
+import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsempsPk;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlotsregsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlprmgblsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmHdrotsempsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022ObjectDao;
+import id.co.ahm.ga.vms.app022.exception.Vms022Exception;
 import id.co.ahm.ga.vms.app022.service.Vms022Service;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoFileAttachment;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
@@ -32,6 +35,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
@@ -54,7 +58,7 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Autowired
     @Qualifier("ahmitb2eMstusrrolesDao")
     private Ahmitb2eMstusrrolesDao ahmitb2eMstusrrolesDao;
-    
+
     @Autowired
     @Qualifier("vms022ObjectDao")
     private Vms022ObjectDao vms022ObjectDao;
@@ -71,16 +75,18 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Qualifier("vms022ahmhrntmDtlotsregsDao")
     private Vms022AhmhrntmDtlotsregsDao vms022ahmhrntmDtlotsregsDao;
 //    
-    
-    
+
     private String userId(VoUserCred user) {
-        String domain = ""; 
-        if (user==null) return null;
-        if (!StringUtils.isEmpty(user.getDomain())) 
+        String domain = "";
+        if (user == null) {
+            return null;
+        }
+        if (!StringUtils.isEmpty(user.getDomain())) {
             domain = user.getDomain() + "\\";
-        return domain + user.getUsername();         
+        }
+        return domain + user.getUsername();
     }
-    
+
     @Override
     public DtoResponse getRoleByUserLogin(String plants, VoUserCred user) {
         System.out.println("================" + "SERVICE_IMPL | mau tau ini isinya apa " + "================");
@@ -115,7 +121,7 @@ public class Vms022ServiceImpl implements Vms022Service {
         List<String> l = new ArrayList<>();
         if (!StringUtils.isEmpty(plants)) {
             l = vms022ObjectDao.getPlantsByUserId(plants);
-        } 
+        }
 
         boolean ok = (l != null && !l.isEmpty());
         StatusMsgEnum e = (ok) ? StatusMsgEnum.SUKSES : StatusMsgEnum.GAGAL;
@@ -136,14 +142,14 @@ public class Vms022ServiceImpl implements Vms022Service {
         List<Vms022VoLov> list = vms022ahmhrntmDtlprmgblsDao.lovPlant(null, true);
         return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, list);
     }
-    
-        @Override
+
+    @Override
     public DtoResponseWorkspace showMonitoring() {
         List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData2();
         int count = vms022ahmhrntmHdrotsempsDao.countSearchData2();
-        return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "YOI" , null, list, count);
+        return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "YOI", null, list, count);
     }
-    
+
     @Override
     public DtoResponsePaging monitoring(DtoParamPaging input, VoUserCred userCred) {
         List<Vms022VoMonitoring> datas = new ArrayList<>();
@@ -221,7 +227,7 @@ public class Vms022ServiceImpl implements Vms022Service {
             return DtoHelper.constructResponsePaging(StatusMsgEnum.SUKSES, null, datas, count);
         }
     }
-    
+
     private byte[] readBytesFromFile(String pathFile) {
         FileInputStream fileInputStream = null;
         byte[] bytesArray = null;
@@ -248,5 +254,63 @@ public class Vms022ServiceImpl implements Vms022Service {
         return bytesArray;
     }
 
+    @Override
+    public DtoResponseWorkspace approve(Vms022VoMonitoring getdata, VoUserCred userCred) {
+                try {
+                    AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
+                    pk.setRotsempshs((getdata.getId()));
+                    AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
+                    if (mp != null) {
+                        mp.setVotsstts("Active");
+                        vms022ahmhrntmHdrotsempsDao.update(mp);
+                    }
+                } catch (Exception e) {
+                    throw new Vms022Exception("Failed Approve Data Cause error when Updating");
+                }
+            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Approve success", null, null);
+    }
+
+    @Override
+    public DtoResponseWorkspace reject(Vms022VoMonitoring getdata, VoUserCred userCred) {
+                try {
+                    AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
+                    pk.setRotsempshs((getdata.getId()));
+                    AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
+                    if (mp != null) {
+                        mp.setVotsstts("Reject");
+                        vms022ahmhrntmHdrotsempsDao.update(mp);
+                    }
+                } catch (Exception e) {
+                    throw new Vms022Exception("Failed Reject Data Cause error when Updating");
+                }
+            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Reject success", null, null);
+    }
+    
+//    @Override
+//    public DtoResponseWorkspace approve(List<Vms022VoMonitoring> getdata, VoUserCred userCred) {
+//        Map<String, Object> msg = new HashMap<>();
+//        System.out.println("================= value masuk ga disini = ");
+//        if (!getdata.isEmpty()) {
+//            getdata.forEach((vo) -> {
+//                try {
+//                    AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
+//                    pk.setRotsempshs((getdata.getId()));
+//                    System.out.println("================= value id = " + pk);
+//                    AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
+//                    if (mp != null) {
+//                        mp.setVotsstts("Active");
+//                        mp.setVotsstts("Waiting for Approval Security");
+//                        mp.setLastModBy(userCred.getUserid());
+//                        vms022ahmhrntmHdrotsempsDao.update(mp);
+//                    }
+//                } catch (Exception e) {
+//                    throw new Vms022Exception("Failed Approve Data Cause error when Updating");
+//                }
+//            });
+//            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Approve success", null, null);
+//        } else {
+//            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, "Failed Approve data", null, null);
+//        }
+//    }
 
 }

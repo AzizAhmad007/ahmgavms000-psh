@@ -65,6 +65,8 @@ public class Vms022VoMonitoring {
 //    private List<Vms022VoLovNrp> nrps;
     private List<Vms022VoFileAttachment> fileVaccines;
 //    private List<Vms022VoFileAttachment> fileSk;
+    
+    private List<Vms022VoMonitoring> monitoring;
 
     public String getVmodi() {
         return vmodi;
@@ -468,5 +470,12 @@ public class Vms022VoMonitoring {
         this.access = access;
     }
 
+    public List<Vms022VoMonitoring> getMonitoring() {
+        return monitoring;
+    }
+
+    public void setMonitoring(List<Vms022VoMonitoring> monitoring) {
+        this.monitoring = monitoring;
+    }
     
 }
