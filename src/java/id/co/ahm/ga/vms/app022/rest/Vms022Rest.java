@@ -98,28 +98,52 @@ public class Vms022Rest {
     }
     
     //success
-    @RequestMapping(value = "approve", method = RequestMethod.POST,
+    @RequestMapping(value = "approve-single", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    DtoResponseWorkspace approving(@RequestHeader(value = "token", defaultValue = "") String token,
+    DtoResponseWorkspace approvingSingle(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody Vms022VoMonitoring getdata) {
         VoUserCred user = tokenPshUtil.getUserCred(token);
 
         return vms022Service.approve(getdata, user);
+//        return "success";
+
     }
     
     //success
-    @RequestMapping(value = "reject", method = RequestMethod.POST,
+    @RequestMapping(value = "reject-single", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    DtoResponseWorkspace rejecting(@RequestHeader(value = "token", defaultValue = "") String token,
+    DtoResponseWorkspace rejectingSingle(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody Vms022VoMonitoring getdata) {
         VoUserCred user = tokenPshUtil.getUserCred(token);
 
         return vms022Service.reject(getdata, user);
     }
      
+    @RequestMapping(value = "approve", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace approving(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody List<Vms022VoMonitoring> input) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
+        
+        return vms022Service.approving(input, user);
+    }
+    
+    
+    @RequestMapping(value = "reject", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace rejecting(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody List<Vms022VoMonitoring> getdata) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
+
+        return vms022Service.rejecting(getdata, user);
+    }
     
 }

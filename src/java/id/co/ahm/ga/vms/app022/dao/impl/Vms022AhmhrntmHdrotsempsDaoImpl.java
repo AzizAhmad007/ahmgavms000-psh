@@ -116,12 +116,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "                    ) ");
 
         orderClause(input, sqlQuery, sortMap, null);
-        Query query = getCurrentSession().createSQLQuery(sqlQuery.toString());
-
-        if (StringUtils.isBlank("")) {
-            query.setFirstResult(input.getOffset());
-            query.setMaxResults(input.getLimit());
-        }
+        Query query = getCurrentSession().createSQLQuery(sqlQuery.toString())
+            .setFirstResult(input.getOffset())
+            .setMaxResults(input.getLimit());
 
         try {
             List lists = query.list();

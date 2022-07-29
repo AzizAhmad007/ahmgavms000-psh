@@ -256,7 +256,6 @@ public class Vms022ServiceImpl implements Vms022Service {
 
     @Override
     public DtoResponseWorkspace approve(Vms022VoMonitoring getdata, VoUserCred userCred) {
-                try {
                     AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
                     pk.setRotsempshs((getdata.getId()));
                     AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
@@ -264,11 +263,31 @@ public class Vms022ServiceImpl implements Vms022Service {
                         mp.setVotsstts("Active");
                         
                         vms022ahmhrntmHdrotsempsDao.update(mp);
+                        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Approve success", null, null);
+                    } 
+                    else {
+                        throw new Vms022Exception("Failed Approve Data Cause mp nya JEBOD when Updating");
                     }
-                } catch (Exception e) {
-                    throw new Vms022Exception("Failed Approve Data Cause error when Updating");
+    }
+    
+    @Override
+    public DtoResponseWorkspace approving(List<Vms022VoMonitoring> getdata, VoUserCred userCred) {
+        if (!getdata.isEmpty()) {
+            for (Vms022VoMonitoring vo : getdata) {
+                AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
+                pk.setRotsempshs((vo.getId()));
+                AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
+                if (mp != null) {
+                    mp.setVotsstts("Active");
+//                        mp.setVotsstts("Waiting for Approval Security");
+                    mp.setLastModBy(userCred.getUserid());
+                    vms022ahmhrntmHdrotsempsDao.update(mp);
                 }
+            }
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Approve success", null, null);
+        } else {
+            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, "Failed Approve data", null, null);
+        }
     }
 
     @Override
@@ -287,31 +306,24 @@ public class Vms022ServiceImpl implements Vms022Service {
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Reject success", null, null);
     }
     
-//    @Override
-//    public DtoResponseWorkspace approve(List<Vms022VoMonitoring> getdata, VoUserCred userCred) {
-//        Map<String, Object> msg = new HashMap<>();
-//        System.out.println("================= value masuk ga disini = ");
-//        if (!getdata.isEmpty()) {
-//            getdata.forEach((vo) -> {
-//                try {
-//                    AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
-//                    pk.setRotsempshs((getdata.getId()));
-//                    System.out.println("================= value id = " + pk);
-//                    AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
-//                    if (mp != null) {
-//                        mp.setVotsstts("Active");
+    @Override
+    public DtoResponseWorkspace rejecting(List<Vms022VoMonitoring> getdata, VoUserCred userCred) {
+        if (!getdata.isEmpty()) {
+            for (Vms022VoMonitoring vo : getdata) {
+                AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
+                pk.setRotsempshs((vo.getId()));
+                AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
+                if (mp != null) {
+                    mp.setVotsstts("Reject");
 //                        mp.setVotsstts("Waiting for Approval Security");
-//                        mp.setLastModBy(userCred.getUserid());
-//                        vms022ahmhrntmHdrotsempsDao.update(mp);
-//                    }
-//                } catch (Exception e) {
-//                    throw new Vms022Exception("Failed Approve Data Cause error when Updating");
-//                }
-//            });
-//            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Approve success", null, null);
-//        } else {
-//            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, "Failed Approve data", null, null);
-//        }
-//    }
+                    mp.setLastModBy(userCred.getUserid());
+                    vms022ahmhrntmHdrotsempsDao.update(mp);
+                }
+            }
+            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Reject success", null, null);
+        } else {
+            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, "Failed Reject data", null, null);
+        }
+    }
 
 }

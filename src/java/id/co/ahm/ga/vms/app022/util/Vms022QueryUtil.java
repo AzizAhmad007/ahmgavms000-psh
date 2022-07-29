@@ -7,7 +7,10 @@ package id.co.ahm.ga.vms.app022.util;
 
 import id.co.ahm.jxf.constant.CommonConstant;
 import id.co.ahm.jxf.dto.DtoParamPaging;
+import id.co.ahm.jxf.util.AhmStringUtil;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
@@ -316,6 +319,67 @@ public class Vms022QueryUtil {
             list.add(" , ");
         }
 
+    }
+    
+    public static String decorateSqlQueryWithSearchLOV(String sql,
+            Map<String, Object> filters, String[] params) {
+        StringBuilder sqlQuery = new StringBuilder(sql);
+        if (filters != null) {
+            filters.entrySet().stream()
+                    .filter((filter) -> (StringUtils.equalsIgnoreCase(CommonConstant.ANY, filter.getKey())))
+                    .map((filter) -> filter.getValue().toString())
+                    .map((valueStr) -> buildWhereQueryLikeForAllProperty(params, AhmStringUtil.splitBySpace(valueStr)))
+                    .filter((whereQuery) -> (StringUtils.isNotBlank(whereQuery)))
+                    .forEachOrdered((whereQuery) -> {
+                        if (params.length == 1) {
+                            sqlQuery.append("WHERE ");
+                        } else if (params.length > 1) {
+                            sqlQuery.append("AND ");
+                        }
+                        sqlQuery.append(whereQuery);
+                    });
+        }
+
+        return sqlQuery.toString();
+    }
+
+    public static String buildWhereQueryLikeForAllProperty(String[] prop, String[] listValueLike) {
+        if (listValueLike == null || listValueLike.length <= 0 || prop == null || prop.length <= 0) {
+            return "";
+        } else {
+            StringBuilder sb = new StringBuilder();
+            sb.append("(")
+                    .append(buildWhereQueryLikeForAllProperty(prop, listValueLike[0]));
+            for (int i = 1; i < listValueLike.length; i++) {
+                sb.append(" AND ")
+                        .append(buildWhereQueryLikeForAllProperty(prop, listValueLike[i]));
+            }
+            sb.append(")");
+            return sb.toString();
+        }
+    }    
+
+    public static String buildWhereQueryLikeForAllProperty(String[] lisProp, String valueLike) {
+        if (lisProp == null || lisProp.length <= 0) {
+            return "";
+        } else {
+            StringBuilder sb = new StringBuilder();
+            sb.append("(");
+            sb.append("UPPER(")
+                    .append(lisProp[0])
+                    .append(") like UPPER('%")
+                    .append(valueLike)
+                    .append("%') ");
+            for (int i = 1; i < lisProp.length; i++) {
+                sb.append(" OR  UPPER(")
+                        .append(lisProp[i])
+                        .append(") like UPPER('%")
+                        .append(valueLike)
+                        .append("%') ");
+            }
+            sb.append(")");
+            return sb.toString();
+        }
     }
    
 }

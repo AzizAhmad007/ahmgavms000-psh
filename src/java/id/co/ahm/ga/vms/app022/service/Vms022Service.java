@@ -29,6 +29,10 @@ public interface Vms022Service {
     
     DtoResponseWorkspace approve(Vms022VoMonitoring getdata, VoUserCred userCred);
     
+    DtoResponseWorkspace approving(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
+    
     DtoResponseWorkspace reject(Vms022VoMonitoring getdata, VoUserCred userCred);
+    
+    DtoResponseWorkspace rejecting(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
 
 }
