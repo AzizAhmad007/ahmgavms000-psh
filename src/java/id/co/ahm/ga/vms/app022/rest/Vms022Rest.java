@@ -91,10 +91,11 @@ public class Vms022Rest {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    DtoResponseWorkspace showMonitoring(@RequestHeader(value = "token", defaultValue = "") String token) {
+    DtoResponseWorkspace showMonitoring(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody DtoParamPaging dto) {
         VoUserCred user = tokenPshUtil.getUserCred(token);
 
-        return vms022Service.showMonitoring();
+        return vms022Service.showMonitoring(dto);
     }
     
     //success

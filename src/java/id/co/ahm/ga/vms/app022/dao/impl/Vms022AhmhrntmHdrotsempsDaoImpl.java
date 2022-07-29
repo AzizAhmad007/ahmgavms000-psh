@@ -165,6 +165,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         return result;
     }
     
+    @Override
     public int countSearchData(DtoParamPaging input, String userId) {
         BigDecimal resultCount = BigDecimal.ZERO;
         StringBuilder sqlQuery = new StringBuilder();
@@ -228,7 +229,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 //        return 0;
     }
     
-        public List<Vms022VoMonitoring> getSearchData2() {
+    @Override
+        public List<Vms022VoMonitoring> getSearchData2(DtoParamPaging input) {
         List<Vms022VoMonitoring> result = new ArrayList<>();
         Map<String, String> sortMap = new HashMap<>();
         StringBuilder sqlQuery = new StringBuilder();
@@ -307,6 +309,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "                    ) ");
 
         Query query = getCurrentSession().createSQLQuery(sqlQuery.toString());
+        
+        query.setFirstResult(input.getOffset());
+        query.setMaxResults(input.getLimit());
 
         try {
             List lists = query.list();
