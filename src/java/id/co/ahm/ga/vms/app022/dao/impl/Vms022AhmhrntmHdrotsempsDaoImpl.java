@@ -274,6 +274,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    A.DLASTVAC, "
                 + "    A.VVACDTL, "
                 + "    A.VNTVS, "
+                + "    A.VABSRDR, "
+                + "    A.VCANTEEN, "
+                + "    A.VSECGATE "
                 + "    RAWTOHEX(A.ROTSEMPSHS) "
                 + " from AHMHRNTM_HDROTSEMPS A "
                 + " inner join AHMHRNTM_DTLOTSREGS C on A.VLOCATION = c.vplant "
@@ -343,6 +346,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 vo.setVacSummary(obj[19] == null ? "-" : obj[19] + "");
                 vo.setVacNote(obj[20] == null ? "-" : obj[20] + "");
                 vo.setId(obj[21] == null ? "-" : obj[21] + "");//id
+                vo.setAccessReader(obj[22] == null ? "N" : obj[22] + "");
+                vo.setCanteen(obj[23] == null ? "N" : obj[23] + "");
+                vo.setSecurityGate(obj[24] == null ? "N" : obj[24] + "");
 
                 result.add(vo);
 
