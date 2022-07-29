@@ -38,7 +38,7 @@ import org.springframework.stereotype.Repository;
  * @author reza.mr
  */
 @Repository("vms022ahmhrntmHdrotsempsDao")
-public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdrotsemps, AhmhrntmHdrotsempsPk> implements Vms022AhmhrntmHdrotsempsDao{    
+public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdrotsemps, AhmhrntmHdrotsempsPk> implements Vms022AhmhrntmHdrotsempsDao {
 
     public List<Vms022VoMonitoring> getSearchData(DtoParamPaging input, String userId) {
         List<Vms022VoMonitoring> result = new ArrayList<>();
@@ -101,8 +101,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "                    UPPER(A.DENDEFFDT ) LIKE UPPER('%'||''||'%') "
                 + "                    or "
                 + "                    UPPER(A.NAHMCARDID ) LIKE UPPER('%'||''||'%') "
-//                + "                    or "
-//                + "                    UPPER(B.VNRP ) LIKE UPPER('%'||''||'%') "
+                //                + "                    or "
+                //                + "                    UPPER(B.VNRP ) LIKE UPPER('%'||''||'%') "
                 + "                    or "
                 + "                    UPPER(A.VOTSTYPE ) LIKE UPPER('%'||''||'%') "
                 + "                    or "
@@ -117,8 +117,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
         orderClause(input, sqlQuery, sortMap, null);
         Query query = getCurrentSession().createSQLQuery(sqlQuery.toString())
-            .setFirstResult(input.getOffset())
-            .setMaxResults(input.getLimit());
+                .setFirstResult(input.getOffset())
+                .setMaxResults(input.getLimit());
 
         try {
             List lists = query.list();
@@ -164,7 +164,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         }
         return result;
     }
-    
+
     @Override
     public int countSearchData(DtoParamPaging input, String userId) {
         BigDecimal resultCount = BigDecimal.ZERO;
@@ -203,8 +203,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "                    UPPER(A.DENDEFFDT ) LIKE UPPER('%'||''||'%') "
                 + "                    or "
                 + "                    UPPER(A.NAHMCARDID ) LIKE UPPER('%'||''||'%') "
-//                + "                    or "
-//                + "                    UPPER(B.VNRP ) LIKE UPPER('%'||''||'%') "
+                //                + "                    or "
+                //                + "                    UPPER(B.VNRP ) LIKE UPPER('%'||''||'%') "
                 + "                    or "
                 + "                    UPPER(A.VOTSTYPE ) LIKE UPPER('%'||''||'%') "
                 + "                    or "
@@ -228,9 +228,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         return resultCount.intValue();
 //        return 0;
     }
-    
+
     @Override
-        public List<Vms022VoMonitoring> getSearchData2(DtoParamPaging input) {
+    public List<Vms022VoMonitoring> getSearchData2(DtoParamPaging input) {
         List<Vms022VoMonitoring> result = new ArrayList<>();
         Map<String, String> sortMap = new HashMap<>();
         StringBuilder sqlQuery = new StringBuilder();
@@ -280,35 +280,56 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + " from AHMHRNTM_HDROTSEMPS A "
                 + " inner join AHMHRNTM_DTLOTSREGS C on A.VLOCATION = c.vplant "
                 + " WHERE  "
-                + "    (TRUNC(SYSDATE) NOT BETWEEN TRUNC(A.DBGNEFFDT) AND TRUNC(A.DENDEFFDT)) "
-                + "    AND "
-                + "( "
-                + "                    UPPER(A.VOTSID) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.VNAME) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.VPERSID) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.DBGNEFFDT ) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.DENDEFFDT ) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.NAHMCARDID ) LIKE UPPER('%'||''||'%') "
-//                + "                    or "
-//                + "                    UPPER(B.VNRP ) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.VOTSTYPE ) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.VCOMPANY ) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.VOTSSTTS ) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.VLOCATION ) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.VVACSTTS ) LIKE UPPER('%'||''||'%')  "
-                + "                    ) ");
+                + "    (TRUNC(SYSDATE) BETWEEN TRUNC(A.DBGNEFFDT) AND TRUNC(A.DENDEFFDT)) "
+//                + " AND "
+//                + "                            UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%')"
+//                + "                     AND "
+//                + "                            UPPER(A.VNAME) LIKE UPPER('%'||:vname||'%') "
+//                + "                     AND"
+//                + "                            UPPER(A.VPERSID) LIKE UPPER('%'||:vpersid||'%')"
+//                + "                     AND"
+//                + "                            UPPER(A.DBGNEFFDT ) LIKE UPPER('%'||:begineff||'%')"
+//                + "                     AND"
+//                + "                            UPPER(A.DENDEFFDT ) LIKE UPPER('%'||:endeff||'%')"
+//                + "                     AND"
+//                + "                            UPPER(A.NAHMCARDID ) LIKE UPPER('%'||:idcard||'%')"
+//                + "                     AND"
+//                + "                            UPPER(A.VOTSTYPE ) LIKE UPPER('%'||:outtype||'%')"
+//                + "                     AND"
+//                + "                            UPPER(A.VCOMPANY ) LIKE UPPER('%'||:company||'%')"
+//                + "                     AND"
+//                + "                            (:outstat IS NULL OR UPPER(A.VOTSSTTS) LIKE '%'||:outstat||'%')"
+//                + "                     AND"
+//                + "                            UPPER(C.VPLANT ) LIKE UPPER('%'||:plant||'%')"
+//                + "                     AND"
+//                + "                            (:vacstat IS NULL OR UPPER(A.VVACSTTS) LIKE '%'||:vacstat||'%') "
+        );
 
         Query query = getCurrentSession().createSQLQuery(sqlQuery.toString());
+        
+//        String votsid = AhmStringUtil.hasValue(input.getSearch().get("votsid")) ? (input.getSearch().get("votsid") + "").toUpperCase() : "";
+//        String vname = AhmStringUtil.hasValue(input.getSearch().get("vname")) ? (input.getSearch().get("vname") + "").toUpperCase() : "";
+//        String vpersid = AhmStringUtil.hasValue(input.getSearch().get("vpersid")) ? (input.getSearch().get("vpersid") + "").toUpperCase() : "";
+//        String begineff = AhmStringUtil.hasValue(input.getSearch().get("begineff")) ? (input.getSearch().get("begineff") + "").toUpperCase() : "";
+//        String endeff = AhmStringUtil.hasValue(input.getSearch().get("endeff")) ? (input.getSearch().get("endeff") + "").toUpperCase() : "";
+//        String idcard = AhmStringUtil.hasValue(input.getSearch().get("idcard")) ? (input.getSearch().get("idcard") + "").toUpperCase() : "";
+//        String outtype = AhmStringUtil.hasValue(input.getSearch().get("outtype")) ? (input.getSearch().get("outtype") + "").toUpperCase() : "";
+//        String company = AhmStringUtil.hasValue(input.getSearch().get("company")) ? (input.getSearch().get("company") + "").toUpperCase() : "";
+//        String outstat = AhmStringUtil.hasValue(input.getSearch().get("outstat")) ? (input.getSearch().get("outstat") + "").toUpperCase() : "";
+//        String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
+//        String vacstat = AhmStringUtil.hasValue(input.getSearch().get("vacstat")) ? (input.getSearch().get("vacstat") + "").toUpperCase() : "";
+//
+//        query.setParameter("votsid", votsid)
+//                .setParameter("vname", vname)
+//                .setParameter("vpersid", vpersid)
+//                .setParameter("begineff", begineff)
+//                .setParameter("endeff", endeff)
+//                .setParameter("idcard", idcard)
+//                .setParameter("outtype", outtype)
+//                .setParameter("company", company)
+//                .setParameter("outstat", outstat)
+//                .setParameter("plant", plant)
+//                .setParameter("vacstat", vacstat);
         
         query.setFirstResult(input.getOffset());
         query.setMaxResults(input.getLimit());
@@ -360,8 +381,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         }
         return result;
     }
-    
-    public int countSearchData2() {
+
+    public int countSearchData2(DtoParamPaging input) {
         BigDecimal resultCount = BigDecimal.ZERO;
         StringBuilder sqlQuery = new StringBuilder();
 
@@ -380,40 +401,72 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    A.NAHMCARDORI as PassNumberCard, "
                 + "    A.DPASSEXP as PassCardExpDate, "
                 + "    A.VMODI, "
-                + "    A.DMODI "
+                + "    A.DMODI, "
+                + "    A.VEMPPHONE, "
+                + "    A.VJOBDTL, "
+                + "    A.VNOTE, "
+                + "    A.VVACTYPE, "
+                + "    A.DLASTVAC, "
+                + "    A.VVACDTL, "
+                + "    A.VNTVS, "
+                + "    RAWTOHEX(A.ROTSEMPSHS), "
+                + "    A.VABSRDR, "
+                + "    A.VCANTEEN, "
+                + "    A.VSECGATE "
                 + " from AHMHRNTM_HDROTSEMPS A "
                 + " inner join AHMHRNTM_DTLOTSREGS C on A.VLOCATION = c.vplant "
                 + " WHERE  "
-                + "    (TRUNC(SYSDATE) NOT BETWEEN TRUNC(A.DBGNEFFDT) AND TRUNC(A.DENDEFFDT)) "
-                + "    AND "
-                + "( "
-                + "                    UPPER(A.VOTSID) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.VNAME) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.VPERSID) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.DBGNEFFDT ) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.DENDEFFDT ) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.NAHMCARDID ) LIKE UPPER('%'||''||'%') "
-//                + "                    or "
-//                + "                    UPPER(B.VNRP ) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.VOTSTYPE ) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.VCOMPANY ) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.VOTSSTTS ) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.VLOCATION ) LIKE UPPER('%'||''||'%') "
-                + "                    or "
-                + "                    UPPER(A.VVACSTTS ) LIKE UPPER('%'||''||'%')  "
-                + "                    ) ");
+                + "    (TRUNC(SYSDATE) BETWEEN TRUNC(A.DBGNEFFDT) AND TRUNC(A.DENDEFFDT)) "
+//                + " AND "
+//                + "                            UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%')"
+//                + "                     AND "
+//                + "                            UPPER(A.VNAME) LIKE UPPER('%'||:vname||'%') "
+//                + "                     AND"
+//                + "                            UPPER(A.VPERSID) LIKE UPPER('%'||:vpersid||'%')"
+//                + "                     AND"
+//                + "                            UPPER(A.DBGNEFFDT ) LIKE UPPER('%'||:begineff||'%')"
+//                + "                     AND"
+//                + "                            UPPER(A.DENDEFFDT ) LIKE UPPER('%'||:endeff||'%')"
+//                + "                     AND"
+//                + "                            UPPER(A.NAHMCARDID ) LIKE UPPER('%'||:idcard||'%')"
+//                + "                     AND"
+//                + "                            UPPER(A.VOTSTYPE ) LIKE UPPER('%'||:outtype||'%')"
+//                + "                     AND"
+//                + "                            UPPER(A.VCOMPANY ) LIKE UPPER('%'||:company||'%')"
+//                + "                     AND"
+//                + "                            (:outstat IS NULL OR UPPER(A.VOTSSTTS) LIKE '%'||:outstat||'%')"
+//                + "                     AND"
+//                + "                            UPPER(C.VPLANT ) LIKE UPPER('%'||:plant||'%')"
+//                + "                     AND"
+//                + "                            (:vacstat IS NULL OR UPPER(A.VVACSTTS) LIKE '%'||:vacstat||'%') "
+        );
         sqlQuery.append(" )");
-
-        SQLQuery query = getCurrentSession().createSQLQuery(sqlQuery.toString());
+        
+        Query query = getCurrentSession().createSQLQuery(sqlQuery.toString());
+        
+//        String votsid = AhmStringUtil.hasValue(input.getSearch().get("votsid")) ? (input.getSearch().get("votsid") + "").toUpperCase() : "";
+//        String vname = AhmStringUtil.hasValue(input.getSearch().get("vname")) ? (input.getSearch().get("vname") + "").toUpperCase() : "";
+//        String vpersid = AhmStringUtil.hasValue(input.getSearch().get("vpersid")) ? (input.getSearch().get("vpersid") + "").toUpperCase() : "";
+//        String begineff = AhmStringUtil.hasValue(input.getSearch().get("begineff")) ? (input.getSearch().get("begineff") + "").toUpperCase() : "";
+//        String endeff = AhmStringUtil.hasValue(input.getSearch().get("endeff")) ? (input.getSearch().get("endeff") + "").toUpperCase() : "";
+//        String idcard = AhmStringUtil.hasValue(input.getSearch().get("idcard")) ? (input.getSearch().get("idcard") + "").toUpperCase() : "";
+//        String outtype = AhmStringUtil.hasValue(input.getSearch().get("outtype")) ? (input.getSearch().get("outtype") + "").toUpperCase() : "";
+//        String company = AhmStringUtil.hasValue(input.getSearch().get("company")) ? (input.getSearch().get("company") + "").toUpperCase() : "";
+//        String outstat = AhmStringUtil.hasValue(input.getSearch().get("outstat")) ? (input.getSearch().get("outstat") + "").toUpperCase() : "";
+//        String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
+//        String vacstat = AhmStringUtil.hasValue(input.getSearch().get("vacstat")) ? (input.getSearch().get("vacstat") + "").toUpperCase() : "";
+//
+//        query.setParameter("votsid", votsid)
+//                .setParameter("vname", vname)
+//                .setParameter("vpersid", vpersid)
+//                .setParameter("begineff", begineff)
+//                .setParameter("endeff", endeff)
+//                .setParameter("idcard", idcard)
+//                .setParameter("outtype", outtype)
+//                .setParameter("company", company)
+//                .setParameter("outstat", outstat)
+//                .setParameter("plant", plant)
+//                .setParameter("vacstat", vacstat);
 
         try {
             resultCount = (BigDecimal) query.uniqueResult();

@@ -7,6 +7,7 @@ package id.co.ahm.ga.vms.app022.rest;
 
 import id.co.ahm.ga.vms.app022.service.Vms022Service;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
+import id.co.ahm.jx.constant.AppEnum;
 import id.co.ahm.jxf.constant.StatusMsgEnum;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponse;
@@ -15,10 +16,19 @@ import id.co.ahm.jxf.dto.DtoResponseWorkspace;
 import id.co.ahm.jxf.security.TokenPshUtil;
 import id.co.ahm.jxf.util.DtoHelper;
 import id.co.ahm.jxf.vo.VoUserCred;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -26,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -146,5 +157,40 @@ public class Vms022Rest {
 
         return vms022Service.rejecting(getdata, user);
     }
+    
+//    @RequestMapping(value = "download", 
+//            method = {RequestMethod.POST, RequestMethod.GET})
+//    public void download(HttpServletRequest request,
+//            HttpServletResponse response,
+//            @RequestHeader(value = "token", defaultValue = "") String token,
+//            @RequestParam Map<String, Object> vo
+//    ) throws IOException 
+//    {
+//        DtoParamPaging param = new DtoParamPaging();
+//        param.setOffset(0);
+//        param.setLimit(0);
+//        if (vo.get("sort") != null) {
+//             param.setSort((String) vo.get("sort"));
+//        }
+//        if (vo.get("order") != null) {
+//             param.setOrder((String) vo.get("order"));
+//        }
+//        
+//        param.setSearch(vo);
+//            
+//        Workbook wb = vms022Service.download(param);     
+//        
+//        OutputStream out = response.getOutputStream();
+//        String filename = (String)param.getSearch().get(AppEnum.TEMPLATE_NAME.getValue());
+//        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+//       
+//            String[] exts = filename.split("\\.");
+//            String ext = exts[exts.length-1];
+//            filename = filename.substring(0, filename.length()-5);            
+//            response.setHeader("Content-Disposition", "attachment; filename="+URLEncoder.encode(filename+"_"+new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+"."+ext)); 
+//                             
+//        wb.write(out);
+//        response.flushBuffer();
+//    }
     
 }

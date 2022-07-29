@@ -146,7 +146,7 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Override
     public DtoResponseWorkspace showMonitoring(DtoParamPaging dto) {
         List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData2(dto);
-        int count = vms022ahmhrntmHdrotsempsDao.countSearchData2();
+        int count = vms022ahmhrntmHdrotsempsDao.countSearchData2(dto);
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "YOI", null, list, count);
     }
 
