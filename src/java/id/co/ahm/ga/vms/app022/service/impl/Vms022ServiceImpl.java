@@ -262,6 +262,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                     AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
                     if (mp != null) {
                         mp.setVotsstts("Active");
+                        
                         vms022ahmhrntmHdrotsempsDao.update(mp);
                     }
                 } catch (Exception e) {
