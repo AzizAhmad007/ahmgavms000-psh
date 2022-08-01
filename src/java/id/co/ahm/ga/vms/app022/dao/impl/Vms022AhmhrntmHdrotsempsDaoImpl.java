@@ -231,6 +231,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
     @Override
     public List<Vms022VoMonitoring> getSearchData2(DtoParamPaging input) {
+        System.out.println("============== isi dari input => " + input.getSearch().get("vname") + " ==================");
         List<Vms022VoMonitoring> result = new ArrayList<>();
         Map<String, String> sortMap = new HashMap<>();
         StringBuilder sqlQuery = new StringBuilder();
@@ -288,9 +289,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "                     AND"
                 + "                            UPPER(A.VPERSID) LIKE UPPER('%'||:vpersid||'%')"
                 + "                     AND"
-                + "                            UPPER(A.DBGNEFFDT ) LIKE UPPER('%'||:begineff||'%')"
+                + "                            UPPER(to_char(A.DBGNEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:begineff||'%')"
                 + "                     AND"
-                + "                            UPPER(A.DENDEFFDT ) LIKE UPPER('%'||:endeff||'%')"
+                + "                            UPPER(to_char(A.DENDEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:endeff||'%')"
                 + "                     AND"
                 + "                            UPPER(A.NAHMCARDID ) LIKE UPPER('%'||:idcard||'%')"
                 + "                     AND"
@@ -307,17 +308,17 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
         Query query = getCurrentSession().createSQLQuery(sqlQuery.toString());
         
-        String votsid = AhmStringUtil.hasValue(input.getSearch().get("votsid")) ? (input.getSearch().get("votsid") + "").toUpperCase() : "";
-        String vname = AhmStringUtil.hasValue(input.getSearch().get("vname")) ? (input.getSearch().get("vname") + "").toUpperCase() : "";
-        String vpersid = AhmStringUtil.hasValue(input.getSearch().get("vpersid")) ? (input.getSearch().get("vpersid") + "").toUpperCase() : "";
-        String begineff = AhmStringUtil.hasValue(input.getSearch().get("begineff")) ? (input.getSearch().get("begineff") + "").toUpperCase() : "";
-        String endeff = AhmStringUtil.hasValue(input.getSearch().get("endeff")) ? (input.getSearch().get("endeff") + "").toUpperCase() : "";
-        String idcard = AhmStringUtil.hasValue(input.getSearch().get("idcard")) ? (input.getSearch().get("idcard") + "").toUpperCase() : "";
-        String outtype = AhmStringUtil.hasValue(input.getSearch().get("outtype")) ? (input.getSearch().get("outtype") + "").toUpperCase() : "";
+        String votsid = AhmStringUtil.hasValue(input.getSearch().get("outId")) ? (input.getSearch().get("outId") + "").toUpperCase() : "";
+        String vname = AhmStringUtil.hasValue(input.getSearch().get("outName")) ? (input.getSearch().get("outName") + "").toUpperCase() : "";
+        String vpersid = AhmStringUtil.hasValue(input.getSearch().get("nik")) ? (input.getSearch().get("nik") + "").toUpperCase() : "";
+        String begineff = AhmStringUtil.hasValue(input.getSearch().get("beginDate")) ? (input.getSearch().get("beginDate") + "").toUpperCase() : "";
+        String endeff = AhmStringUtil.hasValue(input.getSearch().get("endDate")) ? (input.getSearch().get("endDate") + "").toUpperCase() : "";
+        String idcard = AhmStringUtil.hasValue(input.getSearch().get("passNumber")) ? (input.getSearch().get("passNumber") + "").toUpperCase() : "";
+        String outtype = AhmStringUtil.hasValue(input.getSearch().get("outType")) ? (input.getSearch().get("outType") + "").toUpperCase() : "";
         String company = AhmStringUtil.hasValue(input.getSearch().get("company")) ? (input.getSearch().get("company") + "").toUpperCase() : "";
-        String outstat = AhmStringUtil.hasValue(input.getSearch().get("outstat")) ? (input.getSearch().get("outstat") + "").toUpperCase() : "";
+        String outstat = AhmStringUtil.hasValue(input.getSearch().get("outStatus")) ? (input.getSearch().get("outStatus") + "").toUpperCase() : "";
         String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
-        String vacstat = AhmStringUtil.hasValue(input.getSearch().get("vacstat")) ? (input.getSearch().get("vacstat") + "").toUpperCase() : "";
+        String vacstat = AhmStringUtil.hasValue(input.getSearch().get("vacStatus")) ? (input.getSearch().get("vacStatus") + "").toUpperCase() : "";
 //
         query.setParameter("votsid", votsid)
                 .setParameter("vname", vname)
@@ -425,9 +426,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "                     AND"
                 + "                            UPPER(A.VPERSID) LIKE UPPER('%'||:vpersid||'%')"
                 + "                     AND"
-                + "                            UPPER(A.DBGNEFFDT ) LIKE UPPER('%'||:begineff||'%')"
+                + "                            UPPER(to_char(A.DBGNEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:begineff||'%')"
                 + "                     AND"
-                + "                            UPPER(A.DENDEFFDT ) LIKE UPPER('%'||:endeff||'%')"
+                + "                            UPPER(to_char(A.DENDEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:endeff||'%')"
                 + "                     AND"
                 + "                            UPPER(A.NAHMCARDID ) LIKE UPPER('%'||:idcard||'%')"
                 + "                     AND"
@@ -445,17 +446,17 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
         Query query = getCurrentSession().createSQLQuery(sqlQuery.toString());
         
-        String votsid = AhmStringUtil.hasValue(input.getSearch().get("votsid")) ? (input.getSearch().get("votsid") + "").toUpperCase() : "";
-        String vname = AhmStringUtil.hasValue(input.getSearch().get("vname")) ? (input.getSearch().get("vname") + "").toUpperCase() : "";
-        String vpersid = AhmStringUtil.hasValue(input.getSearch().get("vpersid")) ? (input.getSearch().get("vpersid") + "").toUpperCase() : "";
-        String begineff = AhmStringUtil.hasValue(input.getSearch().get("begineff")) ? (input.getSearch().get("begineff") + "").toUpperCase() : "";
-        String endeff = AhmStringUtil.hasValue(input.getSearch().get("endeff")) ? (input.getSearch().get("endeff") + "").toUpperCase() : "";
-        String idcard = AhmStringUtil.hasValue(input.getSearch().get("idcard")) ? (input.getSearch().get("idcard") + "").toUpperCase() : "";
-        String outtype = AhmStringUtil.hasValue(input.getSearch().get("outtype")) ? (input.getSearch().get("outtype") + "").toUpperCase() : "";
+        String votsid = AhmStringUtil.hasValue(input.getSearch().get("outId")) ? (input.getSearch().get("outId") + "").toUpperCase() : "";
+        String vname = AhmStringUtil.hasValue(input.getSearch().get("outName")) ? (input.getSearch().get("outName") + "").toUpperCase() : "";
+        String vpersid = AhmStringUtil.hasValue(input.getSearch().get("nik")) ? (input.getSearch().get("nik") + "").toUpperCase() : "";
+        String begineff = AhmStringUtil.hasValue(input.getSearch().get("beginDate")) ? (input.getSearch().get("beginDate") + "").toUpperCase() : "";
+        String endeff = AhmStringUtil.hasValue(input.getSearch().get("endDate")) ? (input.getSearch().get("endDate") + "").toUpperCase() : "";
+        String idcard = AhmStringUtil.hasValue(input.getSearch().get("passNumber")) ? (input.getSearch().get("passNumber") + "").toUpperCase() : "";
+        String outtype = AhmStringUtil.hasValue(input.getSearch().get("outType")) ? (input.getSearch().get("outType") + "").toUpperCase() : "";
         String company = AhmStringUtil.hasValue(input.getSearch().get("company")) ? (input.getSearch().get("company") + "").toUpperCase() : "";
-        String outstat = AhmStringUtil.hasValue(input.getSearch().get("outstat")) ? (input.getSearch().get("outstat") + "").toUpperCase() : "";
+        String outstat = AhmStringUtil.hasValue(input.getSearch().get("outStatus")) ? (input.getSearch().get("outStatus") + "").toUpperCase() : "";
         String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
-        String vacstat = AhmStringUtil.hasValue(input.getSearch().get("vacstat")) ? (input.getSearch().get("vacstat") + "").toUpperCase() : "";
+        String vacstat = AhmStringUtil.hasValue(input.getSearch().get("vacStatus")) ? (input.getSearch().get("vacStatus") + "").toUpperCase() : "";
 //
         query.setParameter("votsid", votsid)
                 .setParameter("vname", vname)
