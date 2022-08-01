@@ -263,6 +263,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                         mp.setVotsstts("Active");
                         
                         vms022ahmhrntmHdrotsempsDao.update(mp);
+                        vms022ahmhrntmHdrotsempsDao.flush();
                         return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Approve success", null, null);
                     } 
                     else {
@@ -282,6 +283,7 @@ public class Vms022ServiceImpl implements Vms022Service {
 //                        mp.setVotsstts("Waiting for Approval Security");
                     mp.setLastModBy(userCred.getUserid());
                     vms022ahmhrntmHdrotsempsDao.update(mp);
+                    vms022ahmhrntmHdrotsempsDao.flush();
                 }
             }
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Approve success", null, null);
@@ -299,6 +301,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                     if (mp != null) {
                         mp.setVotsstts("Reject");
                         vms022ahmhrntmHdrotsempsDao.update(mp);
+                        vms022ahmhrntmHdrotsempsDao.flush();
                     }
                 } catch (Exception e) {
                     throw new Vms022Exception("Failed Reject Data Cause error when Updating");
@@ -318,6 +321,7 @@ public class Vms022ServiceImpl implements Vms022Service {
 //                        mp.setVotsstts("Waiting for Approval Security");
                     mp.setLastModBy(userCred.getUserid());
                     vms022ahmhrntmHdrotsempsDao.update(mp);
+                    vms022ahmhrntmHdrotsempsDao.flush();
                 }
             }
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Reject success", null, null);
