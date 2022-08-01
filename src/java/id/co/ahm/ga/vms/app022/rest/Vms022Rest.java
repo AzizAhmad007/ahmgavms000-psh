@@ -8,6 +8,7 @@ package id.co.ahm.ga.vms.app022.rest;
 import id.co.ahm.ga.vms.app022.service.Vms022Service;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.jx.constant.AppEnum;
+import id.co.ahm.jxf.constant.CommonConstant;
 import id.co.ahm.jxf.constant.StatusMsgEnum;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponse;
@@ -156,6 +157,28 @@ public class Vms022Rest {
         VoUserCred user = tokenPshUtil.getUserCred(token);
 
         return vms022Service.rejecting(getdata, user);
+    }
+    
+    @RequestMapping(value = "export-excel", method = RequestMethod.GET)
+    public void ModelAndView (HttpServletRequest request,
+            HttpServletResponse response,
+            @RequestParam(value = "token", defaultValue= "") String token, 
+            @RequestParam Map<String, Object> mapParam) {
+        DtoParamPaging input = new DtoParamPaging();
+        input.setSearch(mapParam);
+        
+        SimpleDateFormat fmt = new SimpleDateFormat("YYYYMMddHHmmss");
+        String filename = "Verification Personal Data Partner & Outsource_" + fmt.format(new Date());
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Content-Disposition", "inline; filename=" + filename + ".xls");
+        try {
+            OutputStream out = response.getOutputStream();
+            Workbook wb = vms022Service.exportToExcelMainData(input);
+            wb.write(out);
+            response.flushBuffer();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
 //    @RequestMapping(value = "download", 

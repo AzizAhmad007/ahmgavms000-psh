@@ -12,6 +12,7 @@ import id.co.ahm.jxf.dto.DtoResponsePaging;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
 import id.co.ahm.jxf.vo.VoUserCred;
 import java.util.List;
+import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  *
@@ -35,4 +36,5 @@ public interface Vms022Service {
     
     DtoResponseWorkspace rejecting(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
 
+    Workbook exportToExcelMainData(DtoParamPaging dto);
 }

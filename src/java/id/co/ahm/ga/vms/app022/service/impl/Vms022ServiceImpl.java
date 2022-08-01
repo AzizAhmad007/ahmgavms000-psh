@@ -25,11 +25,13 @@ import id.co.ahm.jxf.dto.DtoResponse;
 import id.co.ahm.jxf.dto.DtoResponsePaging;
 import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
+import id.co.ahm.jxf.util.DateUtil;
 import id.co.ahm.jxf.util.DtoHelper;
 import id.co.ahm.jxf.vo.VoUserCred;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -39,6 +41,17 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFCreationHelper;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -267,7 +280,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                         return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Approve success", null, null);
                     } 
                     else {
-                        throw new Vms022Exception("Failed Approve Data Cause mp nya JEBOD when Updating");
+                        throw new Vms022Exception("Failed Approve Data Cause zero data when Updating");
                     }
     }
     
@@ -328,6 +341,293 @@ public class Vms022ServiceImpl implements Vms022Service {
         } else {
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, "Failed Reject data", null, null);
         }
+    }
+
+    @Override
+    public Workbook exportToExcelMainData(DtoParamPaging dto) {
+                Vms022VoMonitoring vo = new Vms022VoMonitoring();
+        String valueStr = "";
+        for (Map.Entry<String, Object> filter : dto.getSearch().entrySet()) {
+            valueStr = filter.getValue().toString();
+            if (filter.getKey().equalsIgnoreCase("outId") && valueStr != null && !valueStr.isEmpty()) {
+                vo.setOutId(valueStr);
+            }
+            if (filter.getKey().equalsIgnoreCase("outName") && valueStr != null && !valueStr.isEmpty()) {
+                vo.setOutName(valueStr);
+            }
+            if (filter.getKey().equalsIgnoreCase("persId") && valueStr != null && !valueStr.isEmpty()) {
+                vo.setPersId(valueStr);
+            }
+            if (filter.getKey().equalsIgnoreCase("outType") && valueStr != null && !valueStr.isEmpty()) {
+                vo.setOutType(valueStr);
+            }
+            if (filter.getKey().equalsIgnoreCase("company") && valueStr != null && !valueStr.isEmpty()) {
+                vo.setCompany(valueStr);
+            }
+            if (filter.getKey().equalsIgnoreCase("outStatus") && valueStr != null && !valueStr.isEmpty()) {
+                vo.setOutStatus(valueStr);
+            }
+            if (filter.getKey().equalsIgnoreCase("areaName") && valueStr != null && !valueStr.isEmpty()) {
+                vo.setAreaName(valueStr);
+            }
+            if (filter.getKey().equalsIgnoreCase("vacStatus") && valueStr != null && !valueStr.isEmpty()) {
+                vo.setVacStatus(valueStr);
+            }
+            if (filter.getKey().equalsIgnoreCase("beginDateText") && valueStr != null && !valueStr.isEmpty()) {
+                vo.setBeginDateText(valueStr);
+            }
+            if (filter.getKey().equalsIgnoreCase("endDateText") && valueStr != null && !valueStr.isEmpty()) {
+                vo.setEndDateText(valueStr);
+            }
+            if (filter.getKey().equalsIgnoreCase("passNumber") && valueStr != null && !valueStr.isEmpty()) {
+                vo.setPassNumber(valueStr);
+            }
+            if (filter.getKey().equalsIgnoreCase("passExpiryDateText") && valueStr != null && !valueStr.isEmpty()) {
+                vo.setPassExpiryDateText(valueStr);
+            }
+            if (filter.getKey().equalsIgnoreCase("modifyBy") && valueStr != null && !valueStr.isEmpty()) {
+                vo.setModifyBy(valueStr);
+            }
+            if (filter.getKey().equalsIgnoreCase("modifyDateText") && valueStr != null && !valueStr.isEmpty()) {
+                vo.setModifyDateText(valueStr);
+            }
+        }
+
+        List<Vms022VoMonitoring> listData = vms022ahmhrntmHdrotsempsDao.getDataExcel(dto);
+
+        HSSFRow rowDetail;
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet worksheet = workbook.createSheet("Verification Personal Data Partner & Outsource ");
+        HSSFCell[] listCellD = new HSSFCell[24];
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+
+        HSSFCellStyle styleBold = workbook.createCellStyle();
+        HSSFFont fontBold = workbook.createFont();
+        fontBold.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        styleBold.setFont(fontBold);
+
+        //Format style tanggal
+        HSSFCellStyle styleDate = workbook.createCellStyle();
+        HSSFCreationHelper creationHelper = workbook.getCreationHelper();
+        styleDate.setDataFormat(creationHelper.createDataFormat().getFormat("dd-MMM-yyyy"));
+        styleDate.setAlignment(CellStyle.ALIGN_LEFT);
+
+        //Format style angka
+        HSSFCellStyle styleNum = workbook.createCellStyle();
+        styleNum.setDataFormat(creationHelper.createDataFormat().getFormat("#,##0"));
+        styleNum.setAlignment(CellStyle.ALIGN_RIGHT);
+
+        int ihdrrow = 3;
+
+        if (vo.getOutId() != null) {
+            ihdrrow++;
+        }
+        if (vo.getOutName() != null) {
+            ihdrrow++;
+        }
+        if (vo.getPersId() != null) {
+            ihdrrow++;
+        }
+        if (vo.getOutType() != null) {
+            ihdrrow++;
+        }
+        if (vo.getCompany() != null) {
+            ihdrrow++;
+        }
+        if (vo.getOutStatus() != null) {
+            ihdrrow++;
+        }
+        if (vo.getAreaName() != null) {
+            ihdrrow++;
+        }
+        if (vo.getVacStatus() != null) {
+            ihdrrow++;
+        }
+        if (vo.getBeginDateText() != null) {
+            ihdrrow++;
+        }
+        if (vo.getEndDateText() != null) {
+            ihdrrow++;
+        }
+        if (vo.getPassNumber() != null) {
+            ihdrrow++;
+        }
+        if (vo.getPassExpiryDateText() != null) {
+            ihdrrow++;
+        }
+        if (vo.getModifyBy() != null) {
+            ihdrrow++;
+        }
+        if (vo.getModifyDateText() != null) {
+            ihdrrow++;
+        }
+
+        ihdrrow = ihdrrow + 1;
+
+        HSSFRow row = null;
+        for (int i = 0; i < 24; i++) {
+            worksheet.addMergedRegion(new CellRangeAddress(ihdrrow, (ihdrrow + 1), i, i));
+        }
+
+        HSSFRow headerMerge = worksheet.createRow(ihdrrow);
+        String[] arrHdr = {"Outsource ID", "Outsource Name", "NIK", "Outsource Type", "Outsource Company", "Outsource Status", "Plant", "Vaccine Status", "Begin Date Effective", "End Date Effective", "ID Card Number", "Expiry Date", "Modify By", "Modify Date"};
+
+        for (int i = 0; i < arrHdr.length; i++) {
+            createCellHeader(workbook, headerMerge, arrHdr[i], i);
+        }
+
+        Vms022VoMonitoring voData;
+        // Set value
+        if (!listData.isEmpty()) {
+            int pointerRow = ihdrrow + 2;
+            for (int i = 0; i < listData.size(); i++) {
+                voData = listData.get(i);
+                rowDetail = worksheet.createRow(pointerRow);
+                listCellD[0] = rowDetail.createCell(0);
+                listCellD[0].setCellValue(i + 1);
+                listCellD[1] = rowDetail.createCell(1);
+                listCellD[1].setCellValue(voData.getOutId());
+                listCellD[2] = rowDetail.createCell(2);
+                listCellD[2].setCellValue(voData.getOutName());
+                listCellD[3] = rowDetail.createCell(3);
+                listCellD[3].setCellValue(voData.getPersId());
+                listCellD[4] = rowDetail.createCell(4);
+                listCellD[4].setCellValue(voData.getOutType());
+                listCellD[5] = rowDetail.createCell(5);
+                listCellD[5].setCellValue(voData.getCompany());
+                listCellD[6] = rowDetail.createCell(6);
+                listCellD[6].setCellValue(voData.getOutStatus());
+                listCellD[7] = rowDetail.createCell(7);
+                listCellD[7].setCellValue(voData.getAreaName());
+                listCellD[8] = rowDetail.createCell(8);
+                listCellD[8].setCellValue(voData.getVacStatus());
+                listCellD[9] = rowDetail.createCell(9);
+                listCellD[9].setCellValue(DateUtil.stringToDate(voData.getBeginDateText(), "dd-MM-yyyy") != null ? sdf.format(DateUtil.stringToDate(voData.getBeginDateText(), "dd-MM-yyyy")) : "");
+                listCellD[10] = rowDetail.createCell(10);
+                listCellD[10].setCellValue(DateUtil.stringToDate(voData.getEndDateText(), "dd-MM-yyyy") != null ? sdf.format(DateUtil.stringToDate(voData.getEndDateText(), "dd-MM-yyyy")) : "");
+                listCellD[11] = rowDetail.createCell(11);
+                listCellD[11].setCellValue(voData.getPassNumber());
+                listCellD[12] = rowDetail.createCell(12);
+                listCellD[12].setCellValue(DateUtil.stringToDate(voData.getPassExpiryDateText(), "dd-MM-yyyy") != null ? sdf.format(DateUtil.stringToDate(voData.getPassExpiryDateText(), "dd-MM-yyyy")) : "");
+                listCellD[13] = rowDetail.createCell(13);
+                listCellD[13].setCellValue(voData.getModifyBy());
+                listCellD[14] = rowDetail.createCell(14);
+                listCellD[14].setCellValue(DateUtil.stringToDate(voData.getModifyDateText(), "dd-MM-yyyy") != null ? sdf.format(DateUtil.stringToDate(voData.getModifyDateText(), "dd-MM-yyyy")) : "");
+
+                pointerRow++;
+            }
+        }
+
+        //Format style header
+        HSSFCellStyle styleHdr = workbook.createCellStyle();
+        styleHdr.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        styleHdr.setFillForegroundColor(HSSFColor.TAN.index);
+        styleHdr.setFont(fontBold);
+
+        HSSFCell cellHeader = null;
+        int iprmrow = 2;
+
+        iprmrow = createCellParam(vo.getOutId(), "Outsource ID", iprmrow, row, worksheet, cellHeader, styleHdr);
+        iprmrow = createCellParam(vo.getOutName(), "Outsource Name", iprmrow, row, worksheet, cellHeader, styleHdr);
+        iprmrow = createCellParam(vo.getPersId(), "NIK", iprmrow, row, worksheet, cellHeader, styleHdr);
+        iprmrow = createCellParam(vo.getOutType(), "Outsource Type", iprmrow, row, worksheet, cellHeader, styleHdr);
+        iprmrow = createCellParam(vo.getCompany(), "Outsource Company", iprmrow, row, worksheet, cellHeader, styleHdr);
+        iprmrow = createCellParam(vo.getOutStatus(), "Outsource Status", iprmrow, row, worksheet, cellHeader, styleHdr);
+        iprmrow = createCellParam(vo.getAreaName(), "Plant", iprmrow, row, worksheet, cellHeader, styleHdr);
+        iprmrow = createCellParam(vo.getVacStatus(), "Vaccine Status", iprmrow, row, worksheet, cellHeader, styleHdr);
+        iprmrow = createCellParamDate(vo.getBeginDateText(), "Begin Date Effective", iprmrow, row, worksheet, cellHeader, styleHdr);
+        iprmrow = createCellParamDate(vo.getEndDateText(), "End Date Effective", iprmrow, row, worksheet, cellHeader, styleHdr);
+        iprmrow = createCellParam(vo.getPassNumber(), "ID Card Number", iprmrow, row, worksheet, cellHeader, styleHdr);
+        iprmrow = createCellParamDate(vo.getPassExpiryDateText(), "Expiry Date", iprmrow, row, worksheet, cellHeader, styleHdr);
+        iprmrow = createCellParam(vo.getModifyBy(), "Modify By", iprmrow, row, worksheet, cellHeader, styleHdr);
+        iprmrow = createCellParamDate(vo.getModifyDateText(), "Modify Date", iprmrow, row, worksheet, cellHeader, styleHdr);
+
+        iprmrow = iprmrow + 1;
+
+        //Format style title
+        HSSFCellStyle styleTitle = workbook.createCellStyle();
+        HSSFFont fontTitle = workbook.createFont();
+        fontTitle.setFontName(HSSFFont.FONT_ARIAL);
+        fontTitle.setFontHeightInPoints((short) 20);
+        fontTitle.setColor(HSSFColor.DARK_BLUE.index);
+        styleTitle.setFont(fontTitle);
+
+        row = worksheet.createRow(0);
+        HSSFCell cellTitle = row.createCell(0);
+        cellTitle.setCellValue("Verification Personal Data Partner & Outsource ");
+        cellTitle.setCellStyle(styleTitle);
+
+        for (int x = 1; x <= worksheet.getRow(ihdrrow).getPhysicalNumberOfCells(); x++) {
+            worksheet.autoSizeColumn(x, true);
+        }
+
+        return workbook;
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    private void createCellHeader(HSSFWorkbook workbook, HSSFRow row, String obj, int col) {
+        HSSFCellStyle styleTblHdr = workbook.createCellStyle();
+        HSSFFont fontTblHdr = workbook.createFont();
+        fontTblHdr.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        styleTblHdr.setFont(fontTblHdr);
+        styleTblHdr.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        styleTblHdr.setFillForegroundColor(HSSFColor.LIGHT_CORNFLOWER_BLUE.index);
+
+        HSSFCell cellTblHdr = row.createCell(col);
+        cellTblHdr.setCellStyle(styleTblHdr);
+        cellTblHdr.setCellValue(obj);
+    }
+    
+    private int createCellParam(String val, String vlabel, int iprmrow, HSSFRow row, HSSFSheet worksheet, HSSFCell cellHeader,
+            HSSFCellStyle styleHdr) {
+        if (val != null) {
+            row = worksheet.createRow(iprmrow);
+            cellHeader = row.createCell(0);
+            cellHeader.setCellValue(vlabel);
+            cellHeader.setCellStyle(styleHdr);
+            cellHeader = row.createCell(1);
+            cellHeader.setCellStyle(styleHdr);
+            cellHeader = row.createCell(2);
+            cellHeader.setCellValue(":");
+            cellHeader.setCellStyle(styleHdr);
+            cellHeader = row.createCell(3);
+            cellHeader.setCellValue(val);
+            cellHeader.setCellStyle(styleHdr);
+            cellHeader = row.createCell(4);
+            cellHeader.setCellStyle(styleHdr);
+            cellHeader = row.createCell(5);
+            cellHeader.setCellStyle(styleHdr);
+            iprmrow++;
+        }
+        return iprmrow;
+    }
+
+    private int createCellParamDate(String valbgn, String vlabel, int iprmrow, HSSFRow row, HSSFSheet worksheet,
+            HSSFCell cellHeader, HSSFCellStyle styleHdr) {
+        if (valbgn != null) {
+            row = worksheet.createRow(iprmrow);
+            cellHeader = row.createCell(0);
+            cellHeader.setCellValue(vlabel);
+            cellHeader.setCellStyle(styleHdr);
+            cellHeader = row.createCell(1);
+            cellHeader.setCellStyle(styleHdr);
+            cellHeader = row.createCell(2);
+            cellHeader.setCellValue(":");
+            cellHeader.setCellStyle(styleHdr);
+            cellHeader = row.createCell(3);
+            cellHeader.setCellValue(valbgn == null ? "" : valbgn);
+            cellHeader.setCellStyle(styleHdr);
+            cellHeader = row.createCell(4);
+            cellHeader.setCellStyle(styleHdr);
+//            cellHeader.setCellValue("to");
+            cellHeader = row.createCell(5);
+//            cellHeader.setCellValue(valend == null ? "" : valend);
+            cellHeader.setCellStyle(styleHdr);
+            iprmrow++;
+        }
+        return iprmrow;
     }
 
 }
