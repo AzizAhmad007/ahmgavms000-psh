@@ -385,7 +385,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             int rownum = 0;
             
             Row rowTitle = sheet.createRow(rownum);
-            createCell(rowTitle, "Maintain Regulation", col, styleHeader);
+            createCell(rowTitle, "Verification Personal Data Partner & Outsource", col, styleHeader);
 
             rownum = rownum + 2;
             
@@ -449,10 +449,10 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             createCell(rowHeaderTable, "Covid19 Vaccine Status", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Begin Work Effective Date", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "End Work Effective Date", col++, styleHeaderTable1);
-            createCell(rowHeaderTable, "Pass Card Number", col++, styleHeaderTable2);
-            createCell(rowHeaderTable, "Pass Card Expiry Date", col++, styleHeaderTable2);
-            createCell(rowHeaderTable, "Modified By", col++, styleHeaderTable2);
-            createCell(rowHeaderTable, "Modified Date", col++, styleHeaderTable2);
+            createCell(rowHeaderTable, "Pass Card Number", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Pass Card Expiry Date", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Modified By", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Modified Date", col++, styleHeaderTable1);
             
             for (Vms022VoMonitoring item : data) {
                 col = 0;
@@ -468,12 +468,12 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                 createCell(rowContentData, item.getOutStatus(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getAreaName(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getVacStatus(), col++, styleContentTable1WithWrap);
-                createCell(rowContentData, item.getBeginDateText(), col++, styleContentTable1WithWrap);
-                createCell(rowContentData, item.getEndDateText(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, item.getBeginDateText(), col++, styleContentTable2WithWrap);
+                createCell(rowContentData, item.getEndDateText(), col++, styleContentTable2WithWrap);
                 createCell(rowContentData, item.getPassNumber(), col++, styleContentTable1WithWrap);
-                createCell(rowContentData, item.getPassExpiryDateText(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, item.getPassExpiryDateText(), col++, styleContentTable2WithWrap);
                 createCell(rowContentData, item.getModifyBy(), col++, styleContentTable1WithWrap);
-                createCell(rowContentData, item.getModifyDateText(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, item.getModifyDateText(), col++, styleContentTable2WithWrap);
             }
         } catch (Exception e) {
             throw new RuntimeException("Fail generate excel file");
