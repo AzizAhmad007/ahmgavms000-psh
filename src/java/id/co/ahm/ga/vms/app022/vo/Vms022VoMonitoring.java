@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class Vms022VoMonitoring {
     
+    private int rowNum;
     private String id;
     private String outId;
     private String outName;
@@ -476,6 +477,14 @@ public class Vms022VoMonitoring {
 
     public void setMonitoring(List<Vms022VoMonitoring> monitoring) {
         this.monitoring = monitoring;
+    }
+
+    public int getRowNum() {
+        return rowNum;
+    }
+
+    public void setRowNum(int rowNum) {
+        this.rowNum = rowNum;
     }
     
 }
