@@ -6,7 +6,9 @@
 package id.co.ahm.ga.vms.app022.rest;
 
 import id.co.ahm.ga.vms.app022.service.Vms022Service;
+import id.co.ahm.ga.vms.app022.util.Vms022DateTimeUtil;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
+import id.co.ahm.ga.vms.app022.util.Vms022ExportExcel;
 import id.co.ahm.jx.constant.AppEnum;
 import id.co.ahm.jxf.constant.CommonConstant;
 import id.co.ahm.jxf.constant.StatusMsgEnum;
@@ -23,12 +25,14 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -40,6 +44,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -215,5 +220,61 @@ public class Vms022Rest {
 //        wb.write(out);
 //        response.flushBuffer();
 //    }
+    
+    @RequestMapping(value = "exreg", method = RequestMethod.POST)
+    public ModelAndView exportRegulation(@RequestParam(name = "token", defaultValue = "") String token, 
+            @RequestParam(name = "oi") String outId, 
+            @RequestParam(name = "on") String outName, 
+            @RequestParam(name = "n") String persId, 
+            @RequestParam(name = "pf") String beginDateText, 
+            @RequestParam(name = "pt") String endDateText, 
+            @RequestParam(name = "pcn") String passNumber, 
+            @RequestParam(name = "pa") String pic, 
+            @RequestParam(name = "ot") String outType, 
+            @RequestParam(name = "oc") String company, 
+            @RequestParam(name = "os") String outStatus, 
+            @RequestParam(name = "p") String areaName, 
+            @RequestParam(name = "c19vs") String vacStatus) {
+        
+        if(StringUtils.isNotEmpty(beginDateText)){
+            Date effectiveDateFrom = Vms022DateTimeUtil.stringToDate(beginDateText);
+            beginDateText = Vms022DateTimeUtil.dateToString("dd-MMM-yyyy", effectiveDateFrom);
+        }
+
+        if(StringUtils.isNotEmpty(endDateText)){
+            Date effectiveDateTo = Vms022DateTimeUtil.stringToDate(endDateText);
+            endDateText = Vms022DateTimeUtil.dateToString("dd-MMM-yyyy", effectiveDateTo);
+        }
+        
+        Map<String, Object> search = new HashMap<>();
+        search.put("outId", outId);
+        search.put("outName", outName);
+        search.put("persId", persId);
+        search.put("beginDateText", beginDateText);
+        search.put("endDateText", endDateText);
+        search.put("passNumber", passNumber);
+        search.put("pic", pic);
+        search.put("outType", outType);
+        search.put("company", company);
+        search.put("outStatus", outStatus);
+        search.put("areaName", areaName);
+        search.put("vacStatus", vacStatus);
+        
+        DtoParamPaging dtoParam = new DtoParamPaging();
+        dtoParam.setOffset(-1);
+        dtoParam.setLimit(-1);
+        dtoParam.setSort(null);
+        dtoParam.setSearch(search);
+        dtoParam.setOrder("");
+        
+        DtoResponseWorkspace dtoResponseWorkspace = vms022Service.showMonitoring(dtoParam);
+        List<Vms022VoMonitoring> vms022VoMonitoring = (List<Vms022VoMonitoring>)dtoResponseWorkspace.getData();
+        
+        ModelAndView modelAndView = new ModelAndView(new Vms022ExportExcel());
+        modelAndView.addObject("dtoParam", dtoParam);
+        modelAndView.addObject("data", vms022VoMonitoring);
+        
+        return modelAndView;
+    }
     
 }
