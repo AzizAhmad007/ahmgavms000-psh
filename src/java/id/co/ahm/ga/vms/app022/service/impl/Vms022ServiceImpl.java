@@ -160,7 +160,14 @@ public class Vms022ServiceImpl implements Vms022Service {
     public DtoResponseWorkspace showMonitoring(DtoParamPaging dto) {
         List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, "");
         int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, "");
-        return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "YOI", null, list, count);
+        return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, list, count);
+    }
+
+    @Override
+    public DtoResponseWorkspace getExcel(DtoParamPaging dto) {
+        List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getDataExcel(dto);
+        int count = vms022ahmhrntmHdrotsempsDao.countDataExcel(dto);
+        return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, list, count);
     }
 
     @Override

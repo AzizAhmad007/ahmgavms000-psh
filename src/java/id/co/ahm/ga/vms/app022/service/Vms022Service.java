@@ -37,4 +37,6 @@ public interface Vms022Service {
     DtoResponseWorkspace rejecting(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
 
     Workbook exportToExcelMainData(DtoParamPaging dto);
+    
+    DtoResponseWorkspace getExcel(DtoParamPaging dto);
 }

@@ -267,7 +267,7 @@ public class Vms022Rest {
         dtoParam.setSearch(search);
         dtoParam.setOrder("");
         
-        DtoResponseWorkspace dtoResponseWorkspace = vms022Service.showMonitoring(dtoParam);
+        DtoResponseWorkspace dtoResponseWorkspace = vms022Service.getExcel(dtoParam);
         List<Vms022VoMonitoring> vms022VoMonitoring = (List<Vms022VoMonitoring>)dtoResponseWorkspace.getData();
         
         ModelAndView modelAndView = new ModelAndView(new Vms022ExportExcel());

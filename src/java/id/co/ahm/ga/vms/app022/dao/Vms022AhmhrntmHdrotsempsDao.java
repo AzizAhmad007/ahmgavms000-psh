@@ -24,5 +24,7 @@ public interface Vms022AhmhrntmHdrotsempsDao extends HrDao<AhmhrntmHdrotsemps, A
     public int countSearchData(DtoParamPaging input, String userId);
     
     public List<Vms022VoMonitoring> getDataExcel (DtoParamPaging input);
+    
+    public int countDataExcel (DtoParamPaging input);
 
 }
