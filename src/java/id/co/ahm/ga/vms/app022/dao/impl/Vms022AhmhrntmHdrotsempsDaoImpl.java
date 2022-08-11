@@ -17,13 +17,18 @@ import id.co.ahm.jxf.util.AhmStringUtil;
 import id.co.ahm.jxf.util.DateUtil;
 import id.co.ahm.jxf.model.DefaultEntityImpl;
 import java.math.BigDecimal;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
@@ -61,58 +66,83 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         sortMap.put("ahmgavms022p01ModifySort", "");
         sortMap.put("ahmgavms022p01ModifyDateSort", "");
 
-        sqlQuery.append("select distinct "
-                + "    A.VOTSID as Outsource_ID, "
-                + "    A.VNAME as Outsource_Name, "
-                + "    A.VPERSID as NIK, "
-                + "    A.VOTSTYPE as Outsource_Type, "
-                + "    A.VCOMPANY as Outsource_Company, "
-                + "    A.VOTSSTTS as Outsource_status, "
-                + "    A.VLOCATION as Plant, "
-                + "    A.VVACSTTS as Covid19VaccineStatus, "
-                + "    A.DBGNEFFDT as Periode_Begin, "
-                + "    A.DENDEFFDT as Periode_End, "
-                + "    A.NAHMCARDORI as PassNumberCard, "
-                + "    A.DPASSEXP as PassCardExpDate, "
-                + "    A.VMODI, "
-                + "    A.DMODI, "
-                + "    A.VEMPPHONE, "
-                + "    A.VJOBDTL, "
-                + "    A.VNOTE, "
-                + "    A.VVACTYPE, "
-                + "    A.DLASTVAC, "
-                + "    A.VVACDTL, "
-                + "    A.VNTVS, "
-                + "    RAWTOHEX(A.ROTSEMPSHS), "
-                + "    A.VABSRDR, "
-                + "    A.VCANTEEN, "
-                + "    A.VSECGATE "
+        sqlQuery.append("select "
+                + "    A.VOTSID as OUTID,  "
+                + "    A.VNAME as OUTNAME,  "
+                + "    A.VPERSID as PERSID,  "
+                + "    A.VOTSTYPE as OUTTYPE,  "
+                + "    D.VPGBLNM as OUTTYPENAME,   "
+                + "    A.VCOMPANY as COMPANY,  "
+                + "    COALESCE(F.VPGBLNM, '') as COMPANYNAME,  "
+                + "    A.VOTSSTTS as OUTSTATUS,  "
+                + "    B.VPLANT as AREA,  "
+                + "    E.VPGBLNM as AREANAME,  "
+                + "    A.VVACSTTS as VACSTATUS,  "
+                + "    A.DBGNEFFDT as BEGINDATE,  "
+                + "    A.DENDEFFDT as ENDDATE,  "
+                + "    A.NAHMCARDORI as PASSNUMBER,  "
+                + "    A.DPASSEXP as PASSEXPIRY,  "
+                + "    A.VMODI as MODIFIED,  "
+                + "    A.DMODI as MODIFIEDDATE,  "
+                + "    A.VEMPPHONE as PHONENO,  "
+                + "    A.VPHOTOID as FILENAMEKTP,  "
+                + "    A.VRBSUPLAY as SUPPLIER,  "
+                + "    A.VJOBDTL as JOBDETAIL,  "
+                + "    A.VABSRDR as ABSENCERDR,  "
+                + "    A.VCANTEEN as CANTEEN,  "
+                + "    A.VSECGATE as SECGATE,  "
+                + "    A.VNOTE as NOTES,  "
+                + "    A.VPHOTONAME as FILENAMEPHOTO,  "
+                + "    A.VVACTYPE as VACTYPE,  "
+                + "    G.VPGBLNM as VACTYPENAME,  "
+                + "    A.DLASTVAC as VACDATE,  "
+                + "    A.VVACDTL as VACSUMMARY,  "
+                + "    A.VNTVS as VACNOTE,  "
+                + "    A.VAPPDISCLM as DISCLAIMER,  "
+                + "    RAWTOHEX(A.ROTSEMPSHS) as ID,  "
+                + "    A.BPHOTO as FOTO  "
                 + " from AHMHRNTM_HDROTSEMPS A "
                 + " inner join AHMHRNTM_DTLOTSREGS C on A.VLOCATION = c.vplant "
+                + " INNER JOIN (  "
+                + "    SELECT DISTINCT   "
+                + "        A.VPLANT,   "
+                + "        B.VPGBLNM,   "
+                + "        A.VOTSID,   "
+                + "        A.VPERSID,   "
+                + "        B.VPGBLCD,   "
+                + "        ROW_NUMBER() OVER ( PARTITION BY A.VOTSID ORDER BY NULL) AS R_NUM  "
+                + "    FROM AHMHRNTM_DTLOTSREGS A, AHMHRNTM_DTLPRMGBLS B  "
+                + "    WHERE A.VREGID = 'PLNT'  "
+                + "        AND B.VPGBLCD = A.VPLANT) B on A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID  "
+                + " INNER JOIN AHMHRNTM_DTLPRMGBLS E on B.VPLANT = E.VPGBLCD "
+                + " INNER JOIN AHMHRNTM_DTLPRMGBLS D ON A.VOTSTYPE = D.VPGBLCD  "
+                + " LEFT JOIN AHMHRNTM_DTLPRMGBLS F ON A.VCOMPANY = F.VPGBLCD  "
+                + " LEFT JOIN AHMHRNTM_DTLPRMGBLS G ON A.VVACTYPE = G.VPGBLCD  "
                 + " WHERE  "
-                + "    (TRUNC(SYSDATE) BETWEEN TRUNC(A.DBGNEFFDT) AND TRUNC(A.DENDEFFDT)) "
-                + " AND "
-                + "                            UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%') "
-                + "                     AND "
-                + "                            UPPER(A.VNAME) LIKE UPPER('%'||:vname||'%') "
-                + "                     AND"
-                + "                            UPPER(A.VPERSID) LIKE UPPER('%'||:vpersid||'%')"
-                + "                     AND"
-                + "                            UPPER(to_char(A.DBGNEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:begineff||'%')"
-                + "                     AND"
-                + "                            UPPER(to_char(A.DENDEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:endeff||'%')"
-                + "                     AND"
-                + "                            UPPER(A.NAHMCARDID ) LIKE UPPER('%'||:idcard||'%')"
-                + "                     AND"
-                + "                            UPPER(A.VOTSTYPE ) LIKE UPPER('%'||:outtype||'%')"
-                + "                     AND"
-                + "                            UPPER(A.VCOMPANY ) LIKE UPPER('%'||:company||'%')"
-                + "                     AND"
-                + "                            (:outstat IS NULL OR UPPER(A.VOTSSTTS) LIKE '%'||:outstat||'%' )"
-                + "                     AND"
-                + "                            (:plant IS NULL OR UPPER(A.VLOCATION) LIKE '%'||:plant||'%' )"
-                + "                     AND"
-                + "                            (:vacstat IS NULL OR UPPER(A.VVACSTTS) LIKE '%'||:vacstat||'%' )  "
+                + "    B.R_NUM = 1 "
+                + "    AND SYSDATE BETWEEN F.DBGNEFFDT AND F.DENDEFFDT "
+                + "    AND  "
+                + "        UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%')  "
+                + "    AND  "
+                + "        UPPER(A.VNAME) LIKE UPPER('%'||:vname||'%')  "
+                + "    AND "
+                + "        UPPER(A.VPERSID) LIKE UPPER('%'||:vpersid||'%') "
+                + "    AND "
+                + "        UPPER(to_char(A.DBGNEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:begineff||'%') "
+                + "    AND "
+                + "        UPPER(to_char(A.DENDEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:endeff||'%') "
+                + "    AND "
+                + "        UPPER(A.NAHMCARDORI ) LIKE UPPER('%'||:idcard||'%') "
+                + "    AND "
+                + "        UPPER(A.VOTSTYPE ) LIKE UPPER('%'||:outtype||'%') "
+                + "    AND "
+                + "        UPPER(A.VCOMPANY ) LIKE UPPER('%'||:company||'%') "
+                + "    AND "
+                + "        (:outstat IS NULL OR UPPER(A.VOTSSTTS) LIKE '%'||:outstat||'%' ) "
+                + "    AND "
+                + "        (:plant IS NULL OR UPPER(B.VPLANT) LIKE '%'||:plant||'%' ) "
+                + "    AND "
+                + "        (:vacstat IS NULL OR UPPER(A.VVACSTTS) LIKE '%'||:vacstat||'%' )  "
         );
 
         String votsid = AhmStringUtil.hasValue(input.getSearch().get("outId")) ? (input.getSearch().get("outId") + "").toUpperCase() : "";
@@ -153,35 +183,75 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 vo.setOutId(obj[0] == null ? "" : obj[0] + "");
                 vo.setOutName(obj[1] == null ? "" : obj[1] + "");
                 vo.setPersId(obj[2] == null ? "" : obj[2] + "");
-                vo.setOutType(obj[3] == null ? "" : obj[3] + ""); //kayanya yg ini buat id deh
-                vo.setOutTypeName(obj[3] == null ? "" : obj[3] + "");
-                vo.setCompany(obj[4] == null ? "" : obj[4] + ""); //kayanya yg ini buat id deh
-                vo.setCompanyName(obj[4] == null ? "" : obj[4] + "");
-                vo.setOutStatus(obj[5] == null ? "-" : obj[5] + "");
-                vo.setArea(obj[6] == null ? "" : obj[6] + ""); //kayanya yg ini buat id deh
-                vo.setAreaName(obj[6] == null ? "" : obj[6] + "");
-                vo.setVacStatus(obj[7] == null ? "-" : obj[7] + "");
-                vo.setBeginDate(obj[8] == null ? null : (Date) obj[8]);
-                vo.setBeginDateText(obj[8] == null ? "" : DateUtil.dateToString((Date) obj[8], "dd-MMM-yyyy") + "");
-                vo.setEndDate(obj[9] == null ? null : (Date) obj[9]);
-                vo.setEndDateText(obj[9] == null ? "" : DateUtil.dateToString((Date) obj[9], "dd-MMM-yyyy") + "");
-                vo.setPassNumber(obj[10] == null ? "" : obj[10] + "");
-                vo.setPassExpiryDate(obj[11] == null ? null : (Date) obj[11]);
-                vo.setPassExpiryDateText(obj[11] == null ? "-" : DateUtil.dateToString((Date) obj[11], "dd-MMM-yyyy") + "");
-                vo.setModifyBy(obj[12] == null ? "" : obj[12] + ""); //ini vmodi
-                vo.setDmodi(obj[13] == null ? null : (Date) obj[13]);
-                vo.setModifyDateText(obj[13] == null ? "" : DateUtil.dateToString((Date) obj[13], "dd-MMM-yyyy") + ""); //ini dmodinya
-                vo.setPhoneNo(obj[14] == null ? "-" : obj[14] + "");
-                vo.setJob(obj[15] == null ? "-" : obj[15] + "");
-                vo.setNote(obj[16] == null ? "-" : obj[16] + "");
-                vo.setVacTypeName(obj[17] == null ? "-" : obj[17] + "");
-                vo.setVacDateText(obj[18] == null ? "" : DateUtil.dateToString((Date) obj[18], "dd-MMM-yyyy") + "");
-                vo.setVacSummary(obj[19] == null ? "-" : obj[19] + "");
-                vo.setVacNote(obj[20] == null ? "-" : obj[20] + "");
-                vo.setId(obj[21] == null ? "-" : obj[21] + "");//id
-                vo.setAccessReader(obj[22] == null ? "-" : obj[22] + "");
-                vo.setCanteen(obj[23] == null ? "-" : obj[23] + "");
-                vo.setSecurityGate(obj[24] == null ? "-" : obj[24] + "");
+                vo.setOutType(obj[3] == null ? "" : obj[3] + "");
+                vo.setOutTypeName(obj[4] == null ? "" : obj[4] + "");
+                vo.setCompany(obj[5] == null ? "" : obj[5] + "");
+                vo.setCompanyName(obj[6] == null ? "" : obj[6] + "");
+                vo.setOutStatus(obj[7] == null ? "" : obj[7] + "");
+                vo.setArea(obj[8] == null ? "" : obj[8] + "");
+                vo.setAreaName(obj[9] == null ? "" : obj[9] + "");
+                vo.setVacStatus(obj[10] == null ? "" : obj[10] + "");
+                if (obj[11] != null) {
+                    vo.setBeginDate((Date) obj[11]);
+                    vo.setBeginDateText(DateUtil.dateToString((Date) obj[11], "dd-MMM-yyyy"));
+                } else {
+                    vo.setBeginDateText("");
+                }
+                if (obj[12] != null) {
+                    vo.setEndDate((Date) obj[12]);
+                    vo.setEndDateText(DateUtil.dateToString((Date) obj[12], "dd-MMM-yyyy"));
+                } else {
+                    vo.setEndDateText("");
+                }
+                vo.setPassNumber(obj[13] == null ? "" : obj[13] + "");
+                if (obj[14] != null) {
+                    vo.setPassExpiryDate((Date) obj[14]);
+                    vo.setPassExpiryDateText(DateUtil.dateToString((Date) obj[14], "dd-MMM-yyyy"));
+                } else {
+                    vo.setPassExpiryDateText("");
+                }
+                vo.setModifyBy(obj[15] == null ? "" : obj[15] + "");
+                if (obj[16] != null) {
+                    vo.setModifyDate((Date) obj[16]);
+                    vo.setModifyDateText(DateUtil.dateToString((Date) obj[16], "dd-MMM-yyyy"));
+                } else {
+                    vo.setModifyDateText("");
+                }
+                vo.setPhoneNo(obj[17] == null ? "" : obj[17] + "");
+                vo.setFileNameKtp(obj[18] == null ? "" : obj[18] + "");
+                vo.setSupplier(obj[19] == null ? "" : obj[19] + "");
+                vo.setJob(obj[20] == null ? "" : obj[20] + "");
+                vo.setAccessReader(obj[21] == null ? "" : obj[21] + "");
+                vo.setCanteen(obj[22] == null ? "" : obj[22] + "");
+                vo.setSecurityGate(obj[23] == null ? "" : obj[23] + "");
+                vo.setNote(obj[24] == null ? "" : obj[24] + "");
+                vo.setFileNamePhoto(obj[25] == null ? "" : obj[25] + "");
+                vo.setVacType(obj[26] == null ? "" : obj[26] + "");
+                vo.setVacTypeName(obj[27] == null ? "" : obj[27] + "");
+                if (obj[28] != null) {
+                    vo.setVacDate((Date) obj[28]);
+                    vo.setVacDateText(DateUtil.dateToString((Date) obj[28], "dd-MMM-yyyy"));
+                } else {
+                    vo.setVacDateText("");
+                }
+                vo.setVacSummary(obj[29] == null ? "" : obj[29] + "");
+                vo.setVacNote(obj[30] == null ? "" : obj[30] + "");
+                vo.setDiclaimer(obj[31] == null ? "" : obj[31] + "");
+                vo.setId(obj[32] == null ? "" : obj[32] + "");
+                if (obj[33] != null) {
+                    byte[] dt = null;
+                    Blob tmp = (Blob) obj[33];
+
+                    try {
+                        dt = tmp.getBytes(1, (int) tmp.length());
+                        vo.setFilePhoto(Base64.getEncoder().encodeToString(dt));
+
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Vms022AhmhrntmHdrotsempsDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    vo.setFilePhoto("");
+                }
                 vo.setRowNum(i);
 
                 result.add(vo);
@@ -199,58 +269,83 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         StringBuilder sqlQuery = new StringBuilder();
 
         sqlQuery.append("SELECT COUNT(*) FROM (");
-        sqlQuery.append("select distinct "
-                + "    A.VOTSID as Outsource_ID, "
-                + "    A.VNAME as Outsource_Name, "
-                + "    A.VPERSID as NIK, "
-                + "    A.VOTSTYPE as Outsource_Type, "
-                + "    A.VCOMPANY as Outsource_Company, "
-                + "    A.VOTSSTTS as Outsource_status, "
-                + "    A.VLOCATION as Plant, "
-                + "    A.VVACSTTS as Covid19VaccineStatus, "
-                + "    A.DBGNEFFDT as Periode_Begin, "
-                + "    A.DENDEFFDT as Periode_End, "
-                + "    A.NAHMCARDORI as PassNumberCard, "
-                + "    A.DPASSEXP as PassCardExpDate, "
-                + "    A.VMODI, "
-                + "    A.DMODI, "
-                + "    A.VEMPPHONE, "
-                + "    A.VJOBDTL, "
-                + "    A.VNOTE, "
-                + "    A.VVACTYPE, "
-                + "    A.DLASTVAC, "
-                + "    A.VVACDTL, "
-                + "    A.VNTVS, "
-                + "    RAWTOHEX(A.ROTSEMPSHS), "
-                + "    A.VABSRDR, "
-                + "    A.VCANTEEN, "
-                + "    A.VSECGATE "
+        sqlQuery.append("select "
+                + "    A.VOTSID as OUTID,  "
+                + "    A.VNAME as OUTNAME,  "
+                + "    A.VPERSID as PERSID,  "
+                + "    A.VOTSTYPE as OUTTYPE,  "
+                + "    D.VPGBLNM as OUTTYPENAME,   "
+                + "    A.VCOMPANY as COMPANY,  "
+                + "    COALESCE(F.VPGBLNM, '') as COMPANYNAME,  "
+                + "    A.VOTSSTTS as OUTSTATUS,  "
+                + "    B.VPLANT as AREA,  "
+                + "    E.VPGBLNM as AREANAME,  "
+                + "    A.VVACSTTS as VACSTATUS,  "
+                + "    A.DBGNEFFDT as BEGINDATE,  "
+                + "    A.DENDEFFDT as ENDDATE,  "
+                + "    A.NAHMCARDORI as PASSNUMBER,  "
+                + "    A.DPASSEXP as PASSEXPIRY,  "
+                + "    A.VMODI as MODIFIED,  "
+                + "    A.DMODI as MODIFIEDDATE,  "
+                + "    A.VEMPPHONE as PHONENO,  "
+                + "    A.VPHOTOID as FILENAMEKTP,  "
+                + "    A.VRBSUPLAY as SUPPLIER,  "
+                + "    A.VJOBDTL as JOBDETAIL,  "
+                + "    A.VABSRDR as ABSENCERDR,  "
+                + "    A.VCANTEEN as CANTEEN,  "
+                + "    A.VSECGATE as SECGATE,  "
+                + "    A.VNOTE as NOTES,  "
+                + "    A.VPHOTONAME as FILENAMEPHOTO,  "
+                + "    A.VVACTYPE as VACTYPE,  "
+                + "    G.VPGBLNM as VACTYPENAME,  "
+                + "    A.DLASTVAC as VACDATE,  "
+                + "    A.VVACDTL as VACSUMMARY,  "
+                + "    A.VNTVS as VACNOTE,  "
+                + "    A.VAPPDISCLM as DISCLAIMER,  "
+                + "    RAWTOHEX(A.ROTSEMPSHS) as ID,  "
+                + "    A.BPHOTO as FOTO  "
                 + " from AHMHRNTM_HDROTSEMPS A "
                 + " inner join AHMHRNTM_DTLOTSREGS C on A.VLOCATION = c.vplant "
+                + " INNER JOIN (  "
+                + "    SELECT DISTINCT   "
+                + "        A.VPLANT,   "
+                + "        B.VPGBLNM,   "
+                + "        A.VOTSID,   "
+                + "        A.VPERSID,   "
+                + "        B.VPGBLCD,   "
+                + "        ROW_NUMBER() OVER ( PARTITION BY A.VOTSID ORDER BY NULL) AS R_NUM  "
+                + "    FROM AHMHRNTM_DTLOTSREGS A, AHMHRNTM_DTLPRMGBLS B  "
+                + "    WHERE A.VREGID = 'PLNT'  "
+                + "        AND B.VPGBLCD = A.VPLANT) B on A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID  "
+                + " INNER JOIN AHMHRNTM_DTLPRMGBLS E on B.VPLANT = E.VPGBLCD "
+                + " INNER JOIN AHMHRNTM_DTLPRMGBLS D ON A.VOTSTYPE = D.VPGBLCD  "
+                + " LEFT JOIN AHMHRNTM_DTLPRMGBLS F ON A.VCOMPANY = F.VPGBLCD  "
+                + " LEFT JOIN AHMHRNTM_DTLPRMGBLS G ON A.VVACTYPE = G.VPGBLCD  "
                 + " WHERE  "
-                + "    (TRUNC(SYSDATE) BETWEEN TRUNC(A.DBGNEFFDT) AND TRUNC(A.DENDEFFDT)) "
-                + " AND "
-                + "                            UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%') "
-                + "                     AND "
-                + "                            UPPER(A.VNAME) LIKE UPPER('%'||:vname||'%') "
-                + "                     AND"
-                + "                            UPPER(A.VPERSID) LIKE UPPER('%'||:vpersid||'%')"
-                + "                     AND"
-                + "                            UPPER(to_char(A.DBGNEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:begineff||'%')"
-                + "                     AND"
-                + "                            UPPER(to_char(A.DENDEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:endeff||'%')"
-                + "                     AND"
-                + "                            UPPER(A.NAHMCARDID ) LIKE UPPER('%'||:idcard||'%')"
-                + "                     AND"
-                + "                            UPPER(A.VOTSTYPE ) LIKE UPPER('%'||:outtype||'%')"
-                + "                     AND"
-                + "                            UPPER(A.VCOMPANY ) LIKE UPPER('%'||:company||'%')"
-                + "                     AND"
-                + "                            (:outstat IS NULL OR UPPER(A.VOTSSTTS) LIKE '%'||:outstat||'%' )"
-                + "                     AND"
-                + "                            (:plant IS NULL OR UPPER(A.VLOCATION) LIKE '%'||:plant||'%' )"
-                + "                     AND"
-                + "                            (:vacstat IS NULL OR UPPER(A.VVACSTTS) LIKE '%'||:vacstat||'%' )  "
+                + "    B.R_NUM = 1 "
+                + "    AND SYSDATE BETWEEN F.DBGNEFFDT AND F.DENDEFFDT "
+                + "    AND  "
+                + "        UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%')  "
+                + "    AND  "
+                + "        UPPER(A.VNAME) LIKE UPPER('%'||:vname||'%')  "
+                + "    AND "
+                + "        UPPER(A.VPERSID) LIKE UPPER('%'||:vpersid||'%') "
+                + "    AND "
+                + "        UPPER(to_char(A.DBGNEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:begineff||'%') "
+                + "    AND "
+                + "        UPPER(to_char(A.DENDEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:endeff||'%') "
+                + "    AND "
+                + "        UPPER(A.NAHMCARDORI ) LIKE UPPER('%'||:idcard||'%') "
+                + "    AND "
+                + "        UPPER(A.VOTSTYPE ) LIKE UPPER('%'||:outtype||'%') "
+                + "    AND "
+                + "        UPPER(A.VCOMPANY ) LIKE UPPER('%'||:company||'%') "
+                + "    AND "
+                + "        (:outstat IS NULL OR UPPER(A.VOTSSTTS) LIKE '%'||:outstat||'%' ) "
+                + "    AND "
+                + "        (:plant IS NULL OR UPPER(B.VPLANT) LIKE '%'||:plant||'%' ) "
+                + "    AND "
+                + "        (:vacstat IS NULL OR UPPER(A.VVACSTTS) LIKE '%'||:vacstat||'%' )  "
         );
         sqlQuery.append(" )");
 
