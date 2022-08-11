@@ -637,4 +637,18 @@ public class Vms022ServiceImpl implements Vms022Service {
         return iprmrow;
     }
 
+    @Override
+    public DtoResponseWorkspace showPlant(Vms022VoLov input) {
+        List<Vms022VoLov> Plant = vms022ahmhrntmDtlprmgblsDao.getPlant(input.getId(), input.getCode());
+        
+        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, Plant);
+    }
+
+    @Override
+    public DtoResponseWorkspace showGate(Vms022VoLov input) {
+        List<Vms022VoLov> Gate = vms022ahmhrntmDtlprmgblsDao.getGate(input.getId(), input.getCode());
+        
+        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, Gate);
+    }
+
 }

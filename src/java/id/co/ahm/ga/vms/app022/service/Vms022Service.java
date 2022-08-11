@@ -5,6 +5,7 @@
  */
 package id.co.ahm.ga.vms.app022.service;
 
+import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponse;
@@ -27,6 +28,10 @@ public interface Vms022Service {
     DtoResponsePaging monitoring(DtoParamPaging input, VoUserCred userCred);
     
     DtoResponseWorkspace showMonitoring(DtoParamPaging input);
+    
+    DtoResponseWorkspace showPlant(Vms022VoLov input);
+    
+    DtoResponseWorkspace showGate(Vms022VoLov input);
     
     DtoResponseWorkspace approve(Vms022VoMonitoring getdata, VoUserCred userCred);
     

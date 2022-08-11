@@ -9,8 +9,7 @@ import id.co.ahm.ga.vms.app022.service.Vms022Service;
 import id.co.ahm.ga.vms.app022.util.Vms022DateTimeUtil;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.ga.vms.app022.util.Vms022ExportExcel;
-import id.co.ahm.jx.constant.AppEnum;
-import id.co.ahm.jxf.constant.CommonConstant;
+import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
 import id.co.ahm.jxf.constant.StatusMsgEnum;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponse;
@@ -19,9 +18,7 @@ import id.co.ahm.jxf.dto.DtoResponseWorkspace;
 import id.co.ahm.jxf.security.TokenPshUtil;
 import id.co.ahm.jxf.util.DtoHelper;
 import id.co.ahm.jxf.vo.VoUserCred;
-import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -184,6 +181,26 @@ public class Vms022Rest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    @RequestMapping(value = "get-plants", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace getPlants(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody Vms022VoLov input) {
+        
+        return vms022Service.showPlant(input);
+    }
+    
+    @RequestMapping(value = "get-gates", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace getGates(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody Vms022VoLov input) {
+        
+        return vms022Service.showGate(input);
     }
     
 //    @RequestMapping(value = "download", 
