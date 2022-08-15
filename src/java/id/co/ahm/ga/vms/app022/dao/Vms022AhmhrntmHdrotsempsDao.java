@@ -7,7 +7,6 @@ package id.co.ahm.ga.vms.app022.dao;
 
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsemps;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsempsPk;
-import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitor;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.jxf.dao.DefaultDao;
 import id.co.ahm.jxf.dao.HrDao;
@@ -24,7 +23,7 @@ public interface Vms022AhmhrntmHdrotsempsDao extends HrDao<AhmhrntmHdrotsemps, A
     
     public int countSearchData(DtoParamPaging input, String userId);
     
-    public Vms022VoMonitor getDataExcel (DtoParamPaging input);
+    public List<Vms022VoMonitoring> getDataExcel (DtoParamPaging input);
     
     public int countDataExcel (DtoParamPaging input);
 
