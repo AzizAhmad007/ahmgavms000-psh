@@ -286,6 +286,7 @@ public class Vms022Rest {
         
         DtoResponseWorkspace dtoResponseWorkspace = vms022Service.getExcel(dtoParam);
         List<Vms022VoMonitoring> vms022VoMonitoring = (List<Vms022VoMonitoring>)dtoResponseWorkspace.getData();
+        System.out.println("============ value of vms022VoMonitoring = " + vms022VoMonitoring);
         
         ModelAndView modelAndView = new ModelAndView(new Vms022ExportExcel());
         modelAndView.addObject("dtoParam", dtoParam);
