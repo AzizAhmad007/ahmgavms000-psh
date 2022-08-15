@@ -83,6 +83,7 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
 
     @Override
     public List<Vms022VoLov> getPlant(String outid, String nik) {
+        
         StringBuilder sql = new StringBuilder();
 
         sql.append("SELECT "
