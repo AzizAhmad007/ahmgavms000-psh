@@ -276,34 +276,45 @@ public class Vms022ServiceImpl implements Vms022Service {
 
     @Override
     public DtoResponseWorkspace approve(Vms022VoMonitoring getdata, VoUserCred userCred) {
-                    AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
-                    pk.setRotsempshs((getdata.getId()));
-                    AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
-                    if (mp != null) {
-                        mp.setVotsstts("Active");
-                        
-                        vms022ahmhrntmHdrotsempsDao.update(mp);
-                        vms022ahmhrntmHdrotsempsDao.flush();
-                        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Approve success", null, null);
-                    } 
-                    else {
-                        throw new Vms022Exception("Failed Approve Data Cause zero data when Updating");
-                    }
-    }
-    
-    @Override
-    public DtoResponseWorkspace approving(List<Vms022VoMonitoring> getdata, VoUserCred userCred) {
-        if (!getdata.isEmpty()) {
-            for (Vms022VoMonitoring vo : getdata) {
+
+        if (getdata.getOutStatus().equalsIgnoreCase("")) {
+            throw new Vms022Exception("Role tidak sesuai!");
+        } else {
+            try {
                 AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
-                pk.setRotsempshs((vo.getId()));
+                pk.setRotsempshs((getdata.getId()));
+
                 AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
                 if (mp != null) {
-                    mp.setVotsstts("Active");
-//                        mp.setVotsstts("Waiting for Approval Security");
-                    mp.setLastModBy(userCred.getUserid());
+                    mp.setVotsstts(getdata.getOutStatus());
                     vms022ahmhrntmHdrotsempsDao.update(mp);
-                    vms022ahmhrntmHdrotsempsDao.flush();
+                    return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, ("Approve success"), null, null);
+                }
+            } catch (Exception e) {
+                return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, null);
+            }
+        }
+        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, null);
+    }
+
+    @Override
+    public DtoResponseWorkspace approving(List<Vms022VoMonitoring> getdata, VoUserCred userCred) {
+
+        if (!getdata.isEmpty()) {
+            for (Vms022VoMonitoring vo : getdata) {
+                System.out.println("============================= value dari vo.outstat = " + vo.getOutStatus());
+                if (vo.getOutStatus().equalsIgnoreCase("")) {
+                    throw new Vms022Exception("Role tidak sesuai!");
+                } else {
+                    AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
+                    pk.setRotsempshs((vo.getId()));
+                    AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
+                    if (mp != null) {
+                        mp.setVotsstts(vo.getOutStatus());
+                        mp.setLastModBy(userCred.getUserid());
+                        vms022ahmhrntmHdrotsempsDao.update(mp);
+                        vms022ahmhrntmHdrotsempsDao.flush();
+                    }
                 }
             }
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Approve success", null, null);
@@ -314,34 +325,45 @@ public class Vms022ServiceImpl implements Vms022Service {
 
     @Override
     public DtoResponseWorkspace reject(Vms022VoMonitoring getdata, VoUserCred userCred) {
-                try {
-                    AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
-                    pk.setRotsempshs((getdata.getId()));
-                    AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
-                    if (mp != null) {
-                        mp.setVotsstts("Reject");
-                        vms022ahmhrntmHdrotsempsDao.update(mp);
-                        vms022ahmhrntmHdrotsempsDao.flush();
-                    }
-                } catch (Exception e) {
-                    throw new Vms022Exception("Failed Reject Data Cause error when Updating");
+        if (getdata.getOutStatus().equalsIgnoreCase("")) {
+            throw new Vms022Exception("Role tidak sesuai!");
+        } else {
+            try {
+                AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
+                pk.setRotsempshs((getdata.getId()));
+                AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
+                if (mp != null) {
+                    mp.setVotsstts(getdata.getOutStatus());
+                    mp.setVnoterejc(getdata.getReasonReject());
+                    vms022ahmhrntmHdrotsempsDao.update(mp);
+                    vms022ahmhrntmHdrotsempsDao.flush();
                 }
+            } catch (Exception e) {
+                throw new Vms022Exception("Failed Reject Data Cause error when Updating");
+            }
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Reject success", null, null);
+        }
+
     }
-    
+
     @Override
     public DtoResponseWorkspace rejecting(List<Vms022VoMonitoring> getdata, VoUserCred userCred) {
         if (!getdata.isEmpty()) {
             for (Vms022VoMonitoring vo : getdata) {
-                AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
-                pk.setRotsempshs((vo.getId()));
-                AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
-                if (mp != null) {
-                    mp.setVotsstts("Reject");
+                if (vo.getOutStatus().equalsIgnoreCase("")) {
+                    throw new Vms022Exception("Role tidak sesuai!");
+                } else {
+                    AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
+                    pk.setRotsempshs((vo.getId()));
+                    AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
+                    if (mp != null) {
+                        mp.setVotsstts(vo.getOutStatus());
+                        mp.setVnoterejc(vo.getReasonReject());
 //                        mp.setVotsstts("Waiting for Approval Security");
-                    mp.setLastModBy(userCred.getUserid());
-                    vms022ahmhrntmHdrotsempsDao.update(mp);
-                    vms022ahmhrntmHdrotsempsDao.flush();
+                        mp.setLastModBy(userCred.getUserid());
+                        vms022ahmhrntmHdrotsempsDao.update(mp);
+                        vms022ahmhrntmHdrotsempsDao.flush();
+                    }
                 }
             }
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Reject success", null, null);
@@ -351,8 +373,9 @@ public class Vms022ServiceImpl implements Vms022Service {
     }
 
     @Override
-    public Workbook exportToExcelMainData(DtoParamPaging dto) {
-                Vms022VoMonitoring vo = new Vms022VoMonitoring();
+    public Workbook exportToExcelMainData(DtoParamPaging dto
+    ) {
+        Vms022VoMonitoring vo = new Vms022VoMonitoring();
         String valueStr = "";
         for (Map.Entry<String, Object> filter : dto.getSearch().entrySet()) {
             valueStr = filter.getValue().toString();
@@ -573,7 +596,7 @@ public class Vms022ServiceImpl implements Vms022Service {
         return workbook;
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     private void createCellHeader(HSSFWorkbook workbook, HSSFRow row, String obj, int col) {
         HSSFCellStyle styleTblHdr = workbook.createCellStyle();
         HSSFFont fontTblHdr = workbook.createFont();
@@ -586,7 +609,7 @@ public class Vms022ServiceImpl implements Vms022Service {
         cellTblHdr.setCellStyle(styleTblHdr);
         cellTblHdr.setCellValue(obj);
     }
-    
+
     private int createCellParam(String val, String vlabel, int iprmrow, HSSFRow row, HSSFSheet worksheet, HSSFCell cellHeader,
             HSSFCellStyle styleHdr) {
         if (val != null) {
@@ -640,14 +663,14 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Override
     public DtoResponseWorkspace showPlant(Vms022VoLov input) {
         List<Vms022VoLov> Plant = vms022ahmhrntmDtlprmgblsDao.getPlant(input.getId(), input.getCode());
-        
+
         return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, Plant);
     }
 
     @Override
     public DtoResponseWorkspace showGate(Vms022VoLov input) {
         List<Vms022VoLov> Gate = vms022ahmhrntmDtlprmgblsDao.getGate(input.getId(), input.getCode());
-        
+
         return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, Gate);
     }
 

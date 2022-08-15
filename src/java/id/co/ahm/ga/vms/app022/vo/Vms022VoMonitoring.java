@@ -60,6 +60,7 @@ public class Vms022VoMonitoring {
     private String access;
     private String vmodi;
     private Date dmodi;
+    private String reasonReject;
     
 //    private List<Vms022VoLov> plants;
 //    private List<Vms022VoLov> gates;
@@ -486,5 +487,15 @@ public class Vms022VoMonitoring {
     public void setRowNum(int rowNum) {
         this.rowNum = rowNum;
     }
+
+    public String getReasonReject() {
+        return reasonReject;
+    }
+
+    public void setReasonReject(String reasonReject) {
+        this.reasonReject = reasonReject;
+    }
+    
+    
     
 }
