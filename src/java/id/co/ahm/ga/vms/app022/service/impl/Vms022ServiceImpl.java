@@ -169,6 +169,7 @@ public class Vms022ServiceImpl implements Vms022Service {
         Vms022VoMonitor vms022VoMonitor = vms022ahmhrntmHdrotsempsDao.getDataExcel(dto);
         int counted = vms022ahmhrntmHdrotsempsDao.countDataExcel(dto);
         List<Vms022VoMonitoring> list = vms022VoMonitor.getMonitoring();
+        System.out.println("============ isi dari list = " + list);
         
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, null, null, list, counted);
     }
