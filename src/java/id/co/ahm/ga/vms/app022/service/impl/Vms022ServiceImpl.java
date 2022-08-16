@@ -348,6 +348,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                 if (mp != null) {
                     mp.setVotsstts(getdata.getOutStatus());
                     vms022ahmhrntmHdrotsempsDao.update(mp);
+                    vms022ahmhrntmHdrotsempsDao.flush();
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, ("Approve success"), null, null);
                 }
             } catch (Exception e) {
