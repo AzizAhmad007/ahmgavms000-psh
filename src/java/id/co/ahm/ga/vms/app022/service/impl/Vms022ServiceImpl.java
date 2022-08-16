@@ -111,12 +111,12 @@ public class Vms022ServiceImpl implements Vms022Service {
     
     @Override
     public DtoResponseWorkspace getFormAuthorization(VoUserCred userCred) {
-        String userId = getUserId(userCred);
-        List<Vms022VoFormAuthorization> form = vms022Ahmitb2eMstusrrolesDao.getMainMenuData(userId);
 //        String userId = getUserId(userCred);
-//        List<Ahmitb2eMstusrroles> formFunctionList = ahmitb2eMstusrrolesDao.getListUserRole(userId);
+//        List<Vms022VoFormAuthorization> form = vms022Ahmitb2eMstusrrolesDao.getMainMenuData(userId);
+        String userId = getUserId(userCred);
+        List<Ahmitb2eMstusrroles> formFunctionList = ahmitb2eMstusrrolesDao.getListUserRole(userId);
 //        System.out.println("============================= isi value daru formfunctionlist == " + formFunctionList);
-        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, form);
+        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, formFunctionList);
     }
     
     private String getUserId(VoUserCred userCred){
