@@ -339,7 +339,7 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Override
     public DtoResponseWorkspace approve(Vms022VoMonitoring getdata, VoUserCred userCred) {
 
-        if ((getdata.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM")) || (getdata.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT"))) {
+        if (getdata.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM") || getdata.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
             try {
                 AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
                 pk.setRotsempshs((getdata.getId()));
@@ -355,7 +355,7 @@ public class Vms022ServiceImpl implements Vms022Service {
             }
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, null);
         } else {
-            throw new Vms022Exception("Role tidak sesuai!");
+            throw new Vms022Exception("Role Not Exist!");
         }
     }
 
@@ -387,9 +387,7 @@ public class Vms022ServiceImpl implements Vms022Service {
 
     @Override
     public DtoResponseWorkspace reject(Vms022VoMonitoring getdata, VoUserCred userCred) {
-        if (getdata.getOutStatus().equalsIgnoreCase("")) {
-            throw new Vms022Exception("Role tidak sesuai!");
-        } else {
+        if (getdata.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM") || getdata.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
             try {
                 AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
                 pk.setRotsempshs((getdata.getId()));
@@ -404,6 +402,8 @@ public class Vms022ServiceImpl implements Vms022Service {
                 throw new Vms022Exception("Failed Reject Data Cause error when Updating");
             }
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Reject success", null, null);
+        } else {
+            throw new Vms022Exception("Role Not Exist!");
         }
 
     }
