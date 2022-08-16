@@ -12,6 +12,7 @@ package id.co.ahm.ga.vms.app022.vo;
 public class Vms022VoFormAuthorization {
 
     private String functionId;
+    private String roleId, roleDesc;
     private Boolean isAdd;
     private Boolean isEdit;
     private Boolean isDelete;
@@ -47,6 +48,24 @@ public class Vms022VoFormAuthorization {
     public void setIsDelete(Boolean isDelete) {
         this.isDelete = isDelete;
     }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+    public String getRoleDesc() {
+        return roleDesc;
+    }
+
+    public void setRoleDesc(String roleDesc) {
+        this.roleDesc = roleDesc;
+    }
+    
+    
     
     
 }

@@ -11,6 +11,7 @@ import id.co.ahm.ga.vms.app022.constant.Vms022Status;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlotsregsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlprmgblsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmHdrotsempsDao;
+import id.co.ahm.ga.vms.app022.dao.Vms022Ahmitb2eMstusrrolesDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022ObjectDao;
 import id.co.ahm.ga.vms.app022.exception.Vms022Exception;
 import id.co.ahm.ga.vms.app022.service.Vms022Service;
@@ -91,6 +92,10 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Autowired
     @Qualifier("vms022ahmhrntmDtlotsregsDao")
     private Vms022AhmhrntmDtlotsregsDao vms022ahmhrntmDtlotsregsDao;
+    
+    @Autowired
+    @Qualifier("vms022Ahmitb2eMstusrrolesDao")
+    private Vms022Ahmitb2eMstusrrolesDao vms022Ahmitb2eMstusrrolesDao;
 //    
 
     private String userId(VoUserCred user) {
@@ -107,12 +112,11 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Override
     public DtoResponseWorkspace getFormAuthorization(VoUserCred userCred) {
         String userId = getUserId(userCred);
-        List<Ahmitb2eMstusrroles> formFunctionList = ahmitb2eMstusrrolesDao.getListUserRole(userId);
-//        List<String> formFunctionList = ahmitb2eMstusrrolesDao.getFunctId(userId, "AHMGAVMS", "AHMGAVMS022");
-        System.out.println("============================= isi value daru formfunctionlist == " + formFunctionList);
-//        Vms022VoFormAuthorization vms022VoFormAuthorization = getFormAuthorization(formFunctionList);
-//        vms022VoFormAuthorization.setFunctionId(userId);
-        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, formFunctionList);
+        List<Vms022VoFormAuthorization> form = vms022Ahmitb2eMstusrrolesDao.getMainMenuData(userId);
+//        String userId = getUserId(userCred);
+//        List<Ahmitb2eMstusrroles> formFunctionList = ahmitb2eMstusrrolesDao.getListUserRole(userId);
+//        System.out.println("============================= isi value daru formfunctionlist == " + formFunctionList);
+        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, form);
     }
     
     private String getUserId(VoUserCred userCred){

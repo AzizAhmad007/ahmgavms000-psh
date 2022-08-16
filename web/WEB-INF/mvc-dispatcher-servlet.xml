@@ -13,22 +13,7 @@
         http://www.springframework.org/schema/tx 
         http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
   
-
-    
-<!--    <bean id="propertyConfigurer"
-      class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations" >
-            <list>
-                <value>
-                    classpath:database_amazone.properties
-                </value>
-                <value>
-                    file:${jxconfig}
-                </value>
-            </list>
-        </property>
-    </bean>-->
-    
+ 
     <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
         <property name="jndiName" value="jdbc/ahmpsDS" />
     </bean>
@@ -96,7 +81,8 @@
     <bean id="sessionFactoryB2e" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">        
         <property name="packagesToScan">
             <list>
-                <value>id.co.ahm.jx.b2e.app000.model</value>                
+                <value>id.co.ahm.jx.b2e.app000.model</value>     
+                <value>id.co.ahm.ga.vms.app022.model</value>           
             </list>
         </property>
         <property name="dataSource" ref="dataSourceB2e" />
@@ -167,7 +153,7 @@
         <!--Maksimal Upload 10 MB--> 
         <property name="maxUploadSize" value="10000000" />
     </bean>
-
+ 
     <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->    
     <tx:annotation-driven />
     
@@ -180,5 +166,5 @@
     </mvc:interceptors>
     
     <mvc:annotation-driven />
-
+ 
 </beans>
