@@ -92,7 +92,7 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Autowired
     @Qualifier("vms022ahmhrntmDtlotsregsDao")
     private Vms022AhmhrntmDtlotsregsDao vms022ahmhrntmDtlotsregsDao;
-    
+
     @Autowired
     @Qualifier("vms022Ahmitb2eMstusrrolesDao")
     private Vms022Ahmitb2eMstusrrolesDao vms022Ahmitb2eMstusrrolesDao;
@@ -108,16 +108,16 @@ public class Vms022ServiceImpl implements Vms022Service {
         }
         return domain + user.getUsername();
     }
-    
+
     @Override
     public DtoResponseWorkspace getFormAuthorization(VoUserCred userCred) {
         String userId = getUserId(userCred);
         List<Ahmitb2eMstusrroles> formFunctionList = ahmitb2eMstusrrolesDao.getListUserRole(userId);
         List<Map<String, String>> result = new ArrayList<>();
-        
+
         for (Ahmitb2eMstusrroles data : formFunctionList) {
-            Ahmitb2eMstusrrolesPk desc =  data.getAhmitb2eMstusrrolesPk();
-            
+            Ahmitb2eMstusrrolesPk desc = data.getAhmitb2eMstusrrolesPk();
+
             if (desc.getVroleid().equals("RO_GAVMS_PICAHM")) {
                 Map<String, String> role = new HashMap<>();
                 role.put("roleName", desc.getVroleid());
@@ -128,41 +128,37 @@ public class Vms022ServiceImpl implements Vms022Service {
                 result.add(role);
             }
         }
-        
-        
-        
+
 //        System.out.println("============================= isi value daru formfunctionlist == " + formFunctionList);
         return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, result);
     }
-    
-    private String getUserId(VoUserCred userCred){
+
+    private String getUserId(VoUserCred userCred) {
         String userId = userCred.getUsername();
-        
+
         if (!(!AhmStringUtil.hasValue(userCred.getDomain()) || "SYSTEM".equalsIgnoreCase(userCred.getDomain()))) {
             userId = userCred.getDomain() + "\\" + userCred.getUsername();
         }
-        
+
         return userId;
     }
-    
-        private Vms022VoFormAuthorization getFormAuthorization(List<String> formFunctionList){
+
+    private Vms022VoFormAuthorization getFormAuthorization(List<String> formFunctionList) {
         Vms022VoFormAuthorization vms022VoFormAuthorization = new Vms022VoFormAuthorization();
         vms022VoFormAuthorization.setIsAdd(Boolean.TRUE);
         vms022VoFormAuthorization.setIsEdit(Boolean.TRUE);
         vms022VoFormAuthorization.setIsDelete(Boolean.TRUE);
-        
-        for(String s : formFunctionList){
-            if(s.equals(Vms022Status.ADD.getMessage())){
+
+        for (String s : formFunctionList) {
+            if (s.equals(Vms022Status.ADD.getMessage())) {
                 vms022VoFormAuthorization.setIsAdd(Boolean.TRUE);
-            }
-            else if(s.equals(Vms022Status.EDIT.getMessage())){
+            } else if (s.equals(Vms022Status.EDIT.getMessage())) {
                 vms022VoFormAuthorization.setIsEdit(Boolean.TRUE);
-            }
-            else if(s.equals(Vms022Status.DELETE.getMessage())){
+            } else if (s.equals(Vms022Status.DELETE.getMessage())) {
                 vms022VoFormAuthorization.setIsDelete(Boolean.TRUE);
             }
         }
-        
+
         return vms022VoFormAuthorization;
     }
 
@@ -343,9 +339,7 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Override
     public DtoResponseWorkspace approve(Vms022VoMonitoring getdata, VoUserCred userCred) {
 
-        if ((!getdata.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM")) || (!getdata.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT"))) {
-            throw new Vms022Exception("Role tidak sesuai!");
-        } else {
+        if ((getdata.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM")) || (getdata.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT"))) {
             try {
                 AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
                 pk.setRotsempshs((getdata.getId()));
@@ -359,8 +353,10 @@ public class Vms022ServiceImpl implements Vms022Service {
             } catch (Exception e) {
                 return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, null);
             }
+            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, null);
+        } else {
+            throw new Vms022Exception("Role tidak sesuai!");
         }
-        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, null);
     }
 
     @Override
@@ -729,14 +725,14 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Override
     public DtoResponseWorkspace showPlant(Vms022VoLov input) {
         List<Vms022VoLov> Plant = vms022ahmhrntmDtlprmgblsDao.getPlant(input.getId(), input.getCode());
-        
+
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, Plant, 1);
     }
 
     @Override
     public DtoResponseWorkspace showGate(Vms022VoLov input) {
         List<Vms022VoLov> Gate = vms022ahmhrntmDtlprmgblsDao.getGate(input.getId(), input.getCode());
-        
+
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, Gate, 1);
     }
 
