@@ -343,7 +343,7 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Override
     public DtoResponseWorkspace approve(Vms022VoMonitoring getdata, VoUserCred userCred) {
 
-        if (getdata.getOutStatus().equalsIgnoreCase("")) {
+        if ((!getdata.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM")) || (!getdata.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT"))) {
             throw new Vms022Exception("Role tidak sesuai!");
         } else {
             try {
