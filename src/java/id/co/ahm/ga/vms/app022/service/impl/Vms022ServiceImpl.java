@@ -122,6 +122,10 @@ public class Vms022ServiceImpl implements Vms022Service {
                 Map<String, String> role = new HashMap<>();
                 role.put("roleName", desc.getVroleid());
                 result.add(role);
+            } else if (desc.getVroleid().equals("RO_GAVMS_OFCSECT")) {
+                Map<String, String> role = new HashMap<>();
+                role.put("roleName", desc.getVroleid());
+                result.add(role);
             }
         }
         
