@@ -58,17 +58,25 @@ public class Vms022Rest {
     @Autowired
     @Qualifier(value = "tokenPshUtil")
     private TokenPshUtil tokenPshUtil;
-    
+
     //success
     @RequestMapping(value = "test-mamank", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     DtoResponsePagingWorkspace searchMonitoring(@RequestHeader(value = "token", defaultValue = "") String token
-            ) {
+    ) {
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, null, null, null, 0);
     }
-    
+
+    @RequestMapping(value = "getformauth", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace getFormAuthorization(@RequestHeader(value = "token", defaultValue = "") String token) {
+        VoUserCred userCred = tokenPshUtil.getUserCred(token);
+
+        return vms022Service.getFormAuthorization(userCred);
+    }
+
     //not fix yet
     @RequestMapping(value = "get-roles-by-userid", method = RequestMethod.POST,
             consumes = MediaType.ALL_VALUE,
@@ -83,14 +91,14 @@ public class Vms022Rest {
         if (roles != null && !roles.isEmpty()) {
             for (String s : roles) {
                 Pattern p = Pattern.compile("[A-Z_]+([0-9]+)");
-                Matcher m = p.matcher(s);                
-                
-                plants.add("'" + ((m.matches() && m.groupCount() > 0)? m.group(1): s) + "'");
+                Matcher m = p.matcher(s);
+
+                plants.add("'" + ((m.matches() && m.groupCount() > 0) ? m.group(1) : s) + "'");
             }
         }
         return vms022Service.getRoleByUserLogin(String.join(",", plants), user);
     }
-    
+
     @RequestMapping(value = "show-plant", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -99,7 +107,7 @@ public class Vms022Rest {
         VoUserCred user = tokenPshUtil.getUserCred(token);
         return vms022Service.showPlant();
     }
-    
+
     //success
     @RequestMapping(value = "monitoring", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
@@ -111,7 +119,7 @@ public class Vms022Rest {
 
         return vms022Service.showMonitoring(dto);
     }
-    
+
     //success
     @RequestMapping(value = "approve-single", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
@@ -125,7 +133,7 @@ public class Vms022Rest {
 //        return "success";
 
     }
-    
+
     //success
     @RequestMapping(value = "reject-single", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
@@ -137,7 +145,7 @@ public class Vms022Rest {
 
         return vms022Service.reject(getdata, user);
     }
-     
+
     @RequestMapping(value = "approve", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -145,11 +153,10 @@ public class Vms022Rest {
     DtoResponseWorkspace approving(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody List<Vms022VoMonitoring> input) {
         VoUserCred user = tokenPshUtil.getUserCred(token);
-        
+
         return vms022Service.approving(input, user);
     }
-    
-    
+
     @RequestMapping(value = "reject", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -160,15 +167,15 @@ public class Vms022Rest {
 
         return vms022Service.rejecting(getdata, user);
     }
-    
+
     @RequestMapping(value = "export-excel", method = RequestMethod.GET)
-    public void ModelAndView (HttpServletRequest request,
+    public void ModelAndView(HttpServletRequest request,
             HttpServletResponse response,
-            @RequestParam(value = "token", defaultValue= "") String token, 
+            @RequestParam(value = "token", defaultValue = "") String token,
             @RequestParam Map<String, Object> mapParam) {
         DtoParamPaging input = new DtoParamPaging();
         input.setSearch(mapParam);
-        
+
         SimpleDateFormat fmt = new SimpleDateFormat("YYYYMMddHHmmss");
         String filename = "Verification Personal Data Partner & Outsource_" + fmt.format(new Date());
         response.setContentType("application/vnd.ms-excel");
@@ -182,27 +189,27 @@ public class Vms022Rest {
             e.printStackTrace();
         }
     }
-    
+
     @RequestMapping(value = "get-plants", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     DtoResponseWorkspace getPlants(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody Vms022VoLov input) {
-        
+
         return vms022Service.showPlant(input);
     }
-    
+
     @RequestMapping(value = "get-gates", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     DtoResponseWorkspace getGates(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody Vms022VoLov input) {
-        
+
         return vms022Service.showGate(input);
     }
-    
+
 //    @RequestMapping(value = "download", 
 //            method = {RequestMethod.POST, RequestMethod.GET})
 //    public void download(HttpServletRequest request,
@@ -237,32 +244,31 @@ public class Vms022Rest {
 //        wb.write(out);
 //        response.flushBuffer();
 //    }
-    
     @RequestMapping(value = "exreg", method = RequestMethod.POST)
-    public ModelAndView exportRegulation(@RequestParam(name = "token", defaultValue = "") String token, 
-            @RequestParam(name = "oi") String outId, 
-            @RequestParam(name = "on") String outName, 
-            @RequestParam(name = "n") String persId, 
-            @RequestParam(name = "pf") String beginDateText, 
-            @RequestParam(name = "pt") String endDateText, 
-            @RequestParam(name = "pcn") String passNumber, 
-            @RequestParam(name = "pa") String pic, 
-            @RequestParam(name = "ot") String outType, 
-            @RequestParam(name = "oc") String company, 
-            @RequestParam(name = "os") String outStatus, 
-            @RequestParam(name = "p") String areaName, 
+    public ModelAndView exportRegulation(@RequestParam(name = "token", defaultValue = "") String token,
+            @RequestParam(name = "oi") String outId,
+            @RequestParam(name = "on") String outName,
+            @RequestParam(name = "n") String persId,
+            @RequestParam(name = "pf") String beginDateText,
+            @RequestParam(name = "pt") String endDateText,
+            @RequestParam(name = "pcn") String passNumber,
+            @RequestParam(name = "pa") String pic,
+            @RequestParam(name = "ot") String outType,
+            @RequestParam(name = "oc") String company,
+            @RequestParam(name = "os") String outStatus,
+            @RequestParam(name = "p") String areaName,
             @RequestParam(name = "c19vs") String vacStatus) {
-        
-        if(StringUtils.isNotEmpty(beginDateText)){
+
+        if (StringUtils.isNotEmpty(beginDateText)) {
             Date effectiveDateFrom = Vms022DateTimeUtil.stringToDate(beginDateText);
             beginDateText = Vms022DateTimeUtil.dateToString("dd-MMM-yyyy", effectiveDateFrom);
         }
 
-        if(StringUtils.isNotEmpty(endDateText)){
+        if (StringUtils.isNotEmpty(endDateText)) {
             Date effectiveDateTo = Vms022DateTimeUtil.stringToDate(endDateText);
             endDateText = Vms022DateTimeUtil.dateToString("dd-MMM-yyyy", effectiveDateTo);
         }
-        
+
         Map<String, Object> search = new HashMap<>();
         search.put("outId", outId);
         search.put("outName", outName);
@@ -276,23 +282,23 @@ public class Vms022Rest {
         search.put("outStatus", outStatus);
         search.put("areaName", areaName);
         search.put("vacStatus", vacStatus);
-        
+
         DtoParamPaging dtoParam = new DtoParamPaging();
         dtoParam.setOffset(-1);
         dtoParam.setLimit(-1);
         dtoParam.setSort(null);
         dtoParam.setSearch(search);
         dtoParam.setOrder("");
-        
+
         DtoResponseWorkspace dtoResponseWorkspace = vms022Service.getExcel(dtoParam);
-        List<Vms022VoMonitoring> vms022VoMonitoring = (List<Vms022VoMonitoring>)dtoResponseWorkspace.getData();
+        List<Vms022VoMonitoring> vms022VoMonitoring = (List<Vms022VoMonitoring>) dtoResponseWorkspace.getData();
         System.out.println("============ value of vms022VoMonitoring = " + vms022VoMonitoring);
-        
+
         ModelAndView modelAndView = new ModelAndView(new Vms022ExportExcel());
         modelAndView.addObject("dtoParam", dtoParam);
         modelAndView.addObject("data", dtoResponseWorkspace);
-        
+
         return modelAndView;
     }
-    
+
 }

@@ -21,6 +21,8 @@ import org.apache.poi.ss.usermodel.Workbook;
  */
 public interface Vms022Service {
     
+    DtoResponseWorkspace getFormAuthorization(VoUserCred userCred);
+    
     DtoResponse getRoleByUserLogin(String plants, VoUserCred user);
     
     DtoResponseWorkspace showPlant();

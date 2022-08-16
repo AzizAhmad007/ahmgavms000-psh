@@ -391,7 +391,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
     }
 
     private void orderClause(DtoParamPaging input, StringBuilder query, Map<String, String> clause, String defaultClause) {
-        if (input.getSort() != null && !StringUtils.isEmpty(input.getSort())) {
+        if (input.getSort() != null && !StringUtils.isEmpty(input.getSort()) && !"undefined".equalsIgnoreCase(input.getSort())) {
             query.append(" ORDER BY ");
             if (input.getOrder() != null && !StringUtils.isEmpty(input.getOrder())) {
                 Iterator<String> sorts = Arrays.asList(input.getSort().split(",")).iterator();
@@ -419,7 +419,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             }
         } else {
             if (AhmStringUtil.hasValue(defaultClause)) {
-                query.append(" ORDER BY ").append(defaultClause);
+                query.append(" ORDER BY ").append(defaultClause).append(" DESC");
             }
         }
     }

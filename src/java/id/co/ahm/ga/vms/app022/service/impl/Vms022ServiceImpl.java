@@ -7,6 +7,7 @@ package id.co.ahm.ga.vms.app022.service.impl;
 
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsemps;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsempsPk;
+import id.co.ahm.ga.vms.app022.constant.Vms022Status;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlotsregsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlprmgblsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmHdrotsempsDao;
@@ -14,6 +15,7 @@ import id.co.ahm.ga.vms.app022.dao.Vms022ObjectDao;
 import id.co.ahm.ga.vms.app022.exception.Vms022Exception;
 import id.co.ahm.ga.vms.app022.service.Vms022Service;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoFileAttachment;
+import id.co.ahm.ga.vms.app022.vo.Vms022VoFormAuthorization;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitor;
@@ -26,6 +28,7 @@ import id.co.ahm.jxf.dto.DtoResponse;
 import id.co.ahm.jxf.dto.DtoResponsePaging;
 import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
+import id.co.ahm.jxf.util.AhmStringUtil;
 import id.co.ahm.jxf.util.DateUtil;
 import id.co.ahm.jxf.util.DtoHelper;
 import id.co.ahm.jxf.vo.VoUserCred;
@@ -99,6 +102,46 @@ public class Vms022ServiceImpl implements Vms022Service {
             domain = user.getDomain() + "\\";
         }
         return domain + user.getUsername();
+    }
+    
+    @Override
+    public DtoResponseWorkspace getFormAuthorization(VoUserCred userCred) {
+        String userId = getUserId(userCred);
+        List<String> formFunctionList = ahmitb2eMstusrrolesDao.getFunctId(userId, "AHMGAVMS", "AHMGAVMS022");
+        Vms022VoFormAuthorization vms022VoFormAuthorization = getFormAuthorization(formFunctionList);
+        vms022VoFormAuthorization.setFunctionId(userId);
+        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, vms022VoFormAuthorization);
+    }
+    
+    private String getUserId(VoUserCred userCred){
+        String userId = userCred.getUsername();
+        
+        if (!(!AhmStringUtil.hasValue(userCred.getDomain()) || "SYSTEM".equalsIgnoreCase(userCred.getDomain()))) {
+            userId = userCred.getDomain() + "\\" + userCred.getUsername();
+        }
+        
+        return userId;
+    }
+    
+        private Vms022VoFormAuthorization getFormAuthorization(List<String> formFunctionList){
+        Vms022VoFormAuthorization vms022VoFormAuthorization = new Vms022VoFormAuthorization();
+        vms022VoFormAuthorization.setIsAdd(Boolean.TRUE);
+        vms022VoFormAuthorization.setIsEdit(Boolean.TRUE);
+        vms022VoFormAuthorization.setIsDelete(Boolean.TRUE);
+        
+        for(String s : formFunctionList){
+            if(s.equals(Vms022Status.ADD.getMessage())){
+                vms022VoFormAuthorization.setIsAdd(Boolean.TRUE);
+            }
+            else if(s.equals(Vms022Status.EDIT.getMessage())){
+                vms022VoFormAuthorization.setIsEdit(Boolean.TRUE);
+            }
+            else if(s.equals(Vms022Status.DELETE.getMessage())){
+                vms022VoFormAuthorization.setIsDelete(Boolean.TRUE);
+            }
+        }
+        
+        return vms022VoFormAuthorization;
     }
 
     @Override
