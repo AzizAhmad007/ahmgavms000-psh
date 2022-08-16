@@ -69,7 +69,9 @@ public class Vms022Rest {
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, null, null, null, 0);
     }
 
-    @RequestMapping(value = "getformauth", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "getformauth", method = RequestMethod.POST, 
+            consumes = {MediaType.APPLICATION_JSON_VALUE}, 
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     DtoResponseWorkspace getFormAuthorization(@RequestHeader(value = "token", defaultValue = "") String token) {
         VoUserCred userCred = tokenPshUtil.getUserCred(token);
