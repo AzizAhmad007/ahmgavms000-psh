@@ -460,14 +460,6 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             createCell(rowHeaderTable, "Modified By", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Modified Date", col++, styleHeaderTable1);
             
-//            begin coba sout isi data
-            System.out.println("======================================================");
-            System.out.println("");
-            System.out.println("isi dari data = " + data.size());
-            System.out.println("");
-            System.out.println("======================================================");
-//            end coba sout isi data
-            
             for (Vms022VoMonitoring item : data) {
                 col = 0;
                 
@@ -477,8 +469,8 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                 createCell(rowContentData, item.getOutId(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getOutName(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getPersId(), col++, styleContentTable1WithWrap);
-                createCell(rowContentData, item.getOutType(), col++, styleContentTable1WithWrap);
-                createCell(rowContentData, item.getCompany(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, item.getOutTypeName(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, item.getCompanyName(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getOutStatus(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getAreaName(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getVacStatus(), col++, styleContentTable1WithWrap);

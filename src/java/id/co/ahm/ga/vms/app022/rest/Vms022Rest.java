@@ -80,28 +80,6 @@ public class Vms022Rest {
         return vms022Service.getFormAuthorization(userCred);
     }
 
-    //not fix yet
-    @RequestMapping(value = "get-roles-by-userid", method = RequestMethod.POST,
-            consumes = MediaType.ALL_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    DtoResponse getPlantByUserId(
-            @RequestHeader(value = "token", defaultValue = "") String token) {
-        VoUserCred user = tokenPshUtil.getUserCred(token);
-        System.out.println("==== value dari vousercred = " + user);
-        List<String> roles = user.getListRole();
-        List<String> plants = new ArrayList<>();
-        if (roles != null && !roles.isEmpty()) {
-            for (String s : roles) {
-                Pattern p = Pattern.compile("[A-Z_]+([0-9]+)");
-                Matcher m = p.matcher(s);
-
-                plants.add("'" + ((m.matches() && m.groupCount() > 0) ? m.group(1) : s) + "'");
-            }
-        }
-        return vms022Service.getRoleByUserLogin(String.join(",", plants), user);
-    }
-
     @RequestMapping(value = "show-plant", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -171,28 +149,6 @@ public class Vms022Rest {
         return vms022Service.rejecting(getdata, user);
     }
 
-    @RequestMapping(value = "export-excel", method = RequestMethod.GET)
-    public void ModelAndView(HttpServletRequest request,
-            HttpServletResponse response,
-            @RequestParam(value = "token", defaultValue = "") String token,
-            @RequestParam Map<String, Object> mapParam) {
-        DtoParamPaging input = new DtoParamPaging();
-        input.setSearch(mapParam);
-
-        SimpleDateFormat fmt = new SimpleDateFormat("YYYYMMddHHmmss");
-        String filename = "Verification Personal Data Partner & Outsource_" + fmt.format(new Date());
-        response.setContentType("application/vnd.ms-excel");
-        response.setHeader("Content-Disposition", "inline; filename=" + filename + ".xls");
-        try {
-            OutputStream out = response.getOutputStream();
-            Workbook wb = vms022Service.exportToExcelMainData(input);
-            wb.write(out);
-            response.flushBuffer();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @RequestMapping(value = "get-plants", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -223,40 +179,6 @@ public class Vms022Rest {
         return vms022Service.showPicAhm(input);
     }
 
-//    @RequestMapping(value = "download", 
-//            method = {RequestMethod.POST, RequestMethod.GET})
-//    public void download(HttpServletRequest request,
-//            HttpServletResponse response,
-//            @RequestHeader(value = "token", defaultValue = "") String token,
-//            @RequestParam Map<String, Object> vo
-//    ) throws IOException 
-//    {
-//        DtoParamPaging param = new DtoParamPaging();
-//        param.setOffset(0);
-//        param.setLimit(0);
-//        if (vo.get("sort") != null) {
-//             param.setSort((String) vo.get("sort"));
-//        }
-//        if (vo.get("order") != null) {
-//             param.setOrder((String) vo.get("order"));
-//        }
-//        
-//        param.setSearch(vo);
-//            
-//        Workbook wb = vms022Service.download(param);     
-//        
-//        OutputStream out = response.getOutputStream();
-//        String filename = (String)param.getSearch().get(AppEnum.TEMPLATE_NAME.getValue());
-//        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-//       
-//            String[] exts = filename.split("\\.");
-//            String ext = exts[exts.length-1];
-//            filename = filename.substring(0, filename.length()-5);            
-//            response.setHeader("Content-Disposition", "attachment; filename="+URLEncoder.encode(filename+"_"+new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+"."+ext)); 
-//                             
-//        wb.write(out);
-//        response.flushBuffer();
-//    }
     @RequestMapping(value = "exreg", method = RequestMethod.POST)
     public ModelAndView exportRegulation(@RequestParam(name = "token", defaultValue = "") String token,
             @RequestParam(name = "oi") String outId,
@@ -305,18 +227,6 @@ public class Vms022Rest {
 
         DtoResponseWorkspace dtoResponseWorkspace = vms022Service.getExcel(dtoParam);
         List<Vms022VoMonitoring> vms022VoMonitor = (List<Vms022VoMonitoring>) dtoResponseWorkspace.getData();
-
-
-        System.out.println("======================================================");
-        System.out.println("");
-        System.out.println("============ value of vms022VoMonitoring = " + vms022VoMonitor);
-        System.out.println("");
-        System.out.println("============ value of dtoResponseWorkspace = " + dtoResponseWorkspace);
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("======================================================");
-
         ModelAndView modelAndView = new ModelAndView(new Vms022ExportExcel());
         modelAndView.addObject("dtoParam", dtoParam);
         modelAndView.addObject("data", vms022VoMonitor);

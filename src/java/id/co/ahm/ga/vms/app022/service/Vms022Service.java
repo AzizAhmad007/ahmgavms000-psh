@@ -24,8 +24,6 @@ public interface Vms022Service {
     
     DtoResponseWorkspace getFormAuthorization(VoUserCred userCred);
     
-    DtoResponse getRoleByUserLogin(String plants, VoUserCred user);
-    
     DtoResponseWorkspace showPlant();
     
     DtoResponsePaging monitoring(DtoParamPaging input, VoUserCred userCred);
@@ -45,8 +43,6 @@ public interface Vms022Service {
     DtoResponseWorkspace reject(Vms022VoMonitoring getdata, VoUserCred userCred);
     
     DtoResponseWorkspace rejecting(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
-
-    Workbook exportToExcelMainData(DtoParamPaging dto);
     
     DtoResponsePagingWorkspace getExcel(DtoParamPaging dto);
 }
