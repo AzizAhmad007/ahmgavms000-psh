@@ -97,7 +97,7 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Autowired
     @Qualifier("vms022Ahmitb2eMstusrrolesDao")
     private Vms022Ahmitb2eMstusrrolesDao vms022Ahmitb2eMstusrrolesDao;
-    
+
     @Autowired
     @Qualifier("vms022AhmhrntmMstpicotsDao")
     private Vms022AhmhrntmMstpicotsDao vms022AhmhrntmMstpicotsDao;
@@ -352,9 +352,16 @@ public class Vms022ServiceImpl implements Vms022Service {
 
                 AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
                 if (mp != null) {
-                    mp.setVotsstts(getdata.getOutStatus());
-                    vms022ahmhrntmHdrotsempsDao.update(mp);
-                    vms022ahmhrntmHdrotsempsDao.flush();
+                    if (getdata.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM")) {
+                        mp.setVotsstts(getdata.getOutStatus());
+                        vms022ahmhrntmHdrotsempsDao.update(mp);
+                        vms022ahmhrntmHdrotsempsDao.flush();
+                    } else if (getdata.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
+                        mp.setVotsstts(getdata.getOutStatus());
+                        mp.setDpassexp(DateUtil.stringToDate(getdata.getPassExpiryDateText(), "dd-MMM-yyyy"));
+                        vms022ahmhrntmHdrotsempsDao.update(mp);
+                        vms022ahmhrntmHdrotsempsDao.flush();
+                    }
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, ("Approve success"), null, null);
                 }
             } catch (Exception e) {
@@ -381,10 +388,11 @@ public class Vms022ServiceImpl implements Vms022Service {
                         mp.setLastModBy(userCred.getUserid());
                         vms022ahmhrntmHdrotsempsDao.update(mp);
                         vms022ahmhrntmHdrotsempsDao.flush();
+                    }
                 } else {
                     throw new Vms022Exception("Role Not Exist!");
-                    }
                 }
+
             }
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Approve success", null, null);
         } else {
