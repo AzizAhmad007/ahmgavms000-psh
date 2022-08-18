@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author reza.mr
  */
-@Repository("vms022ahmhrntmMstpicotsDao")
+@Repository("vms022AhmhrntmMstpicotsDao")
 public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpicots, String> implements Vms022AhmhrntmMstpicotsDao {
 
     @Override
