@@ -372,9 +372,7 @@ public class Vms022ServiceImpl implements Vms022Service {
         if (!getdata.isEmpty()) {
             for (Vms022VoMonitoring vo : getdata) {
                 System.out.println("============================= value dari vo.outstat = " + vo.getOutStatus());
-                if (vo.getOutStatus().equalsIgnoreCase("")) {
-                    throw new Vms022Exception("Role tidak sesuai!");
-                } else {
+                if (vo.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM") || vo.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
                     AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
                     pk.setRotsempshs((vo.getId()));
                     AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
@@ -383,6 +381,8 @@ public class Vms022ServiceImpl implements Vms022Service {
                         mp.setLastModBy(userCred.getUserid());
                         vms022ahmhrntmHdrotsempsDao.update(mp);
                         vms022ahmhrntmHdrotsempsDao.flush();
+                } else {
+                    throw new Vms022Exception("Role Not Exist!");
                     }
                 }
             }
@@ -419,20 +419,19 @@ public class Vms022ServiceImpl implements Vms022Service {
     public DtoResponseWorkspace rejecting(List<Vms022VoMonitoring> getdata, VoUserCred userCred) {
         if (!getdata.isEmpty()) {
             for (Vms022VoMonitoring vo : getdata) {
-                if (vo.getOutStatus().equalsIgnoreCase("")) {
-                    throw new Vms022Exception("Role tidak sesuai!");
-                } else {
+                if (vo.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM") || vo.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
                     AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
                     pk.setRotsempshs((vo.getId()));
                     AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
                     if (mp != null) {
                         mp.setVotsstts(vo.getOutStatus());
                         mp.setVnoterejc(vo.getReasonReject());
-//                        mp.setVotsstts("Waiting for Approval Security");
                         mp.setLastModBy(userCred.getUserid());
                         vms022ahmhrntmHdrotsempsDao.update(mp);
                         vms022ahmhrntmHdrotsempsDao.flush();
                     }
+                } else {
+                    throw new Vms022Exception("Role Not Exist!");
                 }
             }
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Reject success", null, null);
