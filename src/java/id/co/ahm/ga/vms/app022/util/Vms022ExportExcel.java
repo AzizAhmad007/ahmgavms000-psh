@@ -205,7 +205,9 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                         valueStr = valueObject.toString();
                     }
                     
-                    if (StringUtils.isNotEmpty(valueStr)) {
+                    if (valueStr.equalsIgnoreCase(" ")) {
+                        outStatus = "ALL";
+                    }else if (StringUtils.isNotEmpty(valueStr)) {
                         outStatus = valueStr;
                     }
                 }
@@ -221,7 +223,9 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                         valueStr = valueObject.toString();
                     }
                     
-                    if (StringUtils.isNotEmpty(valueStr)) {
+                    if (valueStr.equalsIgnoreCase(" ")) {
+                        outStatus = "ALL";
+                    }else if (StringUtils.isNotEmpty(valueStr)) {
                         areaName = valueStr;
                     }
                 }
@@ -237,7 +241,9 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                         valueStr = valueObject.toString();
                     }
                     
-                    if (StringUtils.isNotEmpty(valueStr)) {
+                    if (valueStr.equalsIgnoreCase(" ")) {
+                        outStatus = "ALL";
+                    }else if (StringUtils.isNotEmpty(valueStr)) {
                         vacStatus = valueStr;
                     }
                 }
@@ -453,6 +459,14 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             createCell(rowHeaderTable, "Pass Card Expiry Date", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Modified By", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Modified Date", col++, styleHeaderTable1);
+            
+//            begin coba sout isi data
+            System.out.println("======================================================");
+            System.out.println("");
+            System.out.println("isi dari data = " + data.size());
+            System.out.println("");
+            System.out.println("======================================================");
+//            end coba sout isi data
             
             for (Vms022VoMonitoring item : data) {
                 col = 0;
