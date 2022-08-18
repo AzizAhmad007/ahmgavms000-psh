@@ -9,6 +9,7 @@ import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsemps;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsempsPk;
 import id.co.ahm.ga.vms.app022.constant.Vms022Constant;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmHdrotsempsDao;
+import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitor;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.jxf.constant.CommonConstant;
 import id.co.ahm.jxf.dao.HrHibernateDao;
@@ -425,8 +426,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
     }
 
     @Override
-    public List<Vms022VoMonitoring> getDataExcel(DtoParamPaging input) {
-                List<Vms022VoMonitoring> result = new ArrayList<>();
+    public Vms022VoMonitor getDataExcel(DtoParamPaging input) {
+        Vms022VoMonitor result = new Vms022VoMonitor();
+        List<Vms022VoMonitoring> results = new ArrayList<>();
         Map<String, String> sortMap = new HashMap<>();
         StringBuilder sqlQuery = new StringBuilder();
         String tes = "";
@@ -556,6 +558,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .setParameter("outstat", outstat)
                 .setParameter("plant", plant)
                 .setParameter("vacstat", vacstat);
+        
+        Integer totalExcel = query.list().size();
 
         try {
             List lists = query.list();
@@ -637,12 +641,16 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 }
                 vo.setRowNum(i);
 
-                result.add(vo);
+                results.add(vo);
 
             }
         } catch (Exception e) {
             return result;
         }
+        
+        result.setMonitoring(results);
+        result.setTotalMonitoring(totalExcel);
+        
         return result;
     }
 

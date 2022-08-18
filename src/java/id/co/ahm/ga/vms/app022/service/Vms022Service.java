@@ -10,6 +10,7 @@ import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponse;
 import id.co.ahm.jxf.dto.DtoResponsePaging;
+import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
 import id.co.ahm.jxf.vo.VoUserCred;
 import java.util.List;
@@ -47,5 +48,5 @@ public interface Vms022Service {
 
     Workbook exportToExcelMainData(DtoParamPaging dto);
     
-    DtoResponseWorkspace getExcel(DtoParamPaging dto);
+    DtoResponsePagingWorkspace getExcel(DtoParamPaging dto);
 }

@@ -10,6 +10,7 @@ import id.co.ahm.ga.vms.app022.util.Vms022DateTimeUtil;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.ga.vms.app022.util.Vms022ExportExcel;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
+import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitor;
 import id.co.ahm.jxf.constant.StatusMsgEnum;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponse;
@@ -303,12 +304,12 @@ public class Vms022Rest {
         dtoParam.setOrder("");
 
         DtoResponseWorkspace dtoResponseWorkspace = vms022Service.getExcel(dtoParam);
-        List<Vms022VoMonitoring> vms022VoMonitoring = (List<Vms022VoMonitoring>) dtoResponseWorkspace;
+        List<Vms022VoMonitoring> vms022VoMonitor = (List<Vms022VoMonitoring>) dtoResponseWorkspace.getData();
 
 
         System.out.println("======================================================");
         System.out.println("");
-        System.out.println("============ value of vms022VoMonitoring = " + vms022VoMonitoring);
+        System.out.println("============ value of vms022VoMonitoring = " + vms022VoMonitor);
         System.out.println("");
         System.out.println("============ value of dtoResponseWorkspace = " + dtoResponseWorkspace);
         System.out.println("");
@@ -318,7 +319,7 @@ public class Vms022Rest {
 
         ModelAndView modelAndView = new ModelAndView(new Vms022ExportExcel());
         modelAndView.addObject("dtoParam", dtoParam);
-        modelAndView.addObject("data", vms022VoMonitoring);
+        modelAndView.addObject("data", vms022VoMonitor);
 
         return modelAndView;
     }
