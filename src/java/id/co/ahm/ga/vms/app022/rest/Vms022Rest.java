@@ -285,20 +285,20 @@ public class Vms022Rest {
         Map<String, Object> search = new HashMap<>();
         search.put("outId", outId);
         search.put("outName", outName);
-        search.put("persId", persId);
-        search.put("beginDateText", beginDateText);
-        search.put("endDateText", endDateText);
+        search.put("nik", persId);
+        search.put("beginDate", beginDateText);
+        search.put("endDate", endDateText);
         search.put("passNumber", passNumber);
         search.put("pic", pic);
         search.put("outType", outType);
         search.put("company", company);
         search.put("outStatus", outStatus);
-        search.put("areaName", areaName);
+        search.put("plant", areaName);
         search.put("vacStatus", vacStatus);
 
         DtoParamPaging dtoParam = new DtoParamPaging();
-        dtoParam.setOffset(-1);
-        dtoParam.setLimit(-1);
+        dtoParam.setOffset(0);
+        dtoParam.setLimit(0);
         dtoParam.setSort(null);
         dtoParam.setSearch(search);
         dtoParam.setOrder("");
