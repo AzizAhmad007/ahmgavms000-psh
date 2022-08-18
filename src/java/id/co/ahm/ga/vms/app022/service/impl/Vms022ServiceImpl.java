@@ -232,6 +232,7 @@ public class Vms022ServiceImpl implements Vms022Service {
 
     @Override
     public DtoResponseWorkspace getExcel(DtoParamPaging dto) {
+        System.out.println("================== service | isi dari dto = " + dto);
         List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getDataExcel(dto);
         int count = vms022ahmhrntmHdrotsempsDao.countDataExcel(dto);
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, list, count);

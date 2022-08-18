@@ -69,8 +69,8 @@ public class Vms022Rest {
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, null, null, null, 0);
     }
 
-    @RequestMapping(value = "getformauth", method = RequestMethod.POST, 
-            consumes = {MediaType.APPLICATION_JSON_VALUE}, 
+    @RequestMapping(value = "getformauth", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     DtoResponseWorkspace getFormAuthorization(@RequestHeader(value = "token", defaultValue = "") String token) {
@@ -120,18 +120,6 @@ public class Vms022Rest {
         VoUserCred user = tokenPshUtil.getUserCred(token);
 
         return vms022Service.showMonitoring(dto);
-    }
-    
-    //coba manggil getExcel
-        @RequestMapping(value = "get-excel", method = RequestMethod.POST,
-            consumes = {MediaType.APPLICATION_JSON_VALUE},
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    DtoResponseWorkspace getExcel(@RequestHeader(value = "token", defaultValue = "") String token,
-            @RequestBody DtoParamPaging dto) {
-        VoUserCred user = tokenPshUtil.getUserCred(token);
-
-        return vms022Service.getExcel(dto);
     }
 
     //success
@@ -316,7 +304,17 @@ public class Vms022Rest {
 
         DtoResponseWorkspace dtoResponseWorkspace = vms022Service.getExcel(dtoParam);
         List<Vms022VoMonitoring> vms022VoMonitoring = (List<Vms022VoMonitoring>) dtoResponseWorkspace.getData();
+
+
+        System.out.println("======================================================");
+        System.out.println("");
         System.out.println("============ value of vms022VoMonitoring = " + vms022VoMonitoring);
+        System.out.println("");
+        System.out.println("============ value of dtoResponseWorkspace = " + dtoResponseWorkspace);
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("======================================================");
 
         ModelAndView modelAndView = new ModelAndView(new Vms022ExportExcel());
         modelAndView.addObject("dtoParam", dtoParam);
