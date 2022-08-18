@@ -206,7 +206,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                     }
                     
                     if (valueStr.equalsIgnoreCase(" ")) {
-                        outStatus = "ALL";
+                        outStatus = "All";
                     }else if (StringUtils.isNotEmpty(valueStr)) {
                         outStatus = valueStr;
                     }
@@ -224,7 +224,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                     }
                     
                     if (valueStr.equalsIgnoreCase(" ")) {
-                        outStatus = "ALL";
+                        outStatus = "All";
                     }else if (StringUtils.isNotEmpty(valueStr)) {
                         areaName = valueStr;
                     }
@@ -242,7 +242,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                     }
                     
                     if (valueStr.equalsIgnoreCase(" ")) {
-                        outStatus = "ALL";
+                        outStatus = "All";
                     }else if (StringUtils.isNotEmpty(valueStr)) {
                         vacStatus = valueStr;
                     }

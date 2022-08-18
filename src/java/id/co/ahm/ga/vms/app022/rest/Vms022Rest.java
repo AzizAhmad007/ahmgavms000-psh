@@ -320,7 +320,7 @@ public class Vms022Rest {
 
         ModelAndView modelAndView = new ModelAndView(new Vms022ExportExcel());
         modelAndView.addObject("dtoParam", dtoParam);
-        modelAndView.addObject("data", vms022VoMonitoring);
+        modelAndView.addObject("data", dtoResponseWorkspace);
 
         return modelAndView;
     }
