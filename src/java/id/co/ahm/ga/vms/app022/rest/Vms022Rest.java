@@ -121,6 +121,18 @@ public class Vms022Rest {
 
         return vms022Service.showMonitoring(dto);
     }
+    
+    //coba manggil getExcel
+        @RequestMapping(value = "get-excel", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace getExcel(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody DtoParamPaging dto) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
+
+        return vms022Service.getExcel(dto);
+    }
 
     //success
     @RequestMapping(value = "approve-single", method = RequestMethod.POST,
