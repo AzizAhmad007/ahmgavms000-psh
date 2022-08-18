@@ -303,7 +303,7 @@ public class Vms022Rest {
         dtoParam.setOrder("");
 
         DtoResponseWorkspace dtoResponseWorkspace = vms022Service.getExcel(dtoParam);
-        List<Vms022VoMonitoring> vms022VoMonitoring = (List<Vms022VoMonitoring>) dtoResponseWorkspace.getData();
+        List<Vms022VoMonitoring> vms022VoMonitoring = (List<Vms022VoMonitoring>) dtoResponseWorkspace;
 
 
         System.out.println("======================================================");
