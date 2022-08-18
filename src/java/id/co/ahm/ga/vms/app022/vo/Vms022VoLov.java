@@ -19,6 +19,8 @@ public class Vms022VoLov {
     private BigDecimal seq;    
     private String regid;
     private String stat;
+    
+    private String nrp, area, phoneNum;
 
     public String getId() {
         return id;
@@ -66,6 +68,30 @@ public class Vms022VoLov {
 
     public void setStat(String stat) {
         this.stat = stat;
+    }
+
+    public String getNrp() {
+        return nrp;
+    }
+
+    public void setNrp(String nrp) {
+        this.nrp = nrp;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
     
     

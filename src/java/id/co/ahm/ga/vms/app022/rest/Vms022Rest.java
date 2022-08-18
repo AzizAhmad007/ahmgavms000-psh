@@ -212,6 +212,16 @@ public class Vms022Rest {
         return vms022Service.showGate(input);
     }
 
+    @RequestMapping(value = "get-pic-ahm", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace getPicAhm(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody Vms022VoLov input) {
+
+        return vms022Service.showPicAhm(input);
+    }
+
 //    @RequestMapping(value = "download", 
 //            method = {RequestMethod.POST, RequestMethod.GET})
 //    public void download(HttpServletRequest request,

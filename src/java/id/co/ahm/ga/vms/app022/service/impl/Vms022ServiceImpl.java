@@ -11,6 +11,7 @@ import id.co.ahm.ga.vms.app022.constant.Vms022Status;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlotsregsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlprmgblsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmHdrotsempsDao;
+import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmMstpicotsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022Ahmitb2eMstusrrolesDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022ObjectDao;
 import id.co.ahm.ga.vms.app022.exception.Vms022Exception;
@@ -96,6 +97,10 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Autowired
     @Qualifier("vms022Ahmitb2eMstusrrolesDao")
     private Vms022Ahmitb2eMstusrrolesDao vms022Ahmitb2eMstusrrolesDao;
+    
+    @Autowired
+    @Qualifier("vms022AhmhrntmMstpicotsDao")
+    private Vms022AhmhrntmMstpicotsDao vms022AhmhrntmMstpicotsDao;
 //    
 
     private String userId(VoUserCred user) {
@@ -735,6 +740,13 @@ public class Vms022ServiceImpl implements Vms022Service {
         List<Vms022VoLov> Gate = vms022ahmhrntmDtlprmgblsDao.getGate(input.getId(), input.getCode());
 
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, Gate, 1);
+    }
+
+    @Override
+    public DtoResponseWorkspace showPicAhm(Vms022VoLov input) {
+        List<Vms022VoLov> Pic = vms022AhmhrntmMstpicotsDao.getPicAhm(input.getCode(), input.getArea());
+
+        return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, Pic, 1);
     }
 
 }

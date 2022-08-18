@@ -35,6 +35,8 @@ public interface Vms022Service {
     
     DtoResponseWorkspace showGate(Vms022VoLov input);
     
+    DtoResponseWorkspace showPicAhm(Vms022VoLov input);
+    
     DtoResponseWorkspace approve(Vms022VoMonitoring getdata, VoUserCred userCred);
     
     DtoResponseWorkspace approving(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
