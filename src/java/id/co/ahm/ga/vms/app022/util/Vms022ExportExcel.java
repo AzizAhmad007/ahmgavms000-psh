@@ -471,11 +471,18 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                 String gate = "";
                 
                 String supplier = "";
-                if (item.getSupplier() == "S") {
+                if (item.getSupplier().equalsIgnoreCase("S")) {
                     supplier += "Supplier";
-                } else if (item.getSupplier() == "N") {
+                } else if (item.getSupplier().equalsIgnoreCase("N")) {
                     supplier += "Non-Supplier";
                 }
+                
+                System.out.println("==================================================================================");
+                System.out.println("");
+                System.out.println("isi dari supplier");
+                System.out.println(supplier);
+                System.out.println("");
+                System.out.println("==================================================================================");
  
                 //<editor-fold defaultstate="collapsed" desc="Access Validation">
                 String access = "";
