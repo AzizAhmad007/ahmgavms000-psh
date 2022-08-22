@@ -261,6 +261,16 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             sheet.setColumnWidth(11, 7500);
             sheet.setColumnWidth(12, 7500);
             sheet.setColumnWidth(13, 7500);
+            sheet.setColumnWidth(14, 7500);
+            sheet.setColumnWidth(15, 7500);
+            sheet.setColumnWidth(16, 7500);
+            sheet.setColumnWidth(17, 7500);
+            sheet.setColumnWidth(18, 7500);
+            sheet.setColumnWidth(19, 7500);
+            sheet.setColumnWidth(20, 7500);
+            sheet.setColumnWidth(21, 7500);
+            sheet.setColumnWidth(22, 7500);
+            sheet.setColumnWidth(23, 7500);
  
             Font headerFont = sheet.getWorkbook().createFont();
             headerFont.setBold(true);
