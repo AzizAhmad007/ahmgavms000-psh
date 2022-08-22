@@ -28,13 +28,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
  
 /**
  *
- * @author RBS
+ * @author reza.mr
  */
 public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
  
-//    @Autowired
-//    @Qualifier("vms022ahmhrntmDtlprmgblsDao")
-//    private Vms022AhmhrntmDtlprmgblsDao vms022ahmhrntmDtlprmgblsDao;
+    @Autowired
+    @Qualifier("vms022ahmhrntmDtlprmgblsDao")
+    private Vms022AhmhrntmDtlprmgblsDao vms022ahmhrntmDtlprmgblsDao;
  
     @Override
     protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest hsr, HttpServletResponse response) throws Exception {
