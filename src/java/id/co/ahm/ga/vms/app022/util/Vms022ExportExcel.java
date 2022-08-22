@@ -5,7 +5,9 @@
  */
 package id.co.ahm.ga.vms.app022.util;
 
+import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlprmgblsDao;
 import id.co.ahm.ga.vms.app022.view.Vms022BaseXlsxStreamingView;
+import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import java.text.SimpleDateFormat;
@@ -21,12 +23,18 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  *
  * @author RBS
  */
 public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
+
+    @Autowired
+    @Qualifier("vms022ahmhrntmDtlprmgblsDao")
+    private Vms022AhmhrntmDtlprmgblsDao vms022ahmhrntmDtlprmgblsDao;
 
     @Override
     protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest hsr, HttpServletResponse response) throws Exception {
@@ -460,6 +468,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             for (Vms022VoMonitoring item : data) {
                 col = 0;
 
+                //<editor-fold defaultstate="collapsed" desc="Access Validation">
                 String access = "";
                 if (item.getAccessReader().equalsIgnoreCase("Y")) {
                     access += "Absence Reader";
@@ -494,7 +503,16 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                 } else {
                     access += "-";
                 }
+//                </editor-fold>
 
+                List<Vms022VoLov> listGate = vms022ahmhrntmDtlprmgblsDao.getGate(item.getPersId(), item.getOutId());
+                
+                String gateAccess = "";
+
+                for (Vms022VoLov list : listGate) {
+                    gateAccess += list.getName() + "; ";
+                }
+                
                 Row rowContentData = sheet.createRow(rownum++);
 
                 createCell(rowContentData, item.getOutId(), col++, styleContentTable1WithWrap);
@@ -508,7 +526,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                 createCell(rowContentData, item.getJob(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getAreaName(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, access, col++, styleContentTable1WithWrap);
-                createCell(rowContentData, "(na)", col++, styleContentTable1WithWrap); // rencananya ini mau dipake buat gate
+                createCell(rowContentData, gateAccess, col++, styleContentTable1WithWrap); // rencananya ini mau dipake buat gate
                 createCell(rowContentData, item.getBeginDateText(), col++, styleContentTable2WithWrap);
                 createCell(rowContentData, item.getEndDateText(), col++, styleContentTable2WithWrap);
                 createCell(rowContentData, item.getPassExpiryDateText(), col++, styleContentTable2WithWrap);
