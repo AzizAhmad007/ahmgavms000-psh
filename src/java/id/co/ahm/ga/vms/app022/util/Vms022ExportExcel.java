@@ -32,9 +32,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
  */
 public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
  
-    @Autowired
-    @Qualifier("vms022ahmhrntmDtlprmgblsDao")
-    private Vms022AhmhrntmDtlprmgblsDao vms022ahmhrntmDtlprmgblsDao;
+//    @Autowired
+//    @Qualifier("vms022ahmhrntmDtlprmgblsDao")
+//    private Vms022AhmhrntmDtlprmgblsDao vms022ahmhrntmDtlprmgblsDao;
  
     @Override
     protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest hsr, HttpServletResponse response) throws Exception {
@@ -505,13 +505,25 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                 }
 //                </editor-fold>
  
-                List<Vms022VoLov> listGate = vms022ahmhrntmDtlprmgblsDao.getGate(item.getPersId(), item.getOutId());
+//                List<Vms022VoLov> listGate = vms022ahmhrntmDtlprmgblsDao.getGate(item.getPersId(), item.getOutId());
+//                System.out.println("==================================================================================");
+//                System.out.println("");
+//                System.out.println("isi darri listGate");
+//                System.out.println(listGate);
+//                System.out.println("");
+//                System.out.println("==================================================================================");
                 
-                String gateAccess = "";
- 
-                for (Vms022VoLov list : listGate) {
-                    gateAccess += list.getName() + "; ";
-                }
+//                String gateAccess = "";
+// 
+//                for (Vms022VoLov list : listGate) {
+//                    gateAccess += list.getName() + "; ";
+//                }
+//                System.out.println("==================================================================================");
+//                System.out.println("");
+//                System.out.println("isi darri gateAccess");
+//                System.out.println(gateAccess);
+//                System.out.println("");
+//                System.out.println("==================================================================================");
                 
                 Row rowContentData = sheet.createRow(rownum++);
  
