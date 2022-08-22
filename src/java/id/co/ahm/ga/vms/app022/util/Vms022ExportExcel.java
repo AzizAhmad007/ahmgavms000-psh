@@ -467,6 +467,13 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
  
             for (Vms022VoMonitoring item : data) {
                 col = 0;
+                
+                String supplier = "";
+                if (item.getSupplier() == "S") {
+                    supplier = "Supplier";
+                } else if (item.getSupplier() == "N") {
+                    supplier = "Non-Supplier";
+                }
  
                 //<editor-fold defaultstate="collapsed" desc="Access Validation">
                 String access = "";
@@ -532,7 +539,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                 createCell(rowContentData, item.getPhoneNo(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getPersId(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getOutTypeName(), col++, styleContentTable1WithWrap);
-                createCell(rowContentData, item.getSupplier(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, supplier, col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getCompanyName(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getOutStatus(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getJob(), col++, styleContentTable1WithWrap);
