@@ -18,4 +18,6 @@ public interface Vms022AhmhrntmMstpicotsDao extends HrDao<AhmhrntmMstpicots, Str
     
     public List<Vms022VoLov> getPicAhm(String outType, String area);
     
+    String getPicAhmForExcel(String outType, String area);
+    
 }

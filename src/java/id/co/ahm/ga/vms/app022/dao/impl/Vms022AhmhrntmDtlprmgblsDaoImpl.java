@@ -83,7 +83,7 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
 
     @Override
     public List<Vms022VoLov> getPlant(String outid, String nik) {
-        
+
         StringBuilder sql = new StringBuilder();
 
         sql.append("SELECT "
@@ -159,6 +159,51 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
                 get.setCode((String) obj[2]);
                 get.setName((String) obj[3]);
                 vo.add(get);
+            }
+        }
+        return vo;
+    }
+
+    @Override
+    public String getGateForExcel(String outid, String nik) {
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("SELECT "
+                + "     A.NSEQ, "
+                + "     A.VGATE, "
+                + "     D.VPGBLNM, "
+                + "     D.VVAL "
+                + " FROM "
+                + " AHMHRNTM_HDROTSEMPS C "
+                + " INNER JOIN AHMHRNTM_DTLOTSREGS A ON C.VOTSID = A.VOTSID and C.VPERSID = A.VPERSID "
+                + " INNER JOIN AHMHRNTM_DTLPRMGBLS D ON A.VGATE = D.VPGBLCD "
+                + " WHERE"
+                + "     A.VREGID in('PLNT','GATE') "
+                + "     AND C.VOTSID = :VOTSID "
+                + "     AND C.VPERSID = :VPERSID ");
+
+        SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
+
+        sqlQuery.setParameter("VOTSID", outid)
+                .setParameter("VPERSID", nik);
+
+        List queryResult = sqlQuery.list();
+//        List<Vms022VoLov> vo = new ArrayList<>();
+        String vo = "";
+        if (queryResult.size() > 0) {
+            Object[] obj;
+            boolean limitText = true;
+
+            for (Object object : queryResult) {
+                obj = (Object[]) object;    
+
+                if (limitText) {
+                    vo += obj[3].toString();
+                    limitText = false;
+                } else {
+                    vo += "; " + obj[3].toString();
+                }
+
             }
         }
         return vo;

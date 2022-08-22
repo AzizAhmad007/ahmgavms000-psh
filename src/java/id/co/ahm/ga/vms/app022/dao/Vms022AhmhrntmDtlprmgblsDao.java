@@ -24,5 +24,6 @@ public interface Vms022AhmhrntmDtlprmgblsDao extends HrDao<AhmhrntmDtlprmgbls, S
     
     public List<Vms022VoLov> getGate(String outid, String nik);
     
+    public String getGateForExcel(String outid, String nik);
     
 }

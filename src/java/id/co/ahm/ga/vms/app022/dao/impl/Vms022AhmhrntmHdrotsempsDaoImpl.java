@@ -560,6 +560,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .setParameter("vacstat", vacstat);
         
         Integer totalExcel = query.list().size();
+//        System.out.println("==== total excel = " + query);
+//        
 
         try {
             List lists = query.list();
@@ -645,11 +647,12 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
             }
         } catch (Exception e) {
+            System.out.println("============== e = " + e);
             return result;
         }
         
         result.setMonitoring(results);
-        result.setTotalMonitoring(totalExcel);
+        result.setTotalMonitoring(1);
         
         return result;
     }

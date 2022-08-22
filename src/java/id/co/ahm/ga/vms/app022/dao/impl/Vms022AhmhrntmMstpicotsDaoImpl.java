@@ -63,4 +63,46 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
         return vo;
     }
 
+    @Override
+    public String getPicAhmForExcel(String outType, String area) {
+
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("SELECT A.VNRP, C.NAME, B.VPGBLNM, C.VHANDPHONE  "
+                + " FROM AHMHRNTM_MSTPICOTS A, AHMHRNTM_DTLPRMGBLS B, FMHRD_GENERAL_DATAS C "
+                + " WHERE  "
+                + " A.VOTSTYPE = :VOTSTYPE "
+                + " AND  "
+                + " SYSDATE BETWEEN A.DBGNEFFDT AND A.DENDEFFDT "
+                + " AND B.VPGBLCD = A.VAREA "
+                + " AND B.VPGBLCD LIKE 'PG10%' "
+                + " AND A.VNRP = C.NRP "
+                + " AND C.VEND_VND_CODE = 'AHM' "
+                + " AND A.VAREA = :VAREA");
+
+        SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
+
+        sqlQuery.setParameter("VOTSTYPE", outType)
+                .setParameter("VAREA", area);
+
+        List queryResult = sqlQuery.list();
+//        List<Vms022VoLov> vo = new ArrayList<>();
+        String vo = "";
+        if (queryResult.size() > 0) {
+            Object[] obj;
+            boolean limitText = true;
+
+            for (Object object : queryResult) {
+                obj = (Object[]) object;
+                
+                if (limitText) {
+                    vo += obj[1].toString();
+                    limitText = false;
+                } else {
+                    vo += "; " + obj[1].toString();
+                }
+            }
+        }
+        return vo;
+    }
 }
