@@ -32,7 +32,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
     protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest hsr, HttpServletResponse response) throws Exception {
         DtoParamPaging dtoParam = (DtoParamPaging) model.get("dtoParam");
         List<Vms022VoMonitoring> data = (List<Vms022VoMonitoring>) model.get("data");
-        
+
         try {
             Map<String, Object> filters = dtoParam.getSearch();
             String outId = "All";
@@ -47,209 +47,196 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             String outStatus = "All";
             String areaName = "All";
             String vacStatus = "All";
-            
+
             for (Map.Entry<String, Object> filter : filters.entrySet()) {
                 if (filter.getKey().equalsIgnoreCase("outId")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
-                    
-                    if(valueObject == null){
+
+                    if (valueObject == null) {
                         valueStr = "";
-                    }
-                    else {
+                    } else {
                         valueStr = valueObject.toString();
                     }
-                    
+
                     if (StringUtils.isNotEmpty(valueStr)) {
                         outId = valueStr;
                     }
                 }
-                
+
                 if (filter.getKey().equalsIgnoreCase("outName")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
-                    
-                    if(valueObject == null){
+
+                    if (valueObject == null) {
                         valueStr = "";
-                    }
-                    else {
+                    } else {
                         valueStr = valueObject.toString();
                     }
-                    
+
                     if (StringUtils.isNotEmpty(valueStr)) {
                         outName = valueStr;
                     }
                 }
-                
+
                 if (filter.getKey().equalsIgnoreCase("persId")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
-                    
-                    if(valueObject == null){
+
+                    if (valueObject == null) {
                         valueStr = "";
-                    }
-                    else {
+                    } else {
                         valueStr = valueObject.toString();
                     }
-                    
+
                     if (StringUtils.isNotEmpty(valueStr)) {
                         persId = valueStr;
                     }
                 }
-                
+
                 if (filter.getKey().equalsIgnoreCase("beginDateText")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
-                    
-                    if(valueObject == null){
+
+                    if (valueObject == null) {
                         valueStr = "";
-                    }
-                    else {
+                    } else {
                         valueStr = valueObject.toString();
                     }
-                    
+
                     if (StringUtils.isNotEmpty(valueStr)) {
                         beginDateText = valueStr;
                     }
                 }
-                
+
                 if (filter.getKey().equalsIgnoreCase("endDateText")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
-                    
-                    if(valueObject == null){
+
+                    if (valueObject == null) {
                         valueStr = "";
-                    }
-                    else {
+                    } else {
                         valueStr = valueObject.toString();
                     }
-                    
+
                     if (StringUtils.isNotEmpty(valueStr)) {
                         endDateText = valueStr;
                     }
                 }
-                
-                
+
                 if (filter.getKey().equalsIgnoreCase("passNumber")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
-                    
-                    if(valueObject == null){
+
+                    if (valueObject == null) {
                         valueStr = "";
-                    }
-                    else {
+                    } else {
                         valueStr = valueObject.toString();
                     }
-                    
+
                     if (StringUtils.isNotEmpty(valueStr)) {
                         passNumber = valueStr;
                     }
                 }
-                
+
                 if (filter.getKey().equalsIgnoreCase("pic")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
-                    
-                    if(valueObject == null){
+
+                    if (valueObject == null) {
                         valueStr = "";
-                    }
-                    else {
+                    } else {
                         valueStr = valueObject.toString();
                     }
-                    
+
                     if (StringUtils.isNotEmpty(valueStr)) {
                         pic = valueStr;
                     }
                 }
-                
+
                 if (filter.getKey().equalsIgnoreCase("outType")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
-                    
-                    if(valueObject == null){
+
+                    if (valueObject == null) {
                         valueStr = "";
-                    }
-                    else {
+                    } else {
                         valueStr = valueObject.toString();
                     }
-                    
+
                     if (StringUtils.isNotEmpty(valueStr)) {
                         outType = valueStr;
                     }
                 }
-                
+
                 if (filter.getKey().equalsIgnoreCase("company")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
-                    
-                    if(valueObject == null){
+
+                    if (valueObject == null) {
                         valueStr = "";
-                    }
-                    else {
+                    } else {
                         valueStr = valueObject.toString();
                     }
-                    
+
                     if (StringUtils.isNotEmpty(valueStr)) {
                         company = valueStr;
                     }
                 }
-                
+
                 if (filter.getKey().equalsIgnoreCase("outStatus")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
-                    
-                    if(valueObject == null){
+
+                    if (valueObject == null) {
                         valueStr = "";
-                    }
-                    else {
+                    } else {
                         valueStr = valueObject.toString();
                     }
-                    
+
                     if (valueStr.equalsIgnoreCase(" ")) {
                         outStatus = "All";
-                    }else if (StringUtils.isNotEmpty(valueStr)) {
+                    } else if (StringUtils.isNotEmpty(valueStr)) {
                         outStatus = valueStr;
                     }
                 }
-                
+
                 if (filter.getKey().equalsIgnoreCase("areaName")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
-                    
-                    if(valueObject == null){
+
+                    if (valueObject == null) {
                         valueStr = "";
-                    }
-                    else {
+                    } else {
                         valueStr = valueObject.toString();
                     }
-                    
+
                     if (valueStr.equalsIgnoreCase(" ")) {
                         outStatus = "All";
-                    }else if (StringUtils.isNotEmpty(valueStr)) {
+                    } else if (StringUtils.isNotEmpty(valueStr)) {
                         areaName = valueStr;
                     }
                 }
-                
+
                 if (filter.getKey().equalsIgnoreCase("vacStatus")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
-                    
-                    if(valueObject == null){
+
+                    if (valueObject == null) {
                         valueStr = "";
-                    }
-                    else {
+                    } else {
                         valueStr = valueObject.toString();
                     }
-                    
+
                     if (valueStr.equalsIgnoreCase(" ")) {
                         outStatus = "All";
-                    }else if (StringUtils.isNotEmpty(valueStr)) {
+                    } else if (StringUtils.isNotEmpty(valueStr)) {
                         vacStatus = valueStr;
                     }
                 }
-                
+
             }
-            
+
             Sheet sheet = workbook.createSheet("Verification Personal Data Partner & Outsource");
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 10));
             sheet.setColumnWidth(0, 7500);
@@ -270,21 +257,21 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             Font headerFont = sheet.getWorkbook().createFont();
             headerFont.setBold(true);
             headerFont.setFontHeightInPoints((short) 18);
-            
+
             Font fontFilter1 = sheet.getWorkbook().createFont();
             fontFilter1.setBold(true);
             fontFilter1.setFontHeightInPoints((short) 12);
-            
+
             Font fontFilter2 = sheet.getWorkbook().createFont();
             fontFilter2.setFontHeightInPoints((short) 12);
-            
+
             Font fontHeaderTable1 = sheet.getWorkbook().createFont();
             fontHeaderTable1.setBold(true);
             fontHeaderTable1.setFontHeightInPoints((short) 12);
-            
+
             Font fontContentTable1 = sheet.getWorkbook().createFont();
             fontContentTable1.setFontHeightInPoints((short) 12);
-            
+
             CellStyle styleHeader = workbook.createCellStyle();
             styleHeader.setFont(headerFont);
             styleHeader.setAlignment(CellStyle.ALIGN_LEFT);
@@ -296,11 +283,11 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             styleFilter1.setBorderLeft((short) 1);
             styleFilter1.setAlignment(CellStyle.ALIGN_LEFT);
             styleFilter1.setVerticalAlignment(CellStyle.VERTICAL_TOP);
-            
+
             CellStyle styleFilter2 = workbook.createCellStyle();
             styleFilter2.setFont(fontFilter2);
             styleFilter2.setAlignment(CellStyle.ALIGN_LEFT);
-            
+
             CellStyle styleFilter2WithWrap = workbook.createCellStyle();
             styleFilter2WithWrap.setFont(fontFilter2);
             styleFilter2WithWrap.setAlignment(CellStyle.ALIGN_LEFT);
@@ -314,7 +301,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             styleFilter3.setBorderBottom((short) 1);
             styleFilter3.setBorderLeft((short) 1);
             styleFilter3.setAlignment(CellStyle.ALIGN_LEFT);
-            
+
             CellStyle styleFilter3WithWrap = workbook.createCellStyle();
             styleFilter3WithWrap.setFont(fontFilter1);
             styleFilter3WithWrap.setBorderTop((short) 1);
@@ -324,14 +311,14 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             styleFilter3WithWrap.setAlignment(CellStyle.ALIGN_LEFT);
             styleFilter3WithWrap.setWrapText(true);
             styleFilter3WithWrap.setVerticalAlignment(CellStyle.VERTICAL_TOP);
-            
+
             CellStyle styleHeaderTable1 = workbook.createCellStyle();
             styleHeaderTable1.setFont(fontHeaderTable1);
             styleHeaderTable1.setBorderTop((short) 1);
             styleHeaderTable1.setBorderBottom((short) 1);
             styleHeaderTable1.setBorderLeft((short) 1);
             styleHeaderTable1.setAlignment(CellStyle.ALIGN_CENTER);
-            
+
             CellStyle styleHeaderTable2 = workbook.createCellStyle();
             styleHeaderTable2.setFont(fontHeaderTable1);
             styleHeaderTable2.setBorderTop((short) 1);
@@ -339,14 +326,14 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             styleHeaderTable2.setBorderBottom((short) 1);
             styleHeaderTable2.setBorderLeft((short) 1);
             styleHeaderTable2.setAlignment(CellStyle.ALIGN_CENTER);
-            
+
             CellStyle styleContentTable1 = workbook.createCellStyle();
             styleContentTable1.setFont(fontContentTable1);
             styleContentTable1.setBorderBottom((short) 1);
             styleContentTable1.setBorderLeft((short) 1);
             styleContentTable1.setAlignment(CellStyle.ALIGN_LEFT);
             styleContentTable1.setVerticalAlignment(CellStyle.VERTICAL_TOP);
-            
+
             CellStyle styleContentTable1WithWrap = workbook.createCellStyle();
             styleContentTable1WithWrap.setFont(fontContentTable1);
             styleContentTable1WithWrap.setBorderBottom((short) 1);
@@ -354,14 +341,14 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             styleContentTable1WithWrap.setAlignment(CellStyle.ALIGN_LEFT);
             styleContentTable1WithWrap.setWrapText(true);
             styleContentTable1WithWrap.setVerticalAlignment(CellStyle.VERTICAL_TOP);
-            
+
             CellStyle styleContentTable2 = workbook.createCellStyle();
             styleContentTable2.setFont(fontContentTable1);
             styleContentTable2.setBorderBottom((short) 1);
             styleContentTable2.setBorderLeft((short) 1);
             styleContentTable2.setAlignment(CellStyle.ALIGN_CENTER);
             styleContentTable2.setVerticalAlignment(CellStyle.VERTICAL_TOP);
-            
+
             CellStyle styleContentTable2WithWrap = workbook.createCellStyle();
             styleContentTable2WithWrap.setFont(fontContentTable1);
             styleContentTable2WithWrap.setBorderBottom((short) 1);
@@ -369,7 +356,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             styleContentTable2WithWrap.setAlignment(CellStyle.ALIGN_CENTER);
             styleContentTable2WithWrap.setWrapText(true);
             styleContentTable2WithWrap.setVerticalAlignment(CellStyle.VERTICAL_TOP);
-            
+
             CellStyle styleContentTable3 = workbook.createCellStyle();
             styleContentTable3.setFont(fontContentTable1);
             styleContentTable3.setBorderBottom((short) 1);
@@ -377,7 +364,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             styleContentTable3.setBorderLeft((short) 1);
             styleContentTable3.setAlignment(CellStyle.ALIGN_LEFT);
             styleContentTable3.setVerticalAlignment(CellStyle.VERTICAL_TOP);
-            
+
             CellStyle styleContentTable3WithWrap = workbook.createCellStyle();
             styleContentTable3WithWrap.setFont(fontContentTable1);
             styleContentTable3WithWrap.setBorderBottom((short) 1);
@@ -386,15 +373,15 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             styleContentTable3WithWrap.setAlignment(CellStyle.ALIGN_LEFT);
             styleContentTable3WithWrap.setWrapText(true);
             styleContentTable3WithWrap.setVerticalAlignment(CellStyle.VERTICAL_TOP);
-            
+
             int col = 0;
             int rownum = 0;
-            
+
             Row rowTitle = sheet.createRow(rownum);
             createCell(rowTitle, "Verification Personal Data Partner & Outsource", col, styleHeader);
 
             rownum = rownum + 2;
-            
+
             Row rowFilter = sheet.createRow(rownum++);
             createCell(rowFilter, "outsource ID", col++, styleFilter1);
             createCell(rowFilter, outId, col++, styleFilter2WithWrap);
@@ -402,82 +389,136 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             createCell(rowFilter, outType, col++, styleFilter2WithWrap);
 
             col = 0;
-            
+
             rowFilter = sheet.createRow(rownum++);
             createCell(rowFilter, "Outsource Name", col++, styleFilter1);
             createCell(rowFilter, outName, col++, styleFilter2WithWrap);
             createCell(rowFilter, "Outsource Company", col++, styleFilter1);
             createCell(rowFilter, company, col++, styleFilter2WithWrap);
-            
+
             col = 0;
-            
+
             rowFilter = sheet.createRow(rownum++);
             createCell(rowFilter, "NIK", col++, styleFilter1);
             createCell(rowFilter, persId, col++, styleFilter2WithWrap);
             createCell(rowFilter, "Outsource Status", col++, styleFilter1);
             createCell(rowFilter, outStatus, col++, styleFilter2WithWrap);
-            
+
             col = 0;
-            
+
             rowFilter = sheet.createRow(rownum++);
             createCell(rowFilter, "Periode", col++, styleFilter3);
             createCell(rowFilter, beginDateText, col++, styleFilter2WithWrap);
             createCell(rowFilter, "Plant", col++, styleFilter3);
             createCell(rowFilter, areaName, col++, styleFilter2WithWrap);
-            
+
             col = 0;
-            
+
             rowFilter = sheet.createRow(rownum++);
             createCell(rowFilter, "To", col++, styleFilter3);
             createCell(rowFilter, endDateText, col++, styleFilter2WithWrap);
             createCell(rowFilter, "Covid19 Vaccine Status", col++, styleFilter3);
             createCell(rowFilter, vacStatus, col++, styleFilter2WithWrap);
-            
+
             col = 0;
-            
+
             rowFilter = sheet.createRow(rownum++);
             createCell(rowFilter, "Pass Card Number", col++, styleFilter3);
             createCell(rowFilter, passNumber, col++, styleFilter2WithWrap);
             createCell(rowFilter, "PIC AHM", col++, styleFilter3);
             createCell(rowFilter, pic, col++, styleFilter2WithWrap);
-            
+
             col = 0;
             rownum = rownum + 1;
-            
+
             Row rowHeaderTable = sheet.createRow(rownum++);
             createCell(rowHeaderTable, "Outsource ID", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Outsource Name", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Phone Number Outsource", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "NIK", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Outsource Type", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Supplier", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Outsource Company", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Outsource Status", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Job Detail", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Plant", col++, styleHeaderTable1);
-            createCell(rowHeaderTable, "Covid19 Vaccine Status", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Access", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Gate Access Level", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Begin Work Effective Date", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "End Work Effective Date", col++, styleHeaderTable1);
-            createCell(rowHeaderTable, "Pass Card Number", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Pass Card Expiry Date", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Pass Card Number", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Covid19 Vaccine Status", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Covid19 Last Vaccinate Type", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Covid19 Last Vaccinate Date", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Covid19 Summary Vaccinate Status", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Notes Covid19 Vaccinate Status", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "PIC AHM", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Modified By", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Modified Date", col++, styleHeaderTable1);
-            
+
             for (Vms022VoMonitoring item : data) {
                 col = 0;
-                
+
+                String access = "";
+                if (item.getAccessReader().equalsIgnoreCase("Y")) {
+                    access += "Absence Reader";
+                    if (item.getCanteen().equalsIgnoreCase("Y")) {
+                        access += "; ";
+                    }
+
+                    if (item.getCanteen().equalsIgnoreCase("Y")) {
+                        access += "Canteen";
+                    }
+
+                    if (item.getSecurityGate().equalsIgnoreCase("Y")) {
+                        access += "; ";
+                    }
+
+                    if (item.getSecurityGate().equalsIgnoreCase("Y")) {
+                        access += "Security Gate";
+                    }
+
+                } else if (item.getCanteen().equalsIgnoreCase("Y")) {
+                    access += "Canteen";
+                    if (item.getSecurityGate().equalsIgnoreCase("Y")) {
+                        access += "; ";
+                    }
+
+                    if (item.getSecurityGate().equalsIgnoreCase("Y")) {
+                        access += "Security Gate";
+                    }
+
+                } else if (item.getSecurityGate().equalsIgnoreCase("Y")) {
+                    access += "Security Gate";
+                } else {
+                    access += "-";
+                }
+
                 Row rowContentData = sheet.createRow(rownum++);
-                
-                
+
                 createCell(rowContentData, item.getOutId(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getOutName(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, item.getPhoneNo(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getPersId(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getOutTypeName(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, item.getSupplier(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getCompanyName(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getOutStatus(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, item.getJob(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getAreaName(), col++, styleContentTable1WithWrap);
-                createCell(rowContentData, item.getVacStatus(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, access, col++, styleContentTable1WithWrap);
+                createCell(rowContentData, "(na)", col++, styleContentTable1WithWrap); // rencananya ini mau dipake buat gate
                 createCell(rowContentData, item.getBeginDateText(), col++, styleContentTable2WithWrap);
                 createCell(rowContentData, item.getEndDateText(), col++, styleContentTable2WithWrap);
-                createCell(rowContentData, item.getPassNumber(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getPassExpiryDateText(), col++, styleContentTable2WithWrap);
+                createCell(rowContentData, item.getPassNumber(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, item.getVacStatus(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, item.getVacTypeName(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, item.getVacDateText(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, item.getVacSummary(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, item.getVacNote(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, "(na)", col++, styleContentTable1WithWrap); // rencananya ini mau nampilin pic ahm
                 createCell(rowContentData, item.getModifyBy(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getModifyDateText(), col++, styleContentTable2WithWrap);
             }
