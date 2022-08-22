@@ -468,6 +468,8 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             for (Vms022VoMonitoring item : data) {
                 col = 0;
                 
+                String gate = "";
+                
                 String supplier = "";
                 if (item.getSupplier() == "S") {
                     supplier += "Supplier";
@@ -512,13 +514,13 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                 }
 //                </editor-fold>
  
-                String listGate = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(item.getPersId(), item.getOutId());
-                System.out.println("==================================================================================");
-                System.out.println("");
-                System.out.println("isi darri listGate");
-                System.out.println(listGate);
-                System.out.println("");
-                System.out.println("==================================================================================");
+//                gate = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(item.getPersId(), item.getOutId());
+//                System.out.println("==================================================================================");
+//                System.out.println("");
+//                System.out.println("isi darri listGate");
+//                System.out.println(gate);
+//                System.out.println("");
+//                System.out.println("==================================================================================");
                 
 //                String gateAccess = "";
 // 
