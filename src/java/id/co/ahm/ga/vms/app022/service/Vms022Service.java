@@ -28,7 +28,7 @@ public interface Vms022Service {
     
     DtoResponsePaging monitoring(DtoParamPaging input, VoUserCred userCred);
     
-    DtoResponseWorkspace showMonitoring(DtoParamPaging input);
+    DtoResponseWorkspace showMonitoring(DtoParamPaging input, VoUserCred userCred);
     
     DtoResponseWorkspace showPlant(Vms022VoLov input);
     

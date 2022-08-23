@@ -98,7 +98,7 @@ public class Vms022Rest {
             @RequestBody DtoParamPaging dto) {
         VoUserCred user = tokenPshUtil.getUserCred(token);
 
-        return vms022Service.showMonitoring(dto);
+        return vms022Service.showMonitoring(dto, user);
     }
 
     //success

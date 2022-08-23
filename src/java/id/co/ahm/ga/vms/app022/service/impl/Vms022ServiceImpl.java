@@ -96,6 +96,10 @@ public class Vms022ServiceImpl implements Vms022Service {
                 Map<String, String> role = new HashMap<>();
                 role.put("roleName", desc.getVroleid());
                 result.add(role);
+            } else {
+                Map<String, String> role = new HashMap<>();
+                role.put("roleName", "");
+                result.add(role);
             }
         }
 
@@ -119,9 +123,57 @@ public class Vms022ServiceImpl implements Vms022Service {
     }
 
     @Override
-    public DtoResponseWorkspace showMonitoring(DtoParamPaging dto) {
+    public DtoResponseWorkspace showMonitoring(DtoParamPaging dto, VoUserCred userCred) {
         List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, "");
         int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, "");
+
+        for (Vms022VoMonitoring vo : list) {
+            String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());
+            vo.setGateName(getGateList);
+
+            if (StringUtils.isBlank(vo.getCompanyName()) && StringUtils.isBlank(vo.getCompany())) {
+                List<Vms022VoLov> compNameList = vms022ObjectDao.lovCompExternal(dto, userCred.getUserid(), "FILTER");
+
+                if (!compNameList.isEmpty()) {
+                    vo.setCompanyName(compNameList.get(0).getName());
+                } else {
+                    vo.setCompanyName("Company Code not found");
+                }
+            }
+            byte[] bFileKtp = readBytesFromFile(pathServer + vo.getFileNameKtp());
+            vo.setFileKtp(Base64.getEncoder().encodeToString(bFileKtp));
+
+            List<Vms022VoFileAttachment> listVacs = new ArrayList<>();
+            List<String> flVacs = vms022ahmhrntmDtlotsregsDao.getFileName(vo.getOutId(), vo.getPersId(), "VC");
+            if (!flVacs.isEmpty()) {
+                
+                for (String v : flVacs) {
+                    Vms022VoFileAttachment dtVac = new Vms022VoFileAttachment();
+
+                    byte[] bFileVac = readBytesFromFile(pathServer + v);
+                    dtVac.setName(Base64.getEncoder().encodeToString(bFileVac));
+
+                    listVacs.add(dtVac);
+                }
+
+                vo.setFileVaccines(listVacs);
+            }
+
+            List<Vms022VoFileAttachment> listAttcs = new ArrayList<>();
+            List<String> flAttc = vms022ahmhrntmDtlotsregsDao.getFileName(vo.getOutId(), vo.getPersId(), "VC");
+            if (!flAttc.isEmpty()) {
+                for (String v : flVacs) {
+                    Vms022VoFileAttachment dtVac = new Vms022VoFileAttachment();
+
+                    byte[] bFileVac = readBytesFromFile(pathServer + v);
+                    dtVac.setName(Base64.getEncoder().encodeToString(bFileVac));
+
+                    listAttcs.add(dtVac);
+                }
+
+                vo.setFileVaccines(listAttcs);
+            }
+        }
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, list, count);
     }
 

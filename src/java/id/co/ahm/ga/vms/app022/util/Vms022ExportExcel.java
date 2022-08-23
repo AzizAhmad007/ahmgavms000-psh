@@ -32,10 +32,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
  */
 public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
  
-    @Autowired
-    @Qualifier("vms022ahmhrntmDtlprmgblsDao")
-    private Vms022AhmhrntmDtlprmgblsDao vms022ahmhrntmDtlprmgblsDao;
- 
     @Override
     protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest hsr, HttpServletResponse response) throws Exception {
         DtoParamPaging dtoParam = (DtoParamPaging) model.get("dtoParam");
@@ -537,17 +533,17 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                 createCell(rowContentData, item.getJob(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getAreaName(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, access, col++, styleContentTable1WithWrap);
-                createCell(rowContentData, item.getGateName(), col++, styleContentTable1WithWrap); // rencananya ini mau dipake buat gate
+                createCell(rowContentData, item.getGateName(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getBeginDateText(), col++, styleContentTable2WithWrap);
                 createCell(rowContentData, item.getEndDateText(), col++, styleContentTable2WithWrap);
                 createCell(rowContentData, item.getPassExpiryDateText(), col++, styleContentTable2WithWrap);
                 createCell(rowContentData, item.getPassNumber(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getVacStatus(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getVacTypeName(), col++, styleContentTable1WithWrap);
-                createCell(rowContentData, item.getVacDateText(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, item.getVacDateText(), col++, styleContentTable2WithWrap);
                 createCell(rowContentData, item.getVacSummary(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getVacNote(), col++, styleContentTable1WithWrap);
-                createCell(rowContentData, item.getPic(), col++, styleContentTable1WithWrap); // rencananya ini mau nampilin pic ahm
+                createCell(rowContentData, item.getPic(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getModifyBy(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getModifyDateText(), col++, styleContentTable2WithWrap);
             }
