@@ -250,13 +250,13 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             sheet.setColumnWidth(0, 7500);
             sheet.setColumnWidth(1, 10000);
             sheet.setColumnWidth(2, 7500);
-            sheet.setColumnWidth(3, 10000);
+            sheet.setColumnWidth(3, 7500);
             sheet.setColumnWidth(4, 7500);
             sheet.setColumnWidth(5, 7500);
             sheet.setColumnWidth(6, 7500);
             sheet.setColumnWidth(7, 7500);
             sheet.setColumnWidth(8, 7500);
-            sheet.setColumnWidth(9, 10000);
+            sheet.setColumnWidth(9, 7500);
             sheet.setColumnWidth(10, 7500);
             sheet.setColumnWidth(11, 7500);
             sheet.setColumnWidth(12, 7500);
@@ -266,8 +266,8 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             sheet.setColumnWidth(16, 7500);
             sheet.setColumnWidth(17, 7500);
             sheet.setColumnWidth(18, 7500);
-            sheet.setColumnWidth(19, 7500);
-            sheet.setColumnWidth(20, 7500);
+            sheet.setColumnWidth(19, 10000);
+            sheet.setColumnWidth(20, 10000);
             sheet.setColumnWidth(21, 7500);
             sheet.setColumnWidth(22, 7500);
             sheet.setColumnWidth(23, 7500);
@@ -478,21 +478,14 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             for (Vms022VoMonitoring item : data) {
                 col = 0;
                 
-                String gate = "";
-                
+                //<editor-fold defaultstate="collapsed" desc="Supplier Validation">
                 String supplier = "";
                 if (item.getSupplier().equalsIgnoreCase("S")) {
                     supplier += "Supplier";
                 } else if (item.getSupplier().equalsIgnoreCase("N")) {
                     supplier += "Non-Supplier";
                 }
-                
-                System.out.println("==================================================================================");
-                System.out.println("");
-                System.out.println("isi dari supplier");
-                System.out.println(supplier);
-                System.out.println("");
-                System.out.println("==================================================================================");
+                //</editor-fold>
  
                 //<editor-fold defaultstate="collapsed" desc="Access Validation">
                 String access = "";
@@ -530,26 +523,6 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                     access += "-";
                 }
 //                </editor-fold>
- 
-//                gate = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(item.getPersId(), item.getOutId());
-//                System.out.println("==================================================================================");
-//                System.out.println("");
-//                System.out.println("isi darri listGate");
-//                System.out.println(gate);
-//                System.out.println("");
-//                System.out.println("==================================================================================");
-                
-//                String gateAccess = "";
-// 
-//                for (Vms022VoLov list : listGate) {
-//                    gateAccess += list.getName() + "; ";
-//                }
-//                System.out.println("==================================================================================");
-//                System.out.println("");
-//                System.out.println("isi darri gateAccess");
-//                System.out.println(gateAccess);
-//                System.out.println("");
-//                System.out.println("==================================================================================");
                 
                 Row rowContentData = sheet.createRow(rownum++);
  
@@ -564,7 +537,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                 createCell(rowContentData, item.getJob(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getAreaName(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, access, col++, styleContentTable1WithWrap);
-                createCell(rowContentData, "-", col++, styleContentTable1WithWrap); // rencananya ini mau dipake buat gate
+                createCell(rowContentData, item.getGateName(), col++, styleContentTable1WithWrap); // rencananya ini mau dipake buat gate
                 createCell(rowContentData, item.getBeginDateText(), col++, styleContentTable2WithWrap);
                 createCell(rowContentData, item.getEndDateText(), col++, styleContentTable2WithWrap);
                 createCell(rowContentData, item.getPassExpiryDateText(), col++, styleContentTable2WithWrap);
@@ -574,7 +547,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                 createCell(rowContentData, item.getVacDateText(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getVacSummary(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getVacNote(), col++, styleContentTable1WithWrap);
-                createCell(rowContentData, "(na)", col++, styleContentTable1WithWrap); // rencananya ini mau nampilin pic ahm
+                createCell(rowContentData, item.getPic(), col++, styleContentTable1WithWrap); // rencananya ini mau nampilin pic ahm
                 createCell(rowContentData, item.getModifyBy(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getModifyDateText(), col++, styleContentTable2WithWrap);
             }

@@ -7,26 +7,21 @@ package id.co.ahm.ga.vms.app022.service.impl;
 
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsemps;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsempsPk;
-import id.co.ahm.ga.vms.app022.constant.Vms022Status;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlotsregsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlprmgblsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmHdrotsempsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmMstpicotsDao;
-import id.co.ahm.ga.vms.app022.dao.Vms022Ahmitb2eMstusrrolesDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022ObjectDao;
 import id.co.ahm.ga.vms.app022.exception.Vms022Exception;
 import id.co.ahm.ga.vms.app022.service.Vms022Service;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoFileAttachment;
-import id.co.ahm.ga.vms.app022.vo.Vms022VoFormAuthorization;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
-import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitor;
 import id.co.ahm.jx.b2e.app000.dao.Ahmitb2eMstusrrolesDao;
 import id.co.ahm.jx.b2e.app000.model.Ahmitb2eMstusrroles;
 import id.co.ahm.jx.b2e.app000.model.Ahmitb2eMstusrrolesPk;
 import id.co.ahm.jxf.constant.StatusMsgEnum;
 import id.co.ahm.jxf.dto.DtoParamPaging;
-import id.co.ahm.jxf.dto.DtoResponse;
 import id.co.ahm.jxf.dto.DtoResponsePaging;
 import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
@@ -37,27 +32,13 @@ import id.co.ahm.jxf.vo.VoUserCred;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFCreationHelper;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -148,7 +129,15 @@ public class Vms022ServiceImpl implements Vms022Service {
     public DtoResponsePagingWorkspace getExcel(DtoParamPaging dto) {
         List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, "");
         int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, "");
-        
+
+        for (Vms022VoMonitoring vo : list) {
+            String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());
+            vo.setGateName(getGateList);
+
+            String getPicList = vms022AhmhrntmMstpicotsDao.getPicAhmForExcel(vo.getOutType(), vo.getArea());
+            vo.setPic(getPicList);
+        }
+
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, list, count);
     }
 
@@ -177,7 +166,11 @@ public class Vms022ServiceImpl implements Vms022Service {
             datas = vms022ahmhrntmHdrotsempsDao.getSearchData(input, userCred.getUserid());
 
             if (!datas.isEmpty()) {
+
                 for (Vms022VoMonitoring vo : datas) {
+                    String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());
+                    vo.setGateName(getGateList);
+
                     if (StringUtils.isBlank(vo.getCompanyName()) && StringUtils.isBlank(vo.getCompany())) {
                         List<Vms022VoLov> compNameList = vms022ObjectDao.lovCompExternal(input, userCred.getUserid(), "FILTER");
 
