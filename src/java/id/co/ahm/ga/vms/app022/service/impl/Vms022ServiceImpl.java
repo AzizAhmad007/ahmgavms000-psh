@@ -52,8 +52,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service(value = "vms022Service")
 public class Vms022ServiceImpl implements Vms022Service {
 
-    public final static String pathServer = "/data/AHMGA/VMS/Registrasi/";
-    //public final static String pathServer = "D:\\Download\\";
+    public final static String pathServer = "/data/deploy/upload/ahmgavms/Registration/";
+//    public final static String pathServer = "D:\\Download\\";
 
     @Autowired
     @Qualifier("ahmitb2eMstusrrolesDao")
@@ -96,7 +96,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                 Map<String, String> role = new HashMap<>();
                 role.put("roleName", desc.getVroleid());
                 result.add(role);
-            } 
+            }
         }
 
         return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, result);
@@ -136,6 +136,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                     vo.setCompanyName("Company Code not found");
                 }
             }
+            
             byte[] bFileKtp = readBytesFromFile(pathServer + vo.getFileNameKtp());
             vo.setFileKtp(Base64.getEncoder().encodeToString(bFileKtp));
 
@@ -151,7 +152,6 @@ public class Vms022ServiceImpl implements Vms022Service {
 
                     listVacs.add(dtVac);
                 }
-
                 vo.setFileVaccines(listVacs);
             }
 
@@ -166,7 +166,6 @@ public class Vms022ServiceImpl implements Vms022Service {
 
                     listAttcs.add(dtVac);
                 }
-
                 vo.setFileVaccines(listAttcs);
             }
         }
