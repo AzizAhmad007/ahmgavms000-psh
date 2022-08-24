@@ -66,7 +66,7 @@ public class Vms022VoMonitoring {
 //    private List<Vms022VoLov> gates;
 //    private List<Vms022VoLovNrp> nrps;
     private List<Vms022VoFileAttachment> fileVaccines;
-//    private List<Vms022VoFileAttachment> fileSk;
+    private List<Vms022VoFileAttachment> fileSk;
     
     private List<Vms022VoMonitoring> monitoring;
 
@@ -455,14 +455,14 @@ public class Vms022VoMonitoring {
     public void setFileVaccines(List<Vms022VoFileAttachment> fileVaccines) {
         this.fileVaccines = fileVaccines;
     }
-//
-//    public List<Vms022VoFileAttachment> getFileSk() {
-//        return fileSk;
-//    }
-//
-//    public void setFileSk(List<Vms022VoFileAttachment> fileSk) {
-//        this.fileSk = fileSk;
-//    }
+
+    public List<Vms022VoFileAttachment> getFileSk() {
+        return fileSk;
+    }
+
+    public void setFileSk(List<Vms022VoFileAttachment> fileSk) {
+        this.fileSk = fileSk;
+    }
 
     public String getAccess() {
         return access;

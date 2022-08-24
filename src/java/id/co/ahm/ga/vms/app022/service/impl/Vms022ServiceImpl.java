@@ -143,7 +143,6 @@ public class Vms022ServiceImpl implements Vms022Service {
             List<Vms022VoFileAttachment> listVacs = new ArrayList<>();
             List<String> flVacs = vms022ahmhrntmDtlotsregsDao.getFileName(vo.getOutId(), vo.getPersId(), "VC");
             if (!flVacs.isEmpty()) {
-                
                 for (String v : flVacs) {
                     Vms022VoFileAttachment dtVac = new Vms022VoFileAttachment();
 
@@ -156,17 +155,17 @@ public class Vms022ServiceImpl implements Vms022Service {
             }
 
             List<Vms022VoFileAttachment> listAttcs = new ArrayList<>();
-            List<String> flAttc = vms022ahmhrntmDtlotsregsDao.getFileName(vo.getOutId(), vo.getPersId(), "VC");
+            List<String> flAttc = vms022ahmhrntmDtlotsregsDao.getFileName(vo.getOutId(), vo.getPersId(), "SK");
             if (!flAttc.isEmpty()) {
-                for (String v : flVacs) {
-                    Vms022VoFileAttachment dtVac = new Vms022VoFileAttachment();
+                for (String v : flAttc) {
+                    Vms022VoFileAttachment dtAttc = new Vms022VoFileAttachment();
 
                     byte[] bFileVac = readBytesFromFile(pathServer + v);
-                    dtVac.setName(Base64.getEncoder().encodeToString(bFileVac));
+                    dtAttc.setName(Base64.getEncoder().encodeToString(bFileVac));
 
-                    listAttcs.add(dtVac);
+                    listAttcs.add(dtAttc);
                 }
-                vo.setFileVaccines(listAttcs);
+                vo.setFileSk(listAttcs);
             }
         }
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, list, count);
