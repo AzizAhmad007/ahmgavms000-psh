@@ -5,9 +5,7 @@
  */
 package id.co.ahm.ga.vms.app022.util;
  
-import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlprmgblsDao;
 import id.co.ahm.ga.vms.app022.view.Vms022BaseXlsxStreamingView;
-import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import java.text.SimpleDateFormat;
@@ -23,8 +21,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
  
 /**
  *
@@ -241,7 +237,8 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
  
             }
  
-            Sheet sheet = workbook.createSheet("Verification Personal Data Partner & Outsource");
+            //for sheet
+            Sheet sheet = workbook.createSheet();
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 10));
             sheet.setColumnWidth(0, 7500);
             sheet.setColumnWidth(1, 10000);
