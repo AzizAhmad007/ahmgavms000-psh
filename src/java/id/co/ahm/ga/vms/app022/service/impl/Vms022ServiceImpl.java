@@ -14,6 +14,8 @@ import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmMstpicotsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022ObjectDao;
 import id.co.ahm.ga.vms.app022.exception.Vms022Exception;
 import id.co.ahm.ga.vms.app022.service.Vms022Service;
+import id.co.ahm.ga.vms.app022.util.Vms022ValidationDateUtil;
+import static id.co.ahm.ga.vms.app022.util.Vms022ValidationDateUtil.checkIsAfter;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoFileAttachment;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
@@ -28,6 +30,7 @@ import id.co.ahm.jxf.dto.DtoResponseWorkspace;
 import id.co.ahm.jxf.util.AhmStringUtil;
 import id.co.ahm.jxf.util.DateUtil;
 import id.co.ahm.jxf.util.DtoHelper;
+import id.co.ahm.jxf.vo.VoMessageWorkspace;
 import id.co.ahm.jxf.vo.VoUserCred;
 import java.io.File;
 import java.io.FileInputStream;
@@ -136,7 +139,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                     vo.setCompanyName("Company Code not found");
                 }
             }
-            
+
             byte[] bFileKtp = readBytesFromFile(pathServer + vo.getFileNameKtp());
             vo.setFileKtp(Base64.getEncoder().encodeToString(bFileKtp));
 
@@ -419,6 +422,53 @@ public class Vms022ServiceImpl implements Vms022Service {
         List<Vms022VoLov> Pic = vms022AhmhrntmMstpicotsDao.getPicAhm(input.getCode(), input.getArea());
 
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, Pic, 1);
+    }
+
+    @Override
+    public DtoResponseWorkspace checkingDate(List<Vms022VoMonitoring> getdata, VoUserCred userCred) {
+        DtoResponseWorkspace dto = new DtoResponseWorkspace();
+        validateDate(getdata, dto);
+        if (dto.getError_fields() != null) {
+            if (dto.getError_fields().size() > 0) {
+                dto.setStatus("1");
+                return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.GAGAL, "FAILURE", dto.getError_fields(), null, 0);
+            }
+        } else {
+            return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, null, 1);
+        }
+        return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, null, 1);
+    }
+
+    private void validateDate(List<Vms022VoMonitoring> vos, DtoResponseWorkspace dto) {
+        Vms022ValidationDateUtil validation = new Vms022ValidationDateUtil();
+        for (Vms022VoMonitoring vo : vos) {
+
+            if (AhmStringUtil.hasValue(vo.getPassExpiryDateText()) && AhmStringUtil.hasValue(vo.getEndDateText())) {
+                boolean cekTglBegin = validation.validateDateTgl(vo.getPassExpiryDateText());
+                if (!cekTglBegin) {
+                    VoMessageWorkspace err = new VoMessageWorkspace();
+                    err.setF("");
+                    err.setM("Format Begin Effective (dd-MMM-yyyy) ");
+                    dto.addMessage(err);
+                }
+                boolean cekTglEnd = validation.validateDateTgl(vo.getEndDateText());
+                if (!cekTglEnd) {
+                    VoMessageWorkspace err = new VoMessageWorkspace();
+                    err.setF("");
+                    err.setM("Format End Effective (dd-MMM-yyyy) ");
+                    dto.addMessage(err);
+                }
+
+                if (cekTglBegin && cekTglEnd) {
+                    if (checkIsAfter(DateUtil.stringToDate(vo.getEndDateText(), "dd-MMM-yyyy"), DateUtil.stringToDate(vo.getPassExpiryDateText(), "dd-MMM-yyyy"))) {
+                        VoMessageWorkspace err = new VoMessageWorkspace();
+                        err.setF("");
+                        err.setM("End Effective must be greater than Begin Effective! ");
+                        dto.addMessage(err);
+                    }
+                }
+            }
+        }
     }
 
 }

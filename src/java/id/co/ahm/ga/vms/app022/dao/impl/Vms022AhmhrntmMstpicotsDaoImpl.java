@@ -37,7 +37,9 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
                 + " AND B.VPGBLCD LIKE 'PG10%' "
                 + " AND A.VNRP = C.NRP "
                 + " AND C.VEND_VND_CODE = 'AHM' "
-                + " AND A.VAREA = :VAREA");
+                + " AND A.VAREA in :VAREA"
+                + " AND (A.VRGSROLE IN ('PG91-01','PG91-03') " 
+                + "     OR A.VRGSROLE IN ('PG91-02','PG91-03'))");
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 

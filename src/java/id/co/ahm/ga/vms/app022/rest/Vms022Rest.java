@@ -139,6 +139,17 @@ public class Vms022Rest {
         return vms022Service.rejecting(getdata, user);
     }
 
+    @RequestMapping(value = "check-date", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace checkingDate(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody List<Vms022VoMonitoring> input) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
+
+        return vms022Service.checkingDate(input, user);
+    }
+
     @RequestMapping(value = "get-plants", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)

@@ -81,7 +81,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    D.VPGBLNM as OUTTYPENAME,   "
                 + "    A.VCOMPANY as COMPANY,  "
                 + "    CASE WHEN F.VPGBLNM is not null THEN COALESCE(F.VPGBLNM, '') " 
-                + "     ELSE COALESCE(Z.VVENDORDESC, '') END AS DESCRIPTION, "
+                + "     ELSE COALESCE(Z.VVENDORDESC, '') END AS COMPANYNAME, "
 //                + "    COALESCE(F.VPGBLNM, '') as COMPANYNAME,  "
                 + "    A.VOTSSTTS as OUTSTATUS,  "
                 + "    B.VPLANT as AREA,  "

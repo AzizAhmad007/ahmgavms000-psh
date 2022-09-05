@@ -44,5 +44,7 @@ public interface Vms022Service {
     
     DtoResponseWorkspace rejecting(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
     
+    DtoResponseWorkspace checkingDate(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
+    
     DtoResponsePagingWorkspace getExcel(DtoParamPaging dto);
 }
