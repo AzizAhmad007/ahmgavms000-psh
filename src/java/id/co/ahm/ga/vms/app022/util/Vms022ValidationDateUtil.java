@@ -132,7 +132,7 @@ public class Vms022ValidationDateUtil {
                 if (day1 < day2) { // check day
                     return true;
                 }
-                if (day1 == day2) {
+                else if (day1 == day2) {
                     return true;
                 }
             }
