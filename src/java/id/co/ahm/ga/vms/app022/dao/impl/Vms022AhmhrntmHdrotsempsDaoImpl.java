@@ -48,6 +48,8 @@ import org.springframework.stereotype.Repository;
 @Repository("vms022ahmhrntmHdrotsempsDao")
 public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdrotsemps, AhmhrntmHdrotsempsPk> implements Vms022AhmhrntmHdrotsempsDao {
 
+    private String getParam;
+    
     @Override
     public List<Vms022VoMonitoring> getSearchData(DtoParamPaging input, String userId) {
         List<Vms022VoMonitoring> result = new ArrayList<>();
@@ -170,7 +172,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
         voSetter(input);
 
-        orderClause(input, sqlQuery, sortMap, null);
+        orderClause(input, sqlQuery, sortMap, getParam);
 
         Query query = getCurrentSession().createSQLQuery(sqlQuery.toString())
                 .setFirstResult(input.getOffset())
@@ -406,10 +408,10 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 //        return 0;
     }
 
-    private void orderClause(DtoParamPaging input, StringBuilder query, Map<String, String> clause, String defaultClause) {
+    private void orderClause(DtoParamPaging input, StringBuilder query, Map<String, String> clause, String param) {
         if (input.getSort() != null && !StringUtils.isEmpty(input.getSort())) {
             query.append(" ORDER BY ");
-            query.append(input.getSort() + " ");
+            query.append(param + " ");
             if (input.getOrder() != null && !StringUtils.isEmpty(input.getOrder())) {
                 query.append(input.getOrder() + " ");
             }
@@ -422,49 +424,65 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
         switch (param) {
             case "outId":
-                input.setSort("A.VOTSID");
+//                input.setSort("A.VOTSID");
+                getParam = "A.VOTSID";
                 break;
             case "outName":
-                input.setSort("A.VNAME");
+//                input.setSort("A.VNAME");
+                getParam = "A.VNAME";
                 break;
             case "persId":
-                input.setSort("A.VPERSID");
+//                input.setSort("A.VPERSID");
+                getParam = "A.VPERSID";
                 break;
             case "outTypeName":
-                input.setSort("D.VPGBLNM");
+//                input.setSort("D.VPGBLNM");
+                getParam = "D.VPGBLNM";
                 break;
             case "companyName":
-                input.setSort("CASE WHEN F.VPGBLNM is not null THEN COALESCE(F.VPGBLNM, '')"
-                        + "     ELSE COALESCE(Z.VVENDORDESC, '') END");
+//                input.setSort("CASE WHEN F.VPGBLNM is not null THEN COALESCE(F.VPGBLNM, '')"
+//                        + "     ELSE COALESCE(Z.VVENDORDESC, '') END");
+                getParam = "CASE WHEN F.VPGBLNM is not null THEN COALESCE(F.VPGBLNM, '')"
+                        + "     ELSE COALESCE(Z.VVENDORDESC, '') END";
                 break;
             case "outStatus":
-                input.setSort("A.VOTSSTTS");
+//                input.setSort("A.VOTSSTTS");
+                getParam = "A.VOTSSTTS";
                 break;
             case "areaName":
-                input.setSort("E.VPGBLNM");
+//                input.setSort("E.VPGBLNM");
+                getParam = "E.VPGBLNM";
                 break;
             case "vacStatus":
-                input.setSort("A.VVACSTTS");
+//                input.setSort("A.VVACSTTS");
+                getParam = "A.VVACSTTS";
                 break;
             case "beginDateText":
-                input.setSort("A.DBGNEFFDT");
+//                input.setSort("A.DBGNEFFDT");
+                getParam = "A.DBGNEFFDT";
                 break;
             case "endDateText":
-                input.setSort("A.DENDEFFDT");
+//                input.setSort("A.DENDEFFDT");
+                getParam = "A.DENDEFFDT";
                 break;
             case "passNumber":
-                input.setSort("A.NAHMCARDORI");
+//                input.setSort("A.NAHMCARDORI");
+                getParam = "A.NAHMCARDORI";
                 break;
             case "passExpiryDateText":
-                input.setSort("A.DPASSEXP");
+//                input.setSort("A.DPASSEXP");
+                getParam = "A.DPASSEXP";
                 break;
             case "modifyBy":
-                input.setSort("A.VMODI");
+//                input.setSort("A.VMODI");
+                getParam = "A.VMODI";
                 break;
             case "modifyDateText":
-                input.setSort("A.DMODI");
+//                input.setSort("A.DMODI");
+                getParam = "A.DMODI";
                 break;
             default:
+                getParam = null;
 
         }
     }
