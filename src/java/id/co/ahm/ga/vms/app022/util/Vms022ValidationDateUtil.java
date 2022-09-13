@@ -123,13 +123,13 @@ public class Vms022ValidationDateUtil {
         int month2 = cal2.get(Calendar.MONTH) + 1;
         int year2 = cal2.get(Calendar.YEAR);
 
-        if (year1 < year2) { // check year
+        if (year1 > year2) { // check year
             return true;
         } else if (year1 == year2) { // if year is equal
-            if (month1 < month2) { // check month
+            if (month1 > month2) { // check month
                 return true;
             } else if (month1 == month2) { // if month is equal
-                if (day1 < day2) { // check day
+                if (day1 > day2) { // check day
                     return true;
                 }
                 else if (day1 == day2) {
