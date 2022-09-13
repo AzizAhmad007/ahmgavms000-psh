@@ -48,9 +48,6 @@ import org.springframework.stereotype.Repository;
 @Repository("vms022ahmhrntmHdrotsempsDao")
 public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdrotsemps, AhmhrntmHdrotsempsPk> implements Vms022AhmhrntmHdrotsempsDao {
 
-    @Qualifier("vms022ahmhrntmDtlprmgblsDao")
-    private Vms022AhmhrntmDtlprmgblsDao vms022ahmhrntmDtlprmgblsDao;
-
     @Override
     public List<Vms022VoMonitoring> getSearchData(DtoParamPaging input, String userId) {
         List<Vms022VoMonitoring> result = new ArrayList<>();
@@ -80,9 +77,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    A.VOTSTYPE as OUTTYPE,  "
                 + "    D.VPGBLNM as OUTTYPENAME,   "
                 + "    A.VCOMPANY as COMPANY,  "
-                + "    CASE WHEN F.VPGBLNM is not null THEN COALESCE(F.VPGBLNM, '') " 
+                + "    CASE WHEN F.VPGBLNM is not null THEN COALESCE(F.VPGBLNM, '') "
                 + "     ELSE COALESCE(Z.VVENDORDESC, '') END AS COMPANYNAME, "
-//                + "    COALESCE(F.VPGBLNM, '') as COMPANYNAME,  "
+                //                + "    COALESCE(F.VPGBLNM, '') as COMPANYNAME,  "
                 + "    A.VOTSSTTS as OUTSTATUS,  "
                 + "    B.VPLANT as AREA,  "
                 + "    E.VPGBLNM as AREANAME,  "
@@ -134,7 +131,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "LEFT JOIN AHMHRNTM_DTLPRMGBLS G ON A.VVACTYPE = G.VPGBLCD "
                 + "WHERE  "
                 + "    B.R_NUM = 1 "
-//                + "    AND SYSDATE BETWEEN F.DBGNEFFDT AND F.DENDEFFDT "
+                //                + "    AND SYSDATE BETWEEN F.DBGNEFFDT AND F.DENDEFFDT "
                 + "    AND  "
                 + "        UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%')  "
                 + "    AND  "
@@ -171,7 +168,10 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
         String vacstat = AhmStringUtil.hasValue(input.getSearch().get("vacStatus")) ? (input.getSearch().get("vacStatus") + "").toUpperCase() : "";
 
+        voSetter(input);
+
         orderClause(input, sqlQuery, sortMap, null);
+
         Query query = getCurrentSession().createSQLQuery(sqlQuery.toString())
                 .setFirstResult(input.getOffset())
                 .setMaxResults(input.getLimit());
@@ -291,9 +291,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    A.VOTSTYPE as OUTTYPE,  "
                 + "    D.VPGBLNM as OUTTYPENAME,   "
                 + "    A.VCOMPANY as COMPANY,  "
-                + "    CASE WHEN F.VPGBLNM is not null THEN COALESCE(F.VPGBLNM, '') " 
+                + "    CASE WHEN F.VPGBLNM is not null THEN COALESCE(F.VPGBLNM, '') "
                 + "     ELSE COALESCE(Z.VVENDORDESC, '') END AS COMPANYNAME, "
-//                + "    COALESCE(F.VPGBLNM, '') as COMPANYNAME,  "
+                //                + "    COALESCE(F.VPGBLNM, '') as COMPANYNAME,  "
                 + "    A.VOTSSTTS as OUTSTATUS,  "
                 + "    B.VPLANT as AREA,  "
                 + "    E.VPGBLNM as AREANAME,  "
@@ -345,7 +345,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "LEFT JOIN AHMHRNTM_DTLPRMGBLS G ON A.VVACTYPE = G.VPGBLCD "
                 + "WHERE  "
                 + "    B.R_NUM = 1 "
-//                + "    AND SYSDATE BETWEEN F.DBGNEFFDT AND F.DENDEFFDT "
+                //                + "    AND SYSDATE BETWEEN F.DBGNEFFDT AND F.DENDEFFDT "
                 + "    AND  "
                 + "        UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%')  "
                 + "    AND  "
@@ -407,36 +407,65 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
     }
 
     private void orderClause(DtoParamPaging input, StringBuilder query, Map<String, String> clause, String defaultClause) {
-        if (input.getSort() != null && !StringUtils.isEmpty(input.getSort()) && !"undefined".equalsIgnoreCase(input.getSort())) {
+        if (input.getSort() != null && !StringUtils.isEmpty(input.getSort())) {
             query.append(" ORDER BY ");
+            query.append(input.getSort() + " ");
             if (input.getOrder() != null && !StringUtils.isEmpty(input.getOrder())) {
-                Iterator<String> sorts = Arrays.asList(input.getSort().split(",")).iterator();
-                do {
-                    query.append(clause.get(sorts.next()));
-                    if (input.getOrder().equalsIgnoreCase(CommonConstant.DESC)) {
-                        query.append(" DESC");
-                    } else {
-                        query.append(" ASC");
-                    }
-                    if (sorts.hasNext()) {
-                        query.append(",");
-                    }
-                } while (sorts.hasNext());
-            } else {
-                List<String> sorts = Arrays.asList(input.getSort().split(","))
-                        .stream()
-                        .map(s -> clause.get(s))
-                        .collect(Collectors.toList());
-                if (sorts.size() > 1) {
-                    query.append(String.join(", ", sorts)).append(" ASC");
-                } else {
-                    query.append(clause.get(input.getSort())).append(" ASC");
-                }
+                query.append(input.getOrder() + " ");
             }
-        } else {
-            if (AhmStringUtil.hasValue(defaultClause)) {
-                query.append(" ORDER BY ").append(defaultClause).append(" DESC");
-            }
+        }
+
+    }
+
+    private void voSetter(DtoParamPaging input) {
+        String param = input.getSort();
+
+        switch (param) {
+            case "outId":
+                input.setSort("A.VOTSID");
+                break;
+            case "outName":
+                input.setSort("A.VNAME");
+                break;
+            case "persId":
+                input.setSort("A.VPERSID");
+                break;
+            case "outTypeName":
+                input.setSort("D.VPGBLNM");
+                break;
+            case "companyName":
+                input.setSort("CASE WHEN F.VPGBLNM is not null THEN COALESCE(F.VPGBLNM, '')"
+                        + "     ELSE COALESCE(Z.VVENDORDESC, '') END");
+                break;
+            case "outStatus":
+                input.setSort("A.VOTSSTTS");
+                break;
+            case "areaName":
+                input.setSort("E.VPGBLNM");
+                break;
+            case "vacStatus":
+                input.setSort("A.VVACSTTS");
+                break;
+            case "beginDateText":
+                input.setSort("A.DBGNEFFDT");
+                break;
+            case "endDateText":
+                input.setSort("A.DENDEFFDT");
+                break;
+            case "passNumber":
+                input.setSort("A.NAHMCARDORI");
+                break;
+            case "passExpiryDateText":
+                input.setSort("A.DPASSEXP");
+                break;
+            case "modifyBy":
+                input.setSort("A.VMODI");
+                break;
+            case "modifyDateText":
+                input.setSort("A.DMODI");
+                break;
+            default:
+
         }
     }
 }
