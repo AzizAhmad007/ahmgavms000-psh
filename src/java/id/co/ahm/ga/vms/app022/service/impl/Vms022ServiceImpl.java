@@ -460,7 +460,8 @@ public class Vms022ServiceImpl implements Vms022Service {
                 }
 
                 if (cekTglBegin && cekTglEnd) {
-                    if (checkIsAfter(DateUtil.stringToDate(vo.getEndDateText(), "dd-MMM-yyyy"), DateUtil.stringToDate(vo.getPassExpiryDateText(), "dd-MMM-yyyy"))) {
+                    
+                    if (!checkIsAfter(DateUtil.stringToDate(vo.getEndDateText(), "dd-MMM-yyyy"), DateUtil.stringToDate(vo.getPassExpiryDateText(), "dd-MMM-yyyy"))) {
                         VoMessageWorkspace err = new VoMessageWorkspace();
                         err.setF("");
                         err.setM("End Date Effective must be greater than Expiry Date! ");
