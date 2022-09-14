@@ -141,10 +141,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    AND "
                 + "        UPPER(A.VPERSID) LIKE UPPER('%'||:vpersid||'%') "
                 + "    AND "
-                + "        UPPER(to_char(A.DBGNEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:begineff||'%') "
-                + "    AND "
-                + "        UPPER(to_char(A.DENDEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:endeff||'%') "
-                + "    AND "
                 + "        UPPER(A.NAHMCARDORI ) LIKE UPPER('%'||:idcard||'%') "
                 + "    AND "
                 + "        UPPER(A.VOTSTYPE ) LIKE UPPER('%'||:outtype||'%') "
@@ -156,6 +152,10 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "        (:plant IS NULL OR UPPER(B.VPLANT) LIKE '%'||:plant||'%' ) "
                 + "    AND "
                 + "        (:vacstat IS NULL OR UPPER(A.VVACSTTS) LIKE '%'||:vacstat||'%' )  "
+//                + "    AND "
+//                + "        UPPER(to_char(A.DBGNEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:begineff||'%') "
+//                + "    AND "
+//                + "        UPPER(to_char(A.DENDEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:endeff||'%') "
         );
 
         String votsid = AhmStringUtil.hasValue(input.getSearch().get("outId")) ? (input.getSearch().get("outId") + "").toUpperCase() : "";
@@ -170,6 +170,26 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
         String vacstat = AhmStringUtil.hasValue(input.getSearch().get("vacStatus")) ? (input.getSearch().get("vacStatus") + "").toUpperCase() : "";
 
+        if (!StringUtils.isBlank(begineff) || !StringUtils.isBlank(endeff)) {
+            sqlQuery.append(" AND (");
+
+            if (!StringUtils.isBlank(begineff)) {
+                sqlQuery.append(" ('").append(begineff).append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
+            }
+            if (!StringUtils.isBlank(endeff) && StringUtils.isBlank(begineff)) {
+                sqlQuery.append(" ('").append(endeff).append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
+            } else {
+                sqlQuery.append(" OR ('").append(endeff).append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
+            }
+            if (!StringUtils.isBlank(begineff) && !StringUtils.isBlank(endeff)) {
+                sqlQuery.append(" OR (A.DBGNEFFDT BETWEEN '")
+                        .append(begineff).append("' AND '").append(endeff).append("') ")
+                        .append(" OR (A.DENDEFFDT BETWEEN '")
+                        .append(begineff).append("' AND '").append(endeff).append("') ");
+            }
+            sqlQuery.append(" ) ");
+        }
+
         voSetter(input);
 
         orderClause(input, sqlQuery, sortMap, getParam);
@@ -181,8 +201,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         query.setParameter("votsid", votsid)
                 .setParameter("vname", vname)
                 .setParameter("vpersid", vpersid)
-                .setParameter("begineff", begineff)
-                .setParameter("endeff", endeff)
+//                .setParameter("begineff", begineff)
+//                .setParameter("endeff", endeff)
                 .setParameter("idcard", idcard)
                 .setParameter("outtype", outtype)
                 .setParameter("company", company)
@@ -355,10 +375,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    AND "
                 + "        UPPER(A.VPERSID) LIKE UPPER('%'||:vpersid||'%') "
                 + "    AND "
-                + "        UPPER(to_char(A.DBGNEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:begineff||'%') "
-                + "    AND "
-                + "        UPPER(to_char(A.DENDEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:endeff||'%') "
-                + "    AND "
                 + "        UPPER(A.NAHMCARDORI ) LIKE UPPER('%'||:idcard||'%') "
                 + "    AND "
                 + "        UPPER(A.VOTSTYPE ) LIKE UPPER('%'||:outtype||'%') "
@@ -370,8 +386,11 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "        (:plant IS NULL OR UPPER(B.VPLANT) LIKE '%'||:plant||'%' ) "
                 + "    AND "
                 + "        (:vacstat IS NULL OR UPPER(A.VVACSTTS) LIKE '%'||:vacstat||'%' )  "
+//                + "    AND "
+//                + "        UPPER(to_char(A.DBGNEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:begineff||'%') "
+//                + "    AND "
+//                + "        UPPER(to_char(A.DENDEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:endeff||'%') "
         );
-        sqlQuery.append(" )");
 
         String votsid = AhmStringUtil.hasValue(input.getSearch().get("outId")) ? (input.getSearch().get("outId") + "").toUpperCase() : "";
         String vname = AhmStringUtil.hasValue(input.getSearch().get("outName")) ? (input.getSearch().get("outName") + "").toUpperCase() : "";
@@ -385,13 +404,36 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
         String vacstat = AhmStringUtil.hasValue(input.getSearch().get("vacStatus")) ? (input.getSearch().get("vacStatus") + "").toUpperCase() : "";
 
+        
+        if (!StringUtils.isBlank(begineff) || !StringUtils.isBlank(endeff)) {
+            sqlQuery.append(" AND (");
+
+            if (!StringUtils.isBlank(begineff)) {
+                sqlQuery.append(" ('").append(begineff).append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
+            }
+            if (!StringUtils.isBlank(endeff) && StringUtils.isBlank(begineff)) {
+                sqlQuery.append(" ('").append(endeff).append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
+            } else {
+                sqlQuery.append(" OR ('").append(endeff).append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
+            }
+            if (!StringUtils.isBlank(begineff) && !StringUtils.isBlank(endeff)) {
+                sqlQuery.append(" OR (A.DBGNEFFDT BETWEEN '")
+                        .append(begineff).append("' AND '").append(endeff).append("') ")
+                        .append(" OR (A.DENDEFFDT BETWEEN '")
+                        .append(begineff).append("' AND '").append(endeff).append("') ");
+            }
+            sqlQuery.append(" ) ");
+        }
+        
+        sqlQuery.append(" )");
+        
         SQLQuery query = getCurrentSession().createSQLQuery(sqlQuery.toString());
 
         query.setParameter("votsid", votsid)
                 .setParameter("vname", vname)
                 .setParameter("vpersid", vpersid)
-                .setParameter("begineff", begineff)
-                .setParameter("endeff", endeff)
+//                .setParameter("begineff", begineff)
+//                .setParameter("endeff", endeff)
                 .setParameter("idcard", idcard)
                 .setParameter("outtype", outtype)
                 .setParameter("company", company)
