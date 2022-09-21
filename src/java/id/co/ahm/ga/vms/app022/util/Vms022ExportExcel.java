@@ -94,7 +94,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                     }
                 }
  
-                if (filter.getKey().equalsIgnoreCase("beginDateText")) {
+                if (filter.getKey().equalsIgnoreCase("beginDate")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
  
@@ -109,7 +109,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                     }
                 }
  
-                if (filter.getKey().equalsIgnoreCase("endDateText")) {
+                if (filter.getKey().equalsIgnoreCase("endDate")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
  
