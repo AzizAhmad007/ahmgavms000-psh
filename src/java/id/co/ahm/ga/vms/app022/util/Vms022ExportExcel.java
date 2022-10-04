@@ -293,7 +293,6 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             styleFilter1.setBorderTop((short) 1);
             styleFilter1.setBorderRight((short) 1);
             styleFilter1.setBorderLeft((short) 1);
-            styleFilter1.setBorderBottom((short) 1);
             styleFilter1.setAlignment(CellStyle.ALIGN_LEFT);
             styleFilter1.setVerticalAlignment(CellStyle.VERTICAL_TOP);
  
@@ -330,7 +329,6 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             styleHeaderTable1.setBorderTop((short) 1);
             styleHeaderTable1.setBorderBottom((short) 1);
             styleHeaderTable1.setBorderLeft((short) 1);
-            styleHeaderTable1.setBorderRight((short) 1);
             styleHeaderTable1.setAlignment(CellStyle.ALIGN_CENTER);
  
             CellStyle styleHeaderTable2 = workbook.createCellStyle();
@@ -352,7 +350,6 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             styleContentTable1WithWrap.setFont(fontContentTable1);
             styleContentTable1WithWrap.setBorderBottom((short) 1);
             styleContentTable1WithWrap.setBorderLeft((short) 1);
-            styleContentTable1WithWrap.setBorderRight((short) 1);
             styleContentTable1WithWrap.setAlignment(CellStyle.ALIGN_LEFT);
             styleContentTable1WithWrap.setWrapText(true);
             styleContentTable1WithWrap.setVerticalAlignment(CellStyle.VERTICAL_TOP);
@@ -368,7 +365,6 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             styleContentTable2WithWrap.setFont(fontContentTable1);
             styleContentTable2WithWrap.setBorderBottom((short) 1);
             styleContentTable2WithWrap.setBorderLeft((short) 1);
-            styleContentTable2WithWrap.setBorderRight((short) 1);
             styleContentTable2WithWrap.setAlignment(CellStyle.ALIGN_CENTER);
             styleContentTable2WithWrap.setWrapText(true);
             styleContentTable2WithWrap.setVerticalAlignment(CellStyle.VERTICAL_TOP);
