@@ -161,11 +161,11 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    AND  "
                 + "        UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%')  ");
                 
-                if (!StringUtils.isBlank(pic)) {
-                    sqlQuery.append(" AND A.VCREA = ")
-                            .append(userId).
-                            append("");
-                }
+//                if (!StringUtils.isBlank(pic)) {
+//                    sqlQuery.append(" AND A.VCREA = ")
+//                            .append(userId).
+//                            append("");
+//                }
                 sqlQuery.append( "    AND  "
                 + "        UPPER(A.VNAME) LIKE UPPER('%'||:vname||'%')  "
                 + "    AND "
@@ -411,11 +411,11 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    AND  "
                 + "        UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%')  ");
                 
-                if (!StringUtils.isBlank(pic)) {
-                    sqlQuery.append(" AND A.VCREA = ")
-                            .append(userId).
-                            append("");
-                }
+//                if (!StringUtils.isBlank(pic)) {
+//                    sqlQuery.append(" AND A.VCREA = ")
+//                            .append(userId).
+//                            append("");
+//                }
                 sqlQuery.append( "    AND  "
                 + "        UPPER(A.VNAME) LIKE UPPER('%'||:vname||'%')  "
                 + "    AND "
