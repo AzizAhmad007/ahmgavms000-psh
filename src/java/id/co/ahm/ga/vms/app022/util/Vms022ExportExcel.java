@@ -361,7 +361,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             styleContentTable2.setBorderLeft((short) 1);
             styleContentTable2.setAlignment(CellStyle.ALIGN_CENTER);
             styleContentTable2.setVerticalAlignment(CellStyle.VERTICAL_TOP);
- 
+  
             CellStyle styleContentTable2WithWrap = workbook.createCellStyle();
             styleContentTable2WithWrap.setFont(fontContentTable1);
             styleContentTable2WithWrap.setBorderBottom((short) 1);
