@@ -195,6 +195,9 @@ public class Vms022Rest {
             @RequestParam(name = "p") String areaName,
             @RequestParam(name = "c19vs") String vacStatus) {
 
+        
+//        VoUserCred user = tokenPshUtil.getUserCred(token);
+        
         if (StringUtils.isNotEmpty(beginDateText)) {
             Date effectiveDateFrom = Vms022DateTimeUtil.stringToDate(beginDateText);
             beginDateText = Vms022DateTimeUtil.dateToString("dd-MMM-yyyy", effectiveDateFrom);
@@ -225,10 +228,8 @@ public class Vms022Rest {
         dtoParam.setSort(null);
         dtoParam.setSearch(search);
         dtoParam.setOrder("");
-        
-        VoUserCred user = tokenPshUtil.getUserCred(token);
 
-        DtoResponseWorkspace dtoResponseWorkspace = vms022Service.getExcel(dtoParam, user);
+        DtoResponseWorkspace dtoResponseWorkspace = vms022Service.getExcel(dtoParam);
         List<Vms022VoMonitoring> vms022VoMonitor = (List<Vms022VoMonitoring>) dtoResponseWorkspace.getData();
         ModelAndView modelAndView = new ModelAndView(new Vms022ExportExcel());
         modelAndView.addObject("dtoParam", dtoParam);

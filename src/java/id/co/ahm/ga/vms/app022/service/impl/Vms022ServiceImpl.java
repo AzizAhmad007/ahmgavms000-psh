@@ -54,6 +54,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @Service(value = "vms022Service")
 public class Vms022ServiceImpl implements Vms022Service {
+    
+    String ServiceUser;
 
     public final static String pathServer = "/data/deploy/upload/ahmgavms/Registration/";
 //    public final static String pathServer = "D:\\Download\\";
@@ -123,6 +125,7 @@ public class Vms022ServiceImpl implements Vms022Service {
 
     @Override
     public DtoResponseWorkspace showMonitoring(DtoParamPaging dto, VoUserCred userCred) {
+        ServiceUser = userCred.getUserid();
         List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, userCred.getUserid());
         int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, userCred.getUserid());
 
@@ -175,9 +178,9 @@ public class Vms022ServiceImpl implements Vms022Service {
     }
 
     @Override
-    public DtoResponsePagingWorkspace getExcel(DtoParamPaging dto, VoUserCred userCred) {
-        List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, userCred.getUserid());
-        int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, userCred.getUserid());
+    public DtoResponsePagingWorkspace getExcel(DtoParamPaging dto) {
+        List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, ServiceUser);
+        int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, ServiceUser);
 
         for (Vms022VoMonitoring vo : list) {
             String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());
