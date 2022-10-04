@@ -123,7 +123,7 @@ public class Vms022ServiceImpl implements Vms022Service {
 
     @Override
     public DtoResponseWorkspace showMonitoring(DtoParamPaging dto, VoUserCred userCred) {
-        List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, "");
+        List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, userCred.getUserid());
         int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, "");
 
         for (Vms022VoMonitoring vo : list) {
