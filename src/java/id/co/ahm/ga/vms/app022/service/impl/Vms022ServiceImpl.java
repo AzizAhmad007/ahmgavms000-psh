@@ -124,7 +124,7 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Override
     public DtoResponseWorkspace showMonitoring(DtoParamPaging dto, VoUserCred userCred) {
         List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, userCred.getUserid());
-        int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, "");
+        int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, userCred.getUserid());
 
         for (Vms022VoMonitoring vo : list) {
             String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());
@@ -175,9 +175,9 @@ public class Vms022ServiceImpl implements Vms022Service {
     }
 
     @Override
-    public DtoResponsePagingWorkspace getExcel(DtoParamPaging dto) {
-        List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, "");
-        int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, "");
+    public DtoResponsePagingWorkspace getExcel(DtoParamPaging dto, VoUserCred userCred) {
+        List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, userCred.getUserid());
+        int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, userCred.getUserid());
 
         for (Vms022VoMonitoring vo : list) {
             String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());

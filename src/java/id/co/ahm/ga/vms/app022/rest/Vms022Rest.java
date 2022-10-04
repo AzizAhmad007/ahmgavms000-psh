@@ -225,8 +225,10 @@ public class Vms022Rest {
         dtoParam.setSort(null);
         dtoParam.setSearch(search);
         dtoParam.setOrder("");
+        
+        VoUserCred user = tokenPshUtil.getUserCred(token);
 
-        DtoResponseWorkspace dtoResponseWorkspace = vms022Service.getExcel(dtoParam);
+        DtoResponseWorkspace dtoResponseWorkspace = vms022Service.getExcel(dtoParam, user);
         List<Vms022VoMonitoring> vms022VoMonitor = (List<Vms022VoMonitoring>) dtoResponseWorkspace.getData();
         ModelAndView modelAndView = new ModelAndView(new Vms022ExportExcel());
         modelAndView.addObject("dtoParam", dtoParam);

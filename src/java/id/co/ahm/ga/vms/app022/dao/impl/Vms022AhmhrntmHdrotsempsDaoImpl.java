@@ -73,7 +73,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         sortMap.put("ahmgavms022p01ModifySort", "");
         sortMap.put("ahmgavms022p01ModifyDateSort", "");
 
-        LinkedHashMap<String, Object> reqObj = (LinkedHashMap<String, Object>) input.getSearch();
         String votsid = AhmStringUtil.hasValue(input.getSearch().get("outId")) ? (input.getSearch().get("outId") + "").toUpperCase() : "";
         String vname = AhmStringUtil.hasValue(input.getSearch().get("outName")) ? (input.getSearch().get("outName") + "").toUpperCase() : "";
         String vpersid = AhmStringUtil.hasValue(input.getSearch().get("nik")) ? (input.getSearch().get("nik") + "").toUpperCase() : "";
@@ -152,18 +151,12 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 
                 sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID ");
                 
-                sqlQuery.append("INNER JOIN AHMHRNTM_DTLPRMGBLS E on B.VPLANT = E.VPGBLCD  "
-                + "                 "
-                + "INNER JOIN AHMHRNTM_DTLPRMGBLS D ON A.VOTSTYPE = D.VPGBLCD ");
-//        if (!StringUtils.isBlank(pic)) {
-//            sqlQuery.append(" INNER JOIN AHMHRNTM_MSTPICOTS C ON B.VPLANT = C.VAREA ");
-//        }
-        sqlQuery.append
-                ( "LEFT JOIN AHMHRNTM_DTLPRMGBLS F ON A.VCOMPANY = F.VPGBLCD "
-                + "LEFT JOIN AHMMOMSC_MSTVENDORS@ahmps Z ON A.VCOMPANY = Z.VVENDORID "
-                + "LEFT JOIN AHMHRNTM_DTLPRMGBLS G ON A.VVACTYPE = G.VPGBLCD "
+                sqlQuery.append("INNER JOIN AHMHRNTM_DTLPRMGBLS E on B.VPLANT = E.VPGBLCD  ")
+                .append( "INNER JOIN AHMHRNTM_DTLPRMGBLS D ON A.VOTSTYPE = D.VPGBLCD ")
+                .append( "LEFT JOIN AHMHRNTM_DTLPRMGBLS F ON A.VCOMPANY = F.VPGBLCD ")
+                .append( "LEFT JOIN AHMMOMSC_MSTVENDORS@ahmps Z ON A.VCOMPANY = Z.VVENDORID ")
+                .append( "LEFT JOIN AHMHRNTM_DTLPRMGBLS G ON A.VVACTYPE = G.VPGBLCD "
                 + "WHERE  "
-//                + "    B.R_NUM = 1 "
                 + "    1 = 1 "
                 + "    AND  "
                 + "        UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%')  ");
@@ -193,10 +186,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         if (!StringUtils.isBlank(pic)) {
             sqlQuery.append(" AND UPPER(C.VNRP) LIKE UPPER('%'||").append(pic).append("||'%') ");
         }
-        //                + "    AND "
-        //                + "        UPPER(to_char(A.DBGNEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:begineff||'%') "
-        //                + "    AND "
-        //                + "        UPPER(to_char(A.DENDEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:endeff||'%') "
 
         if (!StringUtils.isBlank(begineff) || !StringUtils.isBlank(endeff)) {
             sqlQuery.append(" AND (");
@@ -356,7 +345,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    A.VCOMPANY as COMPANY,  "
                 + "    CASE WHEN F.VPGBLNM is not null THEN COALESCE(F.VPGBLNM, '') "
                 + "     ELSE COALESCE(Z.VVENDORDESC, '') END AS COMPANYNAME, "
-                //                + "    COALESCE(F.VPGBLNM, '') as COMPANYNAME,  "
                 + "    A.VOTSSTTS as OUTSTATUS,  "
                 + "    B.VPLANT as AREA,  "
                 + "    E.VPGBLNM as AREANAME,  "
@@ -385,35 +373,50 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    RAWTOHEX(A.ROTSEMPSHS) as ID,  "
                 + "    A.BPHOTO as FOTO  "
                 + "FROM   "
-                + "    AHMHRNTM_HDROTSEMPS A  "
-                + "                  "
-                + "INNER JOIN (  "
-                + "    SELECT DISTINCT   "
-                + "        A.VPLANT,   "
-                + "        B.VPGBLNM,   "
-                + "        A.VOTSID,   "
-                + "        A.VPERSID,   "
-                + "        B.VPGBLCD,   "
-                + "        ROW_NUMBER() OVER ( PARTITION BY A.VOTSID ORDER BY NULL) AS R_NUM  "
-                + "    FROM AHMHRNTM_DTLOTSREGS A, AHMHRNTM_DTLPRMGBLS B, AHMHRNTM_MSTPICOTS Y  "
-                + "    WHERE A.VREGID = 'PLNT'  "
-                + "        AND B.VPGBLCD = Y.VAREA "
-                + "        AND B.VPGBLCD = A.VPLANT) B on A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID  "
-                + "INNER JOIN AHMHRNTM_DTLPRMGBLS E on B.VPLANT = E.VPGBLCD  ");
-        if (!StringUtils.isBlank(pic)) {
-            sqlQuery.append(" INNER JOIN AHMHRNTM_MSTPICOTS C ON B.VPLANT = C.VAREA ");
-        }
-        sqlQuery.append(
-                "INNER JOIN AHMHRNTM_DTLPRMGBLS D ON A.VOTSTYPE = D.VPGBLCD "
-                + "LEFT JOIN AHMHRNTM_DTLPRMGBLS F ON A.VCOMPANY = F.VPGBLCD "
-                + "LEFT JOIN AHMMOMSC_MSTVENDORS@ahmps Z ON A.VCOMPANY = Z.VVENDORID "
-                + "LEFT JOIN AHMHRNTM_DTLPRMGBLS G ON A.VVACTYPE = G.VPGBLCD "
+                + "    AHMHRNTM_HDROTSEMPS A  ");
+        
+                sqlQuery.append("INNER JOIN ")
+                        .append("( ")
+                        .append("  SELECT "
+                               +"    DISTINCT AA.VPLANT, AA.VOTSID, AA.VPERSID, "
+                               +"    BB.VPGBLNM, BB.VPGBLCD "
+                               +"  FROM AHMHRNTM_DTLOTSREGS AA, AHMHRNTM_DTLPRMGBLS BB, AHMHRNTM_MSTPICOTS CC" 
+                               +"  WHERE AA.VREGID = 'PLNT' " 
+                               +"  AND AA.VPLANT = BB.VPGBLCD " 
+                               +"  AND CC.VAREA = AA.VPLANT ");
+                
+                if (!StringUtils.isBlank(plant)) {
+                    sqlQuery.append(" AND AA.VPLANT = '")
+                            .append(plant)
+                            .append("' ");
+                } else {
+                    sqlQuery.append(" AND AA.NSEQ = 1 ");
+                }
+                
+                if (!StringUtils.isBlank(pic)) {
+                    sqlQuery.append(" AND CC.VNRP LIKE '%")
+                            .append(pic)
+                            .append("%' ");
+                }
+                
+                sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID ");
+                
+                sqlQuery.append("INNER JOIN AHMHRNTM_DTLPRMGBLS E on B.VPLANT = E.VPGBLCD  ")
+                .append( "INNER JOIN AHMHRNTM_DTLPRMGBLS D ON A.VOTSTYPE = D.VPGBLCD ")
+                .append( "LEFT JOIN AHMHRNTM_DTLPRMGBLS F ON A.VCOMPANY = F.VPGBLCD ")
+                .append( "LEFT JOIN AHMMOMSC_MSTVENDORS@ahmps Z ON A.VCOMPANY = Z.VVENDORID ")
+                .append( "LEFT JOIN AHMHRNTM_DTLPRMGBLS G ON A.VVACTYPE = G.VPGBLCD "
                 + "WHERE  "
-                + "    B.R_NUM = 1 "
-                //                + "    AND SYSDATE BETWEEN F.DBGNEFFDT AND F.DENDEFFDT "
+                + "    1 = 1 "
                 + "    AND  "
-                + "        UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%')  "
-                + "    AND  "
+                + "        UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%')  ");
+                
+                if (!StringUtils.isBlank(pic)) {
+                    sqlQuery.append(" AND A.VCREA = ")
+                            .append(userId).
+                            append("");
+                }
+                sqlQuery.append( "    AND  "
                 + "        UPPER(A.VNAME) LIKE UPPER('%'||:vname||'%')  "
                 + "    AND "
                 + "        UPPER(A.VPERSID) LIKE UPPER('%'||:vpersid||'%') "
@@ -429,10 +432,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "        (:plant IS NULL OR UPPER(B.VPLANT) LIKE '%'||:plant||'%' ) "
                 + "    AND "
                 + "        (:vacstat IS NULL OR UPPER(A.VVACSTTS) LIKE '%'||:vacstat||'%' )  "
-        //                + "    AND "
-        //                + "        UPPER(to_char(A.DBGNEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:begineff||'%') "
-        //                + "    AND "
-        //                + "        UPPER(to_char(A.DENDEFFDT, 'DD-Mon-YYYY')) LIKE UPPER('%'||:endeff||'%') "
         );
         if (!StringUtils.isBlank(pic)) {
             sqlQuery.append(" AND UPPER(C.VNRP) LIKE UPPER('%'||").append(pic).append("||'%') ");
