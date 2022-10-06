@@ -35,6 +35,8 @@ import id.co.ahm.jxf.vo.VoUserCred;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -57,6 +59,9 @@ public class Vms022ServiceImpl implements Vms022Service {
 
     public final static String pathServer = "/data/deploy/upload/ahmgavms/Registration/";
 //    public final static String pathServer = "D:\\Download\\";
+    
+    public final static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-YYYY");
+    public final static LocalDateTime now = LocalDateTime.now();
 
     @Autowired
     @Qualifier("ahmitb2eMstusrrolesDao")
@@ -310,11 +315,13 @@ public class Vms022ServiceImpl implements Vms022Service {
                 if (mp != null) {
                     if (getdata.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM")) {
                         mp.setVotsstts(getdata.getOutStatus());
+                        mp.setDstatus(DateUtil.stringToDate(dtf.format(now), "dd-MM-yyyy"));
                         vms022ahmhrntmHdrotsempsDao.update(mp);
                         vms022ahmhrntmHdrotsempsDao.flush();
                     } else if (getdata.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
                         mp.setVotsstts(getdata.getOutStatus());
                         mp.setDpassexp(DateUtil.stringToDate(getdata.getPassExpiryDateText(), "dd-MMM-yyyy"));
+                        mp.setDstatus(DateUtil.stringToDate(dtf.format(now), "dd-MM-yyyy"));
                         vms022ahmhrntmHdrotsempsDao.update(mp);
                         vms022ahmhrntmHdrotsempsDao.flush();
                     }
@@ -341,6 +348,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                     if (mp != null) {
                         mp.setVotsstts(vo.getOutStatus());
                         mp.setLastModBy(userCred.getUserid());
+                        mp.setDstatus(DateUtil.stringToDate(dtf.format(now), "dd-MM-yyyy"));
                         vms022ahmhrntmHdrotsempsDao.update(mp);
                         vms022ahmhrntmHdrotsempsDao.flush();
                     }
