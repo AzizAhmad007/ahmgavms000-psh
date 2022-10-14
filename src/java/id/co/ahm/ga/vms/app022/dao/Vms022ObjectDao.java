@@ -21,4 +21,6 @@ public interface Vms022ObjectDao extends HrDao<Object, Serializable>{
     
     public List<Vms022VoLov> lovCompExternal(DtoParamPaging input, String userId, String type);
     
+    
+    
 }

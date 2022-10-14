@@ -7,10 +7,12 @@ package id.co.ahm.ga.vms.app022.service.impl;
 
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsemps;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsempsPk;
+import id.co.ahm.ga.vms.app000.model.AhmhrntmTxnidreps;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlotsregsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlprmgblsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmHdrotsempsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmMstpicotsDao;
+import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmTxnidrepsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022ObjectDao;
 import id.co.ahm.ga.vms.app022.exception.Vms022Exception;
 import id.co.ahm.ga.vms.app022.service.Vms022Service;
@@ -35,10 +37,12 @@ import id.co.ahm.jxf.vo.VoUserCred;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -56,6 +60,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @Service(value = "vms022Service")
 public class Vms022ServiceImpl implements Vms022Service {
+    
+    String ServiceUser;
 
     public final static String pathServer = "/data/deploy/upload/ahmgavms/Registration/";
 //    public final static String pathServer = "D:\\Download\\";
@@ -86,6 +92,10 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Autowired
     @Qualifier("vms022AhmhrntmMstpicotsDao")
     private Vms022AhmhrntmMstpicotsDao vms022AhmhrntmMstpicotsDao;
+
+    @Autowired
+    @Qualifier("vms022AhmhrntmTxnidrepsDao")
+    private Vms022AhmhrntmTxnidrepsDao vms022ahmhrntmTxnidrepsDao;
 
     @Override
     public DtoResponseWorkspace getFormAuthorization(VoUserCred userCred) {
@@ -128,7 +138,9 @@ public class Vms022ServiceImpl implements Vms022Service {
 
     @Override
     public DtoResponseWorkspace showMonitoring(DtoParamPaging dto, VoUserCred userCred) {
+        ServiceUser = userCred.getUserid();
         List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, "");
+//        int cont = list.size();
         int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, "");
 
         for (Vms022VoMonitoring vo : list) {
@@ -315,15 +327,65 @@ public class Vms022ServiceImpl implements Vms022Service {
                 if (mp != null) {
                     if (getdata.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM")) {
                         mp.setVotsstts(getdata.getOutStatus());
-                        mp.setDstatus(DateUtil.stringToDate(dtf.format(now), "dd-MM-yyyy"));
                         vms022ahmhrntmHdrotsempsDao.update(mp);
                         vms022ahmhrntmHdrotsempsDao.flush();
                     } else if (getdata.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
                         mp.setVotsstts(getdata.getOutStatus());
                         mp.setDpassexp(DateUtil.stringToDate(getdata.getPassExpiryDateText(), "dd-MMM-yyyy"));
                         mp.setDstatus(DateUtil.stringToDate(dtf.format(now), "dd-MM-yyyy"));
+                        
+                        String getNseq = vms022ahmhrntmTxnidrepsDao.getNseq();
+                        
+                        int nseq;
+                        Date datenow = new Date();
+                        int yearnow = datenow.getYear() + 1900;
+                        int monthnow = datenow.getMonth() + 1;
+                        
+                        String vNseq;
+                        
+                        if (monthnow < 10) {
+                            vNseq = "OTR/" + yearnow + "/0" + monthnow + "/";
+                        } else {
+                            vNseq = "OTR/" + yearnow + "/" + monthnow + "/";                        
+                        }
+                        
+                        if (getNseq == null) {
+                            nseq = 1;
+                        } else {
+                            nseq = Integer.valueOf(getNseq) + 1;
+                        }
+                        
+                        
+                        if(nseq < 10) {
+                            vNseq += "00000" + nseq;
+                        } else if (nseq < 100) {
+                            vNseq += "0000" + nseq;
+                        } else if (nseq < 1000) {
+                            vNseq += "000" + nseq;
+                        } else if (nseq < 10000) {
+                            vNseq += "00" + nseq;
+                        } else if (nseq < 100000) {
+                            vNseq += "0" + nseq;
+                        } else if (nseq < 1000000) {
+                            vNseq += String.valueOf(nseq);
+                        }
+                        
+                        AhmhrntmTxnidreps vo = new AhmhrntmTxnidreps();
+                        vo.setVwrkorderno(vNseq);
+                        vo.setVnrp(getdata.getOutId());
+                        vo.setNreasonrep(BigDecimal.valueOf(3));
+                        vo.setNclaimemp(BigDecimal.ZERO);
+                        vo.setVremark(getdata.getNote());
+                        vo.setVstatus("WAITING");
+                        vo.setVpckupsts("NOTDONE");
+                        vo.setVcardname(getdata.getOutName());
+                        
+                        
                         vms022ahmhrntmHdrotsempsDao.update(mp);
                         vms022ahmhrntmHdrotsempsDao.flush();
+                        
+                        vms022ahmhrntmTxnidrepsDao.save(vo);
+                        vms022ahmhrntmTxnidrepsDao.flush();
                     }
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, ("Approve success"), null, null);
                 }
@@ -346,11 +408,69 @@ public class Vms022ServiceImpl implements Vms022Service {
                     pk.setRotsempshs((vo.getId()));
                     AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
                     if (mp != null) {
-                        mp.setVotsstts(vo.getOutStatus());
-                        mp.setLastModBy(userCred.getUserid());
-                        mp.setDstatus(DateUtil.stringToDate(dtf.format(now), "dd-MM-yyyy"));
-                        vms022ahmhrntmHdrotsempsDao.update(mp);
-                        vms022ahmhrntmHdrotsempsDao.flush();
+                        if (vo.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM")) {
+                            mp.setVotsstts(vo.getOutStatus());
+                            mp.setLastModBy(userCred.getUserid());
+                            vms022ahmhrntmHdrotsempsDao.update(mp);
+                            vms022ahmhrntmHdrotsempsDao.flush();
+                        } else if (vo.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
+                            mp.setVotsstts(vo.getOutStatus());
+                            mp.setLastModBy(userCred.getUserid());
+                            mp.setDstatus(DateUtil.stringToDate(dtf.format(now), "dd-MM-yyyy"));
+                            
+                            String getNseq = vms022ahmhrntmTxnidrepsDao.getNseq();
+                        
+                            int nseq;
+                            Date datenow = new Date();
+                            int yearnow = datenow.getYear() + 1900;
+                            int monthnow = datenow.getMonth() + 1;
+
+                            String vNseq;
+
+                            if (monthnow < 10) {
+                                vNseq = "OTR/" + yearnow + "/0" + monthnow + "/";
+                            } else {
+                                vNseq = "OTR/" + yearnow + "/" + monthnow + "/";                        
+                            }
+
+                            if (getNseq == null) {
+                                nseq = 1;
+                            } else {
+                                nseq = Integer.valueOf(getNseq) + 1;
+                            }
+
+
+                            if(nseq < 10) {
+                                vNseq += "00000" + nseq;
+                            } else if (nseq < 100) {
+                                vNseq += "0000" + nseq;
+                            } else if (nseq < 1000) {
+                                vNseq += "000" + nseq;
+                            } else if (nseq < 10000) {
+                                vNseq += "00" + nseq;
+                            } else if (nseq < 100000) {
+                                vNseq += "0" + nseq;
+                            } else if (nseq < 1000000) {
+                                vNseq += String.valueOf(nseq);
+                            }
+
+                            AhmhrntmTxnidreps voo = new AhmhrntmTxnidreps();
+                            voo.setVwrkorderno(vNseq);
+                            voo.setVnrp(vo.getOutId());
+                            voo.setNreasonrep(BigDecimal.valueOf(3));
+                            voo.setNclaimemp(BigDecimal.ZERO);
+                            voo.setVremark(vo.getNote());
+                            voo.setVstatus("WAITING");
+                            voo.setVpckupsts("NOTDONE");
+                            voo.setVcardname(vo.getOutName());
+                            
+                            vms022ahmhrntmHdrotsempsDao.update(mp);
+                            vms022ahmhrntmHdrotsempsDao.flush();
+                        
+                            vms022ahmhrntmTxnidrepsDao.save(voo);
+                            vms022ahmhrntmTxnidrepsDao.flush();
+                        
+                        }
                     }
                 } else {
                     throw new Vms022Exception("Role Not Exist!");
@@ -479,5 +599,4 @@ public class Vms022ServiceImpl implements Vms022Service {
             }
         }
     }
-
 }

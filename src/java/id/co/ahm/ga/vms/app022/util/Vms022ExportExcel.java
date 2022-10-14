@@ -329,6 +329,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             styleHeaderTable1.setBorderTop((short) 1);
             styleHeaderTable1.setBorderBottom((short) 1);
             styleHeaderTable1.setBorderLeft((short) 1);
+            styleHeaderTable1.setBorderRight((short) 1);
             styleHeaderTable1.setAlignment(CellStyle.ALIGN_CENTER);
  
             CellStyle styleHeaderTable2 = workbook.createCellStyle();
@@ -360,11 +361,12 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             styleContentTable2.setBorderLeft((short) 1);
             styleContentTable2.setAlignment(CellStyle.ALIGN_CENTER);
             styleContentTable2.setVerticalAlignment(CellStyle.VERTICAL_TOP);
- 
+  
             CellStyle styleContentTable2WithWrap = workbook.createCellStyle();
             styleContentTable2WithWrap.setFont(fontContentTable1);
             styleContentTable2WithWrap.setBorderBottom((short) 1);
             styleContentTable2WithWrap.setBorderLeft((short) 1);
+            styleContentTable2WithWrap.setBorderRight((short) 1);
             styleContentTable2WithWrap.setAlignment(CellStyle.ALIGN_CENTER);
             styleContentTable2WithWrap.setWrapText(true);
             styleContentTable2WithWrap.setVerticalAlignment(CellStyle.VERTICAL_TOP);
@@ -546,7 +548,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                 createCell(rowContentData, item.getModifyDateText(), col++, styleContentTable2WithWrap);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Fail generate excel file");
         }
  
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
