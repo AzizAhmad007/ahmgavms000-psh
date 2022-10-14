@@ -459,12 +459,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
         sqlQuery.append(" )");
 
-//        SQLQuery query = getCurrentSession().createSQLQuery(sqlQuery.toString())
-//                .setFirstResult(input.getOffset())
-//                .setMaxResults(input.getLimit());
-        Query query = getCurrentSession().createSQLQuery(sqlQuery.toString())
-                .setFirstResult(input.getOffset())
-                .setMaxResults(input.getLimit());
+        SQLQuery query = getCurrentSession().createSQLQuery(sqlQuery.toString());
+//        Query query = getCurrentSession().createSQLQuery(sqlQuery.toString());
 
         query.setParameter("votsid", votsid)
                 .setParameter("vname", vname)
@@ -500,7 +496,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
     private void voSetter(DtoParamPaging input) {
         try {
-            if (input.getSort().equalsIgnoreCase(null)) {
+            if (input.getSort() == null) {
 
             } else {
                 String param = input.getSort();
