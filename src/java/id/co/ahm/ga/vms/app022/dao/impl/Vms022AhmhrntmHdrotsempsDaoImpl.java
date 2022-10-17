@@ -144,9 +144,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         }
 
         if (!StringUtils.isBlank(pic)) {
-            sqlQuery.append(" AND CC.VNRP LIKE '%")
+            sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
                     .append(pic)
-                    .append("%' ");
+                    .append("||'%') ");
         }
 
         sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID ");
@@ -183,9 +183,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    AND "
                 + "        (:vacstat IS NULL OR UPPER(A.VVACSTTS) LIKE '%'||:vacstat||'%' )  "
         );
-        if (!StringUtils.isBlank(pic)) {
-            sqlQuery.append(" AND UPPER(C.VNRP) LIKE UPPER('%'||").append(pic).append("||'%') ");
-        }
+//        if (!StringUtils.isBlank(pic)) {
+//            sqlQuery.append(" AND UPPER(C.VNRP) LIKE UPPER('%'||").append(pic).append("||'%') ");
+//        }
 
         if (!StringUtils.isBlank(begineff) || !StringUtils.isBlank(endeff)) {
             sqlQuery.append(" AND (");
@@ -394,9 +394,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         }
 
         if (!StringUtils.isBlank(pic)) {
-            sqlQuery.append(" AND CC.VNRP LIKE '%")
+            sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
                     .append(pic)
-                    .append("%' ");
+                    .append("||'%') ");
         }
 
         sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID ");
@@ -433,9 +433,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    AND "
                 + "        (:vacstat IS NULL OR UPPER(A.VVACSTTS) LIKE '%'||:vacstat||'%' )  "
         );
-        if (!StringUtils.isBlank(pic)) {
-            sqlQuery.append(" AND UPPER(C.VNRP) LIKE UPPER('%'||").append(pic).append("||'%') ");
-        }
+//        if (!StringUtils.isBlank(pic)) {
+//            sqlQuery.append(" AND UPPER(C.VNRP) LIKE UPPER('%'||").append(pic).append("||'%') ");
+//        }
 
         if (!StringUtils.isBlank(begineff) || !StringUtils.isBlank(endeff)) {
             sqlQuery.append(" AND (");
