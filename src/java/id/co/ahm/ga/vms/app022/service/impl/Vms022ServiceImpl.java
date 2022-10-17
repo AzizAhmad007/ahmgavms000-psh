@@ -332,7 +332,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                     } else if (getdata.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
                         mp.setVotsstts(getdata.getOutStatus());
                         mp.setDpassexp(DateUtil.stringToDate(getdata.getPassExpiryDateText(), "dd-MMM-yyyy"));
-                        mp.setDstatus(DateUtil.stringToDate(dtf.format(now), "dd-MM-yyyy"));
+                        mp.setDstatus(DateUtil.stringToDate(getdata.getDateStatus(), "dd-MM-yyyy"));
                         
                         String getNseq = vms022ahmhrntmTxnidrepsDao.getNseq();
                         
@@ -416,7 +416,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                         } else if (vo.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
                             mp.setVotsstts(vo.getOutStatus());
                             mp.setLastModBy(userCred.getUserid());
-                            mp.setDstatus(DateUtil.stringToDate(dtf.format(now), "dd-MM-yyyy"));
+                            mp.setDstatus(DateUtil.stringToDate(vo.getDateStatus(), "dd-MM-yyyy"));
                             
                             String getNseq = vms022ahmhrntmTxnidrepsDao.getNseq();
                         

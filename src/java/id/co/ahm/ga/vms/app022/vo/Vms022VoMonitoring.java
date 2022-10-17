@@ -61,6 +61,7 @@ public class Vms022VoMonitoring {
     private String vmodi;
     private Date dmodi;
     private String reasonReject;
+    private String dateStatus;
     
 //    private List<Vms022VoLov> plants;
 //    private List<Vms022VoLov> gates;
@@ -69,6 +70,14 @@ public class Vms022VoMonitoring {
     private List<Vms022VoFileAttachment> fileSk;
     
     private List<Vms022VoMonitoring> monitoring;
+
+    public String getDateStatus() {
+        return dateStatus;
+    }
+
+    public void setDateStatus(String dateStatus) {
+        this.dateStatus = dateStatus;
+    }
 
     public String getVmodi() {
         return vmodi;
