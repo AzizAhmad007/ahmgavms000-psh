@@ -133,6 +133,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                         + "  FROM AHMHRNTM_DTLOTSREGS AA, AHMHRNTM_DTLPRMGBLS BB, AHMHRNTM_MSTPICOTS CC"
                         + "  WHERE AA.VREGID = 'PLNT' "
                         + "  AND AA.VPLANT = BB.VPGBLCD "
+                        + "  AND CC.VOTSTYPE = 'PG08-01'"
                         + "  AND CC.VAREA = AA.VPLANT ");
 
         if (!StringUtils.isBlank(plant)) {
@@ -383,6 +384,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                         + "  FROM AHMHRNTM_DTLOTSREGS AA, AHMHRNTM_DTLPRMGBLS BB, AHMHRNTM_MSTPICOTS CC"
                         + "  WHERE AA.VREGID = 'PLNT' "
                         + "  AND AA.VPLANT = BB.VPGBLCD "
+                        + "  AND CC.VOTSTYPE = 'PG08-01'"
                         + "  AND CC.VAREA = AA.VPLANT ");
 
         if (!StringUtils.isBlank(plant)) {
