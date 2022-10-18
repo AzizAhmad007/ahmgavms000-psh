@@ -84,15 +84,20 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
                 + " AND B.VPGBLCD = A.VAREA "
                 + " AND B.VPGBLCD LIKE 'PG10%' "
                 + " AND A.VNRP = C.NRP "
-                + " AND C.VEND_VND_CODE = 'AHM' "
-                + " AND A.VAREA = :VAREA "
-                + " AND A.VRGSROLE IN ('PG91-01','PG91-03') "
+                + " AND C.VEND_VND_CODE = 'AHM' ");
+                
+        sql.append(" AND A.VAREA in (");
+        sql.append(area);
+        sql.append(")");
+                
+        sql.append(" AND A.VRGSROLE IN ('PG91-01','PG91-03') "
         );
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
         sqlQuery.setParameter("VOTSTYPE", outType)
-                .setParameter("VAREA", area);
+//                .setParameter("VAREA", area)
+                ;
 
         List queryResult = sqlQuery.list();
 //        List<Vms022VoLov> vo = new ArrayList<>();

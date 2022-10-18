@@ -121,6 +121,94 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
         }
         return vo;
     }
+    
+    @Override
+    public String getPlantForExcel(String outid, String nik) {
+    
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("SELECT "
+                + "     A.NSEQ, "
+                + "     A.VPLANT, "
+                + "     B.VPGBLNM "
+                + " FROM "
+                + " AHMHRNTM_HDROTSEMPS C "
+                + " INNER JOIN AHMHRNTM_DTLOTSREGS A ON C.VOTSID = A.VOTSID and C.VPERSID = A.VPERSID "
+                + " INNER JOIN AHMHRNTM_DTLPRMGBLS B ON A.VPLANT = B.VPGBLCD "
+                + " WHERE"
+                + "     A.VREGID in('PLNT','GATE') "
+                + "     AND C.VOTSID = :VOTSID "
+                + "     AND C.VPERSID = :VPERSID ");
+
+        SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
+
+        sqlQuery.setParameter("VOTSID", outid)
+                .setParameter("VPERSID", nik);
+
+        List queryResult = sqlQuery.list();
+        String vo = "";
+        if (queryResult.size() > 0) {
+            Object[] obj;
+            boolean limitText = true;
+
+            for (Object object : queryResult) {
+                obj = (Object[]) object;    
+
+                if (limitText) {
+                    vo += obj[2].toString();
+                    limitText = false;
+                } else {
+                    vo += "; " + obj[2].toString();
+                }
+
+            }
+        }
+        return vo;
+    }
+    
+    @Override
+    public String getPlantIDForExcel(String outid, String nik) {
+    
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("SELECT "
+                + "     A.NSEQ, "
+                + "     A.VPLANT, "
+                + "     B.VPGBLNM "
+                + " FROM "
+                + " AHMHRNTM_HDROTSEMPS C "
+                + " INNER JOIN AHMHRNTM_DTLOTSREGS A ON C.VOTSID = A.VOTSID and C.VPERSID = A.VPERSID "
+                + " INNER JOIN AHMHRNTM_DTLPRMGBLS B ON A.VPLANT = B.VPGBLCD "
+                + " WHERE"
+                + "     A.VREGID in('PLNT','GATE') "
+                + "     AND C.VOTSID = :VOTSID "
+                + "     AND C.VPERSID = :VPERSID ");
+
+        SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
+
+        sqlQuery.setParameter("VOTSID", outid)
+                .setParameter("VPERSID", nik);
+
+        List queryResult = sqlQuery.list();
+        String vo = "";
+        if (queryResult.size() > 0) {
+            Object[] obj;
+            boolean limitText = true;
+
+            for (Object object : queryResult) {
+                obj = (Object[]) object;    
+
+                if (limitText) {
+                    vo += "'" + obj[1].toString() + "'";
+                    limitText = false;
+                } else {
+                    vo += ",'" + obj[1].toString() + "'";
+                }
+
+            }
+        }
+        return vo;
+    }
 
     @Override
     public List<Vms022VoLov> getGate(String outid, String nik) {

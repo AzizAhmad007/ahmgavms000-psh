@@ -199,6 +199,12 @@ public class Vms022ServiceImpl implements Vms022Service {
         for (Vms022VoMonitoring vo : list) {
             String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());
             vo.setGateName(getGateList);
+            
+            String getPlantList = vms022ahmhrntmDtlprmgblsDao.getPlantForExcel(vo.getOutId(), vo.getPersId());
+            vo.setAreaName(getPlantList);
+            
+            String getPlantIDList = vms022ahmhrntmDtlprmgblsDao.getPlantIDForExcel(vo.getOutId(), vo.getPersId());
+            vo.setArea(getPlantIDList);
 
             String getPicList = vms022AhmhrntmMstpicotsDao.getPicAhmForExcel(vo.getOutType(), vo.getArea());
             vo.setPic(getPicList);
