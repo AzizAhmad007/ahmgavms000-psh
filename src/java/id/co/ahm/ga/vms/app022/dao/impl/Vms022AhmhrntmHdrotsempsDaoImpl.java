@@ -157,6 +157,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("LEFT JOIN AHMMOMSC_MSTVENDORS@ahmps Z ON A.VCOMPANY = Z.VVENDORID ")
                 .append("LEFT JOIN AHMHRNTM_DTLPRMGBLS G ON A.VVACTYPE = G.VPGBLCD "
                         + "WHERE  "
+                        + "    B.VOTSTYPE = A.VOTSTYPE "
+                        + "    AND  "
                         + "    1 = 1 "
                         + "    AND  "
                         + "        UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%')  ");
@@ -413,6 +415,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("LEFT JOIN AHMMOMSC_MSTVENDORS@ahmps Z ON A.VCOMPANY = Z.VVENDORID ")
                 .append("LEFT JOIN AHMHRNTM_DTLPRMGBLS G ON A.VVACTYPE = G.VPGBLCD "
                         + "WHERE  "
+                        + "    B.VOTSTYPE = A.VOTSTYPE "
+                        + "    AND  "
                         + "    1 = 1 "
                         + "    AND  "
                         + "        UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%')  ");
