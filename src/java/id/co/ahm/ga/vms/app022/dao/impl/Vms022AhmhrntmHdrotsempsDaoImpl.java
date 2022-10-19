@@ -133,7 +133,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                         + "  FROM AHMHRNTM_DTLOTSREGS AA, AHMHRNTM_DTLPRMGBLS BB, AHMHRNTM_MSTPICOTS CC"
                         + "  WHERE AA.VREGID = 'PLNT' "
                         + "  AND AA.VPLANT = BB.VPGBLCD "
-                        + "  AND CC.VOTSTYPE = 'PG08-01'"
                         + "  AND CC.VAREA = AA.VPLANT ");
 
         if (!StringUtils.isBlank(plant)) {
@@ -192,12 +191,18 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             sqlQuery.append(" AND (");
 
             if (!StringUtils.isBlank(begineff)) {
-                sqlQuery.append(" ('").append(begineff).append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
+                sqlQuery.append(" ('")
+                        .append(begineff)
+                        .append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
             }
             if (!StringUtils.isBlank(endeff) && StringUtils.isBlank(begineff)) {
-                sqlQuery.append(" ('").append(endeff).append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
+                sqlQuery.append(" ('")
+                        .append(endeff)
+                        .append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
             } else {
-                sqlQuery.append(" OR ('").append(endeff).append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
+                sqlQuery.append(" OR ('")
+                        .append(endeff)
+                        .append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
             }
             if (!StringUtils.isBlank(begineff) && !StringUtils.isBlank(endeff)) {
                 sqlQuery.append(" OR (A.DBGNEFFDT BETWEEN '")
@@ -384,7 +389,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                         + "  FROM AHMHRNTM_DTLOTSREGS AA, AHMHRNTM_DTLPRMGBLS BB, AHMHRNTM_MSTPICOTS CC"
                         + "  WHERE AA.VREGID = 'PLNT' "
                         + "  AND AA.VPLANT = BB.VPGBLCD "
-                        + "  AND CC.VOTSTYPE = 'PG08-01'"
                         + "  AND CC.VAREA = AA.VPLANT ");
 
         if (!StringUtils.isBlank(plant)) {
@@ -443,12 +447,18 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             sqlQuery.append(" AND (");
 
             if (!StringUtils.isBlank(begineff)) {
-                sqlQuery.append(" ('").append(begineff).append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
+                sqlQuery.append(" ('")
+                        .append(begineff)
+                        .append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
             }
             if (!StringUtils.isBlank(endeff) && StringUtils.isBlank(begineff)) {
-                sqlQuery.append(" ('").append(endeff).append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
+                sqlQuery.append(" ('")
+                        .append(endeff)
+                        .append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
             } else {
-                sqlQuery.append(" OR ('").append(endeff).append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
+                sqlQuery.append(" OR ('")
+                        .append(endeff)
+                        .append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
             }
             if (!StringUtils.isBlank(begineff) && !StringUtils.isBlank(endeff)) {
                 sqlQuery.append(" OR (A.DBGNEFFDT BETWEEN '")
