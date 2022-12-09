@@ -1,0 +1,1239 @@
+<div class="form-outer" id="ahmgavms022_form">
+    <style>
+        /* iseng coba */
+        #myImg {
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #myImg:hover {
+            opacity: 0.7;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.9);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content (image) */
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        /* Caption of Modal Image */
+        #caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            height: 150px;
+        }
+
+        /* Add Animation */
+        .modal-content,
+        #caption {
+            -webkit-animation-name: zoom;
+            -webkit-animation-duration: 0.6s;
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+
+        @-webkit-keyframes zoom {
+            from {
+                -webkit-transform: scale(0)
+            }
+
+            to {
+                -webkit-transform: scale(1)
+            }
+        }
+
+        @keyframes zoom {
+            from {
+                transform: scale(0)
+            }
+
+            to {
+                transform: scale(1)
+            }
+        }
+
+        /* The Close Button */
+        .close {
+            position: absolute;
+            top: 45px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 100% Image Width on Smaller Screens */
+        @media only screen and (max-width: 700px) {
+            .modal-content {
+                width: 100%;
+            }
+        }
+
+        /* end */
+
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.9);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content (image) */
+        .imageLargePreview {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        /* Add Animation */
+        .imageLargePreview {
+            -webkit-animation-name: zoom;
+            -webkit-animation-duration: 0.6s;
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+
+        @-webkit-keyframes zoom {
+            from {
+                -webkit-transform: scale(0)
+            }
+
+            to {
+                -webkit-transform: scale(1)
+            }
+        }
+
+        @keyframes zoom {
+            from {
+                transform: scale(0)
+            }
+
+            to {
+                transform: scale(1)
+            }
+        }
+
+        /* 100% Image Width on Smaller Screens */
+        @media only screen and (max-width: 700px) {
+            .imageLargePreview {
+                width: 100%;
+            }
+        }
+
+        .ahmgavms-datatables-error-state {
+            border: 1px solid #e51400 !important;
+            padding: 10px;
+        }
+
+        .ahmgavms-tab-error-state {
+            border: 1px solid #e51400 !important;
+            padding: 10px;
+        }
+
+        .ahmgavms-checkbox-error-state {
+            border: 1px solid #e51400 !important;
+            padding: 10px;
+        }
+
+        .containerimgktp {
+            position: relative;
+            /*margin-top: 50px;*/
+            width: 180px;
+            height: 120px;
+
+        }
+
+        .containerimgvac {
+            position: relative;
+            display: inline-block;
+            /*margin-top: 50px;*/
+            width: 180px;
+            height: 120px;
+
+        }
+
+        .containersvroll {
+            width: 550px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+        }
+
+        .buttonktp {
+            /**position: absolute;**/
+            position: relative;
+            /*width: 500px;*/
+            width: auto;
+            /**left:0;**/
+            margin-left: 37px;
+            margin-right: 0px;
+            /*top: 180px;*/
+            top: 95px;
+            /**text-align: center;**/
+            opacity: 0;
+            transition: opacity .35s ease;
+        }
+
+        .buttonphoto {
+            /**position: absolute;**/
+            position: relative;
+            /*width: 500px;*/
+            width: auto;
+            /**left:0;**/
+            margin-left: 20px;
+            margin-right: 0px;
+            /*top: 180px;*/
+            top: 130px;
+            /**text-align: center;**/
+            opacity: 0;
+            transition: opacity .35s ease;
+        }
+
+        .buttonvac {
+            /**position: absolute;**/
+            position: relative;
+            /*width: 500px;*/
+            width: auto;
+            /**left:0;**/
+            margin-left: 37px;
+            margin-right: 0px;
+            /*top: 180px;*/
+            top: 95px;
+            /**text-align: center;**/
+            opacity: 0;
+            transition: opacity .35s ease;
+        }
+
+        .buttonktp a {
+            width: 200px;
+            padding: 12px 48px;
+            text-align: center;
+            color: white;
+            /*border: solid 2px white;*/
+            z-index: 1;
+        }
+
+        .buttonphoto a {
+            width: 200px;
+            padding: 12px 48px;
+            text-align: center;
+            color: white;
+            /*border: solid 2px white;*/
+            z-index: 1;
+        }
+
+        .buttonvac a {
+            width: 200px;
+            padding: 12px 48px;
+            text-align: center;
+            color: white;
+            /*border: solid 2px white;*/
+            z-index: 1;
+        }
+
+        .containerimgphoto {
+            position: relative;
+            /*margin-top: 50px;*/
+            width: 120px;
+            height: 160px;
+
+        }
+
+        .containerimg:hover .overlay {
+            display: block;
+            /*background: rgba(0, 0, 0, .3);*/
+            background: black;
+        }
+
+        .containerimgphoto:hover .overlayphoto {
+            display: block;
+            /*background: rgba(0, 0, 0, .3);*/
+            background: black;
+        }
+
+        .containerimgktp:hover .overlayktp {
+            display: block;
+            /*background: rgba(0, 0, 0, .3);*/
+            background: black;
+        }
+
+        .containerimgvac:hover .overlayvac {
+            display: block;
+            /*background: rgba(0, 0, 0, .3);*/
+            background: black;
+        }
+
+        .containerimgktp:hover .buttonktp {
+            opacity: 1;
+        }
+
+        .containerimgphoto:hover .buttonphoto {
+            opacity: 1;
+        }
+
+        .containerimgvac:hover .buttonvac {
+            opacity: 1;
+        }
+
+        .containerimgphoto:hover .overlayphoto {
+            display: block;
+            /*background: rgba(0, 0, 0, .3);*/
+            background: black;
+        }
+
+        .imgprevktp {
+            position: absolute;
+            width: 180px;
+            height: 120px;
+            left: 0;
+            border: solid 1px black;
+        }
+
+        .imgprevphoto {
+            position: absolute;
+            width: 120px;
+            height: 160px;
+            left: 0;
+            border: solid 1px black;
+        }
+
+        .imgprevvac {
+            position: absolute;
+            width: 180px;
+            height: 120px;
+            left: 0;
+            border: solid 1px black;
+        }
+
+        .overlayphoto {
+            position: absolute;
+            /*top: 0;*/
+            top: 120px;
+            left: 0px;
+            width: 100%;
+            height: 25%;
+            background: rgba(0, 0, 0, 0);
+            transition: background 0.5s ease;
+        }
+
+        .overlayktp {
+            position: absolute;
+            /*top: 0;*/
+            top: 90px;
+            left: 0px;
+            width: 100%;
+            height: 25%;
+            background: rgba(0, 0, 0, 0);
+            transition: background 0.5s ease;
+        }
+
+        .overlayvac {
+            position: absolute;
+            /*top: 0;*/
+            top: 90px;
+            left: 0px;
+            width: 100%;
+            height: 25%;
+            background: rgba(0, 0, 0, 0);
+            transition: background 0.5s ease;
+        }
+
+        /* part of pst end*/
+
+        table, td, th {
+            border: 0.2px solid rgba(189, 189, 189, 0.5);
+        }
+
+        div.DTFC_LeftWrapper div.DTFC_LeftHeadWrapper {
+            border-right: 1px #eaeaea solid !important;
+        }
+
+        #ahmgavms022_list_datatable_wrapper div.DTFC_RightBodyLiner .DTFC_NoData td {
+            /* border-left: 0px !important; */
+        }
+
+        .ahmgavms022-datatables-template {
+            display: none !important;
+        }
+
+        div.DTFC_ScrollWrapper {
+            border-right: 1px #eaeaea solid !important;
+        }
+
+        .DTFC_LeftBodyLiner {
+            overflow-x: hidden;
+        }
+
+        .DTFC_RightBodyLiner {
+            overflow-x: hidden;
+        }
+
+        #AHMGAVMS022 table.dataTable thead .sorting_asc:after,
+        #AHMGAVMS022 table.dataTable thead .sorting_desc:after {
+            content: none !important;
+        }
+
+        #ahmgavms022_form #ahmgavms022_detail_plants_datatable th.tblHeader[data-field-id="Action"] {
+            width: 50px !important;
+        }
+
+        #ahmgavms022_form #ahmgavms022_detail_gates_datatable th.tblHeader[data-field-id="Action"] {
+            width: 50px !important;
+        }
+    </style>
+
+    <div id="formHeader" class="form-header">
+        <!--[PAGE:HEADER]-->
+    </div>
+    <div id="formContentOuter" class="sub-pages">
+        <!-- Home Pages -->
+        <div class="sub-page sub-page-default" data-section="list"
+            data-path="Transaction>Verification Personal Data Partner & Outsource">
+            <div style="display: none;">
+                <form id="ahmgavms022_download_form" method="post" action="#">
+                    <input type="hidden" name="oi" value="" />
+                    <input type="hidden" name="on" value="" />
+                    <input type="hidden" name="n" value="" />
+                    <input type="hidden" name="pf" value="" />
+                    <input type="hidden" name="pt" value="" />
+                    <input type="hidden" name="pcn" value="" />
+                    <input type="hidden" name="pa" value="" />
+                    <input type="hidden" name="ot" value="" />
+                    <input type="hidden" name="oc" value="" />
+                    <input type="hidden" name="os" value="" />
+                    <input type="hidden" name="p" value="" />
+                    <input type="hidden" name="c19vs" value="" />
+                </form>
+            </div>
+            <div class="form-maincontent form-block grid" id="ahmgavms022form">
+                <div class="row filter-panel">
+                    <div class="span4">
+                        <div class="span4">
+                            <label style="font-size: 12px;">Outsource ID</label>
+                            <div class="input-control text" data-role="input-control">
+                                <input name="ahmgavms022_filter_OutId" id="ahmgavms022_filter_OutId" type="text"
+                                    placeholder="" maxlength="10" />
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <label>Outsource Name</label>
+                            <div class="input-control text" data-role="input-control">
+                                <input name="ahmgavms022_filter_OutName" id="ahmgavms022_filter_OutName" type="text"
+                                    placeholder="" maxlength="80" />
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <label>NIK</label>
+                            <div class="input-control text" data-role="input-control">
+                                <input name="ahmgavms022_filter_Nik" id="ahmgavms022_filter_Nik" type="text"
+                                    placeholder="" maxlength="16" />
+                            </div>
+                        </div>
+                        <div class="span6">
+                            <div class="span2">
+                                <label>Periode</label>
+                                <div class="input-control text" data-role="datepicker">
+                                    <input name="ahmgavms022_filter_PeriodeFrom" id="ahmgavms022_filter_PeriodeFrom"
+                                        value="" runat="server" />
+                                    <button class="btn-date"></button>
+                                </div>
+                            </div>
+                            <div class="span2">
+                                <label>To</label>
+                                <div class="input-control text" data-role="datepicker">
+                                    <input name="ahmgavms022_filter_PeriodeTo" id="ahmgavms022_filter_PeriodeTo"
+                                        value="" runat="server" />
+                                    <button class="btn-date"></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <label>Pass Card Number</label>
+                            <div class="input-control text" data-role="input-control">
+                                <input name="ahmgavms022_filter_PassCardNum" id="ahmgavms022_filter_PassCardNum"
+                                    type="text" placeholder="" maxlength="20" />
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <label>PIC AHM</label>
+                            <div class="input-control text lookup" data-role="input-control"
+                                data-lookupid="AHMGAVMSL001" data-callback="{
+                                    '1':$('#ahmgavms022_filter_IdPicAhm'),
+                                    '2':$('#ahmgavms022_filter_PicAhm')
+                                }">
+                                <input id="ahmgavms022_filter_IdPicAhm" type="hidden" />
+                                <input name="ahmgavms022_filter_PicAhm" id="ahmgavms022_filter_PicAhm" type="text"
+                                    placeholder="" maxlength="25" />
+                                <button id="ahmgavms022_filter_PicAhm_button" class="btn-lookup" tabindex="-1"
+                                    onclick="_fw_openDynamicLookup(this);"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span6">
+                        <div class="span4">
+                            <label>Outsource Type</label>
+                            <div class="input-control text lookup" data-role="input-control"
+                                data-lookupid="AHMGAVMSL002" data-callback="{
+                                    '1':$('#ahmgavms022_filter_IdOutType'),
+                                    '2':$('#ahmgavms022_filter_OutType')
+                                }">
+                                <input id="ahmgavms022_filter_IdOutType" type="hidden" />
+                                <input name="ahmgavms022_filter_OutType" id="ahmgavms022_filter_OutType" type="text"
+                                    placeholder="" maxlength="25" />
+                                <button id="ahmgavms022_filter_OutType_button" class="btn-lookup" tabindex="-1"
+                                    onclick="_fw_openDynamicLookup(this);"></button>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <label>Outsource Status</label>
+                            <div class="input-control select dropdown" data-role="input-control">
+                                <select name="ahmgavms022_filter_OutStatus" id="ahmgavms022_filter_OutStatus">
+                                    <option value="" selected="">-</option>
+                                    <option value=" ">All</option>
+                                    <option value="Waiting for Approval PIC">Waiting for Approval PIC</option>
+                                    <option value="Waiting for Approval Security">Waiting for Approval Security</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                    <option value="Reject">Reject</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <label>Outsource Company</label>
+                            <div class="input-control text lookup" data-role="input-control"
+                                data-lookupid="AHMGAVMSL005" data-callback="{
+                                    '1':$('#ahmgavms022_filter_IdOutCompany'),
+                                    '2':$('#ahmgavms022_filter_OutCompany')
+                                }">
+                                <input id="ahmgavms022_filter_IdOutCompany" type="hidden" />
+                                <input name="ahmgavms022_filter_OutCompany" id="ahmgavms022_filter_OutCompany"
+                                    type="text" placeholder="" maxlength="25" />
+                                <button id="ahmgavms022_filter_OutCompany_button" class="btn-lookup" tabindex="-1"
+                                    onclick="_fw_openDynamicLookup(this);"></button>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <label>Plant</label>
+                            <div class="input-control select dropdown" data-role="input-control">
+                                <select name="ahmgavms022_filter_Plant" id="ahmgavms022_filter_Plant">
+                                    <option value="" selected="">-</option>
+                                    <option value=" ">All</option>
+                                    <option value="PG10-00">ALL PLANT</option>
+                                    <option value="PG10-01">Sunter Gedung IT</option>
+                                    <option value="PG10-02">Sunter Lobby Selatan</option>
+                                    <option value="PG10-03">Pegangsaan Lobby</option>
+                                    <option value="PG10-04">Pegangsaan Ruang IT</option>
+                                    <option value="PG10-05">Sunter Gedung Utara</option>
+                                    <option value="PG10-06">Pegangsaan Timur Timur</option>
+                                    <option value="PG10-07">SUNTER</option>
+                                    <option value="PG10-08">Sunter Barat</option>
+                                    <option value="PG10-09">Jakarta Timur</option>
+                                    <option value="PG10-10">Jakarta Barat</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <label>Covid19 Vaccine Status</label>
+                            <div class="input-control select dropdown" data-role="input-control">
+                                <select name="ahmgavms022_filter_CovVacStat" id="ahmgavms022_filter_CovVacStat">
+                                    <option value="" selected="">-</option>
+                                    <option value=" ">All</option>
+                                    <option value="Vaksin Pertama">Already Vaccinated</option>
+                                    <option value="Vaksin Dosis Lengkap">Not Yet Vaccinated</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-buttons">
+                        <div class="span6">
+                            <button class="button medium default" name="ahmgavms022_filter_search_button"
+                                id="ahmgavms022_filter_search_button"
+                                onclick="ahmgavms022_filter_search_button_action(this); return false;">
+                                <i class="icon-search on-left"></i>
+                                Search
+                            </button>
+                            <button class="button medium default" name="ahmgavms022_export_button"
+                                id="ahmgavms022_export_button" onclick="test_function();">
+                                <i class="icon-file-excel on-left"></i>
+                                Export To Excel
+                            </button>
+                        </div>
+                        <!-- <div class="span6">
+                            <button class="button medium primary" name="ahmgavms022_filter_approve_button" id="ahmgavms022_filter_approve_button" value="approve" onclick="ahmgavms022_filter_approve_button_action(this); return false;">
+                                <i class="icon-floppy on-left"></i>
+                                Approve
+                            </button>
+                            <button class="button medium danger" name="ahmgavms022_filter_reject_button" id="ahmgavms022_filter_reject_button" value="reject" onclick="ahmgavms022_filter_reject_button_action(this); return false;">
+                                <i class="icon-cancel on-left"></i>
+                                Reject
+                            </button>
+                        </div> -->
+                        <a href="#" id="ahmgavms022_filter_collapse_button" name="ahmgavms022_filter_collapse_button"
+                            class="filter-link-collapse icon-arrow-up-5"
+                            onclick="_fw_filterpanel_toggle(this); return false;"></a>
+                    </div>
+                </div>
+            </div>
+            <div style="float: right;">
+                <button class="button medium primary" name="ahmgavms022_filter_approve_button"
+                    id="ahmgavms022_filter_approve_button" value="approve"
+                    onclick="ahmgavms022_filter_approve_reject_button(this, 'Approve'); return false;">
+                    <i class="icon-floppy on-left"></i>
+                    Approve
+                </button>
+                <button class="button medium danger" name="ahmgavms022_filter_reject_button"
+                    id="ahmgavms022_filter_reject_button" value="reject"
+                    onclick="ahmgavms022_filter_approve_reject_button(this, 'Reject'); return false;">
+                    <i class="icon-cancel on-left"></i>
+                    Reject
+                </button>
+            </div>
+            <div id="ahmgavms022_list" class="listContainer">
+                <table id="ahmgavms022_list_datatable" class="responsiveTable table bordered order-column nowrap"
+                    aria-describedby=""  style="width:100%" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <!-- <th class="tblHeader" data-field-id="checkbox">checkbox</th> -->
+                            <th class="tblHeader" data-field-id="checkbox"></th>
+                            <th>ID Hide</th>
+                            <th>Outsource ID</th>
+                            <th>Outsource Name</th>
+                            <th>NIK</th>
+                            <th>Outsource Type</th>
+                            <th>Outsource Type Hide</th>
+                            <th>Outsource Company Hide</th>
+                            <th>Outsource Company</th>
+                            <th>Outsource Status</th>
+                            <th>Plant Hide</th>
+                            <th>Plant</th>
+                            <th>Access Reader Hide</th>
+                            <th>Canteen Hide</th>
+                            <th>Security Gate Hide</th>
+                            <th>Covid19 Vaccine Status</th>
+                            <th>Covid19 Vaccine Last Type Hide</th>
+                            <th>Covid19 Vaccine Last Date Hide</th>
+                            <th>Begin Work Effective Date</th>
+                            <th>End Work Effective Date</th>
+                            <th>Pass Card Number</th>
+                            <th>Pass Card Expiry Date</th>
+                            <th>Phone Number Hide</th>
+                            <th>Vaccine Summary Hide</th>
+                            <th>Note Hide</th>
+                            <th>Note Vaccine Hide</th>
+                            <th>Modified By</th>
+                            <th>Modified Date</th>
+                            <th>Pas Foto Hide</th>
+                            <th>Action</th>
+                            <th class="tblHeader" data-field-id="no">No</th>
+                        </tr>
+                        <!-- <tr>
+                            <th class="tblHeader tblHeaderFilter  priority2">
+                                <div class="input-control text" data-role="input-control">
+                                    <input name="tes1" id="tes1" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
+                                </div>
+                            </th>
+                            <th class="tblHeader tblHeaderFilter  priority2">
+                                <div class="input-control text" data-role="input-control">
+                                    <input name="tes2" id="tes2" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
+                                </div>
+                            </th>
+                            <th class="tblHeader tblHeaderFilter  priority2">
+                                <div class="input-control text" data-role="input-control">
+                                    <input name="tes3" id="tes3" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
+                                </div>
+                            </th>
+                            <th class="tblHeader tblHeaderFilter  priority2">
+                                <div class="input-control text" data-role="input-control">
+                                    <input name="tes4" id="tes4" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
+                                </div>
+                            </th>
+                            <th class="tblHeader tblHeaderFilter  priority2">
+                                <div class="input-control text" data-role="input-control">
+                                    <input name="tes5" id="tes5" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
+                                </div>
+                            </th>
+                            <th class="tblHeader tblHeaderFilter  priority2">
+                                <div class="input-control text" data-role="input-control">
+                                    <input name="tes6" id="tes6" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
+                                </div>
+                            </th>
+                            <th class="tblHeader tblHeaderFilter  priority2">
+                                <div class="input-control text" data-role="input-control">
+                                    <input name="tes7" id="tes7" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
+                                </div>
+                            </th>
+                            <th class="tblHeader tblHeaderFilter  priority2">
+                                <div class="input-control text" data-role="input-control">
+                                    <input name="tes8" id="tes8" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
+                                </div>
+                            </th>
+                            <th class="tblHeader tblHeaderFilter  priority2">
+                                <div class="input-control text" data-role="input-control">
+                                    <input name="tes9" id="tes9" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
+                                </div>
+                            </th>
+                            <th class="tblHeader tblHeaderFilter  priority2">
+                                <div class="input-control text" data-role="input-control">
+                                    <input name="tes10" id="tes10" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
+                                </div>
+                            </th>
+                            <th class="tblHeader tblHeaderFilter  priority2">
+                                <div class="input-control text" data-role="input-control">
+                                    <input name="tes11" id="tes11" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
+                                </div>
+                            </th>
+                            <th class="tblHeader tblHeaderFilter  priority2">
+                                <div class="input-control text" data-role="input-control">
+                                    <input name="tes12" id="tes12" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
+                                </div>
+                            </th>
+                            <th class="tblHeader tblHeaderFilter  priority2">
+                                <div class="input-control text" data-role="input-control">
+                                    <input name="tes13" id="tes13" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
+                                </div>
+                            </th>
+                            <th class="tblHeader tblHeaderFilter  priority2">
+                                <div class="input-control text" data-role="input-control">
+                                    <input name="tes14" id="tes14" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
+                                </div>
+                            </th>
+                        </tr> -->
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="sub-page" data-section="detail"
+            data-path="Transaction>Verification Personal Data Partner & Outsource>Detail">
+            <div class="form-maincontent form-block grid">
+                <input class="ahmgavms022_detail_Id" name="ahmgavms022_detail_Id" type="hidden">
+                <input id="ahmgavms022_detail_OutType_id" type="hidden">
+                <input id="ahmgavms022_detail_plant_id" type="hidden">
+                <input id="ahmgavms022_detail_BeginEffDate_int" type="hidden">
+                <input id="ahmgavms022_detail_EndEffDate_int" type="hidden">
+                <input id="ahmgavms022_detail_ExpDate_int" type="hidden">
+                <div class="row">
+                    <div class="span8">
+                        <label>Outsource ID</label>
+                        <div class="input-control text" data-role="input-control">
+                            <input name="ahmgavms022_detail_OutId" id="ahmgavms022_detail_OutId" type="text"
+                                placeholder="" disabled />
+                        </div>
+                        <label>Outsource Name</label>
+                        <div class="input-control text" data-role="input-control">
+                            <input name="ahmgavms022_detail_OutName" id="ahmgavms022_detail_OutName" type="text"
+                                placeholder="" disabled />
+                        </div>
+                        <label>Phone Number Outsourcce</label>
+                        <div class="input-control text" data-role="input-control">
+                            <input name="ahmgavms022_detail_PhoneOut" id="ahmgavms022_detail_PhoneOut" type="text"
+                                placeholder="" disabled />
+                        </div>
+                        <label>NIK</label>
+                        <div class="input-control text" data-role="input-control">
+                            <input name="ahmgavms022_detail_Nik" id="ahmgavms022_detail_Nik" type="text" placeholder=""
+                                disabled />
+                        </div>
+                        <!-- <label>Attachment KTP</label> -->
+                        <!-- <div class="input-control text" data-role="input-control">
+                            <input name="ahmgavms022_detail_AttachKtp" id="ahmgavms022_detail_AttachKtp" type="text" placeholder="" disabled/>
+                        </div> -->
+                        <div class="form-group large-font">
+                            <label for="ahmgavms022p02FileKtp" class="col-sm-3 control-label">
+                                Attachment KTP <span style="color:red">* </span>
+                            </label>
+                            <div class="col-sm-8">
+                                <div class="containerimgktp">
+                                    <img id="ahmgavms022_detail_AttachKtp_Preview" class="imgprevktp"
+                                        src="data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
+                                        alt="" />
+                                    <div class="overlayktp"></div>
+                                    <div class="col-sm-9 col-sm-offset-3 upload-file"
+                                        data-allowedext="jpg, png, bmp, jpeg" style="display:none">
+                                        <input id="ahmgavms022_detail_AttachKtp" type="file"
+                                            accept=".jpg,.png,.bmp, .jpeg" class="form-control input-upload"
+                                            onchange="ahmgavms022UploadHandler(this); return false;">
+                                    </div>
+                                    <div class="form-group-button" style="margin-top: 0px;">
+                                        <div class="col-sm-12">
+                                            <a class="buttonktp" id="ahmgavms022p02UploadFileKtpBtn" onclick=""
+                                                style="cursor: pointer; display: none;"><i
+                                                    class="glyphicon  glyphicon-folder-open fg-white"></i></a>
+
+                                            <a class="buttonktp" id="ahmgavms022p02PrevFileKtp"
+                                                onclick="ahmgavms022PreviewHandler(this, 'ahmgavms022_detail_AttachKtp', 'DETAIL');"
+                                                style="cursor: pointer; margin-left: 85px;"><i
+                                                    class="glyphicon  glyphicon-search icon-search fg-white"></i></a>
+
+                                            <a class="buttonktp" id="ahmgavms022p02DeleteFileKtp"
+                                                onclick="return false;" style="cursor: pointer; display: none;"><i
+                                                    class="glyphicon  glyphicon-trash fg-white"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <label>Outsource Type</label>
+                        <div class="input-control text" data-role="input-control">
+                            <input name="ahmgavms022_detail_OutType" id="ahmgavms022_detail_OutType" type="text"
+                                placeholder="" disabled />
+                        </div>
+                        <label>Supplier</label>
+                        <div class="input-control text" data-role="input-control">
+                            <input name="ahmgavms022_detail_Supplier" id="ahmgavms022_detail_Supplier" type="text"
+                                placeholder="" disabled />
+                            <!-- <div class="input-control radio" data-role="input-control">
+                                <label>
+                                    <input checked type="radio" id="ahmgavms022_detail_Supplier" name="ahmgavms022_detail_Supplier" value="SUPPLIER" onclick="ahmgavms022_detail_Supplier_action(this)"/>
+                                    <span class="check"></span>
+                                    Supplier &nbsp;
+                                </label>
+                            </div>
+                            <div class="input-control radio" data-role="input-control">
+                                <label>
+                                    <input type="radio" id="ahmgavms022_detail_NonSupplier" name="ahmgavms022_detail_NonSupplier" value="NON SUPPLIER" onclick="ahmgavms022_detail_Supplier_action(this)"/>
+                                    <span class="check"></span>
+                                    Non Supplier &nbsp;
+                                </label>
+                            </div> -->
+                        </div>
+                        <label>Outsource Company</label>
+                        <div class="input-control text" data-role="input-control">
+                            <input name="ahmgavms022_detail_OutCompany" id="ahmgavms022_detail_OutCompany" type="text"
+                                placeholder="" disabled />
+                        </div>
+                        <label>Job Detail</label>
+                        <div class="input-control textarea" data-role="input-control">
+                            <textarea name="ahmgavms022_detail_JobDetail" id="ahmgavms022_detail_JobDetail" type="text"
+                                placeholder="" disabled></textarea>
+                        </div>
+                        <label>Plant</label>
+                        <!-- <div class="input-control text" data-role="input-control">
+                            <input name="ahmgavms022_detail_plant" id="ahmgavms022_detail_plant" type="text"
+                                placeholder="" disabled />
+                        </div> -->
+                        <div id="ahmgavms022_detail_plants" class="listContainer"></div>
+                        <table id="ahmgavms022_detail_plants_datatable_template"
+                            class="responsiveTable table bordered order-column nowrap ahmgavms022-datatables-template"
+                            style="width:100%" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="row">
+                            <label>Access</label>
+                            <div class="span2">
+                                <label class="checkbox-inline toright">
+                                    <input type="checkbox" name="ahmgavms022_detail_AccessAbsReader"
+                                        id="ahmgavms022_detail_AccessAbsReader" value="AbsReader" disabled>
+                                    Absence Reader
+                                </label>
+                            </div>
+                            <div class="span2">
+                                <label class="checkbox-inline toright">
+                                    <input type="checkbox" name="ahmgavms022_detail_AccessCanteen"
+                                        id="ahmgavms022_detail_AccessCanteen" value="Canteen" disabled>
+                                    Canteen
+                                </label>
+                            </div>
+                            <div class="span2">
+                                <label class="checkbox-inline toright">
+                                    <input type="checkbox" name="ahmgavms022_detail_AccessSecurityGate"
+                                        id="ahmgavms022_detail_AccessSecurityGate" value="Security Gate" disabled>
+                                    Security Gate
+                                </label>
+                            </div>
+                        </div>
+                        <!-- <div class="input-control text" data-role="input-control">
+                            <input name="ahmgavms022_detail_DateAccessLevel" id="ahmgavms022_detail_DateAccessLevel" type="text" placeholder="" disabled/>
+                        </div> -->
+                        <label>Gate Access Level</label>
+                        <div id="ahmgavms022_detail_gates" class="listContainer"></div>
+                        <table id="ahmgavms022_detail_gates_datatable_template"
+                            class="responsiveTable table bordered order-column nowrap ahmgavms022-datatables-template"
+                            style="width:100%" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+
+                                    <!-- <th>Action</th> -->
+                                </tr>
+                            </thead>
+                        </table>
+                        <label>Begin Work Effective Date</label>
+                        <div class="input-control text" data-role="input-control">
+                            <input name="ahmgavms022_detail_BeginEffDate" id="ahmgavms022_detail_BeginEffDate"
+                                type="text" placeholder="" disabled />
+                        </div>
+                        <label>End Work Effective Date</label>
+                        <div class="input-control text" data-role="input-control">
+                            <input name="ahmgavms022_detail_EndEffDate" id="ahmgavms022_detail_EndEffDate" type="text"
+                                placeholder="" disabled />
+                        </div>
+                        <label>Pass Card Number</label>
+                        <div class="input-control text" data-role="input-control">
+                            <input name="ahmgavms022_detail_PassCardNum" id="ahmgavms022_detail_PassCardNum" type="text"
+                                placeholder="" disabled />
+                        </div>
+                        <label>Expiry Date</label>
+                        <div class="input-control text" data-role="datepicker">
+                            <input name="ahmgavms022_detail_ExpDate" id="ahmgavms022_detail_ExpDate" value=""
+                                runat="server" disabled />
+                            <button id="ahmgavms022_detail_ExpDate_button" class="btn-date" disabled></button>
+                        </div>
+                        <!-- <div class="input-control text" data-role="input-control">
+                           <input name="ahmgavms022_detail_ExpDate" id="ahmgavms022_detail_ExpDate" type="text" placeholder="" disabled/>
+                        </div> -->
+                        <label>Note</label>
+                        <div class="input-control textarea" data-role="input-control">
+                            <textarea name="ahmgavms022_detail_note" id="ahmgavms022_detail_note" type="text"
+                                placeholder="" disabled></textarea>
+                        </div>
+
+
+                    </div>
+                    <div class="span8">
+                        <div style="float:right;">
+                            <button class="button medium default" name="ahmgavms022_detail_button_previous"
+                                id="ahmgavms022_detail_button_previous"
+                                onclick="ahmgavms022_detail_button_previous_action(this); return false;">
+                                <i class="icon-previous"></i>
+                                Previous
+                            </button>
+                            <button class="button medium default" name="ahmgavms022_detail_button_next"
+                                id="ahmgavms022_detail_button_next"
+                                onclick="ahmgavms022_detail_button_next_action(this); return false;">
+                                Next
+                                <i class="icon-next"></i>
+                            </button>
+                        </div>
+                        <div style="margin-top: 4%;">
+                            <label>Photo</label>
+                            <div class="col-sm-6" style="display: flex; justify-content: space-between; width: 100%;">
+                                <div class="containerimgphoto" style=" margin-right: 4%;">
+                                    <img id="ahmgavms022p02PhotoPreview" class="imgprevphoto"
+                                        src="data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
+                                        alt="" />
+                                    <div class="overlayphoto"></div>
+                                    <div class="col-sm-9 col-sm-offset-3 upload-file" data-allowedext="jpg, png, bmp, jpeg"
+                                        style="display:none">
+                                        <input id="ahmgavms022p02Photo" type="file" accept=".jpg,.png,.bmp, .jpeg"
+                                            class="form-control ahmgavms022p02 input-upload"
+                                            onchange="ahmgavms022UploadHandler(this); return false;">
+                                    </div>
+                                    <div class="form-group-button" style="margin-top: 0px;">
+                                        <div class="col-sm-12">
+                                            <a class="buttonphoto" id="ahmgavms022p02UploadFilePhotoBtn" onclick=""
+                                                style="cursor: pointer; display: none;"><i
+                                                    class="glyphicon  glyphicon-folder-open fg-white"></i></a>
+                                            <a class="buttonphoto" id="ahmgavms022p02PrevFilePhoto"
+                                                onclick="ahmgavms022PreviewHandler(this, 'ahmgavms021p04Photo', 'DETAIL');"
+                                                style="cursor: pointer; margin-left: 55px;"><i
+                                                    class="glyphicon  glyphicon-search icon-search fg-white"></i></a>
+                                            <a class="buttonphoto" id="ahmgavms022p02DeleteFilePhoto"
+                                                onclick="return false;" style="cursor: pointer; display: none;"><i
+                                                    class="glyphicon  glyphicon-trash fg-white"></i></a>
+    
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-info" id="ahmgavms022_detail_eula">
+                                    <p style="font-size: 12px;">Notes : <br>
+                                        1. Semua lampiran picture max 200Kb.<br>
+                                        2. Format harus JPEG, PNG atau JPG<br>
+                                        3. Menggunakan seragam perusahaan (jika ada) atau pakaian formal berkerah<br>
+                                        4. Background foto putih polos<br>
+                                        5. Pose foto harus formal
+                                    </p>
+                                <!-- <div class="form-maincontent form-block grid">
+                                    <div class="row">
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <label>Cov19 Vaccine Status</label>
+                        <div class="input-control text" data-role="input-control">
+                            <input name="ahmgavms022_detail_CovVacStatus" id="ahmgavms022_detail_CovVacStatus"
+                                type="text" placeholder="" disabled />
+                        </div>
+                        <label>Cov19 Last Vaccine Type</label>
+                        <div class="input-control text" data-role="input-control">
+                            <input name="ahmgavms022_detail_CovLastVacType" id="ahmgavms022_detail_CovLastVacType"
+                                type="text" placeholder="" disabled />
+                        </div>
+                        <label>Cov19 Last Vaccine Date</label>
+                        <div class="input-control text" data-role="input-control">
+                            <input name="ahmgavms022_detail_CovLastVacDate" id="ahmgavms022_detail_CovLastVacDate"
+                                type="text" placeholder="" disabled />
+                        </div>
+                        <label>Cov19 Summary Vaccine Status</label>
+                        <div class="input-control text" data-role="input-control">
+                            <input name="ahmgavms022_detail_CovSumVacStatus" id="ahmgavms022_detail_CovSumVacStatus"
+                                type="text" placeholder="" disabled />
+                        </div>
+                        <div id="ahmgavms022_image_vaccine_div">
+                            <label for="ahmgavms022p02ImageVac">Cov19 Vaccine Certificate</label>
+                            <div class="col-md-6">
+                                <ul id="ahmgavms022p02ImageVacList" class="list-group containersvroll">
+                                </ul>
+                            </div>
+                        </div>
+                        <label>Note Cov19 Vaccine Status</label>
+                        <div class="input-control textarea" data-role="input-control">
+                            <textarea name="ahmgavms022_detail_NoteCovVacStatus"
+                                id="ahmgavms022_detail_NoteCovVacStatus" type="text" placeholder="" disabled></textarea>
+                        </div>
+                        <div id="ahmgavms022_attachment_div">
+                            <label for="ahmgavms022p02ImageAttach">Attachment</label>
+                            <div class="col-md-6">
+                                <ul id="ahmgavms022p02ImageAttachList" class="list-group containersvroll">
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="form-maincontent form-block grid">
+                            <div class="row">
+                                <div class="panel-info" id="ahmgavms022_detail_eula">
+                                    <p style="font-size: 12px;">
+                                        Attachment jika belum divaksin : <br><br>
+                                        1. Dokumen yang dilampirkan bisa berupa Surat Keterangan Dokter Spesialis untuk
+                                        seseorang yang sedang hamil / memiliki penyakit khusus<br>
+                                        2. Dokumen hasil lab (PCR+ dan PCR- atau Antigen+ dan Antigen- yang disertai
+                                        dengan Surat Keterangan sembuh dari FasKes) untuk seseorang yang termasuk
+                                        penyintas Covid-19 dan belum 3 bulan sembuh<br>
+                                        3. Dokumen bisa lebih dari 1 dan max 200Kb per doc dengan format : JPEG, JPG
+                                        atau PNG.
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <label>PIC AHM</label>
+                        <div id="ahmgavms022_detail_listPicAhm" class="listContainer"></div>
+                        <table id="ahmgavms022_detail_listPicAhm_datatable_template"
+                            class="responsiveTable table bordered order-column nowrap ahmgavms022-datatables-template"
+                            style="width:100%" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>NRP</th>
+                                    <th>PIC Name</th>
+                                    <th>Plant</th>
+                                    <th>Phone Number</th>
+                                </tr>
+                            </thead>
+                        </table>
+
+                    </div>
+                </div>
+                <div style="width: 1260px;">
+                    <div class="form-maincontent form-block grid">
+                        <div class="row">
+                            <div class="panel-info" id="ahmgavms022_detail_eula">
+                                <p style="font-size: 12px;">
+                                    Dengan mengisi data registrasi Mitra / Outsource, Saya menyatakan bahwa : <br><br>
+                                    1. Saya sudah mendapatkan persetujuan dari pihak mitra atau outsource yang
+                                    bersangkutan untuk memberikan data yang diperlukan oleh PT. Astra Honda Motor selama
+                                    bekerja di lingkungan PT. Astra Honda Motor. <br>
+                                    2. Saya sudah mendapatkan pernyataan dari pihak mitra atau outsource yang
+                                    bersangkutan bahwa data yang diberikan kepada PT. Astra Honda Motor adalah data yang
+                                    sesungguhnya dan dapat dipertanggungjawabkan. <br>
+                                    3. Pass Card Mitra / Outsource memiliki masa berlaku, sebagaimana yang tertera pada
+                                    data Pass Card Expiry Date. <br>
+                                    4. Jika terdapat perubahan data karyawan Mitra / Outsource, maka wajib melakukan
+                                    update terhadap data yang sudah diregistrasi. <br>
+                                    5. Pass Card yang sudah tidak dipergunakan wajib dikembalikan ke Security System
+                                    Development. <br>
+                                    6. Saya sebagai PIC AHM telah mensosialisasikan dan memastikan bahwa karyawan Mitra
+                                    & Outsource telah memahami dan mematuhi semua peraturan yang berlaku di PT. Astra
+                                    Honda Motor, serta bersedia bertanggung jawab jika ada pelanggaran yang dilakukan
+                                    terhadap peraturan tersebut.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label class="checkbox-inline toright">
+                        <input type="checkbox" name="ahmgavms022_detail_disclaimer" id="ahmgavms022_detail_disclaimer"
+                            value="Go" disabled>
+                        <!-- <label id="ahmgavms022p04DisclaimerLabel"> -->
+                        Saya telah membaca dan menyetujui semua ketentuan yang telah disebutkan.
+                    </label>
+                    </label>
+                </div>
+            </div>
+            <div class="main-form-toolbar-bottom">
+                <button class="button medium primary" type="button" id="ahmgavms022_detail_approve_button"
+                    name="ahmgavms022_detail_approve_button" value="approve"
+                    onclick="ahmgavms022_detail_approve_button_action(this)">
+                    <span class="icon-floppy"></span>
+                    Approve
+                </button>
+                <button class="button medium danger" type="button" id="ahmgavms022_detail_reject_button"
+                    name="ahmgavms022_detail_reject_button" value="reject"
+                    onclick="ahmgavms022_detail_reject_button_action(this)">
+                    <span class="icon-floppy"></span>
+                    Reject
+                </button>
+                <button type="button" class="button medium" id="ahmgavms022_detail_back_button"
+                    name="ahmgavms022_detail_back_button" onclick="ahmgavms022_detail_back_button_action(this)">
+                    <span class="icon-previous"></span>
+                    Back
+                </button>
+            </div>
+        </div>
+
+        <div id="myModal" class="modal">
+            <span class="close">&times;</span>
+            <img class="modal-content" id="img01">
+            <div id="caption"></div>
+        </div>
+
+        <!-- purely from vms021 -->
+        <div class="modal fade" id="documentviewer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div id="ahmgavms022modalprevdiv" class="ahmgavms022modalprevdiv modal-dialog modal-sm" role="document"
+                style="display: flex; justify-content: center;">
+                <div class="modal-content">
+                    <div class="modal-header" style="display: none;"></div>
+                    <div class="modal-body" style="display: none;"></div>
+                    <div class="modal-footer" style="display: none;"></div>
+                    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+                    <img id="ahmgavms022LargePreview" class="imageLargePreview"
+                        src="data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
+                        alt="" />
+                </div>
+            </div>
+        </div>
+        <!-- end -->
+
+        <div class="sub-page" data-section="list-confirmation"
+            data-path="Transaction>Verification Personal Data Partner & Outsource>Confirmation">
+            <div class="form-maincontent form-block grid">
+                <div class="row">
+                    <div class="span12">
+                        <div id="ahmgavms022_h2_confirmation_list"></div>
+                        <ul id="ahmgavms022_ConfList">
+                            <input id="ahmgavms022_decision_confirmation_list" type="hidden" />
+                        </ul>
+                    </div>
+                </div>
+                <input type="hidden" name="action" value="DELETE" />
+            </div>
+            <div class="main-form-toolbar-bottom">
+                <button type="button" class="button medium primary" onclick="ahmgavms022_list_btn_sure_action(this)">
+                    <span class="icon-floppy"></span>
+                    Sure
+                </button>
+            </div>
+        </div>
+
+        <div class="sub-page" data-section="confirmation"
+            data-path="Transaction>Verification Personal Data Partner & Outsource>Detail>Confirmation">
+            <div class="form-maincontent form-block grid">
+                <div class="row">
+                    <div class="span12">
+                        <div id="ahmgavms022_h2_confirmation"></div>
+                        <ul id="ahmgavms022_ConfList">
+                            <input id="ahmgavms022_decision_confirmation" type="hidden" />
+                        </ul>
+                    </div>
+                </div>
+                <input type="hidden" name="action" value="DELETE" />
+            </div>
+            <div class="main-form-toolbar-bottom">
+                <button type="button" class="button medium primary" onclick="ahmgavms022_detail_btn_sure_action(this)">
+                    <span class="icon-floppy"></span>
+                    Sure
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="ahmgavms022_templates" class="hidden">
+        <div id="ahmgavms022_linkdetail">
+            <a class="linkdetail button bg-transparent fg-darkCyan" href="#"
+                onclick="ahmgavms022_detail_btn_action(this)"><span class="icon-arrow-left-4"></span> <span
+                    class="actionlink-title">Detail</span></a>
+        </div>
+        <div id="ahmgavms022_list_check">
+            <div class="input-control checkbox" style="margin-left: 0px!important">
+                <label>
+                    <input type="checkbox" name="chkItem"
+                        onclick="_fw_table_check(this); ahmgavms022_list_check_action(this)" id="{id}" data-id="{id}" outstat="{outStatus}">
+                    <span class="check"></span>
+                    </input>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" type="text/css" href="assets/css/datatables/responsive.dataTables.min.css" />
+<link rel="stylesheet" type="text/css" href="apps/AHMGAVMS/assets/css/fixedColumns.dataTables.3.3.1.min.css" />
+<script type="text/javascript" src="assets/js/datatables/dataTables.responsive.min.js"></script>
+<script type="text/javascript" src="apps/AHMGAVMS/assets/plugins/dataTables.fixedColumns.3.3.1.min.js"></script>
+<script type="text/javascript" src="apps/AHMGAVMS/assets/js/AHMGAVMS.js"></script>
+<script type="text/javascript" src="apps/AHMGAVMS/assets/js/AHMGAVMS022.js"></script>
+<script type="text/javascript" src="apps/AHMGAVMS/assets/js/momentjs.js"></script>
