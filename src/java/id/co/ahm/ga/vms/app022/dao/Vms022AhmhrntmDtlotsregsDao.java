@@ -16,6 +16,6 @@ import java.util.List;
  */
 public interface Vms022AhmhrntmDtlotsregsDao extends HrDao<AhmhrntmDtlotsregs, AhmhrntmDtlotsregsPk>{
     
-    public List<String> getFileName(String otsId, String nik, String regId);
+    public List<String> getFileName(String otsId, String nik, String regId); 
     
 }
