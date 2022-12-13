@@ -7,39 +7,27 @@ package id.co.ahm.ga.vms.app022.dao.impl;
 
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsemps;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsempsPk;
-import id.co.ahm.ga.vms.app022.constant.Vms022Constant;
-import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlprmgblsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmHdrotsempsDao;
-import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitor;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
-import id.co.ahm.jxf.constant.CommonConstant;
 import id.co.ahm.jxf.dao.HrHibernateDao;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.util.AhmStringUtil;
 import id.co.ahm.jxf.util.DateUtil;
-import id.co.ahm.jxf.model.DefaultEntityImpl;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.exception.SQLGrammarException;
-import org.hibernate.transform.AliasToEntityMapResultTransformer;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -129,7 +117,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("( ")
                 .append("  SELECT "
                         + "    DISTINCT AA.VPLANT, AA.VOTSID, AA.VPERSID, "
-                        + "    BB.VPGBLNM, BB.VPGBLCD, CC.VOTSTYPE "
+                        + "    BB.VPGBLNM, BB.VPGBLCD "
                         + "  FROM AHMHRNTM_DTLOTSREGS AA, AHMHRNTM_DTLPRMGBLS BB, AHMHRNTM_MSTPICOTS CC"
                         + "  WHERE AA.VREGID = 'PLNT' "
                         + "  AND AA.VPLANT = BB.VPGBLCD "
@@ -146,7 +134,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         if (!StringUtils.isBlank(pic)) {
             sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
                     .append(pic)
-                    .append("||'%') ");
+                    .append("||'%' ) ");
         }
 
         sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID ");
@@ -157,8 +145,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("LEFT JOIN AHMMOMSC_MSTVENDORS@ahmps Z ON A.VCOMPANY = Z.VVENDORID ")
                 .append("LEFT JOIN AHMHRNTM_DTLPRMGBLS G ON A.VVACTYPE = G.VPGBLCD "
                         + "WHERE  "
-                        + "    B.VOTSTYPE = A.VOTSTYPE "
-                        + "    AND  "
+//                        + "    B.VOTSTYPE = A.VOTSTYPE "
+//                        + "    AND  "
                         + "    1 = 1 "
                         + "    AND  "
                         + "        UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%')  ");
