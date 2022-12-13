@@ -585,4 +585,46 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             e.printStackTrace();
         }
     }
+
+    @Override
+    public String confirmId(String id) {
+        SQLQuery qResult = getCurrentSession()
+                .createSQLQuery("select distinct  "
+                        + "    VOTSSTTS  "
+                        + " from  "
+                        + "    AHMHRNTM_HDROTSEMPS  "
+                        + " where  "
+                        + "    votsid = :VOTSID ");
+        
+        qResult.setParameter("VOTSID", id);
+        return (String) qResult.uniqueResult();
+    }
+
+    @Override
+    public String getName(String id) {
+        SQLQuery qResult = getCurrentSession()
+                .createSQLQuery("select distinct  "
+                        + "    VNAME  "
+                        + " from  "
+                        + "    AHMHRNTM_HDROTSEMPS  "
+                        + " where  "
+                        + "    votsid = :VOTSID ");
+        
+        qResult.setParameter("VOTSID", id);
+        return (String) qResult.uniqueResult();
+    }
+
+    @Override
+    public String getNote(String id) {
+        SQLQuery qResult = getCurrentSession()
+                .createSQLQuery("select distinct  "
+                        + "    VNOTE  "
+                        + " from  "
+                        + "    AHMHRNTM_HDROTSEMPS  "
+                        + " where  "
+                        + "    votsid = :VOTSID ");
+        
+        qResult.setParameter("VOTSID", id);
+        return (String) qResult.uniqueResult();
+    }
 }

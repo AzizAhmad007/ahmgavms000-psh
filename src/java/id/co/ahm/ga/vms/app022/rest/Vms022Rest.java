@@ -12,6 +12,7 @@ import id.co.ahm.ga.vms.app022.util.Vms022ExportExcel;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
 import id.co.ahm.jxf.constant.StatusMsgEnum;
 import id.co.ahm.jxf.dto.DtoParamPaging;
+import id.co.ahm.jxf.dto.DtoResponse;
 import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
 import id.co.ahm.jxf.security.TokenPshUtil;
@@ -236,6 +237,16 @@ public class Vms022Rest {
         modelAndView.addObject("data", vms022VoMonitor);
 
         return modelAndView;
+    }
+    
+    @RequestMapping(value = "testwing", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponse testing(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody DtoParamPaging dto) {
+
+        return vms022Service.testing(dto);
     }
 
 }

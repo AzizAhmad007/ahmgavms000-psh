@@ -26,6 +26,7 @@ import id.co.ahm.jx.b2e.app000.model.Ahmitb2eMstusrroles;
 import id.co.ahm.jx.b2e.app000.model.Ahmitb2eMstusrrolesPk;
 import id.co.ahm.jxf.constant.StatusMsgEnum;
 import id.co.ahm.jxf.dto.DtoParamPaging;
+import id.co.ahm.jxf.dto.DtoResponse;
 import id.co.ahm.jxf.dto.DtoResponsePaging;
 import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
@@ -60,12 +61,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @Service(value = "vms022Service")
 public class Vms022ServiceImpl implements Vms022Service {
-    
+
     String ServiceUser;
 
     public final static String pathServer = "/data/deploy/upload/ahmgavms/Registration/";
 //    public final static String pathServer = "D:\\Download\\";
-    
+
     public final static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-YYYY");
     public final static LocalDateTime now = LocalDateTime.now();
 
@@ -199,10 +200,10 @@ public class Vms022ServiceImpl implements Vms022Service {
         for (Vms022VoMonitoring vo : list) {
             String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());
             vo.setGateName(getGateList);
-            
+
             String getPlantList = vms022ahmhrntmDtlprmgblsDao.getPlantForExcel(vo.getOutId(), vo.getPersId());
             vo.setAreaName(getPlantList);
-            
+
             String getPlantIDList = vms022ahmhrntmDtlprmgblsDao.getPlantIDForExcel(vo.getOutId(), vo.getPersId());
             vo.setArea(getPlantIDList);
 
@@ -339,30 +340,29 @@ public class Vms022ServiceImpl implements Vms022Service {
                         mp.setVotsstts(getdata.getOutStatus());
                         mp.setDpassexp(DateUtil.stringToDate(getdata.getPassExpiryDateText(), "dd-MMM-yyyy"));
                         mp.setDstatus(DateUtil.stringToDate(getdata.getDateStatus(), "dd-MM-yyyy"));
-                        
+
                         String getNseq = vms022ahmhrntmTxnidrepsDao.getNseq();
-                        
+
                         int nseq;
                         Date datenow = new Date();
                         int yearnow = datenow.getYear() + 1900;
                         int monthnow = datenow.getMonth() + 1;
-                        
+
                         String vNseq;
-                        
+
                         if (monthnow < 10) {
                             vNseq = "OTR/" + yearnow + "/0" + monthnow + "/";
                         } else {
-                            vNseq = "OTR/" + yearnow + "/" + monthnow + "/";                        
+                            vNseq = "OTR/" + yearnow + "/" + monthnow + "/";
                         }
-                        
+
                         if (getNseq == null) {
                             nseq = 1;
                         } else {
                             nseq = Integer.valueOf(getNseq) + 1;
                         }
-                        
-                        
-                        if(nseq < 10) {
+
+                        if (nseq < 10) {
                             vNseq += "00000" + nseq;
                         } else if (nseq < 100) {
                             vNseq += "0000" + nseq;
@@ -375,7 +375,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                         } else if (nseq < 1000000) {
                             vNseq += String.valueOf(nseq);
                         }
-                        
+
                         AhmhrntmTxnidreps vo = new AhmhrntmTxnidreps();
                         vo.setVwrkorderno(vNseq);
                         vo.setVnrp(getdata.getOutId());
@@ -385,11 +385,10 @@ public class Vms022ServiceImpl implements Vms022Service {
                         vo.setVstatus("WAITING");
                         vo.setVpckupsts("NOTDONE");
                         vo.setVcardname(getdata.getOutName());
-                        
-                        
+
                         vms022ahmhrntmHdrotsempsDao.update(mp);
                         vms022ahmhrntmHdrotsempsDao.flush();
-                        
+
                         vms022ahmhrntmTxnidrepsDao.save(vo);
                         vms022ahmhrntmTxnidrepsDao.flush();
                     }
@@ -410,22 +409,34 @@ public class Vms022ServiceImpl implements Vms022Service {
         if (!getdata.isEmpty()) {
             for (Vms022VoMonitoring vo : getdata) {
                 if (vo.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM") || vo.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
+
+                    String validateId = vms022ahmhrntmHdrotsempsDao.confirmId(vo.getOutId());
+
+                    String getName = vms022ahmhrntmHdrotsempsDao.getName(vo.getOutId());
+                    String getNote = vms022ahmhrntmHdrotsempsDao.getNote(vo.getOutId());
+
                     AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
                     pk.setRotsempshs((vo.getId()));
                     AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
                     if (mp != null) {
                         if (vo.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM")) {
-                            mp.setVotsstts(vo.getOutStatus());
-                            mp.setLastModBy(userCred.getUserid());
-                            vms022ahmhrntmHdrotsempsDao.update(mp);
-                            vms022ahmhrntmHdrotsempsDao.flush();
+
+                            if (!validateId.equalsIgnoreCase(vo.getOutId())) {
+                                throw new Vms022Exception("Cannot Process Outsource Status with data 'WAITING FOR APPROVAL SECURITY'");
+                            } else {
+                                mp.setVotsstts(vo.getOutStatus());
+                                mp.setLastModBy(userCred.getUserid());
+                                vms022ahmhrntmHdrotsempsDao.update(mp);
+                                vms022ahmhrntmHdrotsempsDao.flush();
+                            }
+
                         } else if (vo.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
                             mp.setVotsstts(vo.getOutStatus());
                             mp.setLastModBy(userCred.getUserid());
                             mp.setDstatus(DateUtil.stringToDate(vo.getDateStatus(), "dd-MM-yyyy"));
-                            
+
                             String getNseq = vms022ahmhrntmTxnidrepsDao.getNseq();
-                        
+
                             int nseq;
                             Date datenow = new Date();
                             int yearnow = datenow.getYear() + 1900;
@@ -436,7 +447,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                             if (monthnow < 10) {
                                 vNseq = "OTR/" + yearnow + "/0" + monthnow + "/";
                             } else {
-                                vNseq = "OTR/" + yearnow + "/" + monthnow + "/";                        
+                                vNseq = "OTR/" + yearnow + "/" + monthnow + "/";
                             }
 
                             if (getNseq == null) {
@@ -445,8 +456,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                                 nseq = Integer.valueOf(getNseq) + 1;
                             }
 
-
-                            if(nseq < 10) {
+                            if (nseq < 10) {
                                 vNseq += "00000" + nseq;
                             } else if (nseq < 100) {
                                 vNseq += "0000" + nseq;
@@ -465,17 +475,17 @@ public class Vms022ServiceImpl implements Vms022Service {
                             voo.setVnrp(vo.getOutId());
                             voo.setNreasonrep(BigDecimal.valueOf(3));
                             voo.setNclaimemp(BigDecimal.ZERO);
-                            voo.setVremark(vo.getNote());
+                            voo.setVremark(getNote);
                             voo.setVstatus("WAITING");
                             voo.setVpckupsts("NOTDONE");
-                            voo.setVcardname(vo.getOutName());
-                            
+                            voo.setVcardname(getName);
+
                             vms022ahmhrntmHdrotsempsDao.update(mp);
                             vms022ahmhrntmHdrotsempsDao.flush();
-                        
+
                             vms022ahmhrntmTxnidrepsDao.save(voo);
                             vms022ahmhrntmTxnidrepsDao.flush();
-                        
+
                         }
                     }
                 } else {
@@ -594,7 +604,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                 }
 
                 if (cekTglBegin && cekTglEnd) {
-                    
+
                     if (!checkIsAfter(DateUtil.stringToDate(vo.getEndDateText(), "dd-MMM-yyyy"), DateUtil.stringToDate(vo.getPassExpiryDateText(), "dd-MMM-yyyy"))) {
                         VoMessageWorkspace err = new VoMessageWorkspace();
                         err.setF("");
@@ -604,5 +614,17 @@ public class Vms022ServiceImpl implements Vms022Service {
                 }
             }
         }
+    }
+
+    @Override
+    public DtoResponse testing(DtoParamPaging dto) {
+        Map<String, Object> msg = new HashMap<>();
+
+        String test = AhmStringUtil.hasValue(dto.getSearch().get("test")) ? (dto.getSearch().get("test") + "").toUpperCase() : "";
+
+        String coba = vms022ahmhrntmHdrotsempsDao.confirmId(test);
+
+        msg.put("m", coba);
+        return DtoHelper.constructResponse(StatusMsgEnum.SUKSES, msg, null);
     }
 }
