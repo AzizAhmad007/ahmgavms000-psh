@@ -37,18 +37,17 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
                 + " AND B.VPGBLCD LIKE 'PG10%' "
                 + " AND A.VNRP = C.NRP "
                 + " AND C.VEND_VND_CODE = 'AHM' ");
-                
+
         sql.append(" AND A.VAREA in (");
         sql.append(area);
         sql.append(")");
-                
+
         sql.append(" AND A.VRGSROLE IN ('PG91-01','PG91-03') "
         );
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
-        sqlQuery.setParameter("VOTSTYPE", outType)
-//                .setParameter("VAREA", area)
+        sqlQuery.setParameter("VOTSTYPE", outType) //                .setParameter("VAREA", area)
                 ;
 
         List queryResult = sqlQuery.list();
@@ -85,18 +84,17 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
                 + " AND B.VPGBLCD LIKE 'PG10%' "
                 + " AND A.VNRP = C.NRP "
                 + " AND C.VEND_VND_CODE = 'AHM' ");
-                
+
         sql.append(" AND A.VAREA in (");
         sql.append(area);
         sql.append(")");
-                
+
         sql.append(" AND A.VRGSROLE IN ('PG91-01','PG91-03') "
         );
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
-        sqlQuery.setParameter("VOTSTYPE", outType)
-//                .setParameter("VAREA", area)
+        sqlQuery.setParameter("VOTSTYPE", outType) //                .setParameter("VAREA", area)
                 ;
 
         List queryResult = sqlQuery.list();
@@ -108,7 +106,7 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
 
             for (Object object : queryResult) {
                 obj = (Object[]) object;
-                
+
                 if (limitText) {
                     vo += obj[1].toString();
                     limitText = false;
@@ -118,5 +116,52 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
             }
         }
         return vo;
+    }
+
+    @Override
+    public Boolean isPicAvailable(String userId, String area) {
+
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("SELECT DISTINCT "
+                + "    a.vnrp, "
+                + "    a.varea, "
+                + "    a.votstype, "
+                + "    c.name, "
+                + "    b.vpgblnm, "
+                + "    c.vhandphone "
+                + "FROM "
+                + "    ahmhrntm_mstpicots a, "
+                + "    ahmhrntm_dtlprmgbls b, "
+                + "    fmhrd_general_datas c "
+                + "WHERE "
+                + "        a.vnrp = :id "
+                + "    AND "
+                + "        SYSDATE BETWEEN a.dbgneffdt AND a.dendeffdt "
+                + "    AND "
+                + "        b.vpgblcd = a.varea "
+                + "    AND "
+                + "        b.vpgblcd LIKE 'PG10%' "
+                + "    AND "
+                + "        a.vnrp = c.nrp "
+                + "    AND "
+                + "        c.vend_vnd_code = 'AHM' "
+                + "    AND  "
+                + "        A.VAREA in (:area) "
+                + "    AND  "
+                + "        A.VRGSROLE IN ('PG91-01','PG91-03')");
+
+        SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
+
+        sqlQuery.setParameter("id", userId)
+                .setParameter("area", area);
+        boolean result;
+        if (sqlQuery.list().size() < 1) {
+            result = false;
+        } else {
+            result = true;
+        }
+        return result;
+
     }
 }
