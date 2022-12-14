@@ -142,19 +142,13 @@ public class Vms022ServiceImpl implements Vms022Service {
         ServiceUser = userCred.getUserid();
         List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, "");
 //        int cont = list.size();
+        int i = 0;
         int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, "");
         try {
 
             for (Vms022VoMonitoring vo : list) {
                 String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());
                 vo.setGateName(getGateList);
-
-                boolean filterData = vms022AhmhrntmMstpicotsDao.isPicAvailable(userCred.getUserid(), vo.getArea(), vo.getOutType());
-
-                if (filterData == false) {
-                    list.remove(vo);
-                    continue;
-                }
 
                 if (StringUtils.isBlank(vo.getCompanyName()) && StringUtils.isBlank(vo.getCompany())) {
                     List<Vms022VoLov> compNameList = vms022ObjectDao.lovCompExternal(dto, userCred.getUserid(), "FILTER");
@@ -197,6 +191,16 @@ public class Vms022ServiceImpl implements Vms022Service {
                     vo.setFileSk(listAttcs);
                 }
             }
+            
+            for (Vms022VoMonitoring valid : list) {
+                boolean filterData = vms022AhmhrntmMstpicotsDao.isPicAvailable(userCred.getUserid(), valid.getArea(), valid.getOutType());
+                if (filterData == false) {
+                    list.remove(0);
+                    i++;
+                }
+                
+            }
+            
         } catch (Exception e) {
             return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.GAGAL, "GAGAL", null, list, count);
         }
