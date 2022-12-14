@@ -149,7 +149,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                 String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());
                 vo.setGateName(getGateList);
 
-                boolean filterData = vms022AhmhrntmMstpicotsDao.isPicAvailable(userCred.getUserid(), vo.getArea());
+                boolean filterData = vms022AhmhrntmMstpicotsDao.isPicAvailable(userCred.getUserid(), vo.getArea(), vo.getOutType());
 
                 if (filterData == false) {
                     list.remove(vo);
@@ -198,8 +198,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.GAGAL, e.getMessage(), null, list, count);
+            return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.GAGAL, "GAGAL", null, list, count);
         }
 
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, list, count);

@@ -119,7 +119,7 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
     }
 
     @Override
-    public Boolean isPicAvailable(String userId, String area) {
+    public Boolean isPicAvailable(String userId, String area, String type) {
 
         StringBuilder sql = new StringBuilder();
 
@@ -135,6 +135,8 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
                 + "    ahmhrntm_dtlprmgbls b, "
                 + "    fmhrd_general_datas c "
                 + "WHERE "
+                + "        A.VOTSTYPE = :VOTSTYPE "
+                + "    AND "
                 + "        a.vnrp = :id "
                 + "    AND "
                 + "        SYSDATE BETWEEN a.dbgneffdt AND a.dendeffdt "
@@ -154,7 +156,8 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
         sqlQuery.setParameter("id", userId)
-                .setParameter("area", area);
+                .setParameter("area", area)
+                .setParameter("VOTSTYPE", type);
         boolean result;
         if (sqlQuery.list().size() < 1) {
             result = false;

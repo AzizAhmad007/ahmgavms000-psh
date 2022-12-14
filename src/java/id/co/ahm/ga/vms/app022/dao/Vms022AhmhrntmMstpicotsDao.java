@@ -20,6 +20,6 @@ public interface Vms022AhmhrntmMstpicotsDao extends HrDao<AhmhrntmMstpicots, Str
     
     String getPicAhmForExcel(String outType, String area);
     
-    Boolean isPicAvailable(String userId, String area);
+    Boolean isPicAvailable(String userId, String area, String type);
     
 }
