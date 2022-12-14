@@ -61,11 +61,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @Service(value = "vms022Service")
 public class Vms022ServiceImpl implements Vms022Service {
-
-    String ServiceUser;
-
+    
     public final static String pathServer = "/data/deploy/upload/ahmgavms/Registration/";
-//    public final static String pathServer = "D:\\Download\\";
+//  (for local purpose)  public final static String pathServer = "D:\\Download\\";
 
     public final static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-YYYY");
     public final static LocalDateTime now = LocalDateTime.now();
@@ -77,11 +75,11 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Autowired
     @Qualifier("vms022ObjectDao")
     private Vms022ObjectDao vms022ObjectDao;
-//
+
     @Autowired
     @Qualifier("vms022ahmhrntmDtlprmgblsDao")
     private Vms022AhmhrntmDtlprmgblsDao vms022ahmhrntmDtlprmgblsDao;
-//
+
     @Autowired
     @Qualifier("vms022ahmhrntmHdrotsempsDao")
     private Vms022AhmhrntmHdrotsempsDao vms022ahmhrntmHdrotsempsDao;
@@ -139,10 +137,7 @@ public class Vms022ServiceImpl implements Vms022Service {
 
     @Override
     public DtoResponseWorkspace showMonitoring(DtoParamPaging dto, VoUserCred userCred) {
-        ServiceUser = userCred.getUserid();
         List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, userCred.getUserid());
-//        int cont = list.size();
-        int i = 0;
         int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, userCred.getUserid());
         try {
 
@@ -191,16 +186,6 @@ public class Vms022ServiceImpl implements Vms022Service {
                     vo.setFileSk(listAttcs);
                 }
             }
-            
-//            for (Vms022VoMonitoring valid : list) {
-//                boolean filterData = vms022AhmhrntmMstpicotsDao.isPicAvailable(userCred.getUserid(), valid.getArea(), valid.getOutType());
-//                if (filterData == false) {
-//                    list.remove(0);
-//                    i++;
-//                }
-//                
-//            }
-            
         } catch (Exception e) {
             return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.GAGAL, "GAGAL", null, list, count);
         }
@@ -324,13 +309,11 @@ public class Vms022ServiceImpl implements Vms022Service {
             fileInputStream.read(bytesArray);
 
         } catch (IOException e) {
-            e.printStackTrace();
         } finally {
             if (fileInputStream != null) {
                 try {
                     fileInputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
 
@@ -438,9 +421,6 @@ public class Vms022ServiceImpl implements Vms022Service {
                 if (vo.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM") || vo.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
 
                     String validateId = vms022ahmhrntmHdrotsempsDao.confirmId(vo.getOutId());
-
-//                    String getName = vms022ahmhrntmHdrotsempsDao.getName(vo.getOutId());
-//                    String getNote = vms022ahmhrntmHdrotsempsDao.getNote(vo.getOutId());
                     AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
                     pk.setRotsempshs((vo.getId()));
                     AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
@@ -498,7 +478,7 @@ public class Vms022ServiceImpl implements Vms022Service {
     public DtoResponseWorkspace rejecting(List<Vms022VoMonitoring> getdata, VoUserCred userCred) {
         if (!getdata.isEmpty()) {
             for (Vms022VoMonitoring vo : getdata) {
-                if (vo.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM") //                        || vo.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")
+                if (vo.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM")
                         ) {
                     AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
                     pk.setRotsempshs((vo.getId()));

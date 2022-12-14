@@ -9,8 +9,6 @@ import id.co.ahm.jxf.constant.CommonConstant;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.util.AhmStringUtil;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
@@ -24,7 +22,6 @@ public class Vms022QueryUtil {
     
     public static StringBuilder setSearchParamMonitoringTable(StringBuilder sql, Map<String, Object> filters, String columnName) {
                 
-        String[] col = columnName.split(",");
         if (filters != null && filters.size() > 0) {
                 for (Map.Entry<String, Object> filter : filters.entrySet()) {
                     String key = filter.getKey();
@@ -40,12 +37,7 @@ public class Vms022QueryUtil {
                         sql.append(" AND LOWER(D.VPGBLNM) LIKE LOWER('%").append(value.toLowerCase()).append("%')");
                     } else if (StringUtils.isNotEmpty(value) && StringUtils.equalsIgnoreCase("pic", key)) {
                         sql.append(" AND LOWER(C.VNRP) LIKE LOWER('%").append(value.toLowerCase()).append("%')");
-                    } 
-//                    else if (StringUtils.isNotEmpty(value) && StringUtils.equalsIgnoreCase("company", key)) { //Jika ext cari ke ahmps nrp based filter ambil vvendorid
-                          //cari dulu ke ahmps like name, ambil vvendorid
-                          //
-//                        sql.append(" AND LOWER(F.VPGBLNM) LIKE LOWER('%").append(value.toLowerCase()).append("%')");
-//                    } 
+                    }
                     else if (key.equalsIgnoreCase("outStatus")) {
                         if(!"ALL".equalsIgnoreCase(value)){
                             sql.append(" AND LOWER(A.VOTSSTTS) LIKE LOWER('%").append(value.toLowerCase()).append("%')");
@@ -68,26 +60,17 @@ public class Vms022QueryUtil {
                         sql.append(" AND LOWER(A.VPERSID) LIKE LOWER('%").append(value.toLowerCase()).append("%')");
                     } else if (StringUtils.isNotEmpty(value) && StringUtils.equalsIgnoreCase("outTypeFilter", key)) {
                         sql.append(" AND LOWER(D.VPGBLNM) LIKE LOWER('%").append(value.toLowerCase()).append("%')");
-                    } 
-//                    else if (key.equalsIgnoreCase("companyFilter")) {  //Jika ext cari ke ahmps nrp based filter ambil vvendorid
-//                        sql.append(" AND LOWER(F.VPGBLNM) LIKE LOWER('%").append(value.toLowerCase()).append("%')");
-//                    }  
+                    }
                     else if (StringUtils.isNotEmpty(value) && StringUtils.equalsIgnoreCase("statusFilter", key)) {
                         sql.append(" AND LOWER(A.VOTSSTTS) LIKE LOWER('%").append(value.toLowerCase()).append("%')");
-                    }  else if (StringUtils.isNotEmpty(value) && StringUtils.equalsIgnoreCase("plantFilter", key)) { //
+                    }  else if (StringUtils.isNotEmpty(value) && StringUtils.equalsIgnoreCase("plantFilter", key)) {
                         sql.append(" AND LOWER(E.VPGBLNM) LIKE LOWER('%").append(value.toLowerCase()).append("%')");
                     }  else if (StringUtils.isNotEmpty(value) && StringUtils.equalsIgnoreCase("vacStatusFilter", key)) {
                         sql.append(" AND LOWER(A.VVACSTTS) LIKE LOWER('%").append(value.toLowerCase()).append("%')");
                     }  else if (StringUtils.isNotEmpty(value) && StringUtils.equalsIgnoreCase("beginDateFilter", key)) {
                         sql.append(" AND TRUNC(A.DBGNEFFDT) = '").append(value.toLowerCase()).append("'");
-                        //sql.append(" AND ((TRUNC(A.DBGNEFFDT) LIKE '%").append(value.toLowerCase()).append("%')");
-                        //sql.append(" OR ('").append(value.toLowerCase()).append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT) ");
-                        //sql.append(" )");
                     } else if (StringUtils.isNotEmpty(value) && StringUtils.equalsIgnoreCase("endDateFilter", key)) {
                         sql.append(" AND TRUNC(A.DENDEFFDT) = '").append(value.toLowerCase()).append("'");
-                        //sql.append(" AND ((TRUNC(A.DENDEFFDT) LIKE '%").append(value.toLowerCase()).append("%')");
-                        //sql.append(" OR ('").append(value.toLowerCase()).append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT) ");
-                        //sql.append(" )");
                     } else if (StringUtils.isNotEmpty(value) && StringUtils.equalsIgnoreCase("passNumberFilter", key)) {
                         sql.append(" AND LOWER(A.NAHMCARDORI) LIKE LOWER('%").append(value.toLowerCase()).append("%')");
                     }  else if (StringUtils.isNotEmpty(value) &&  StringUtils.equalsIgnoreCase("passExpiryFilter", key)) {
@@ -97,85 +80,9 @@ public class Vms022QueryUtil {
                     } else if (StringUtils.isNotEmpty(value) && StringUtils.equalsIgnoreCase("modifyDateFilter", key)) {
                         sql.append(" AND TRUNC(A.DMODI) = '").append(value.toLowerCase()).append("'");
                     }   
-
-//plant
-//                    else if (key.equalsIgnoreCase("orgName")) {
-//                        sql.append(" AND LOWER(( ")
-//                                .append("CASE ")
-//                                .append("WHEN VTYPE = 'V' AND VPARTNERID != 'OTHERS' THEN ( ")
-//                                .append("SELECT ")
-//                                .append("VVENDORDESC ")
-//                                .append("FROM ")
-//                                .append("AHMMOMSC_MSTVENDORS ")
-//                                .append("WHERE ")
-//                                .append("VVENDORID = VPARTNERID ) ")
-//                                .append("WHEN VTYPE = 'A' THEN 'AHM' ")
-//                                .append("WHEN VTYPE = 'M' THEN ( ")
-//                                .append("SELECT ")
-//                                .append("VND_NAME ")
-//                                .append("FROM ")
-//                                .append("FMPPC_PP00_VENDORS ")
-//                                .append("WHERE ")
-//                                .append("VNDTYP_VND_TYPE = 'D' ")
-//                                .append("AND NVL(VND_KDEKS, 'D') <> 'E' ")
-//                                .append("AND VND_CODE = VPARTNERID ")
-//                                .append("AND ROWNUM = 1 ) ")
-//                                .append("WHEN VTYPE = 'D' THEN ( ")
-//                                .append("SELECT ")
-//                                .append("VND_NAME ")
-//                                .append("FROM ")
-//                                .append("FMPPC_PP00_VENDORS ")
-//                                .append("WHERE ")
-//                                .append("VNDTYP_VND_TYPE = 'A' ")
-//                                .append("AND NVL(VND_KDEKS, 'D') <> 'E' ")
-//                                .append("AND VND_CODE = VPARTNERID ) ")
-//                                .append("WHEN VTYPE = 'V' AND VPARTNERID = 'OTHERS' THEN 'OTHERS' ")
-//                                .append("END )) LIKE LOWER('%").append(value.toLowerCase()).append("%')");
-//                    } else if (key.equalsIgnoreCase("status")) {
-//                        sql.append(" AND LOWER(VSTATUS) LIKE LOWER('%").append(value.toLowerCase()).append("%')");
-//                    } else {
-//
-//                    }
                 }
-//            } else {
-//                for (Map.Entry<String, Object> filter : filters.entrySet()) {
-//                    String key = filter.getKey();
-//                    String value = (String) filter.getValue();
-//
-//                    if (key.equalsIgnoreCase("statusFilter")) {
-//                        if ("ACTIVE".equalsIgnoreCase(value)) {
-//                            sql.append("AND TRUNC(SYSDATE) BETWEEN HDR.DBEGINEFF AND HDR.DENDEFF ");
-//
-//                        } else if ("INACTIVE".equalsIgnoreCase(value)) {
-//                            sql.append("AND TRUNC(SYSDATE) NOT BETWEEN HDR.DBEGINEFF AND HDR.DENDEFF ");
-//
-//                        } else {
-//
-//                        }
-//                    } else if (key.equalsIgnoreCase("batchId")) {
-//                        sql.append(" AND LOWER(HDR.VBATCHID) LIKE LOWER('%").append(value.toLowerCase()).append("%')");
-//                    } else if (key.equalsIgnoreCase("nama")) {
-//                        sql.append(" AND LOWER(TXN.VTRNNAME) LIKE LOWER('%").append(value.toLowerCase()).append("%')");
-//                    } else if (key.equalsIgnoreCase("group")) {
-//                        sql.append(" AND LOWER(HDR.VTRNCAT) LIKE LOWER('%").append(value.toLowerCase()).append("%')");
-//                    } else if (key.equalsIgnoreCase("tglMulai")) {
-//                        if (StringUtils.isNotBlank(value)) {
-//                            sql.append(" AND TRUNC(HDR.DBEGINEFF) = '").append(value.toLowerCase()).append("'");
-//                        }
-//                    } else if (key.equalsIgnoreCase("tglSelesai")) {
-//                        if (StringUtils.isNotBlank(value)) {
-//                            sql.append(" AND TRUNC(HDR.DENDEFF) = '").append(value.toLowerCase()).append("'");
-//                        }
-//
-//                    } else {
-//
-//                    }
-//                }
-//            }
         }
-
         return sql;
-
     }
     
     public static StringBuilder setSearchParamLov(StringBuilder sql, Map<String, Object> filters, String columnName, String type) {

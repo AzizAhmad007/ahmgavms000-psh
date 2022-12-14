@@ -7,7 +7,6 @@ package id.co.ahm.ga.vms.app022.dao;
 
 import id.co.ahm.ga.vms.app000.model.AhmhrntmDtlprmgbls;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
-import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.jxf.dao.HrDao;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import java.util.List;

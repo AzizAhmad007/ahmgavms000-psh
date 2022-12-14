@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 /**
  *
- * @author ayik.op
+ * @author reza.mr
  */
 public class Vms022VoFileAttachment {
     

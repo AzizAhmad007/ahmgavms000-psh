@@ -9,7 +9,6 @@ import id.co.ahm.ga.vms.app000.model.AhmhrntmDtlotsregs;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmDtlotsregsPk;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlotsregsDao;
 import id.co.ahm.jxf.dao.HrHibernateDao;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Query;

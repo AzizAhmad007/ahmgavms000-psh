@@ -5,7 +5,6 @@
  */
 package id.co.ahm.ga.vms.app022.model;
 
-import id.co.ahm.jx.b2e.app000.model.Ahmitb2eMstusrrolesPk;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;

@@ -9,7 +9,6 @@ import id.co.ahm.ga.vms.app022.model.Vms022Ahmitb2eMstusrroles;
 import id.co.ahm.ga.vms.app022.model.Vms022Ahmitb2eMstusrrolesPk;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoFormAuthorization;
 import id.co.ahm.jxf.dao.B2eDao;
-import java.io.Serializable;
 import java.util.List;
 
 /**

@@ -76,7 +76,6 @@ public class Vms022Rest {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     DtoResponseWorkspace showPlant(@RequestHeader(value = "token") String token) {
-        VoUserCred user = tokenPshUtil.getUserCred(token);
         return vms022Service.showPlant();
     }
 
@@ -102,7 +101,6 @@ public class Vms022Rest {
         VoUserCred user = tokenPshUtil.getUserCred(token);
 
         return vms022Service.approve(getdata, user);
-//        return "success";
 
     }
 
@@ -195,9 +193,6 @@ public class Vms022Rest {
             @RequestParam(name = "os") String outStatus,
             @RequestParam(name = "p") String areaName,
             @RequestParam(name = "c19vs") String vacStatus) {
-
-        
-//        VoUserCred user = tokenPshUtil.getUserCred(token);
         
         if (StringUtils.isNotEmpty(beginDateText)) {
             Date effectiveDateFrom = Vms022DateTimeUtil.stringToDate(beginDateText);

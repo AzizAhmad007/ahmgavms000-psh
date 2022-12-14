@@ -9,7 +9,6 @@ import id.co.ahm.ga.vms.app000.model.AhmhrntmMstpicots;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmMstpicotsDao;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
 import id.co.ahm.jxf.dao.HrHibernateDao;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.SQLQuery;
@@ -47,7 +46,7 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
-        sqlQuery.setParameter("VOTSTYPE", outType) //                .setParameter("VAREA", area)
+        sqlQuery.setParameter("VOTSTYPE", outType)
                 ;
 
         List queryResult = sqlQuery.list();
@@ -94,11 +93,10 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
-        sqlQuery.setParameter("VOTSTYPE", outType) //                .setParameter("VAREA", area)
+        sqlQuery.setParameter("VOTSTYPE", outType)
                 ;
 
         List queryResult = sqlQuery.list();
-//        List<Vms022VoLov> vo = new ArrayList<>();
         String vo = "";
         if (queryResult.size() > 0) {
             Object[] obj;

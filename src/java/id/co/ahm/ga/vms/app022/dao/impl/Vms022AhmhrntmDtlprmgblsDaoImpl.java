@@ -9,14 +9,11 @@ import id.co.ahm.ga.vms.app000.model.AhmhrntmDtlprmgbls;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlprmgblsDao;
 import id.co.ahm.ga.vms.app022.util.Vms022QueryUtil;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
-import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.jxf.dao.HrHibernateDao;
 import id.co.ahm.jxf.dto.DtoParamPaging;
-import id.co.ahm.jxf.util.AhmStringUtil;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.lang.text.StrBuilder;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.exception.GenericJDBCException;
@@ -276,7 +273,6 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
                 .setParameter("VPERSID", nik);
 
         List queryResult = sqlQuery.list();
-//        List<Vms022VoLov> vo = new ArrayList<>();
         String vo = "";
         if (queryResult.size() > 0) {
             Object[] obj;

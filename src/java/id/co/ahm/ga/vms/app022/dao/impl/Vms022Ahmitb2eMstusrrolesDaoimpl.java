@@ -9,20 +9,11 @@ import id.co.ahm.ga.vms.app022.dao.Vms022Ahmitb2eMstusrrolesDao;
 import id.co.ahm.ga.vms.app022.model.Vms022Ahmitb2eMstusrroles;
 import id.co.ahm.ga.vms.app022.model.Vms022Ahmitb2eMstusrrolesPk;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoFormAuthorization;
-import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.jxf.dao.B2eHibernateDao;
-import id.co.ahm.jxf.util.AhmStringUtil;
-import id.co.ahm.jxf.util.DateUtil;
-import java.sql.Blob;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
@@ -36,7 +27,6 @@ public class Vms022Ahmitb2eMstusrrolesDaoimpl extends B2eHibernateDao<Vms022Ahmi
     @Override
     public List<Vms022VoFormAuthorization> getMainMenuData(String Userid) {
         List<Vms022VoFormAuthorization> result = new ArrayList<>();
-        Map<String, String> sortMap = new HashMap<>();
         StringBuilder sqlQuery = new StringBuilder();
 
         sqlQuery.append("Select VROLEID, VROLEDESC from AHMITB2E_MSTROLES "

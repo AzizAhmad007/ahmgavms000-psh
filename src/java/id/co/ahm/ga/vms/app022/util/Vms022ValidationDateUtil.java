@@ -150,8 +150,6 @@ public class Vms022ValidationDateUtil {
 
         Calendar cal2 = Calendar.getInstance();
         cal2.setTime(date2);
-        int day2 = cal2.get(Calendar.DAY_OF_MONTH);
-        int month2 = cal2.get(Calendar.MONTH) + 1;
         int year2 = cal2.get(Calendar.YEAR);
 
         Calendar cal3 = Calendar.getInstance();
@@ -159,18 +157,6 @@ public class Vms022ValidationDateUtil {
         int daynow = cal3.get(Calendar.DAY_OF_MONTH);
         int monthnow = cal3.get(Calendar.MONTH) + 1;
         int yearnow = cal3.get(Calendar.YEAR);
-
-        System.out.println("================= day1 ===== " + day1 + " =================");
-        System.out.println("================= daynow === " + daynow + " =================");
-        System.out.println("================= day2 ===== " + day2 + " =================");
-        System.out.println("================= " + " =================");
-        System.out.println("================= month1 ===== " + month1 + " =================");
-        System.out.println("================= monthnow === " + monthnow + " =================");
-        System.out.println("================= month2 ===== " + month2 + " =================");
-        System.out.println("=================  " + " =================");
-        System.out.println("================= year1 ===== " + year1 + " =================");
-        System.out.println("================= yearnow === " + yearnow + " =================");
-        System.out.println("================= year2 ===== " + year2 + " =================");
 
         if (year2 < yearnow || year2 == yearnow) {
             if (year1 > yearnow) { // check year
