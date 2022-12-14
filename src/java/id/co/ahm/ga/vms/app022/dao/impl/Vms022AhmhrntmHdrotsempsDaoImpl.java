@@ -29,6 +29,9 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.exception.SQLGrammarException;
 import org.springframework.stereotype.Repository;
+import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmMstpicotsDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  *
@@ -36,6 +39,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("vms022ahmhrntmHdrotsempsDao")
 public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdrotsemps, AhmhrntmHdrotsempsPk> implements Vms022AhmhrntmHdrotsempsDao {
+
+    @Autowired
+    @Qualifier("vms022AhmhrntmMstpicotsDao")
+    private Vms022AhmhrntmMstpicotsDao vms022AhmhrntmMstpicotsDao;
 
     private String getParam;
 
@@ -145,8 +152,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("LEFT JOIN AHMMOMSC_MSTVENDORS@ahmps Z ON A.VCOMPANY = Z.VVENDORID ")
                 .append("LEFT JOIN AHMHRNTM_DTLPRMGBLS G ON A.VVACTYPE = G.VPGBLCD "
                         + "WHERE  "
-//                        + "    B.VOTSTYPE = A.VOTSTYPE "
-//                        + "    AND  "
+                        //                        + "    B.VOTSTYPE = A.VOTSTYPE "
+                        //                        + "    AND  "
                         + "    1 = 1 "
                         + "    AND  "
                         + "        UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%')  ");
@@ -228,6 +235,25 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             for (int i = 0; i < lists.size(); i++) {
                 Object[] obj = (Object[]) lists.get(i);
                 Vms022VoMonitoring vo = new Vms022VoMonitoring();
+
+                boolean filterData = vms022AhmhrntmMstpicotsDao.isPicAvailable(userId, obj[8] + "", obj[3] + "");
+                System.out.println("=========================================================================");
+                System.out.println("============================  GET DATA   ================================");
+                System.out.println("=========================================================================");
+                System.out.println("");
+                System.out.println("");
+                System.out.println("isi filter = " + filterData);
+                System.out.println("");
+                System.out.println("isi userId = " + userId);
+                System.out.println("isi area   = " + obj[8] + "");
+                System.out.println("isi type   = " + obj[3] + "");
+                System.out.println("");
+                System.out.println("=========================================================================");
+                System.out.println("=========================================================================");
+                System.out.println("=========================================================================");
+                if (filterData == false) {
+                    continue;
+                }
 
                 vo.setOutId(obj[0] == null ? "" : obj[0] + "");
                 vo.setOutName(obj[1] == null ? "" : obj[1] + "");
@@ -331,7 +357,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         String vacstat = AhmStringUtil.hasValue(input.getSearch().get("vacStatus")) ? (input.getSearch().get("vacStatus") + "").toUpperCase() : "";
         String pic = AhmStringUtil.hasValue(input.getSearch().get("pic")) ? (input.getSearch().get("pic") + "").toUpperCase() : "";
 
-        sqlQuery.append("SELECT COUNT(*) FROM (");
+//        sqlQuery.append("SELECT COUNT(*) FROM (");
         sqlQuery.append("SELECT  "
                 + "    A.VOTSID as OUTID,  "
                 + "    A.VNAME as OUTNAME,  "
@@ -461,8 +487,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             sqlQuery.append(" ) ");
         }
 
-        sqlQuery.append(" )");
-
+//        sqlQuery.append(" )");
         SQLQuery query = getCurrentSession().createSQLQuery(sqlQuery.toString());
 //        Query query = getCurrentSession().createSQLQuery(sqlQuery.toString());
 
@@ -478,12 +503,38 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .setParameter("plant", plant)
                 .setParameter("vacstat", vacstat);
 
+        int counter = 0;
         try {
-            resultCount = (BigDecimal) query.uniqueResult();
+            List lists = query.list();
+            for (int i = 0; i < lists.size(); i++) {
+                Object[] obj = (Object[]) lists.get(i);
+                Vms022VoMonitoring vo = new Vms022VoMonitoring();
+
+                boolean filterData = vms022AhmhrntmMstpicotsDao.isPicAvailable(userId, obj[8] + "", obj[3] + "");
+                System.out.println("=========================================================================");
+                System.out.println("============================  GET COUNT DATA   ================================");
+                System.out.println("=========================================================================");
+                System.out.println("");
+                System.out.println("");
+                System.out.println("isi filter = " + filterData);
+                System.out.println("");
+                System.out.println("isi userId = " + userId);
+                System.out.println("isi area   = " + obj[8] + "");
+                System.out.println("isi type   = " + obj[3] + "");
+                System.out.println("");
+                System.out.println("=========================================================================");
+                System.out.println("=========================================================================");
+                System.out.println("=========================================================================");
+                if (filterData == false) {
+                    continue;
+                }
+
+                counter++;
+            }
 
         } catch (SQLGrammarException e) {
         }
-        return resultCount.intValue();
+        return counter;
 //        return 0;
     }
 
@@ -583,7 +634,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                         + "    AHMHRNTM_HDROTSEMPS  "
                         + " where  "
                         + "    votsid = :VOTSID ");
-        
+
         qResult.setParameter("VOTSID", id);
         return (String) qResult.uniqueResult();
     }
@@ -597,7 +648,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                         + "    AHMHRNTM_HDROTSEMPS  "
                         + " where  "
                         + "    votsid = :VOTSID ");
-        
+
         qResult.setParameter("VOTSID", id);
         return (String) qResult.uniqueResult();
     }
@@ -611,7 +662,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                         + "    AHMHRNTM_HDROTSEMPS  "
                         + " where  "
                         + "    votsid = :VOTSID ");
-        
+
         qResult.setParameter("VOTSID", id);
         return (String) qResult.uniqueResult();
     }

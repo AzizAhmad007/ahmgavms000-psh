@@ -140,10 +140,10 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Override
     public DtoResponseWorkspace showMonitoring(DtoParamPaging dto, VoUserCred userCred) {
         ServiceUser = userCred.getUserid();
-        List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, "");
+        List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, userCred.getUserid());
 //        int cont = list.size();
         int i = 0;
-        int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, "");
+        int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, userCred.getUserid());
         try {
 
             for (Vms022VoMonitoring vo : list) {
@@ -192,14 +192,14 @@ public class Vms022ServiceImpl implements Vms022Service {
                 }
             }
             
-            for (Vms022VoMonitoring valid : list) {
-                boolean filterData = vms022AhmhrntmMstpicotsDao.isPicAvailable(userCred.getUserid(), valid.getArea(), valid.getOutType());
-                if (filterData == false) {
-                    list.remove(0);
-                    i++;
-                }
-                
-            }
+//            for (Vms022VoMonitoring valid : list) {
+//                boolean filterData = vms022AhmhrntmMstpicotsDao.isPicAvailable(userCred.getUserid(), valid.getArea(), valid.getOutType());
+//                if (filterData == false) {
+//                    list.remove(0);
+//                    i++;
+//                }
+//                
+//            }
             
         } catch (Exception e) {
             return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.GAGAL, "GAGAL", null, list, count);
