@@ -430,63 +430,67 @@ public class Vms022ServiceImpl implements Vms022Service {
                                 vms022ahmhrntmHdrotsempsDao.flush();
                             }
 
-                        } else if (vo.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
-                            mp.setVotsstts(vo.getOutStatus());
-                            mp.setLastModBy(userCred.getUserid());
-                            mp.setDstatus(DateUtil.stringToDate(vo.getDateStatus(), "dd-MM-yyyy"));
-
-                            String getNseq = vms022ahmhrntmTxnidrepsDao.getNseq();
-
-                            int nseq;
-                            Date datenow = new Date();
-                            int yearnow = datenow.getYear() + 1900;
-                            int monthnow = datenow.getMonth() + 1;
-
-                            String vNseq;
-
-                            if (monthnow < 10) {
-                                vNseq = "OTR/" + yearnow + "/0" + monthnow + "/";
-                            } else {
-                                vNseq = "OTR/" + yearnow + "/" + monthnow + "/";
-                            }
-
-                            if (getNseq == null) {
-                                nseq = 1;
-                            } else {
-                                nseq = Integer.valueOf(getNseq) + 1;
-                            }
-
-                            if (nseq < 10) {
-                                vNseq += "00000" + nseq;
-                            } else if (nseq < 100) {
-                                vNseq += "0000" + nseq;
-                            } else if (nseq < 1000) {
-                                vNseq += "000" + nseq;
-                            } else if (nseq < 10000) {
-                                vNseq += "00" + nseq;
-                            } else if (nseq < 100000) {
-                                vNseq += "0" + nseq;
-                            } else if (nseq < 1000000) {
-                                vNseq += String.valueOf(nseq);
-                            }
-
-                            AhmhrntmTxnidreps voo = new AhmhrntmTxnidreps();
-                            voo.setVwrkorderno(vNseq);
-                            voo.setVnrp(vo.getOutId());
-                            voo.setNreasonrep(BigDecimal.valueOf(3));
-                            voo.setNclaimemp(BigDecimal.ZERO);
-                            voo.setVremark(getNote);
-                            voo.setVstatus("WAITING");
-                            voo.setVpckupsts("NOTDONE");
-                            voo.setVcardname(getName);
-
-                            vms022ahmhrntmHdrotsempsDao.update(mp);
-                            vms022ahmhrntmHdrotsempsDao.flush();
-
-                            vms022ahmhrntmTxnidrepsDao.save(voo);
-                            vms022ahmhrntmTxnidrepsDao.flush();
-
+                        } else {
+                            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data! This Role cannot do this action!"), null, null);
                         }
+//                        else if (vo.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
+//                            mp.setVotsstts(vo.getOutStatus());
+//                            mp.setLastModBy(userCred.getUserid());
+//                            mp.setDstatus(DateUtil.stringToDate(vo.getDateStatus(), "dd-MM-yyyy"));
+//
+//                            String getNseq = vms022ahmhrntmTxnidrepsDao.getNseq();
+//
+//                            int nseq;
+//                            Date datenow = new Date();
+//                            int yearnow = datenow.getYear() + 1900;
+//                            int monthnow = datenow.getMonth() + 1;
+//
+//                            String vNseq;
+//
+//                            if (monthnow < 10) {
+//                                vNseq = "OTR/" + yearnow + "/0" + monthnow + "/";
+//                            } else {
+//                                vNseq = "OTR/" + yearnow + "/" + monthnow + "/";
+//                            }
+//
+//                            if (getNseq == null) {
+//                                nseq = 1;
+//                            } else {
+//                                nseq = Integer.valueOf(getNseq) + 1;
+//                            }
+//
+//                            if (nseq < 10) {
+//                                vNseq += "00000" + nseq;
+//                            } else if (nseq < 100) {
+//                                vNseq += "0000" + nseq;
+//                            } else if (nseq < 1000) {
+//                                vNseq += "000" + nseq;
+//                            } else if (nseq < 10000) {
+//                                vNseq += "00" + nseq;
+//                            } else if (nseq < 100000) {
+//                                vNseq += "0" + nseq;
+//                            } else if (nseq < 1000000) {
+//                                vNseq += String.valueOf(nseq);
+//                            }
+//
+//                            AhmhrntmTxnidreps voo = new AhmhrntmTxnidreps();
+//                            voo.setVwrkorderno(vNseq);
+//                            voo.setVnrp(vo.getOutId());
+//                            voo.setNreasonrep(BigDecimal.valueOf(3));
+//                            voo.setNclaimemp(BigDecimal.ZERO);
+//                            voo.setVremark(getNote);
+//                            voo.setVstatus("WAITING");
+//                            voo.setVpckupsts("NOTDONE");
+//                            voo.setVcardname(getName);
+//
+//                            vms022ahmhrntmHdrotsempsDao.update(mp);
+//                            vms022ahmhrntmHdrotsempsDao.flush();
+//
+//                            vms022ahmhrntmTxnidrepsDao.save(voo);
+//                            vms022ahmhrntmTxnidrepsDao.flush();
+//
+//                        }
+                        
                     }
                 } else {
                     throw new Vms022Exception("Role Not Exist!");
@@ -526,7 +530,9 @@ public class Vms022ServiceImpl implements Vms022Service {
     public DtoResponseWorkspace rejecting(List<Vms022VoMonitoring> getdata, VoUserCred userCred) {
         if (!getdata.isEmpty()) {
             for (Vms022VoMonitoring vo : getdata) {
-                if (vo.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM") || vo.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
+                if (vo.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM")
+//                        || vo.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")
+                        ) {
                     AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
                     pk.setRotsempshs((vo.getId()));
                     AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
@@ -538,7 +544,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                         vms022ahmhrntmHdrotsempsDao.flush();
                     }
                 } else {
-                    throw new Vms022Exception("Role Not Exist!");
+                            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Reject data! This Role cannot do this action!"), null, null);
                 }
             }
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, "Reject success", null, null);
