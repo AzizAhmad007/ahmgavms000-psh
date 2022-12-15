@@ -27,7 +27,7 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
         StringBuilder sql = new StringBuilder();
 
         sql.append("SELECT DISTINCT A.VNRP, C.NAME, B.VPGBLNM, C.VHANDPHONE  "
-                + " FROM AHMHRNTM_MSTPICOTS A, AHMHRNTM_DTLPRMGBLS B, FMHRD_GENERAL_DATAS C "
+                + " FROM AHMHRNTM_MSTPICOTS A, AHMHRNTM_DTLPRMGBLS B, FMHRD_GENERAL_DATAS C, AHMMOERP_MSTKARYAWANS@ahmps D "
                 + " WHERE  "
                 + " A.VOTSTYPE = :VOTSTYPE "
                 + " AND  "
@@ -35,6 +35,7 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
                 + " AND B.VPGBLCD = A.VAREA "
                 + " AND B.VPGBLCD LIKE 'PG10%' "
                 + " AND A.VNRP = C.NRP "
+                + " AND A.VNRP = D.IIDNRP"
                 + " AND C.VEND_VND_CODE = 'AHM' ");
 
         sql.append(" AND A.VAREA in (");
@@ -46,8 +47,7 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
-        sqlQuery.setParameter("VOTSTYPE", outType)
-                ;
+        sqlQuery.setParameter("VOTSTYPE", outType);
 
         List queryResult = sqlQuery.list();
         List<Vms022VoLov> vo = new ArrayList<>();
@@ -74,7 +74,7 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
         StringBuilder sql = new StringBuilder();
 
         sql.append("SELECT DISTINCT (A.VNRP), C.NAME, B.VPGBLNM, C.VHANDPHONE  "
-                + " FROM AHMHRNTM_MSTPICOTS A, AHMHRNTM_DTLPRMGBLS B, FMHRD_GENERAL_DATAS C "
+                + " FROM AHMHRNTM_MSTPICOTS A, AHMHRNTM_DTLPRMGBLS B, FMHRD_GENERAL_DATAS C, AHMMOERP_MSTKARYAWANS@ahmps D "
                 + " WHERE  "
                 + " A.VOTSTYPE = :VOTSTYPE "
                 + " AND  "
@@ -82,6 +82,7 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
                 + " AND B.VPGBLCD = A.VAREA "
                 + " AND B.VPGBLCD LIKE 'PG10%' "
                 + " AND A.VNRP = C.NRP "
+                + " AND A.VNRP = D.IIDNRP"
                 + " AND C.VEND_VND_CODE = 'AHM' ");
 
         sql.append(" AND A.VAREA in (");
@@ -93,8 +94,7 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
-        sqlQuery.setParameter("VOTSTYPE", outType)
-                ;
+        sqlQuery.setParameter("VOTSTYPE", outType);
 
         List queryResult = sqlQuery.list();
         String vo = "";
@@ -131,7 +131,8 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
                 + "FROM "
                 + "    ahmhrntm_mstpicots a, "
                 + "    ahmhrntm_dtlprmgbls b, "
-                + "    fmhrd_general_datas c "
+                + "    fmhrd_general_datas c, "
+                + "    AHMMOERP_MSTKARYAWANS@ahmps d "
                 + "WHERE "
                 + "        A.VOTSTYPE = :VOTSTYPE "
                 + "    AND "
@@ -142,6 +143,8 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
                 + "        b.vpgblcd LIKE 'PG10%' "
                 + "    AND "
                 + "        a.vnrp = c.nrp "
+                + "    AND "
+                + "        a.vnrp = d.iidnrp "
                 + "    AND "
                 + "        c.vend_vnd_code = 'AHM' "
                 + "    AND  "
