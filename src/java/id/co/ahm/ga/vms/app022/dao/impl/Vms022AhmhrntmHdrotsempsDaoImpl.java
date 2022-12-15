@@ -13,7 +13,6 @@ import id.co.ahm.jxf.dao.HrHibernateDao;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.util.AhmStringUtil;
 import id.co.ahm.jxf.util.DateUtil;
-import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -48,7 +47,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
     private String getParam;
 
     @Override
-    public List<Vms022VoMonitoring> getSearchData(DtoParamPaging input, String userId) {
+    public List<Vms022VoMonitoring> getSearchData(DtoParamPaging input, String userId, String role) {
         List<Vms022VoMonitoring> result = new ArrayList<>();
         Map<String, String> sortMap = new HashMap<>();
         StringBuilder sqlQuery = new StringBuilder();
@@ -224,7 +223,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 Vms022VoMonitoring vo = new Vms022VoMonitoring();
 
                 boolean filterData = vms022AhmhrntmMstpicotsDao.isPicAvailable(userId, obj[8] + "", obj[3] + "");
-                if (filterData == false) {
+                if (filterData == false && role.equalsIgnoreCase("RO_GAVMS_PICAHM")) {
                     continue;
                 }
 
@@ -313,7 +312,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
     }
 
     @Override
-    public int countSearchData(DtoParamPaging input, String userId) {
+    public int countSearchData(DtoParamPaging input, String userId, String role) {
         StringBuilder sqlQuery = new StringBuilder();
 
         String votsid = AhmStringUtil.hasValue(input.getSearch().get("outId")) ? (input.getSearch().get("outId") + "").toUpperCase() : "";

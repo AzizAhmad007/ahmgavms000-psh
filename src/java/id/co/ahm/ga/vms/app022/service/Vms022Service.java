@@ -25,7 +25,7 @@ public interface Vms022Service {
     
     DtoResponseWorkspace showPlant();
     
-    DtoResponsePaging monitoring(DtoParamPaging input, VoUserCred userCred);
+//    DtoResponsePaging monitoring(DtoParamPaging input, VoUserCred userCred);
     
     DtoResponseWorkspace showMonitoring(DtoParamPaging input, VoUserCred userCred);
     
@@ -45,7 +45,7 @@ public interface Vms022Service {
     
     DtoResponseWorkspace checkingDate(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
     
-    DtoResponsePagingWorkspace getExcel(DtoParamPaging dto);
+    DtoResponsePagingWorkspace getExcel(DtoParamPaging dto, VoUserCred userCred);
     
     DtoResponse testing (DtoParamPaging dto);
 }
