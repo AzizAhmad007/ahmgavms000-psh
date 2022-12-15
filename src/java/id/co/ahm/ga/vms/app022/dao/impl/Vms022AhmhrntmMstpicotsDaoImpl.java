@@ -135,8 +135,6 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
                 + "WHERE "
                 + "        A.VOTSTYPE = :VOTSTYPE "
                 + "    AND "
-                + "        a.vnrp = :id "
-                + "    AND "
                 + "        SYSDATE BETWEEN a.dbgneffdt AND a.dendeffdt "
                 + "    AND "
                 + "        b.vpgblcd = a.varea "
@@ -153,8 +151,7 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
-        sqlQuery.setParameter("id", userId)
-                .setParameter("area", area)
+        sqlQuery.setParameter("area", area)
                 .setParameter("VOTSTYPE", type);
         boolean result;
         if (sqlQuery.list().size() < 1) {
