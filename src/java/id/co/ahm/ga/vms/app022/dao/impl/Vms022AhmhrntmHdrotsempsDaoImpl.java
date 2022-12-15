@@ -466,7 +466,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 Object[] obj = (Object[]) lists.get(i);
 
                 boolean filterData = vms022AhmhrntmMstpicotsDao.isPicAvailable(userId, obj[8] + "", obj[3] + "");
-                if (filterData == false) {
+                if (filterData == false && role.equalsIgnoreCase("RO_GAVMS_PICAHM")) {
                     continue;
                 }
                 counter++;
