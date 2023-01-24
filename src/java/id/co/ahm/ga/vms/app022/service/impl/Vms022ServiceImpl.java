@@ -212,16 +212,20 @@ public class Vms022ServiceImpl implements Vms022Service {
 
     @Override
     public DtoResponsePagingWorkspace getExcel(DtoParamPaging dto, VoUserCred userCred) {
-        
+
         String userId = getUserId(userCred);
         List<Ahmitb2eMstusrroles> formFunctionList = ahmitb2eMstusrrolesDao.getListUserRole(userId);
         String role = "";
 
         for (Ahmitb2eMstusrroles data : formFunctionList) {
             Ahmitb2eMstusrrolesPk desc = data.getAhmitb2eMstusrrolesPk();
-            role = desc.getVroleid();
+            if (desc.getVroleid().equals("RO_GAVMS_PICAHM")) {
+                role = desc.getVroleid();
+            } else if (desc.getVroleid().equals("RO_GAVMS_OFCSECT")) {
+                role = desc.getVroleid();
+            }
         }
-        
+
         List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, userId, role);
         int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, userId, role);
 
@@ -323,7 +327,6 @@ public class Vms022ServiceImpl implements Vms022Service {
 //            return DtoHelper.constructResponsePaging(StatusMsgEnum.SUKSES, null, datas, count);
 //        }
 //    }
-
     private byte[] readBytesFromFile(String pathFile) {
         FileInputStream fileInputStream = null;
         byte[] bytesArray = null;
