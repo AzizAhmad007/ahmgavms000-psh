@@ -548,7 +548,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                 createCell(rowContentData, item.getModifyDateText(), col++, styleContentTable2WithWrap);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Fail generate excel file");
+            throw new RuntimeException(e.getMessage());
         }
  
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
