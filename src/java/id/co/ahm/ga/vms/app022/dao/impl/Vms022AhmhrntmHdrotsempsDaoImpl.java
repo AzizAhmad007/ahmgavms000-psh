@@ -29,6 +29,10 @@ import org.hibernate.SQLQuery;
 import org.hibernate.exception.SQLGrammarException;
 import org.springframework.stereotype.Repository;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmMstpicotsDao;
+import static id.co.ahm.ga.vms.app022.service.impl.Vms022ServiceImpl.pathServer;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -297,7 +301,12 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                         Logger.getLogger(Vms022AhmhrntmHdrotsempsDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else {
-                    vo.setFilePhoto("");
+                    if (vo.getFileNamePhoto().isEmpty()) {
+                        vo.setFilePhoto("");
+                    } else {
+                        byte[] bFileVac = readBytesFromFile(pathServer + vo.getFileNamePhoto());
+                        vo.setFilePhoto(Base64.getEncoder().encodeToString(bFileVac));
+                    } 
                 }
                 vo.setRowNum(i);
                 vo.setGateName("=========testing");
@@ -588,5 +597,31 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
         qResult.setParameter("VOTSID", id);
         return (String) qResult.uniqueResult();
+    }
+    
+    private byte[] readBytesFromFile(String pathFile) {
+        FileInputStream fileInputStream = null;
+        byte[] bytesArray = null;
+        try {
+            File file = new File(pathFile);
+            bytesArray = new byte[(int) file.length()];
+
+            //read file into bytes[]
+            fileInputStream = new FileInputStream(file);
+            fileInputStream.read(bytesArray);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fileInputStream != null) {
+                try {
+                    fileInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        return bytesArray;
     }
 }
