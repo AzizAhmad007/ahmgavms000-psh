@@ -18,10 +18,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "AHMITB2E_MSTUSRROLES")
-public class Ahmitb2eMstusrroles implements Serializable {
+public class Vms022Ahmitb2eMstusrroles implements Serializable {
 
     @EmbeddedId
-    private Ahmitb2eMstusrrolesPk ahmitb2eMstusrrolesPk;
+    private Vms022Ahmitb2eMstusrrolesPk ahmitb2eMstusrrolesPk;
 
     @Column(name = "DBEGINEFF")
     private Date dbegineff;
@@ -45,11 +45,11 @@ public class Ahmitb2eMstusrroles implements Serializable {
         this.dlasteff = dlasteff;
     }
 
-    public Ahmitb2eMstusrrolesPk getAhmitb2eMstusrrolesPk() {
+    public Vms022Ahmitb2eMstusrrolesPk getAhmitb2eMstusrrolesPk() {
         return ahmitb2eMstusrrolesPk;
     }
 
-    public void setAhmitb2eMstusrrolesPk(Ahmitb2eMstusrrolesPk ahmitb2eMstusrrolesPk) {
+    public void setAhmitb2eMstusrrolesPk(Vms022Ahmitb2eMstusrrolesPk ahmitb2eMstusrrolesPk) {
         this.ahmitb2eMstusrrolesPk = ahmitb2eMstusrrolesPk;
     }
     

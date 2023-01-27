@@ -12,7 +12,7 @@ import javax.persistence.Column;
  *
  * @author reza.mr
  */
-public class Ahmitb2eMstusrrolesPk implements Serializable {
+public class Vms022Ahmitb2eMstusrrolesPk implements Serializable {
 
     @Column(name = "VROLEID")
     private String vroleid;
