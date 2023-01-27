@@ -78,6 +78,21 @@ public class Vms022Rest {
     DtoResponseWorkspace showPlant(@RequestHeader(value = "token") String token) {
         return vms022Service.showPlant();
     }
+    @RequestMapping(value = "get-user-detail", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace getUserDetail(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody DtoParamPaging dto) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
+        Map getDetail = new HashMap();
+        getDetail.put("username", user.getUsername());
+        getDetail.put("userid", user.getUserid());
+        getDetail.put("email", user.getEmail());
+        getDetail.put("domain", user.getDomain());
+
+        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, getDetail);
+    }
 
     //success
     @RequestMapping(value = "monitoring", method = RequestMethod.POST,
