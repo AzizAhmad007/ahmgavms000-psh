@@ -6,8 +6,8 @@
 package id.co.ahm.ga.vms.app022.dao.impl;
 
 import id.co.ahm.ga.vms.app022.dao.Vms022Ahmitb2eMstusrrolesDao;
-import id.co.ahm.ga.vms.app022.model.Vms022Ahmitb2eMstusrroles;
-import id.co.ahm.ga.vms.app022.model.Vms022Ahmitb2eMstusrrolesPk;
+import id.co.ahm.ga.vms.app022.model.Ahmitb2eMstusrroles;
+import id.co.ahm.ga.vms.app022.model.Ahmitb2eMstusrrolesPk;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoFormAuthorization;
 import id.co.ahm.jxf.dao.B2eHibernateDao;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
  * @author reza.mr
  */
 @Repository("vms022Ahmitb2eMstusrrolesDao")
-public class Vms022Ahmitb2eMstusrrolesDaoimpl extends B2eHibernateDao<Vms022Ahmitb2eMstusrroles, Vms022Ahmitb2eMstusrrolesPk> implements Vms022Ahmitb2eMstusrrolesDao{
+public class Vms022Ahmitb2eMstusrrolesDaoimpl extends B2eHibernateDao<Ahmitb2eMstusrroles, Ahmitb2eMstusrrolesPk> implements Vms022Ahmitb2eMstusrrolesDao{
 
     @Override
     public List<Vms022VoFormAuthorization> getMainMenuData(String Userid) {
