@@ -27,7 +27,6 @@ import id.co.ahm.jx.b2e.app000.model.Ahmitb2eMstusrrolesPk;
 import id.co.ahm.jxf.constant.StatusMsgEnum;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponse;
-import id.co.ahm.jxf.dto.DtoResponsePaging;
 import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
 import id.co.ahm.jxf.util.AhmStringUtil;
@@ -45,11 +44,9 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -64,7 +61,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class Vms022ServiceImpl implements Vms022Service {
 
     public final static String pathServer = "/data/deploy/upload/ahmgavms/Registration/";
-//  (for local purpose)  public final static String pathServer = "D:\\Download\\";
 
     public final static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-YYYY");
     public final static LocalDateTime now = LocalDateTime.now();
@@ -141,18 +137,13 @@ public class Vms022ServiceImpl implements Vms022Service {
 
         String userId = getUserId(userCred);
         String role = "";
-//        try
-//        {
+        
         List<Ahmitb2eMstusrroles> formFunctionList = ahmitb2eMstusrrolesDao.getListUserRole(userId);
 
         for (Ahmitb2eMstusrroles data : formFunctionList) {
             Ahmitb2eMstusrrolesPk desc = data.getAhmitb2eMstusrrolesPk();
             role = desc.getVroleid();
         }
-//        } catch (HibernateException e) {
-//            e.printStackTrace();
-//            return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.GAGAL, e.getMessage(), null, null, 0);
-//        }
 
         List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, userId, role);
         int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, userId, role);
@@ -246,87 +237,6 @@ public class Vms022ServiceImpl implements Vms022Service {
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, list, count);
     }
 
-//    @Override
-//    public DtoResponsePaging monitoring(DtoParamPaging input, VoUserCred userCred) {
-//        List<Vms022VoMonitoring> datas = new ArrayList<>();
-//        int count = 0;
-//        LinkedHashMap<String, Object> reqObj = (LinkedHashMap<String, Object>) input.getSearch();
-//
-//        String outId = reqObj.get("outId") != null ? reqObj.get("outId").toString() : "";
-//        String outName = reqObj.get("outName") != null ? reqObj.get("outName").toString() : "";
-//        String outType = reqObj.get("outType") != null ? reqObj.get("outType").toString() : "";
-//        String beginDate = reqObj.get("beginDate") != null ? reqObj.get("beginDate").toString() : "";
-//        String endDate = reqObj.get("endDate") != null ? reqObj.get("endDate").toString() : "";
-//        String pic = reqObj.get("pic") != null ? reqObj.get("pic").toString() : "";
-//        String nik = reqObj.get("nik") != null ? reqObj.get("nik").toString() : "";
-//        String company = reqObj.get("company") != null ? reqObj.get("company").toString() : "";
-//        String outStatus = reqObj.get("outStatus") != null ? reqObj.get("outStatus").toString() : "";
-//        String passNumber = reqObj.get("passNumber") != null ? reqObj.get("passNumber").toString() : "";
-//
-//        if (StringUtils.isBlank(outId) && StringUtils.isBlank(outName) && StringUtils.isBlank(outType) && StringUtils.isBlank(beginDate)
-//                && StringUtils.isBlank(endDate) && StringUtils.isBlank(pic) && StringUtils.isBlank(nik) && StringUtils.isBlank(company)
-//                && StringUtils.isBlank(outStatus) && StringUtils.isBlank(passNumber)) {
-//            return DtoHelper.constructResponsePaging(StatusMsgEnum.SUKSES, null, datas, 0);
-//        } else {
-//            datas = vms022ahmhrntmHdrotsempsDao.getSearchData(input, userCred.getUserid(), "");
-//
-//            if (!datas.isEmpty()) {
-//
-//                for (Vms022VoMonitoring vo : datas) {
-//                    String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());
-//                    vo.setGateName(getGateList);
-//
-//                    if (StringUtils.isBlank(vo.getCompanyName()) && StringUtils.isBlank(vo.getCompany())) {
-//                        List<Vms022VoLov> compNameList = vms022ObjectDao.lovCompExternal(input, userCred.getUserid(), "FILTER");
-//
-//                        if (!compNameList.isEmpty()) {
-//                            vo.setCompanyName(compNameList.get(0).getName());
-//                        } else {
-//                            vo.setCompanyName("Company Code not found");
-//                        }
-//                    }
-//                    if (!StringUtils.isBlank(vo.getFileNameKtp())) {
-//                        byte[] bFileKtp = readBytesFromFile(pathServer + vo.getFileNameKtp());
-//                        vo.setFileKtp(Base64.getEncoder().encodeToString(bFileKtp));
-//                    }
-//
-//                    List<Vms022VoFileAttachment> listVacs = new ArrayList<>();
-//                    List<String> flVacs = vms022ahmhrntmDtlotsregsDao.getFileName(vo.getOutId(), vo.getPersId(), "VC");
-//                    if (!flVacs.isEmpty()) {
-//                        for (String v : flVacs) {
-//                            Vms022VoFileAttachment dtVac = new Vms022VoFileAttachment();
-//
-//                            byte[] bFileVac = readBytesFromFile(pathServer + v);
-//                            dtVac.setName(Base64.getEncoder().encodeToString(bFileVac));
-//
-//                            listVacs.add(dtVac);
-//                        }
-//
-//                        vo.setFileVaccines(listVacs);
-//                    }
-//
-//                    List<Vms022VoFileAttachment> listAttcs = new ArrayList<>();
-//                    List<String> flAttc = vms022ahmhrntmDtlotsregsDao.getFileName(vo.getOutId(), vo.getPersId(), "VC");
-//                    if (!flAttc.isEmpty()) {
-//                        for (String v : flVacs) {
-//                            Vms022VoFileAttachment dtVac = new Vms022VoFileAttachment();
-//
-//                            byte[] bFileVac = readBytesFromFile(pathServer + v);
-//                            dtVac.setName(Base64.getEncoder().encodeToString(bFileVac));
-//
-//                            listAttcs.add(dtVac);
-//                        }
-//
-//                        vo.setFileVaccines(listAttcs);
-//                    }
-//                }
-//            }
-//
-//            count = vms022ahmhrntmHdrotsempsDao.countSearchData(input, userCred.getUserid());
-//
-//            return DtoHelper.constructResponsePaging(StatusMsgEnum.SUKSES, null, datas, count);
-//        }
-//    }
     private byte[] readBytesFromFile(String pathFile) {
         FileInputStream fileInputStream = null;
         byte[] bytesArray = null;

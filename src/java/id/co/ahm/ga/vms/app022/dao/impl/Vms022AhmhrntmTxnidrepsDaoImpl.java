@@ -7,7 +7,6 @@ package id.co.ahm.ga.vms.app022.dao.impl;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmTxnidreps;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmTxnidrepsDao;
 import id.co.ahm.jxf.dao.HrHibernateDao;
-import java.io.Serializable;
 import org.hibernate.SQLQuery;
 import org.springframework.stereotype.Repository;
 

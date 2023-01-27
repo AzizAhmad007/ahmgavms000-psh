@@ -11,9 +11,7 @@ import id.co.ahm.ga.vms.app022.model.Vms022Ahmitb2eMstusrrolesPk;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoFormAuthorization;
 import id.co.ahm.jxf.dao.B2eHibernateDao;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 

@@ -9,7 +9,6 @@ import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponse;
-import id.co.ahm.jxf.dto.DtoResponsePaging;
 import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
 import id.co.ahm.jxf.vo.VoUserCred;
@@ -24,8 +23,6 @@ public interface Vms022Service {
     DtoResponseWorkspace getFormAuthorization(VoUserCred userCred);
     
     DtoResponseWorkspace showPlant();
-    
-//    DtoResponsePaging monitoring(DtoParamPaging input, VoUserCred userCred);
     
     DtoResponseWorkspace showMonitoring(DtoParamPaging input, VoUserCred userCred);
     

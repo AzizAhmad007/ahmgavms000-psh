@@ -62,10 +62,6 @@ public class Vms022VoMonitoring {
     private Date dmodi;
     private String reasonReject;
     private String dateStatus;
-    
-//    private List<Vms022VoLov> plants;
-//    private List<Vms022VoLov> gates;
-//    private List<Vms022VoLovNrp> nrps;
     private List<Vms022VoFileAttachment> fileVaccines;
     private List<Vms022VoFileAttachment> fileSk;
     
@@ -433,30 +429,6 @@ public class Vms022VoMonitoring {
         this.pic = pic;
     }
 
-//    public List<Vms022VoLov> getPlants() {
-//        return plants;
-//    }
-//
-//    public void setPlants(List<Vms022VoLov> plants) {
-//        this.plants = plants;
-//    }
-//
-//    public List<Vms022VoLov> getGates() {
-//        return gates;
-//    }
-//
-//    public void setGates(List<Vms022VoLov> gates) {
-//        this.gates = gates;
-//    }
-//
-//    public List<Vms022VoLovNrp> getNrps() {
-//        return nrps;
-//    }
-//
-//    public void setNrps(List<Vms022VoLovNrp> nrps) {
-//        this.nrps = nrps;
-//    }
-//
     public List<Vms022VoFileAttachment> getFileVaccines() {
         return fileVaccines;
     }
