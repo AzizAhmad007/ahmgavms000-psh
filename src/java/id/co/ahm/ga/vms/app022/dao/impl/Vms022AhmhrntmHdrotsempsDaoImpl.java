@@ -382,7 +382,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("  SELECT "
                         + "    DISTINCT AA.VPLANT, AA.VOTSID, AA.VPERSID, "
                         + "    BB.VPGBLNM, BB.VPGBLCD, CC.VOTSTYPE "
-                        + "  FROM AHMHRNTM_DTLOTSREGS AA, AHMHRNTM_DTLPRMGBLS BB, AHMHRNTM_MSTPICOTS CC"
+                        + "  FROM AHMHRNTM_DTLOTSREGS AA, AHMHRNTM_DTLPRMGBLS BB, AHMHRNTM_MSTPICOTS CC, AHMHRNTM_HDROTSEMPS DD "
                         + "  WHERE AA.VREGID = 'PLNT' "
                         + "  AND AA.VPLANT = BB.VPGBLCD "
                         + "  AND CC.VAREA = AA.VPLANT "
