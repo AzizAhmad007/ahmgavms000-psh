@@ -157,7 +157,7 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
         sqlQuery.setParameter("area", area)
                 .setParameter("VOTSTYPE", type);
         boolean result;
-        if (sqlQuery.list().isEmpty() || sqlQuery.list().equals(1)) {
+        if (sqlQuery.list().isEmpty() || sqlQuery.list().equals(0)) {
             result = false;
         } else {
             result = true;
