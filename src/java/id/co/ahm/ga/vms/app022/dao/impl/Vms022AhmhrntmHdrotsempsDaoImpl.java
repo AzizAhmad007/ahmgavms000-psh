@@ -381,8 +381,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("( ")
                 .append("  SELECT "
                         + "    DISTINCT AA.VPLANT, AA.VOTSID, AA.VPERSID, "
-                        + "    BB.VPGBLNM, BB.VPGBLCD, CC.VOTSTYPE "
-                        + "  FROM AHMHRNTM_DTLOTSREGS AA, AHMHRNTM_DTLPRMGBLS BB, AHMHRNTM_MSTPICOTS CC, AHMHRNTM_HDROTSEMPS DD "
+                        + "    BB.VPGBLNM, BB.VPGBLCD "
+                        + "  FROM AHMHRNTM_DTLOTSREGS AA, AHMHRNTM_DTLPRMGBLS BB, AHMHRNTM_MSTPICOTS CC, AHMHRNTM_HDROTSEMPS DD"
                         + "  WHERE AA.VREGID = 'PLNT' "
                         + "  AND AA.VPLANT = BB.VPGBLCD "
                         + "  AND CC.VAREA = AA.VPLANT "
@@ -399,7 +399,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         if (!StringUtils.isBlank(pic)) {
             sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
                     .append(pic)
-                    .append("||'%') ");
+                    .append("||'%' ) ");
         }
 
         sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID ");
@@ -410,8 +410,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("LEFT JOIN AHMMOMSC_MSTVENDORS@ahmps Z ON A.VCOMPANY = Z.VVENDORID ")
                 .append("LEFT JOIN AHMHRNTM_DTLPRMGBLS G ON A.VVACTYPE = G.VPGBLCD "
                         + "WHERE  "
-                        + "    B.VOTSTYPE = A.VOTSTYPE "
-                        + "    AND  "
                         + "    1 = 1 "
                         + "    AND  "
                         + "        UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%')  ");
