@@ -18,9 +18,9 @@ import java.util.List;
  */
 public interface Vms022AhmhrntmHdrotsempsDao extends HrDao<AhmhrntmHdrotsemps, AhmhrntmHdrotsempsPk>{
     
-    public List<Vms022VoMonitoring> getSearchData(DtoParamPaging input, String userId, String role);
+    public List<Vms022VoMonitoring> getSearchData(DtoParamPaging input, String userId, String role, String nrp);
     
-    public int countSearchData(DtoParamPaging input, String userId, String role);
+    public int countSearchData(DtoParamPaging input, String userId, String role, String nrp);
     
     public String confirmId (String id);
     

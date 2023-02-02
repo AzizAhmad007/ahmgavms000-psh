@@ -22,7 +22,7 @@ public interface Vms022Service {
     
     DtoResponseWorkspace getFormAuthorization(VoUserCred userCred);
     
-    DtoResponseWorkspace showPlant();
+    DtoResponseWorkspace showPlant(); 
     
     DtoResponseWorkspace showMonitoring(DtoParamPaging input, VoUserCred userCred);
     
