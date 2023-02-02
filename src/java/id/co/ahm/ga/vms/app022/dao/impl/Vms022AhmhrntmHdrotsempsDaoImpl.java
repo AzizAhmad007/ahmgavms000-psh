@@ -229,17 +229,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
                 boolean filterData = vms022AhmhrntmMstpicotsDao.isPicAvailable(userId, obj[8] + "", obj[3] + "");
                 
-                System.out.println("===========================================================================");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("True or false using role = " + role);
-                System.out.println(filterData);
-                System.out.println("");
-                System.out.println("");
-                System.out.println("");
-                System.out.println("===========================================================================");
-                
                 if (filterData == false && role.equalsIgnoreCase("RO_GAVMS_PICAHM")) {
                     continue;
                 }
