@@ -137,6 +137,7 @@ public class Vms022ServiceImpl implements Vms022Service {
 
         String userId = getUserId(userCred);
         String role = "";
+        String roleFromFront = AhmStringUtil.hasValue(dto.getSearch().get("role")) ? (dto.getSearch().get("role") + "").toUpperCase() : "";
         
         List<Ahmitb2eMstusrroles> formFunctionList = ahmitb2eMstusrrolesDao.getListUserRole(userId);
 
@@ -145,8 +146,8 @@ public class Vms022ServiceImpl implements Vms022Service {
             role = desc.getVroleid();
         }
 
-        List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, userId, role);
-        int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, userId, role);
+        List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, userId, roleFromFront);
+        int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, userId, roleFromFront);
         try {
 
             for (Vms022VoMonitoring vo : list) {
