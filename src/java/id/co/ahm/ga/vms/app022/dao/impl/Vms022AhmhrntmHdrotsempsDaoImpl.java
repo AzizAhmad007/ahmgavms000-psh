@@ -137,29 +137,29 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             sqlQuery.append(" AND AA.NSEQ = 1 ");
         }
 
-        if (!StringUtils.isBlank(pic)) {
+        if (role.equals("RO_GAVMS_PICAHM")) {
             sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
-                    .append(pic)
+                    .append(nrp)
                     .append("||'%' ) ");
         }
 
         sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID ");
 
-        if (role.equals("RO_GAVMS_PICAHM")) {
-            sqlQuery.append("INNER JOIN ( "
-                    + "    SELECT DISTINCT MPO.VNRP, MPO.VAREA, MPO.VOTSTYPE, FGD.NAME, DP.VPGBLNM, FGD.VHANDPHONE  "
-                    + "    FROM AHMHRNTM_MSTPICOTS MPO, AHMHRNTM_DTLPRMGBLS DP,  FMHRD_GENERAL_DATAS FGD, AHMMOERP_MSTKARYAWANS@AHMPS MKA  "
-                    + "    WHERE "
-                    + "        SYSDATE BETWEEN MPO.DBGNEFFDT AND MPO.DENDEFFDT  "
-                    + "        AND DP.VPGBLCD = MPO.VAREA  "
-                    + "        AND DP.VPGBLCD LIKE 'PG10%'  "
-                    + "        AND MPO.VNRP = FGD.NRP  "
-                    + "        AND MPO.VNRP = MKA.IIDNRP  "
-                    + "        AND FGD.VEND_VND_CODE = 'AHM' "
-                    + "        AND MPO.VRGSROLE IN ('PG91-01','PG91-03') "
-//                    + "        AND FGD.NRP = '" + nrp + "' "
-                    + "    ) NEW ON A.VOTSTYPE = NEW.VOTSTYPE AND B.VPLANT = NEW.VAREA AND NEW.VNRP = '" + nrp + "' ");
-        }
+//        if (role.equals("RO_GAVMS_PICAHM")) {
+//            sqlQuery.append("INNER JOIN ( "
+//                    + "    SELECT DISTINCT MPO.VNRP, MPO.VAREA, MPO.VOTSTYPE, FGD.NAME, DP.VPGBLNM, FGD.VHANDPHONE  "
+//                    + "    FROM AHMHRNTM_MSTPICOTS MPO, AHMHRNTM_DTLPRMGBLS DP,  FMHRD_GENERAL_DATAS FGD, AHMMOERP_MSTKARYAWANS@AHMPS MKA  "
+//                    + "    WHERE "
+//                    + "        SYSDATE BETWEEN MPO.DBGNEFFDT AND MPO.DENDEFFDT  "
+//                    + "        AND DP.VPGBLCD = MPO.VAREA  "
+//                    + "        AND DP.VPGBLCD LIKE 'PG10%'  "
+//                    + "        AND MPO.VNRP = FGD.NRP  "
+//                    + "        AND MPO.VNRP = MKA.IIDNRP  "
+//                    + "        AND FGD.VEND_VND_CODE = 'AHM' "
+//                    + "        AND MPO.VRGSROLE IN ('PG91-01','PG91-03') "
+////                    + "        AND FGD.NRP = '" + nrp + "' "
+//                    + "    ) NEW ON A.VOTSTYPE = NEW.VOTSTYPE AND B.VPLANT = NEW.VAREA ");
+//        }
 
         sqlQuery.append("INNER JOIN AHMHRNTM_DTLPRMGBLS E on B.VPLANT = E.VPGBLCD  ")
                 .append("INNER JOIN AHMHRNTM_DTLPRMGBLS D ON A.VOTSTYPE = D.VPGBLCD ")
@@ -187,6 +187,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    AND "
                 + "        (:vacstat IS NULL OR UPPER(A.VVACSTTS) LIKE '%'||:vacstat||'%' )  "
         );
+//        if (role.equals("RO_GAVMS_PICAHM")) {
+//        sqlQuery.append(" AND NEW.VNRP = '").append(nrp).append("' ");
+//        }
         if (!StringUtils.isBlank(begineff) || !StringUtils.isBlank(endeff)) {
             sqlQuery.append(" AND (");
 
@@ -401,29 +404,29 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             sqlQuery.append(" AND AA.NSEQ = 1 ");
         }
 
-        if (!StringUtils.isBlank(pic)) {
+        if (role.equals("RO_GAVMS_PICAHM")) {
             sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
-                    .append(pic)
+                    .append(nrp)
                     .append("||'%' ) ");
         }
 
         sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID ");
 
-        if (role.equals("RO_GAVMS_PICAHM")) {
-            sqlQuery.append("INNER JOIN ( "
-                    + "    SELECT DISTINCT MPO.VNRP, MPO.VAREA, MPO.VOTSTYPE, FGD.NAME, DP.VPGBLNM, FGD.VHANDPHONE  "
-                    + "    FROM AHMHRNTM_MSTPICOTS MPO, AHMHRNTM_DTLPRMGBLS DP,  FMHRD_GENERAL_DATAS FGD, AHMMOERP_MSTKARYAWANS@AHMPS MKA  "
-                    + "    WHERE "
-                    + "        SYSDATE BETWEEN MPO.DBGNEFFDT AND MPO.DENDEFFDT  "
-                    + "        AND DP.VPGBLCD = MPO.VAREA  "
-                    + "        AND DP.VPGBLCD LIKE 'PG10%'  "
-                    + "        AND MPO.VNRP = FGD.NRP  "
-                    + "        AND MPO.VNRP = MKA.IIDNRP  "
-                    + "        AND FGD.VEND_VND_CODE = 'AHM' "
-                    + "        AND MPO.VRGSROLE IN ('PG91-01','PG91-03') "
-//                    + "        AND FGD.NRP = '" + nrp + "' "
-                    + "    ) NEW ON A.VOTSTYPE = NEW.VOTSTYPE AND B.VPLANT = NEW.VAREA AND NEW.VNRP = '" + nrp + "' ");
-        }
+//        if (role.equals("RO_GAVMS_PICAHM")) {
+//            sqlQuery.append("INNER JOIN ( "
+//                    + "    SELECT DISTINCT MPO.VNRP, MPO.VAREA, MPO.VOTSTYPE, FGD.NAME, DP.VPGBLNM, FGD.VHANDPHONE  "
+//                    + "    FROM AHMHRNTM_MSTPICOTS MPO, AHMHRNTM_DTLPRMGBLS DP,  FMHRD_GENERAL_DATAS FGD, AHMMOERP_MSTKARYAWANS@AHMPS MKA  "
+//                    + "    WHERE "
+//                    + "        SYSDATE BETWEEN MPO.DBGNEFFDT AND MPO.DENDEFFDT  "
+//                    + "        AND DP.VPGBLCD = MPO.VAREA  "
+//                    + "        AND DP.VPGBLCD LIKE 'PG10%'  "
+//                    + "        AND MPO.VNRP = FGD.NRP  "
+//                    + "        AND MPO.VNRP = MKA.IIDNRP  "
+//                    + "        AND FGD.VEND_VND_CODE = 'AHM' "
+//                    + "        AND MPO.VRGSROLE IN ('PG91-01','PG91-03') "
+////                    + "        AND FGD.NRP = '" + nrp + "' "
+//                    + "    ) NEW ON A.VOTSTYPE = NEW.VOTSTYPE AND B.VPLANT = NEW.VAREA AND NEW.VNRP = '" + nrp + "' ");
+//        }
 
         sqlQuery.append("INNER JOIN AHMHRNTM_DTLPRMGBLS E on B.VPLANT = E.VPGBLCD  ")
                 .append("INNER JOIN AHMHRNTM_DTLPRMGBLS D ON A.VOTSTYPE = D.VPGBLCD ")
