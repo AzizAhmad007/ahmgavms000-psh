@@ -210,6 +210,7 @@ public class Vms022ServiceImpl implements Vms022Service {
         List<Ahmitb2eMstusrroles> formFunctionList = ahmitb2eMstusrrolesDao.getListUserRole(userId);
         String role = "";
         String nrp = AhmStringUtil.hasValue(dto.getSearch().get("userid")) ? (dto.getSearch().get("userid") + "").toUpperCase() : "";
+        String roleFromFront = AhmStringUtil.hasValue(dto.getSearch().get("role")) ? (dto.getSearch().get("role") + "").toUpperCase() : "";
 
         for (Ahmitb2eMstusrroles data : formFunctionList) {
             Ahmitb2eMstusrrolesPk desc = data.getAhmitb2eMstusrrolesPk();
@@ -220,8 +221,8 @@ public class Vms022ServiceImpl implements Vms022Service {
             }
         }
 
-        List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, userId, role, nrp);
-        int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, userId, role, nrp);
+        List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, userId, roleFromFront, nrp);
+        int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, userId, roleFromFront, nrp);
 
         for (Vms022VoMonitoring vo : list) {
             String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());

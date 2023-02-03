@@ -207,7 +207,9 @@ public class Vms022Rest {
             @RequestParam(name = "oc") String company,
             @RequestParam(name = "os") String outStatus,
             @RequestParam(name = "p") String areaName,
-            @RequestParam(name = "c19vs") String vacStatus) {
+            @RequestParam(name = "c19vs") String vacStatus,
+            @RequestParam(name = "ui") String userid,
+            @RequestParam(name = "ro") String role) {
         
         VoUserCred user = tokenPshUtil.getUserCred(token);
         
