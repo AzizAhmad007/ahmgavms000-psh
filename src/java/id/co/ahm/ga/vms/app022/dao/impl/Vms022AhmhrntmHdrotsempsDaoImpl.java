@@ -572,16 +572,19 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
     }
 
     @Override
-    public String confirmId(String id) {
+    public String confirmId(String id, String status) {
         SQLQuery qResult = getCurrentSession()
                 .createSQLQuery("select distinct  "
-                        + "    VOTSSTTS  "
+                        + "    votsid  "
                         + " from  "
                         + "    AHMHRNTM_HDROTSEMPS  "
                         + " where  "
-                        + "    votsid = :VOTSID ");
+                        + "    votsid = :VOTSID "
+                        + " and"
+                        + "    UPPER(Votsstts) = UPPER(:OUTSTAT) ");
 
         qResult.setParameter("VOTSID", id);
+        qResult.setParameter("OUTSTAT", status);
         return (String) qResult.uniqueResult();
     }
 

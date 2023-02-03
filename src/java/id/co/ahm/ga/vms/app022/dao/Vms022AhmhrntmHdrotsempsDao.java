@@ -22,7 +22,7 @@ public interface Vms022AhmhrntmHdrotsempsDao extends HrDao<AhmhrntmHdrotsemps, A
     
     public int countSearchData(DtoParamPaging input, String userId, String role, String nrp);
     
-    public String confirmId (String id);
+    public String confirmId (String id, String status);
     
     public String getName (String id);
     

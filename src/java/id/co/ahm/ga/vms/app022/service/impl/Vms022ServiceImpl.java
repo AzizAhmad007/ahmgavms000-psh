@@ -8,6 +8,7 @@ package id.co.ahm.ga.vms.app022.service.impl;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsemps;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsempsPk;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmTxnidreps;
+import id.co.ahm.ga.vms.app022.constant.Vms022Constant;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlotsregsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlprmgblsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmHdrotsempsDao;
@@ -271,7 +272,7 @@ public class Vms022ServiceImpl implements Vms022Service {
         if (getdata.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM") || getdata.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
             try {
 
-                String validateId = vms022ahmhrntmHdrotsempsDao.confirmId(getdata.getOutId());
+                String validateId = vms022ahmhrntmHdrotsempsDao.confirmId(getdata.getOutId(), Vms022Constant.STATUS_WAITING_FOR_PIC);
 
                 String getName = vms022ahmhrntmHdrotsempsDao.getName(getdata.getOutId());
                 String getNote = vms022ahmhrntmHdrotsempsDao.getNote(getdata.getOutId());
@@ -364,7 +365,7 @@ public class Vms022ServiceImpl implements Vms022Service {
             for (Vms022VoMonitoring vo : getdata) {
                 if (vo.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM") || vo.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
 
-                    String validateId = vms022ahmhrntmHdrotsempsDao.confirmId(vo.getOutId());
+                    String validateId = vms022ahmhrntmHdrotsempsDao.confirmId(vo.getOutId(), Vms022Constant.STATUS_WAITING_FOR_PIC);
                     AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
                     pk.setRotsempshs((vo.getId()));
                     AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
@@ -518,7 +519,7 @@ public class Vms022ServiceImpl implements Vms022Service {
 
         String test = AhmStringUtil.hasValue(dto.getSearch().get("test")) ? (dto.getSearch().get("test") + "").toUpperCase() : "";
 
-        String coba = vms022ahmhrntmHdrotsempsDao.confirmId(test);
+        String coba = vms022ahmhrntmHdrotsempsDao.confirmId(test, Vms022Constant.STATUS_WAITING_FOR_PIC);
 
         msg.put("m", coba);
         return DtoHelper.constructResponse(StatusMsgEnum.SUKSES, msg, null);
