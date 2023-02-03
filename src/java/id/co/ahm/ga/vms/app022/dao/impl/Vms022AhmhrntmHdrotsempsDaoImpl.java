@@ -7,6 +7,7 @@ package id.co.ahm.ga.vms.app022.dao.impl;
 
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsemps;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsempsPk;
+import id.co.ahm.ga.vms.app022.constant.Vms022Constant;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmHdrotsempsDao;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.jxf.dao.HrHibernateDao;
@@ -156,8 +157,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     + "        AND MPO.VNRP = MKA.IIDNRP  "
                     + "        AND FGD.VEND_VND_CODE = 'AHM' "
                     + "        AND MPO.VRGSROLE IN ('PG91-01','PG91-03') "
-                    + "        AND FGD.NRP = '" + nrp + "' "
-                    + "    ) NEW ON A.VOTSTYPE = NEW.VOTSTYPE AND B.VPLANT = NEW.VAREA ");
+//                    + "        AND FGD.NRP = '" + nrp + "' "
+                    + "    ) NEW ON A.VOTSTYPE = NEW.VOTSTYPE AND B.VPLANT = NEW.VAREA AND NEW.VNRP = '" + nrp + "' ");
         }
 
         sqlQuery.append("INNER JOIN AHMHRNTM_DTLPRMGBLS E on B.VPLANT = E.VPGBLCD  ")
@@ -420,8 +421,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     + "        AND MPO.VNRP = MKA.IIDNRP  "
                     + "        AND FGD.VEND_VND_CODE = 'AHM' "
                     + "        AND MPO.VRGSROLE IN ('PG91-01','PG91-03') "
-                    + "        AND FGD.NRP = '" + nrp + "' "
-                    + "    ) NEW ON A.VOTSTYPE = NEW.VOTSTYPE AND B.VPLANT = NEW.VAREA ");
+//                    + "        AND FGD.NRP = '" + nrp + "' "
+                    + "    ) NEW ON A.VOTSTYPE = NEW.VOTSTYPE AND B.VPLANT = NEW.VAREA AND NEW.VNRP = '" + nrp + "' ");
         }
 
         sqlQuery.append("INNER JOIN AHMHRNTM_DTLPRMGBLS E on B.VPLANT = E.VPGBLCD  ")
@@ -574,29 +575,17 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
     @Override
     public String confirmId(String id, String status) {
         SQLQuery qResult = getCurrentSession()
-                .createSQLQuery("select distinct  "
-                        + "    votsid  "
-                        + " from  "
-                        + "    AHMHRNTM_HDROTSEMPS  "
-                        + " where  "
-                        + "    votsid = :VOTSID "
-                        + " and"
-                        + "    UPPER(Votsstts) = UPPER(:OUTSTAT) ");
+                .createSQLQuery(Vms022Constant.SQL_CONFIRM_ID);
 
-        qResult.setParameter("VOTSID", id);
-        qResult.setParameter("OUTSTAT", status);
+        qResult.setParameter("VOTSID", id)
+                .setParameter("OUTSTAT", status);
         return (String) qResult.uniqueResult();
     }
 
     @Override
     public String getName(String id) {
         SQLQuery qResult = getCurrentSession()
-                .createSQLQuery("select distinct  "
-                        + "    VNAME  "
-                        + " from  "
-                        + "    AHMHRNTM_HDROTSEMPS  "
-                        + " where  "
-                        + "    votsid = :VOTSID ");
+                .createSQLQuery(Vms022Constant.SQL_GET_NAME);
 
         qResult.setParameter("VOTSID", id);
         return (String) qResult.uniqueResult();

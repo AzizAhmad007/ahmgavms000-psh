@@ -140,7 +140,7 @@ public class Vms022ServiceImpl implements Vms022Service {
         String role = "";
         String roleFromFront = AhmStringUtil.hasValue(dto.getSearch().get("role")) ? (dto.getSearch().get("role") + "").toUpperCase() : "";
         String nrp = AhmStringUtil.hasValue(dto.getSearch().get("userid")) ? (dto.getSearch().get("userid") + "").toUpperCase() : "";
-        
+
         List<Ahmitb2eMstusrroles> formFunctionList = ahmitb2eMstusrrolesDao.getListUserRole(userId);
 
         for (Ahmitb2eMstusrroles data : formFunctionList) {
@@ -274,9 +274,6 @@ public class Vms022ServiceImpl implements Vms022Service {
 
                 String validateId = vms022ahmhrntmHdrotsempsDao.confirmId(getdata.getOutId(), Vms022Constant.STATUS_WAITING_FOR_PIC);
 
-                String getName = vms022ahmhrntmHdrotsempsDao.getName(getdata.getOutId());
-                String getNote = vms022ahmhrntmHdrotsempsDao.getNote(getdata.getOutId());
-
                 AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
                 pk.setRotsempshs((getdata.getId()));
 
@@ -285,13 +282,15 @@ public class Vms022ServiceImpl implements Vms022Service {
                     if (getdata.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM")) {
 
                         if (!validateId.equalsIgnoreCase(getdata.getOutId())) {
-                            throw new Vms022Exception("Cannot Process Outsource Status with data 'WAITING FOR APPROVAL SECURITY'");
+                            returnFailed("This role only can process data with status 'Waiting for Approval PIC'");
                         } else {
                             mp.setVotsstts(getdata.getOutStatus());
                             vms022ahmhrntmHdrotsempsDao.update(mp);
                             vms022ahmhrntmHdrotsempsDao.flush();
                         }
+
                     } else if (getdata.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
+
                         mp.setVotsstts(getdata.getOutStatus());
                         mp.setDpassexp(DateUtil.stringToDate(getdata.getPassExpiryDateText(), "dd-MMM-yyyy"));
                         mp.setDstatus(DateUtil.stringToDate(getdata.getDateStatus(), "dd-MM-yyyy"));
@@ -373,7 +372,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                         if (vo.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM")) {
 
                             if (!validateId.equalsIgnoreCase(vo.getOutId())) {
-                                throw new Vms022Exception("Cannot Process Outsource Status with data 'WAITING FOR APPROVAL SECURITY'");
+                                returnFailed("This role only can process data with status 'Waiting for Approval PIC'");
                             } else {
                                 mp.setVotsstts(vo.getOutStatus());
                                 mp.setLastModBy(userCred.getUserid());
@@ -400,14 +399,22 @@ public class Vms022ServiceImpl implements Vms022Service {
     public DtoResponseWorkspace reject(Vms022VoMonitoring getdata, VoUserCred userCred) {
         if (getdata.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM") || getdata.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
             try {
+
+                String validateId = vms022ahmhrntmHdrotsempsDao.confirmId(getdata.getOutId(), Vms022Constant.STATUS_WAITING_FOR_PIC);
+
                 AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
                 pk.setRotsempshs((getdata.getId()));
                 AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
                 if (mp != null) {
                     mp.setVotsstts(getdata.getOutStatus());
                     mp.setVnoterejc(getdata.getReasonReject());
-                    vms022ahmhrntmHdrotsempsDao.update(mp);
-                    vms022ahmhrntmHdrotsempsDao.flush();
+
+                    if (!validateId.equalsIgnoreCase(getdata.getOutId())) {
+                        returnFailed("This role only can process data with status 'Waiting for Approval PIC'");
+                    } else {
+                        vms022ahmhrntmHdrotsempsDao.update(mp);
+                        vms022ahmhrntmHdrotsempsDao.flush();
+                    }
                 }
             } catch (Exception e) {
                 throw new Vms022Exception("Failed Reject Data Cause error when Updating");
@@ -424,6 +431,9 @@ public class Vms022ServiceImpl implements Vms022Service {
         if (!getdata.isEmpty()) {
             for (Vms022VoMonitoring vo : getdata) {
                 if (vo.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM")) {
+
+                    String validateId = vms022ahmhrntmHdrotsempsDao.confirmId(vo.getOutId(), Vms022Constant.STATUS_WAITING_FOR_PIC);
+                    
                     AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
                     pk.setRotsempshs((vo.getId()));
                     AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
@@ -431,8 +441,13 @@ public class Vms022ServiceImpl implements Vms022Service {
                         mp.setVotsstts(vo.getOutStatus());
                         mp.setVnoterejc(vo.getReasonReject());
                         mp.setLastModBy(userCred.getUserid());
-                        vms022ahmhrntmHdrotsempsDao.update(mp);
-                        vms022ahmhrntmHdrotsempsDao.flush();
+
+                        if (!validateId.equalsIgnoreCase(vo.getOutId())) {
+                            returnFailed("This role only can process data with status 'Waiting for Approval PIC'");
+                        } else {
+                            vms022ahmhrntmHdrotsempsDao.update(mp);
+                            vms022ahmhrntmHdrotsempsDao.flush();
+                        }
                     }
                 } else {
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Reject data! This Role cannot do this action!"), null, null);
@@ -523,5 +538,9 @@ public class Vms022ServiceImpl implements Vms022Service {
 
         msg.put("m", coba);
         return DtoHelper.constructResponse(StatusMsgEnum.SUKSES, msg, null);
+    }
+
+    private DtoResponseWorkspace returnFailed(String msg) {
+        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, msg, null, null);
     }
 }
