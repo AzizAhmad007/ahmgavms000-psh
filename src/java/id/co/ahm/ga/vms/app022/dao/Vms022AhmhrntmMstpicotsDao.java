@@ -22,4 +22,6 @@ public interface Vms022AhmhrntmMstpicotsDao extends HrDao<AhmhrntmMstpicots, Str
     
     Boolean isPicAvailable(String userId, String area, String type);
     
+    String getPicAreaType(String nrp);
+    
 }

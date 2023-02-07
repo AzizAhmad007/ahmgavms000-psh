@@ -6,6 +6,7 @@
 package id.co.ahm.ga.vms.app022.dao.impl;
 
 import id.co.ahm.ga.vms.app000.model.AhmhrntmMstpicots;
+import id.co.ahm.ga.vms.app022.constant.Vms022Constant;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmMstpicotsDao;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
 import id.co.ahm.jxf.dao.HrHibernateDao;
@@ -164,5 +165,49 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
         }
         return result;
 
+    }
+
+    @Override
+    public String getPicAreaType(String nrp) {
+//        StringBuilder sql = new StringBuilder();
+
+//        sql.append("SELECT DISTINCT (A.VNRP), C.NAME, B.VPGBLNM, C.VHANDPHONE  "
+//                + " FROM AHMHRNTM_MSTPICOTS A, AHMHRNTM_DTLPRMGBLS B, FMHRD_GENERAL_DATAS C, AHMMOERP_MSTKARYAWANS@ahmps D "
+//                + " WHERE  "
+//                + " A.VOTSTYPE = :VOTSTYPE "
+//                + " AND  "
+//                + " SYSDATE BETWEEN A.DBGNEFFDT AND A.DENDEFFDT "
+//                + " AND B.VPGBLCD = A.VAREA "
+//                + " AND B.VPGBLCD LIKE 'PG10%' "
+//                + " AND A.VNRP = C.NRP "
+//                + " AND A.VNRP = D.IIDNRP"
+//                + " AND C.VEND_VND_CODE = 'AHM' ");
+        SQLQuery sqlQuery = getCurrentSession().createSQLQuery(Vms022Constant.SQL_GET_AREA_TYPE);
+
+        sqlQuery.setParameter("NRP", nrp);
+
+        List queryResult = sqlQuery.list();
+        String vo = "";
+        if (!queryResult.isEmpty()) {
+            int i = 0;
+            Object[] obj;
+
+            vo += "AND ( ";
+
+            for (Object object : queryResult) {
+                obj = (Object[]) object;
+
+                if (i == queryResult.size()) {
+                    vo += "(MPO.VAREA = '" + (String) obj[1] + "' AND MPO.VOTSTYPE = '" + (String) obj[2] + "' ) ";
+                } else {
+                    vo += "(MPO.VAREA = '" + (String) obj[1] + "' AND MPO.VOTSTYPE = '" + (String) obj[2] + "' ) OR";
+                }
+                i++;
+            }
+
+            vo += " ) ";
+
+        }
+        return vo;
     }
 }

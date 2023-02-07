@@ -74,5 +74,17 @@ public class Vms022Constant {
             + "    AHMHRNTM_HDROTSEMPS  "
             + " where  "
             + "    votsid = :VOTSID ";
+    
+    public static final String SQL_GET_AREA_TYPE
+            = "SELECT DISTINCT MPO.VNRP, MPO.VAREA, MPO.VOTSTYPE, FGD.NAME, DP.VPGBLNM, FGD.VHANDPHONE  "
+            + "FROM AHMHRNTM_MSTPICOTS MPO, AHMHRNTM_DTLPRMGBLS DP,  FMHRD_GENERAL_DATAS FGD, AHMMOERP_MSTKARYAWANS@AHMPS MKA  "
+            + "WHERE  "
+            + "    SYSDATE BETWEEN MPO.DBGNEFFDT AND MPO.DENDEFFDT  "
+            + "    AND DP.VPGBLCD = MPO.VAREA  "
+            + "    AND DP.VPGBLCD LIKE 'PG10%'  "
+            + "    AND MPO.VNRP = FGD.NRP  "
+            + "    AND MPO.VNRP = MKA.IIDNRP  "
+            + "    AND FGD.VEND_VND_CODE = 'AHM'  "
+            + "    AND MPO.VNRP = :NRP ";
 
 }
