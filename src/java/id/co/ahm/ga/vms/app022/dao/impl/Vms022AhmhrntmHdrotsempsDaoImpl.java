@@ -143,6 +143,12 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         } else {
             sqlQuery.append(" AND AA.NSEQ = 1 ");
         }
+ 
+        if (!StringUtils.isBlank(pic)) {
+            sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
+                    .append(pic)
+                    .append("||'%' ) ");
+        }
 
         if (role.equals("RO_GAVMS_PICAHM")) {
             sqlQuery.append(" AND CC.VNRP = FGD.NRP ")
@@ -157,7 +163,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     ;
         }
 
-        sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID and A.VOTSTYPE = B.VOTSTYPE ");
+        sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID ");
 
 //        if (role.equals("RO_GAVMS_PICAHM")) {
 //            sqlQuery.append("INNER JOIN ( "
@@ -427,6 +433,12 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         } else {
             sqlQuery.append(" AND AA.NSEQ = 1 ");
         }
+ 
+        if (!StringUtils.isBlank(pic)) {
+            sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
+                    .append(pic)
+                    .append("||'%' ) ");
+        }
 
         if (role.equals("RO_GAVMS_PICAHM")) {
             sqlQuery.append(" AND CC.VNRP = FGD.NRP ")
@@ -441,7 +453,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     ;
         }
 
-        sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID and A.VOTSTYPE = B.VOTSTYPE ");
+        sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID ");
 
 //        if (role.equals("RO_GAVMS_PICAHM")) {
 //            sqlQuery.append("INNER JOIN ( "
