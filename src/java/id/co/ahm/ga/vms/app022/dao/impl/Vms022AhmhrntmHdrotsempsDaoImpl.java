@@ -163,7 +163,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     ;
         }
 
-        sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID ");
+        sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID and A.VOTSTYPE = B.VOTSTYPE ");
 
 //        if (role.equals("RO_GAVMS_PICAHM")) {
 //            sqlQuery.append("INNER JOIN ( "
@@ -453,7 +453,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     ;
         }
 
-        sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID ");
+        sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID and A.VOTSTYPE = B.VOTSTYPE ");
 
 //        if (role.equals("RO_GAVMS_PICAHM")) {
 //            sqlQuery.append("INNER JOIN ( "
