@@ -132,9 +132,11 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         }
 
         sqlQuery.append("  WHERE AA.VREGID = 'PLNT' ")
+                .append("  AND AA.VOTSID = DD.VOTSID ")
+                .append("  AND CC.VOTSTYPE = DD.VOTSTYPE ")
                 .append("  AND AA.VPLANT = BB.VPGBLCD ")
                 .append("  AND CC.VAREA = AA.VPLANT ")
-                .append("  AND CC.VOTSTYPE = DD.VOTSTYPE ");
+                ;
 
         if (!StringUtils.isBlank(plant)) {
             sqlQuery.append(" AND AA.VPLANT = '")
@@ -422,9 +424,11 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         }
 
         sqlQuery.append("  WHERE AA.VREGID = 'PLNT' ")
+                .append("  AND AA.VOTSID = DD.VOTSID ")
+                .append("  AND CC.VOTSTYPE = DD.VOTSTYPE ")
                 .append("  AND AA.VPLANT = BB.VPGBLCD ")
                 .append("  AND CC.VAREA = AA.VPLANT ")
-                .append("  AND CC.VOTSTYPE = DD.VOTSTYPE ");
+                ;
 
         if (!StringUtils.isBlank(plant)) {
             sqlQuery.append(" AND AA.VPLANT = '")

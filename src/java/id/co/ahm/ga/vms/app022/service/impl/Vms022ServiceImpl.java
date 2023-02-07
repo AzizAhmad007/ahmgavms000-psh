@@ -400,8 +400,7 @@ public class Vms022ServiceImpl implements Vms022Service {
         if (getdata.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM") || getdata.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
             try {
 
-                String validateId = vms022ahmhrntmHdrotsempsDao.confirmId(getdata.getOutId(), Vms022Constant.STATUS_WAITING_FOR_PIC);
-
+//                String validateId = vms022ahmhrntmHdrotsempsDao.confirmId(getdata.getOutId(), Vms022Constant.STATUS_WAITING_FOR_PIC);
                 AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
                 pk.setRotsempshs((getdata.getId()));
                 AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
@@ -409,12 +408,12 @@ public class Vms022ServiceImpl implements Vms022Service {
                     mp.setVotsstts(getdata.getOutStatus());
                     mp.setVnoterejc(getdata.getReasonReject());
 
-                    if (!validateId.equalsIgnoreCase(getdata.getOutId())) {
-                        returnFailed("This role only can process data with status 'Waiting for Approval PIC'");
-                    } else {
-                        vms022ahmhrntmHdrotsempsDao.update(mp);
-                        vms022ahmhrntmHdrotsempsDao.flush();
-                    }
+//                    if (!validateId.equalsIgnoreCase(getdata.getOutId())) {
+//                        returnFailed("This role only can process data with status 'Waiting for Approval PIC'");
+//                    } else {
+                    vms022ahmhrntmHdrotsempsDao.update(mp);
+                    vms022ahmhrntmHdrotsempsDao.flush();
+//                    }
                 }
             } catch (Exception e) {
                 throw new Vms022Exception("Failed Reject Data Cause error when Updating");
@@ -432,8 +431,7 @@ public class Vms022ServiceImpl implements Vms022Service {
             for (Vms022VoMonitoring vo : getdata) {
                 if (vo.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM")) {
 
-                    String validateId = vms022ahmhrntmHdrotsempsDao.confirmId(vo.getOutId(), Vms022Constant.STATUS_WAITING_FOR_PIC);
-                    
+//                    String validateId = vms022ahmhrntmHdrotsempsDao.confirmId(vo.getOutId(), Vms022Constant.STATUS_WAITING_FOR_PIC);
                     AhmhrntmHdrotsempsPk pk = new AhmhrntmHdrotsempsPk();
                     pk.setRotsempshs((vo.getId()));
                     AhmhrntmHdrotsemps mp = vms022ahmhrntmHdrotsempsDao.findOne(pk);
@@ -442,12 +440,12 @@ public class Vms022ServiceImpl implements Vms022Service {
                         mp.setVnoterejc(vo.getReasonReject());
                         mp.setLastModBy(userCred.getUserid());
 
-                        if (!validateId.equalsIgnoreCase(vo.getOutId())) {
-                            returnFailed("This role only can process data with status 'Waiting for Approval PIC'");
-                        } else {
-                            vms022ahmhrntmHdrotsempsDao.update(mp);
-                            vms022ahmhrntmHdrotsempsDao.flush();
-                        }
+//                        if (!validateId.equalsIgnoreCase(vo.getOutId())) {
+//                            returnFailed("This role only can process data with status 'Waiting for Approval PIC'");
+//                        } else {
+                        vms022ahmhrntmHdrotsempsDao.update(mp);
+                        vms022ahmhrntmHdrotsempsDao.flush();
+//                        }
                     }
                 } else {
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Reject data! This Role cannot do this action!"), null, null);
