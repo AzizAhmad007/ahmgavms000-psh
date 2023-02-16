@@ -61,7 +61,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service(value = "vms022Service")
 public class Vms022ServiceImpl implements Vms022Service {
 
-    public final static String pathServer = "/data/deploy/upload/ahmgavms/Registration/";
+    public final static String pathServer = "/data/AHMGA/VMS/Registration/";
 
     public final static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-YYYY");
     public final static LocalDateTime now = LocalDateTime.now();
