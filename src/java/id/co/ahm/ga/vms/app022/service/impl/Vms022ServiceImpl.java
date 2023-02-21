@@ -347,28 +347,16 @@ public class Vms022ServiceImpl implements Vms022Service {
                         vo.setVpckupsts("NOTDONE");
                         vo.setVcardname(getdata.getOutName());
 
-                        Boolean get = vms022AhmitwfsMstwfdochistDao.generateHistory(vNseq, userCred.getUsername());
+                        Boolean get = vms022AhmitwfsMstwfdochistDao.generateHistory(vNseq, userCred.getUsername(), getdata.getOutId());
 
                         if (get == false) {
                             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, null);
                         }
-
-//                        AhmitwfsMstwfdochist wfs = new AhmitwfsMstwfdochist();
-//                        wfs.setVwfguid("00000000-0000-0000-0000-000000000000");
-//                        wfs.setVhistid(vNseq);
-//                        wfs.setVtaskid("AHMGAVMS022");
-//                        wfs.setVeventtype("WAITING_FOR_VERIFICATION");
-//                        wfs.setVtaskresult("Waiting For Verification");
-//                        wfs.setVnote("Waiting For Verification");
-//                        wfs.setVcrea(userCred.getUsername());
-//                        wfs.setDcrea(new Date());
                         vms022ahmhrntmHdrotsempsDao.update(mp);
                         vms022ahmhrntmTxnidrepsDao.save(vo);
-//                        vms022AhmitwfsMstwfdochistDao.save(wfs);
 
                         vms022ahmhrntmHdrotsempsDao.flush();
                         vms022ahmhrntmTxnidrepsDao.flush();
-//                        vms022AhmitwfsMstwfdochistDao.flush();
                     }
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, ("Approve success"), null, null);
                 }

@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 public class Vms022AhmitwfsMstwfdochistDaoImpl extends WfsHibernateDao<AhmitwfsMstwfdochist, Serializable> implements Vms022AhmitwfsMstwfdochistDao {
 
     @Override
-    public Boolean generateHistory(String seq, String username) {
+    public Boolean generateHistory(String seq, String username, String outId) {
         try {
 
             java.util.Date datenow = new java.util.Date();
@@ -28,7 +28,7 @@ public class Vms022AhmitwfsMstwfdochistDaoImpl extends WfsHibernateDao<AhmitwfsM
             int daynow = datenow.getDay();
 
             SQLQuery q = getCurrentSession().createSQLQuery("IN"
-                    + "SERT INTO AHMITWFS_MSTWFDOCHIST (VWFGUID, VHISTID, VTASKID, VEVENTTYPE, VTASKRESULT, VNOTE, VCREA, DCREA)"
+                    + "SERT INTO AHMITWFS_MSTWFDOCHIST (VWFGUID, VHISTID, VTASKID, VEVENTTYPE, VTASKRESULT, VNOTE, VDOCID, VCREA, DCREA)"
                     + "values("
                     + "\'00000000-0000-0000-0000-000000000000\',"
                     + "\'" + seq + "\',"
@@ -36,6 +36,7 @@ public class Vms022AhmitwfsMstwfdochistDaoImpl extends WfsHibernateDao<AhmitwfsM
                     + "\'WAITING_FOR_VERIFICATION\',"
                     + "\'Waiting For Verification\',"
                     + "\'Waiting For Verification\',"
+                    + "\'" + outId + "\',"
                     + "\'" + username + "\',"
                     + "\'" + monthnow + "-" + daynow + "-" + yearnow + "\'"
                     + ")");
