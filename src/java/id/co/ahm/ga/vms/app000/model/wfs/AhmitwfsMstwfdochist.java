@@ -6,12 +6,14 @@ package id.co.ahm.ga.vms.app000.model.wfs;
 
 import id.co.ahm.jxf.model.DefaultEntityImpl;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -91,7 +93,5 @@ public class AhmitwfsMstwfdochist extends DefaultEntityImpl implements Serializa
     public void setVnote(String vnote) {
         this.vnote = vnote;
     }
-    
-    
     
 }
