@@ -8,12 +8,15 @@ package id.co.ahm.ga.vms.app022.service.impl;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsemps;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsempsPk;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmTxnidreps;
+import id.co.ahm.ga.vms.app000.model.wfs.AhmitwfsMstwfdochist;
 import id.co.ahm.ga.vms.app022.constant.Vms022Constant;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlotsregsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlprmgblsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmHdrotsempsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmMstpicotsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmTxnidrepsDao;
+import id.co.ahm.ga.vms.app022.dao.Vms022AhmitwfsMstwfdochistDao;
+//import id.co.ahm.ga.vms.app022.dao.Vms022AhmitwfsMstwfdochistDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022ObjectDao;
 import id.co.ahm.ga.vms.app022.exception.Vms022Exception;
 import id.co.ahm.ga.vms.app022.service.Vms022Service;
@@ -93,6 +96,10 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Autowired
     @Qualifier("vms022AhmhrntmTxnidrepsDao")
     private Vms022AhmhrntmTxnidrepsDao vms022ahmhrntmTxnidrepsDao;
+
+    @Autowired
+    @Qualifier("vms022AhmitwfsMstwfdochistDao")
+    private Vms022AhmitwfsMstwfdochistDao vms022AhmitwfsMstwfdochistDao;
 
     @Override
     public DtoResponseWorkspace getFormAuthorization(VoUserCred userCred) {
@@ -339,12 +346,23 @@ public class Vms022ServiceImpl implements Vms022Service {
                         vo.setVstatus("WAITING");
                         vo.setVpckupsts("NOTDONE");
                         vo.setVcardname(getdata.getOutName());
-
+                        
+                        AhmitwfsMstwfdochist wfs = new AhmitwfsMstwfdochist();
+                        wfs.setVwfguid("00000000-0000-0000-0000-000000000000");
+                        wfs.setVhistid(vNseq);
+                        wfs.setVtaskid("AHMGAVMS022");
+                        wfs.setVeventtype("WAITING_FOR_VERIFICATION");
+                        wfs.setVtaskresult("Waiting For Verification");
+                        wfs.setVnote("Waiting For Verification");
+                        
                         vms022ahmhrntmHdrotsempsDao.update(mp);
                         vms022ahmhrntmHdrotsempsDao.flush();
 
                         vms022ahmhrntmTxnidrepsDao.save(vo);
                         vms022ahmhrntmTxnidrepsDao.flush();
+                        
+                        vms022AhmitwfsMstwfdochistDao.save(wfs);
+                        vms022AhmitwfsMstwfdochistDao.flush();
                     }
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, ("Approve success"), null, null);
                 }

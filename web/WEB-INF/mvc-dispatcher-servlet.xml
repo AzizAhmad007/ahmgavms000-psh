@@ -57,7 +57,7 @@
         <qualifier value="wfs" />
     </bean>
     
-    <bean class="org.springframework.orm.hibernate4.HibernateTransactionManager" id="transactionManagerHr">
+    <bean id="transactionManagerHr" class="org.springframework.orm.hibernate4.HibernateTransactionManager" >
         <property name="sessionFactory" ref="sessionFactoryHr"/>
         <qualifier value="hr" />
     </bean>
@@ -114,25 +114,6 @@
         </property>
     </bean>   
     
-    <bean id="sessionFactoryWfs" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">        
-        <property name="packagesToScan">
-            <list>
-                <value>id.co.ahm.jx.wfs.app000.model</value>                
-            </list>
-        </property>
-        <property name="dataSource" ref="dataSourceWfs" />
-        <property name="hibernateProperties">
-            <props>
-                <!--<prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>-->                
-                <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
-                <!--<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>-->
-                <!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
-                <prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.format_sql">true</prop>
-            </props>
-        </property>
-    </bean>
-    
     <bean class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" id="sessionFactoryHr">        
         <property name="packagesToScan" >
             <list>                        
@@ -143,6 +124,26 @@
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>      
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean id="sessionFactoryWfs" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">        
+        <property name="packagesToScan">
+            <list>
+                <value>id.co.ahm.jx.wfs.app000.model</value>    
+                <value>id.co.ahm.ga.vms.app000.model.wfs</value>            
+            </list>
+        </property>
+        <property name="dataSource" ref="dataSourceWfs" />
+        <property name="hibernateProperties">
+            <props>
+                <!--<prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>-->                
+                <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+                <!--<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>-->
+                <!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.format_sql">true</prop>
             </props>
