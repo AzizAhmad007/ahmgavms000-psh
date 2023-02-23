@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 public class Vms022AhmitwfsMstwfdochistDaoImpl extends WfsHibernateDao<AhmitwfsMstwfdochist, Serializable> implements Vms022AhmitwfsMstwfdochistDao {
 
     @Override
-    public Boolean generateHistory(String seq, String username, String outId) {
+    public Boolean generateHistory(String seq, String username, String outId, String wflow, String hist) {
         try {
 
             java.util.Date datenow = new java.util.Date();
@@ -30,8 +30,8 @@ public class Vms022AhmitwfsMstwfdochistDaoImpl extends WfsHibernateDao<AhmitwfsM
             SQLQuery q = getCurrentSession().createSQLQuery("IN"
                     + "SERT INTO AHMITWFS_MSTWFDOCHIST (VWFGUID, VHISTID, VTASKID, VEVENTTYPE, VTASKRESULT, VNOTE, VDOCID, VCREA, DCREA)"
                     + "values("
-                    + "\'00000000-0000-0000-0000-000000000000\',"
-                    + "\'" + seq + "\',"
+                    + "\'" + wflow + "\',"
+                    + "\'" + hist + "\',"
                     + "\'AHMGAVMS022\',"
                     + "\'WAITING_FOR_VERIFICATION\',"
                     + "\'Waiting For Verification\',"

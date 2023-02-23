@@ -56,6 +56,9 @@ public class AhmhrntmTxnidreps extends DefaultEntityImpl implements Serializable
     @Column(name = "VCARDNAME", length = 50)
     private String vcardname; 
 
+    @Column(name = "VWFLOWID", length = 100)
+    private String vwflowid; 
+
     public String getRidrepsid() {
         return ridrepsid;
     }
@@ -127,7 +130,13 @@ public class AhmhrntmTxnidreps extends DefaultEntityImpl implements Serializable
     public void setVcardname(String vcardname) {
         this.vcardname = vcardname;
     }
-    
-    
+
+    public String getVwflowid() {
+        return vwflowid;
+    }
+
+    public void setVwflowid(String vwflowid) {
+        this.vwflowid = vwflowid;
+    }
     
 }

@@ -50,6 +50,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -275,6 +276,12 @@ public class Vms022ServiceImpl implements Vms022Service {
 
     @Override
     public DtoResponseWorkspace approve(Vms022VoMonitoring getdata, VoUserCred userCred) {
+        
+        UUID uuidWF = UUID.randomUUID();
+        UUID uuidHist = UUID.randomUUID();
+        String idWF = uuidWF.toString();
+        String idHist = uuidHist.toString();
+        
 
         if (getdata.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM") || getdata.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
             try {
@@ -346,8 +353,9 @@ public class Vms022ServiceImpl implements Vms022Service {
                         vo.setVstatus("WAITING");
                         vo.setVpckupsts("NOTDONE");
                         vo.setVcardname(getdata.getOutName());
+                        vo.setVwflowid(idWF);
 
-                        Boolean get = vms022AhmitwfsMstwfdochistDao.generateHistory(vNseq, userCred.getUsername(), getdata.getOutId());
+                        Boolean get = vms022AhmitwfsMstwfdochistDao.generateHistory(vNseq, userCred.getUsername(), getdata.getOutId(), idWF, idHist);
 
                         if (get == false) {
                             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, null);

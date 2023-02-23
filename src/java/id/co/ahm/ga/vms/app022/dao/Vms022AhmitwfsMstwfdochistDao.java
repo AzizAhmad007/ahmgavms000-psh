@@ -13,5 +13,5 @@ import java.io.Serializable;
  * @author reza.mr
  */
 public interface Vms022AhmitwfsMstwfdochistDao extends WfsDao<AhmitwfsMstwfdochist, Serializable>{
-    Boolean generateHistory (String seq, String username, String outId);
+    Boolean generateHistory (String seq, String username, String outId, String wflow, String hist);
 }
