@@ -23,13 +23,21 @@ public class Vms022AhmitwfsMstwfdochistDaoImpl extends WfsHibernateDao<AhmitwfsM
     public Boolean generateHistory(String seq, String username, String outId, String wflow, String hist) {
         try {
 
-            String WF = "WF16771471";
+            String WF = "";
 
-            Random random = new Random();
-            int randomNumber = random.nextInt(100000);
-            String formattedNumber = String.format("%05d", randomNumber);
-            
-            WF = WF + formattedNumber;
+            while (true) {
+
+                WF = "WF16771471";
+                Random random = new Random();
+                int randomNumber = random.nextInt(100000);
+                String formattedNumber = String.format("%05d", randomNumber);
+                WF = WF + formattedNumber;
+
+                if (!checkData(WF)) {
+                    break;
+                }
+
+            }
 
             java.util.Date datenow = new java.util.Date();
             int yearnow = datenow.getYear() + 1900;
@@ -69,6 +77,15 @@ public class Vms022AhmitwfsMstwfdochistDaoImpl extends WfsHibernateDao<AhmitwfsM
             e.printStackTrace();
             return false;
         }
+    }
+
+    private Boolean checkData(String uuid) {
+
+        String compare = (String) getCurrentSession().createSQLQuery(
+                "SELECT VWFID FROM dbo.AHMITWFS_MSTWFDOCSTAT where VWFID != \'" + uuid + "\'"
+        ).uniqueResult();
+
+        return compare.equalsIgnoreCase(uuid);
     }
 
 }
