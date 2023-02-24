@@ -82,10 +82,16 @@ public class Vms022AhmitwfsMstwfdochistDaoImpl extends WfsHibernateDao<AhmitwfsM
     private Boolean checkData(String uuid) {
 
         String compare = (String) getCurrentSession().createSQLQuery(
-                "SELECT VWFID FROM dbo.AHMITWFS_MSTWFDOCSTAT where VWFID != \'" + uuid + "\'"
+                "SELECT TOP 1 VWFID FROM dbo.AHMITWFS_MSTWFDOCSTAT where VWFID != \'" + uuid + "\' "
         ).uniqueResult();
 
-        return compare.equalsIgnoreCase(uuid);
+        if (compare != null) {
+            return compare.equalsIgnoreCase(uuid);
+
+        } else {
+            return false;
+        }
+
     }
 
 }
