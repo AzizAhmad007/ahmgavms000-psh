@@ -8,7 +8,6 @@ package id.co.ahm.ga.vms.app022.service.impl;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsemps;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsempsPk;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmTxnidreps;
-import id.co.ahm.ga.vms.app000.model.wfs.AhmitwfsMstwfdochist;
 import id.co.ahm.ga.vms.app022.constant.Vms022Constant;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlotsregsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlprmgblsDao;
@@ -16,7 +15,6 @@ import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmHdrotsempsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmMstpicotsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmTxnidrepsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmitwfsMstwfdochistDao;
-//import id.co.ahm.ga.vms.app022.dao.Vms022AhmitwfsMstwfdochistDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022ObjectDao;
 import id.co.ahm.ga.vms.app022.exception.Vms022Exception;
 import id.co.ahm.ga.vms.app022.service.Vms022Service;
@@ -276,12 +274,11 @@ public class Vms022ServiceImpl implements Vms022Service {
 
     @Override
     public DtoResponseWorkspace approve(Vms022VoMonitoring getdata, VoUserCred userCred) {
-        
+
         UUID uuidWF = UUID.randomUUID();
         UUID uuidHist = UUID.randomUUID();
         String idWF = uuidWF.toString();
         String idHist = uuidHist.toString();
-        
 
         if (getdata.getPic().equalsIgnoreCase("RO_GAVMS_PICAHM") || getdata.getPic().equalsIgnoreCase("RO_GAVMS_OFCSECT")) {
             try {
@@ -299,6 +296,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                             returnFailed("This role only can process data with status 'Waiting for Approval PIC'");
                         } else {
                             mp.setVotsstts(getdata.getOutStatus());
+                            mp.setDstatus(DateUtil.stringToDate(getdata.getDateStatus(), "dd-MM-yyyy"));
                             vms022ahmhrntmHdrotsempsDao.update(mp);
                             vms022ahmhrntmHdrotsempsDao.flush();
                         }
@@ -353,13 +351,18 @@ public class Vms022ServiceImpl implements Vms022Service {
                         vo.setVstatus("WAITING");
                         vo.setVpckupsts("NOTDONE");
                         vo.setVcardname(getdata.getOutName());
-                        vo.setVwflowid(idWF);
+                        
+//comment because still of disscussion
+                        //start
+//                        vo.setVwflowid(idWF);
 
-                        Boolean get = vms022AhmitwfsMstwfdochistDao.generateHistory(vNseq, userCred.getUsername(), getdata.getOutId(), idWF, idHist);
+//                        Boolean get = vms022AhmitwfsMstwfdochistDao.generateHistory(vNseq, userCred.getUsername(), getdata.getOutId(), idWF, idHist);
 
-                        if (get == false) {
-                            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, null);
-                        }
+//                        if (get == false) {
+//                            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, null);
+//                        }
+                        //end
+
                         vms022ahmhrntmHdrotsempsDao.update(mp);
                         vms022ahmhrntmTxnidrepsDao.save(vo);
 
@@ -398,6 +401,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                                 returnFailed("This role only can process data with status 'Waiting for Approval PIC'");
                             } else {
                                 mp.setVotsstts(vo.getOutStatus());
+                                mp.setDstatus(DateUtil.stringToDate(vo.getDateStatus(), "dd-MM-yyyy"));
                                 mp.setLastModBy(userCred.getUserid());
                                 vms022ahmhrntmHdrotsempsDao.update(mp);
                                 vms022ahmhrntmHdrotsempsDao.flush();
