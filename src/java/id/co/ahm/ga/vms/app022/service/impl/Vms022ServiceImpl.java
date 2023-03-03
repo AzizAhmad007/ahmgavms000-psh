@@ -296,7 +296,6 @@ public class Vms022ServiceImpl implements Vms022Service {
                             returnFailed("This role only can process data with status 'Waiting for Approval PIC'");
                         } else {
                             mp.setVotsstts(getdata.getOutStatus());
-                            mp.setDstatus(DateUtil.stringToDate(getdata.getDateStatus(), "dd-MM-yyyy"));
                             vms022ahmhrntmHdrotsempsDao.update(mp);
                             vms022ahmhrntmHdrotsempsDao.flush();
                         }
@@ -401,7 +400,6 @@ public class Vms022ServiceImpl implements Vms022Service {
                                 returnFailed("This role only can process data with status 'Waiting for Approval PIC'");
                             } else {
                                 mp.setVotsstts(vo.getOutStatus());
-                                mp.setDstatus(DateUtil.stringToDate(vo.getDateStatus(), "dd-MM-yyyy"));
                                 mp.setLastModBy(userCred.getUserid());
                                 vms022ahmhrntmHdrotsempsDao.update(mp);
                                 vms022ahmhrntmHdrotsempsDao.flush();
@@ -434,6 +432,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                 if (mp != null) {
                     mp.setVotsstts(getdata.getOutStatus());
                     mp.setVnoterejc(getdata.getReasonReject());
+                    mp.setDstatus(DateUtil.stringToDate(getdata.getDateStatus(), "dd-MM-yyyy"));
 
 //                    if (!validateId.equalsIgnoreCase(getdata.getOutId())) {
 //                        returnFailed("This role only can process data with status 'Waiting for Approval PIC'");
@@ -466,6 +465,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                         mp.setVotsstts(vo.getOutStatus());
                         mp.setVnoterejc(vo.getReasonReject());
                         mp.setLastModBy(userCred.getUserid());
+                        mp.setDstatus(DateUtil.stringToDate(vo.getDateStatus(), "dd-MM-yyyy"));
 
 //                        if (!validateId.equalsIgnoreCase(vo.getOutId())) {
 //                            returnFailed("This role only can process data with status 'Waiting for Approval PIC'");
