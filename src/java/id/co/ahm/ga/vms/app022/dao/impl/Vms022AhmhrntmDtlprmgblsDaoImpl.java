@@ -33,7 +33,8 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT VPGBLCD, VPGBLNM "
                 + "FROM AHMHRNTM_DTLPRMGBLS "
-                + "WHERE VPGBLCD LIKE 'PG10%' ");
+                + "WHERE VPGBLCD LIKE 'PG10%' "
+                + "AND TRUNC(SYSDATE) BETWEEN TRUNC(DBGNEFFDT) AND TRUNC(DENDEFFDT) ");
 
         if (!isMonitoring) {
             sql = Vms022QueryUtil.setSearchParamLov(sql, input.getSearch(), "VPGBLCD,VPGBLNM", "OUTSOURCE");
