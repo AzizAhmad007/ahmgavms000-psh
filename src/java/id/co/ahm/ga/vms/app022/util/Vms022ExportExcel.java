@@ -79,7 +79,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                     }
                 }
  
-                if (filter.getKey().equalsIgnoreCase("persId")) {
+                if (filter.getKey().equalsIgnoreCase("nik")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
  
