@@ -289,6 +289,11 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     vo.setEndDateText("");
                 }
                 vo.setPassNumber(obj[13] == null ? "" : obj[13] + "");
+                
+                if(vo.getPassNumber().equals("0")) {
+                    vo.setPassNumber("");
+                }
+                
                 if (obj[14] != null) {
                     vo.setPassExpiryDate((Date) obj[14]);
                     vo.setPassExpiryDateText(DateUtil.dateToString((Date) obj[14], "dd-MMM-yyyy"));
