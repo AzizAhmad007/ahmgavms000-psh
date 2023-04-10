@@ -40,6 +40,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -50,6 +51,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+//import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFCell;
+import org.apache.poi.xssf.streaming.SXSSFRow;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFCreationHelper;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -114,6 +131,10 @@ public class Vms022ServiceImpl implements Vms022Service {
                 role.put("roleName", desc.getVroleid());
                 result.add(role);
             } else if (desc.getVroleid().equals("RO_GAVMS_OFCSECT")) {
+                Map<String, String> role = new HashMap<>();
+                role.put("roleName", desc.getVroleid());
+                result.add(role);
+            } else if (desc.getVroleid().equals("RO_GAVMS_SCHSEC")) {
                 Map<String, String> role = new HashMap<>();
                 role.put("roleName", desc.getVroleid());
                 result.add(role);
@@ -545,7 +566,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                     if (!checkIsAfter(DateUtil.stringToDate(vo.getEndDateText(), "dd-MMM-yyyy"), DateUtil.stringToDate(vo.getPassExpiryDateText(), "dd-MMM-yyyy"))) {
                         VoMessageWorkspace err = new VoMessageWorkspace();
                         err.setF("");
-                        err.setM("End Date Effective must be greater than Expiry Date! ");
+                        err.setM("End Work Effective Date must be greater than or equal to Expiry Date");
                         dto.addMessage(err);
                     }
                 }
@@ -568,4 +589,64 @@ public class Vms022ServiceImpl implements Vms022Service {
     private DtoResponseWorkspace returnFailed(String msg) {
         return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, msg, null, null);
     }
+    
+    @Override
+    public Workbook exportData (DtoParamPaging dto) {
+        
+        String userId = AhmStringUtil.hasValue(dto.getSearch().get("userid")) ? (dto.getSearch().get("userid") + "").toUpperCase() : "";;
+        String roleFromFront = AhmStringUtil.hasValue(dto.getSearch().get("role")) ? (dto.getSearch().get("role") + "").toUpperCase() : "";;
+        String nrp = AhmStringUtil.hasValue(dto.getSearch().get("nrp")) ? (dto.getSearch().get("nrp") + "").toUpperCase() : "";;
+
+        List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, userId, roleFromFront, nrp);
+        
+        XSSFRow rowDetail;
+        
+        SXSSFWorkbook workbook = new SXSSFWorkbook();
+        SXSSFSheet worksheet = workbook.createSheet();
+        SXSSFCell[] listCellD = new SXSSFCell[24];
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        
+        //Format Cell Bold
+        CellStyle styleBold = workbook.createCellStyle();
+        Font fontBold = workbook.createFont();
+        styleBold.setFont(fontBold);
+        fontBold.setBoldweight(XSSFFont.BOLDWEIGHT_BOLD);
+        
+        //Format Cell Date
+        CellStyle styleDate = workbook.createCellStyle();
+        XSSFCreationHelper creationHelper = (XSSFCreationHelper) workbook.getCreationHelper();
+        styleDate.setDataFormat(creationHelper.createDataFormat().getFormat("dd-MMM-yyyy"));
+        styleDate.setAlignment(CellStyle.ALIGN_LEFT);
+        
+        //Format Cell Number
+        XSSFCellStyle styleNum = (XSSFCellStyle) workbook.createCellStyle();
+        styleNum.setDataFormat(creationHelper.createDataFormat().getFormat("#,##0"));
+        styleNum.setAlignment(CellStyle.ALIGN_RIGHT);
+        
+        
+        
+        
+        
+        
+        
+        return workbook;
+        
+    }
+    
+    private void createCellHeader(XSSFWorkbook workbook, XSSFRow row, String obj, int col) {
+        XSSFCellStyle styleTblHdr = workbook.createCellStyle();
+        XSSFFont fontTblHdr = workbook.createFont();
+        fontTblHdr.setBoldweight(XSSFFont.BOLDWEIGHT_BOLD);
+        styleTblHdr.setFont(fontTblHdr);
+        styleTblHdr.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
+//        styleTblHdr.setFillForegroundColor(XSSFColor.toXSSFColor(color));
+//        styleTblHdr.setFillForegroundColor(XSSFColor.LIGHT_CORNFLOWER_BLUE.index);
+
+        XSSFCell cellTblHdr = row.createCell(col);
+        cellTblHdr.setCellStyle(styleTblHdr);
+        cellTblHdr.setCellValue(obj);
+    
+    }
+    
 }

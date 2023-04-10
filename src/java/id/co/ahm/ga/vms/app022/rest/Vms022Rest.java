@@ -18,10 +18,14 @@ import id.co.ahm.jxf.dto.DtoResponseWorkspace;
 import id.co.ahm.jxf.security.TokenPshUtil;
 import id.co.ahm.jxf.util.DtoHelper;
 import id.co.ahm.jxf.vo.VoUserCred;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -192,6 +196,22 @@ public class Vms022Rest {
             @RequestBody Vms022VoLov input) {
 
         return vms022Service.showPicAhm(input);
+    }
+    
+    @RequestMapping(value = "export-excel", method = RequestMethod.GET)
+    public void ModelAndView (HttpServletRequest request,
+            HttpServletResponse response,
+            @RequestParam(value = "token", defaultValue = "") String token,
+            @RequestParam Map<String, Object> mapParam) {
+    
+        DtoParamPaging input = new DtoParamPaging();
+        input.setSearch(mapParam);
+        
+        SimpleDateFormat fmt = new SimpleDateFormat("YYYYMMddHHmmss");
+        String filename = "Verification Personal Data Partner & Outsource_" + fmt.format(new Date());
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Content-Disposition", "inline; filename=" + filename + ".xls");
+        
     }
 
     @RequestMapping(value = "exreg", method = RequestMethod.POST)

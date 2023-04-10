@@ -13,6 +13,7 @@ import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
 import id.co.ahm.jxf.vo.VoUserCred;
 import java.util.List;
+import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  *
@@ -20,29 +21,32 @@ import java.util.List;
  */
 public interface Vms022Service {
     
-    DtoResponseWorkspace getFormAuthorization(VoUserCred userCred);
+    public DtoResponseWorkspace getFormAuthorization(VoUserCred userCred);
     
-    DtoResponseWorkspace showPlant(); 
+    public DtoResponseWorkspace showPlant(); 
     
-    DtoResponseWorkspace showMonitoring(DtoParamPaging input, VoUserCred userCred);
+    public DtoResponseWorkspace showMonitoring(DtoParamPaging input, VoUserCred userCred);
     
-    DtoResponseWorkspace showPlant(Vms022VoLov input);
+    public DtoResponseWorkspace showPlant(Vms022VoLov input);
     
-    DtoResponseWorkspace showGate(Vms022VoLov input);
+    public DtoResponseWorkspace showGate(Vms022VoLov input);
     
-    DtoResponseWorkspace showPicAhm(Vms022VoLov input);
+    public DtoResponseWorkspace showPicAhm(Vms022VoLov input);
     
-    DtoResponseWorkspace approve(Vms022VoMonitoring getdata, VoUserCred userCred);
+    public DtoResponseWorkspace approve(Vms022VoMonitoring getdata, VoUserCred userCred);
     
-    DtoResponseWorkspace approving(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
+    public DtoResponseWorkspace approving(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
     
-    DtoResponseWorkspace reject(Vms022VoMonitoring getdata, VoUserCred userCred);
+    public DtoResponseWorkspace reject(Vms022VoMonitoring getdata, VoUserCred userCred);
     
-    DtoResponseWorkspace rejecting(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
+    public DtoResponseWorkspace rejecting(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
     
-    DtoResponseWorkspace checkingDate(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
+    public DtoResponseWorkspace checkingDate(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
     
-    DtoResponsePagingWorkspace getExcel(DtoParamPaging dto, VoUserCred userCred);
+    public DtoResponsePagingWorkspace getExcel(DtoParamPaging dto, VoUserCred userCred);
     
-    DtoResponse testing (DtoParamPaging dto);
+    public DtoResponse testing (DtoParamPaging dto);
+    
+    public Workbook exportData (DtoParamPaging dto);
+    
 }
