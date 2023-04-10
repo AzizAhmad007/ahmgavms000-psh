@@ -13,4 +13,5 @@ import id.co.ahm.jxf.dao.HrDao;
  */
 public interface Vms022AhmhrntmTxnidrepsDao extends HrDao<AhmhrntmTxnidreps, String>{
     public String getNseq();
+    public String validateWorkOrder(String nrp);
 }

@@ -5,6 +5,7 @@
 package id.co.ahm.ga.vms.app022.dao.impl;
 
 import id.co.ahm.ga.vms.app000.model.AhmhrntmTxnidreps;
+import id.co.ahm.ga.vms.app022.constant.Vms022Constant;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmTxnidrepsDao;
 import id.co.ahm.jxf.dao.HrHibernateDao;
 import org.hibernate.SQLQuery;
@@ -33,5 +34,20 @@ public class Vms022AhmhrntmTxnidrepsDaoImpl extends HrHibernateDao<AhmhrntmTxnid
 
         return (String) sqlQuery.uniqueResult();
     }
+
+    @Override
+    public String validateWorkOrder(String nrp) {
+        StringBuilder sql = new StringBuilder();
+
+        sql.append(Vms022Constant.SQL_VALIDATE_WORK_ORDER);
+
+        SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
+        sqlQuery.setParameter("NRP", nrp);
+
+        return (String) sqlQuery.uniqueResult() != null ? (String) sqlQuery.uniqueResult() : "";
+        
+    }
+    
+    
     
 }

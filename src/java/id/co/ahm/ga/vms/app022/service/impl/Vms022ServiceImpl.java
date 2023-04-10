@@ -327,6 +327,8 @@ public class Vms022ServiceImpl implements Vms022Service {
                         mp.setDpassexp(DateUtil.stringToDate(getdata.getPassExpiryDateText(), "dd-MMM-yyyy"));
                         mp.setDstatus(DateUtil.stringToDate(getdata.getDateStatus(), "dd-MM-yyyy"));
 
+                        String validateWO = vms022ahmhrntmTxnidrepsDao.validateWorkOrder(getdata.getOutId());
+
                         String getNseq = vms022ahmhrntmTxnidrepsDao.getNseq();
 
                         int nseq;
@@ -371,23 +373,22 @@ public class Vms022ServiceImpl implements Vms022Service {
                         vo.setVstatus("WAITING");
                         vo.setVpckupsts("NOTDONE");
                         vo.setVcardname(getdata.getOutName());
-                        
+
 //comment because still of disscussion
                         //start
 //                        vo.setVwflowid(idWF);
-
 //                        Boolean get = vms022AhmitwfsMstwfdochistDao.generateHistory(vNseq, userCred.getUsername(), getdata.getOutId(), idWF, idHist);
-
 //                        if (get == false) {
 //                            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, null);
 //                        }
                         //end
-
                         vms022ahmhrntmHdrotsempsDao.update(mp);
-                        vms022ahmhrntmTxnidrepsDao.save(vo);
-
                         vms022ahmhrntmHdrotsempsDao.flush();
-                        vms022ahmhrntmTxnidrepsDao.flush();
+                        if (validateWO.isEmpty()) {
+                            vms022ahmhrntmTxnidrepsDao.save(vo);
+                            vms022ahmhrntmTxnidrepsDao.flush();
+                        }
+
                     }
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, ("Approve success"), null, null);
                 }
@@ -589,51 +590,45 @@ public class Vms022ServiceImpl implements Vms022Service {
     private DtoResponseWorkspace returnFailed(String msg) {
         return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, msg, null, null);
     }
-    
+
     @Override
-    public Workbook exportData (DtoParamPaging dto) {
-        
+    public Workbook exportData(DtoParamPaging dto) {
+
         String userId = AhmStringUtil.hasValue(dto.getSearch().get("userid")) ? (dto.getSearch().get("userid") + "").toUpperCase() : "";;
         String roleFromFront = AhmStringUtil.hasValue(dto.getSearch().get("role")) ? (dto.getSearch().get("role") + "").toUpperCase() : "";;
         String nrp = AhmStringUtil.hasValue(dto.getSearch().get("nrp")) ? (dto.getSearch().get("nrp") + "").toUpperCase() : "";;
 
         List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, userId, roleFromFront, nrp);
-        
+
         XSSFRow rowDetail;
-        
+
         SXSSFWorkbook workbook = new SXSSFWorkbook();
         SXSSFSheet worksheet = workbook.createSheet();
         SXSSFCell[] listCellD = new SXSSFCell[24];
-        
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        
+
         //Format Cell Bold
         CellStyle styleBold = workbook.createCellStyle();
         Font fontBold = workbook.createFont();
         styleBold.setFont(fontBold);
         fontBold.setBoldweight(XSSFFont.BOLDWEIGHT_BOLD);
-        
+
         //Format Cell Date
         CellStyle styleDate = workbook.createCellStyle();
         XSSFCreationHelper creationHelper = (XSSFCreationHelper) workbook.getCreationHelper();
         styleDate.setDataFormat(creationHelper.createDataFormat().getFormat("dd-MMM-yyyy"));
         styleDate.setAlignment(CellStyle.ALIGN_LEFT);
-        
+
         //Format Cell Number
         XSSFCellStyle styleNum = (XSSFCellStyle) workbook.createCellStyle();
         styleNum.setDataFormat(creationHelper.createDataFormat().getFormat("#,##0"));
         styleNum.setAlignment(CellStyle.ALIGN_RIGHT);
-        
-        
-        
-        
-        
-        
-        
+
         return workbook;
-        
+
     }
-    
+
     private void createCellHeader(XSSFWorkbook workbook, XSSFRow row, String obj, int col) {
         XSSFCellStyle styleTblHdr = workbook.createCellStyle();
         XSSFFont fontTblHdr = workbook.createFont();
@@ -646,7 +641,7 @@ public class Vms022ServiceImpl implements Vms022Service {
         XSSFCell cellTblHdr = row.createCell(col);
         cellTblHdr.setCellStyle(styleTblHdr);
         cellTblHdr.setCellValue(obj);
-    
+
     }
-    
+
 }
