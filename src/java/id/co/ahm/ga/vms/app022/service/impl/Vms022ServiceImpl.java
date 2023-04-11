@@ -317,6 +317,8 @@ public class Vms022ServiceImpl implements Vms022Service {
                             returnFailed("This role only can process data with status 'Waiting for Approval PIC'");
                         } else {
                             mp.setVotsstts(getdata.getOutStatus());
+
+                            mp.setLastModBy(userCred.getUserid());
                             vms022ahmhrntmHdrotsempsDao.update(mp);
                             vms022ahmhrntmHdrotsempsDao.flush();
                         }
@@ -326,6 +328,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                         mp.setVotsstts(getdata.getOutStatus());
                         mp.setDpassexp(DateUtil.stringToDate(getdata.getPassExpiryDateText(), "dd-MMM-yyyy"));
                         mp.setDstatus(DateUtil.stringToDate(getdata.getDateStatus(), "dd-MM-yyyy"));
+                        mp.setLastModBy(userCred.getUserid());
 
                         String validateWO = vms022ahmhrntmTxnidrepsDao.validateWorkOrder(getdata.getOutId());
 
@@ -455,6 +458,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                     mp.setVotsstts(getdata.getOutStatus());
                     mp.setVnoterejc(getdata.getReasonReject());
                     mp.setDstatus(DateUtil.stringToDate(getdata.getDateStatus(), "dd-MM-yyyy"));
+                    mp.setLastModBy(userCred.getUserid());
 
 //                    if (!validateId.equalsIgnoreCase(getdata.getOutId())) {
 //                        returnFailed("This role only can process data with status 'Waiting for Approval PIC'");
