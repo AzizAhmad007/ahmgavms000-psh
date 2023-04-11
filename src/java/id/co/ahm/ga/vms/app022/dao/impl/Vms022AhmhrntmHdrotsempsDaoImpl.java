@@ -122,7 +122,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
  
         sqlQuery.append("INNER JOIN ")
                 .append("( ")
-                .append("  SELECT ")
+                .append("  SELECT ") 
                 .append("    DISTINCT AA.VPLANT, AA.VOTSID, AA.VPERSID, ")
                 .append("    BB.VPGBLNM, BB.VPGBLCD, CC.VOTSTYPE ")
                 .append("  FROM AHMHRNTM_DTLOTSREGS AA, AHMHRNTM_DTLPRMGBLS BB, AHMHRNTM_MSTPICOTS CC, AHMHRNTM_HDROTSEMPS DD");
