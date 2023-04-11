@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package id.co.ahm.ga.vms.app022.dao.impl;
-
+ 
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsemps;
 import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsempsPk;
 import id.co.ahm.ga.vms.app022.constant.Vms022Constant;
@@ -34,23 +34,23 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import org.hibernate.HibernateException;
-
+ 
 /**
  *
  * @author reza.mr
  */
 @Repository("vms022ahmhrntmHdrotsempsDao")
 public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdrotsemps, AhmhrntmHdrotsempsPk> implements Vms022AhmhrntmHdrotsempsDao {
-
+ 
     private String getParam;
-
+ 
     @Override
     public List<Vms022VoMonitoring> getSearchData(DtoParamPaging input, String userId, String role, String nrp) {
         List<Vms022VoMonitoring> result = new ArrayList<>();
         Map<String, String> sortMap = new HashMap<>();
         StringBuilder sqlQuery = new StringBuilder();
         String tes = "";
-
+ 
         sortMap.put("ahmgavms022p01OutIdSort", "");
         sortMap.put("ahmgavms022p01OutNameSort", "");
         sortMap.put("ahmgavms022p01NikSort", "");
@@ -65,7 +65,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         sortMap.put("ahmgavms022p01PassExpirySort", "");
         sortMap.put("ahmgavms022p01ModifySort", "");
         sortMap.put("ahmgavms022p01ModifyDateSort", "");
-
+ 
         String votsid = AhmStringUtil.hasValue(input.getSearch().get("outId")) ? (input.getSearch().get("outId") + "").toUpperCase() : "";
         String vname = AhmStringUtil.hasValue(input.getSearch().get("outName")) ? (input.getSearch().get("outName") + "").toUpperCase() : "";
         String vpersid = AhmStringUtil.hasValue(input.getSearch().get("nik")) ? (input.getSearch().get("nik") + "").toUpperCase() : "";
@@ -78,9 +78,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
         String vacstat = AhmStringUtil.hasValue(input.getSearch().get("vacStatus")) ? (input.getSearch().get("vacStatus") + "").toUpperCase() : "";
         String pic = AhmStringUtil.hasValue(input.getSearch().get("pic")) ? (input.getSearch().get("pic") + "").toUpperCase() : "";
-
+ 
         String areaTypeQuery = getPicAreaType(nrp);
-
+ 
         sqlQuery.append("SELECT  "
                 + "    A.VOTSID as OUTID,  "
                 + "    A.VNAME as OUTNAME,  "
@@ -119,30 +119,25 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    A.BPHOTO as FOTO  "
                 + "FROM   "
                 + "    AHMHRNTM_HDROTSEMPS A  ");
-
+ 
         sqlQuery.append("INNER JOIN ")
                 .append("( ")
                 .append("  SELECT ")
                 .append("    DISTINCT AA.VPLANT, AA.VOTSID, AA.VPERSID, ")
                 .append("    BB.VPGBLNM, BB.VPGBLCD, CC.VOTSTYPE ")
                 .append("  FROM AHMHRNTM_DTLOTSREGS AA, AHMHRNTM_DTLPRMGBLS BB, AHMHRNTM_MSTPICOTS CC, AHMHRNTM_HDROTSEMPS DD");
-
+ 
         if (role.equals("RO_GAVMS_PICAHM")) {
             sqlQuery.append(", FMHRD_GENERAL_DATAS FGD, AHMMOERP_MSTKARYAWANS@AHMPS MKA ");
         }
-
+ 
         sqlQuery.append("  WHERE AA.VREGID = 'PLNT' ")
                 .append("  AND AA.VOTSID = DD.VOTSID ")
                 .append("  AND CC.VOTSTYPE = DD.VOTSTYPE ")
                 .append("  AND AA.VPLANT = BB.VPGBLCD ")
-                .append("  AND CC.VAREA = AA.VPLANT ");
-
-        if (role.equals("RO_GAVMS_PICAHM")) {
-            sqlQuery.append("  AND CC.VNRP = '")
-                    .append(nrp)
-                    .append("' ");
-        }
-
+                .append("  AND CC.VAREA = AA.VPLANT ")
+                ;
+ 
         if (!StringUtils.isBlank(plant)) {
             sqlQuery.append(" AND AA.VPLANT = '")
                     .append(plant)
@@ -150,27 +145,15 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         } else {
             sqlQuery.append(" AND AA.NSEQ = 1 ");
         }
-
+ 
         if (!StringUtils.isBlank(pic)) {
             sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
                     .append(pic)
                     .append("||'%' ) ");
         }
-
-//        if (role.equals("RO_GAVMS_PICAHM")) {
-//            sqlQuery.append(" AND CC.VNRP = FGD.NRP ")
-//                    .append(" AND BB.VPGBLCD = CC.VAREA ")
-//                    .append(" AND CC.VRGSROLE IN ('PG91-01','PG91-03') ")
-//                    .append(" AND FGD.VEND_VND_CODE = 'AHM' ")
-//                    .append(" AND BB.VPGBLCD LIKE 'PG10%' ")
-//                    .append(" AND CC.VNRP = MKA.IIDNRP ") //                    .append(" AND CC.VNRP = '")
-//                    //                    .append(nrp)
-//                    //                    .append("' ")
-//                    //                    .append(areaTypeQuery)
-//                    ;
-//        }
+ 
         sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID and A.VOTSTYPE = B.VOTSTYPE ");
-
+ 
 //        if (role.equals("RO_GAVMS_PICAHM")) {
 //            sqlQuery.append("INNER JOIN ( "
 //                    + "    SELECT DISTINCT MPO.VNRP, MPO.VAREA, MPO.VOTSTYPE, FGD.NAME, DP.VPGBLNM, FGD.VHANDPHONE  "
@@ -212,7 +195,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    AND "
                 + "        (:vacstat IS NULL OR UPPER(A.VVACSTTS) LIKE '%'||:vacstat||'%' )  "
         );
-
+ 
         if (role.equals("RO_GAVMS_PICAHM")) {
             sqlQuery.append(areaTypeQuery);
         }
@@ -221,7 +204,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 //        }
         if (!StringUtils.isBlank(begineff) || !StringUtils.isBlank(endeff)) {
             sqlQuery.append(" AND (");
-
+ 
             if (!StringUtils.isBlank(begineff)) {
                 sqlQuery.append(" ('")
                         .append(begineff)
@@ -244,15 +227,15 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             }
             sqlQuery.append(" ) ");
         }
-
+ 
         voSetter(input);
-
+ 
         orderClause(input, sqlQuery, sortMap, getParam);
-
+ 
         Query query = getCurrentSession().createSQLQuery(sqlQuery.toString())
                 .setFirstResult(input.getOffset())
                 .setMaxResults(input.getLimit());
-
+ 
         query.setParameter("votsid", votsid)
                 .setParameter("vname", vname)
                 .setParameter("vpersid", vpersid)
@@ -262,13 +245,13 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .setParameter("outstat", outstat)
                 .setParameter("plant", plant)
                 .setParameter("vacstat", vacstat);
-
+ 
         try {
             List lists = query.list();
             for (int i = 0; i < lists.size(); i++) {
                 Object[] obj = (Object[]) lists.get(i);
                 Vms022VoMonitoring vo = new Vms022VoMonitoring();
-
+ 
                 vo.setOutId(obj[0] == null ? "" : obj[0] + "");
                 vo.setOutName(obj[1] == null ? "" : obj[1] + "");
                 vo.setPersId(obj[2] == null ? "" : obj[2] + "");
@@ -293,11 +276,11 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     vo.setEndDateText("");
                 }
                 vo.setPassNumber(obj[13] == null ? "" : obj[13] + "");
-
-                if (vo.getPassNumber().equals("0")) {
+                
+                if(vo.getPassNumber().equals("0")) {
                     vo.setPassNumber("");
                 }
-
+                
                 if (obj[14] != null) {
                     vo.setPassExpiryDate((Date) obj[14]);
                     vo.setPassExpiryDateText(DateUtil.dateToString((Date) obj[14], "dd-MMM-yyyy"));
@@ -335,11 +318,11 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 if (obj[33] != null) {
                     byte[] dt = null;
                     Blob tmp = (Blob) obj[33];
-
+ 
                     try {
                         dt = tmp.getBytes(1, (int) tmp.length());
                         vo.setFilePhoto(Base64.getEncoder().encodeToString(dt));
-
+ 
                     } catch (SQLException ex) {
                         Logger.getLogger(Vms022AhmhrntmHdrotsempsDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -353,20 +336,20 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 }
                 vo.setRowNum(i);
                 vo.setGateName("=========testing");
-
+ 
                 result.add(vo);
-
+ 
             }
         } catch (HibernateException e) {
             return result;
         }
         return result;
     }
-
+ 
     @Override
     public int countSearchData(DtoParamPaging input, String userId, String role, String nrp) {
         StringBuilder sqlQuery = new StringBuilder();
-
+ 
         String votsid = AhmStringUtil.hasValue(input.getSearch().get("outId")) ? (input.getSearch().get("outId") + "").toUpperCase() : "";
         String vname = AhmStringUtil.hasValue(input.getSearch().get("outName")) ? (input.getSearch().get("outName") + "").toUpperCase() : "";
         String vpersid = AhmStringUtil.hasValue(input.getSearch().get("nik")) ? (input.getSearch().get("nik") + "").toUpperCase() : "";
@@ -379,9 +362,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
         String vacstat = AhmStringUtil.hasValue(input.getSearch().get("vacStatus")) ? (input.getSearch().get("vacStatus") + "").toUpperCase() : "";
         String pic = AhmStringUtil.hasValue(input.getSearch().get("pic")) ? (input.getSearch().get("pic") + "").toUpperCase() : "";
-
+ 
         String areaTypeQuery = getPicAreaType(nrp);
-
+ 
         sqlQuery.append("SELECT  "
                 + "    A.VOTSID as OUTID,  "
                 + "    A.VNAME as OUTNAME,  "
@@ -420,30 +403,25 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    A.BPHOTO as FOTO  "
                 + "FROM   "
                 + "    AHMHRNTM_HDROTSEMPS A  ");
-
+ 
         sqlQuery.append("INNER JOIN ")
                 .append("( ")
                 .append("  SELECT ")
                 .append("    DISTINCT AA.VPLANT, AA.VOTSID, AA.VPERSID, ")
                 .append("    BB.VPGBLNM, BB.VPGBLCD, CC.VOTSTYPE ")
                 .append("  FROM AHMHRNTM_DTLOTSREGS AA, AHMHRNTM_DTLPRMGBLS BB, AHMHRNTM_MSTPICOTS CC, AHMHRNTM_HDROTSEMPS DD");
-
+ 
         if (role.equals("RO_GAVMS_PICAHM")) {
             sqlQuery.append(", FMHRD_GENERAL_DATAS FGD, AHMMOERP_MSTKARYAWANS@AHMPS MKA ");
         }
-
+ 
         sqlQuery.append("  WHERE AA.VREGID = 'PLNT' ")
                 .append("  AND AA.VOTSID = DD.VOTSID ")
                 .append("  AND CC.VOTSTYPE = DD.VOTSTYPE ")
                 .append("  AND AA.VPLANT = BB.VPGBLCD ")
-                .append("  AND CC.VAREA = AA.VPLANT ");
-
-        if (role.equals("RO_GAVMS_PICAHM")) {
-            sqlQuery.append("  AND CC.VNRP = '")
-                    .append(nrp)
-                    .append("' ");
-        }
-
+                .append("  AND CC.VAREA = AA.VPLANT ")
+                ;
+ 
         if (!StringUtils.isBlank(plant)) {
             sqlQuery.append(" AND AA.VPLANT = '")
                     .append(plant)
@@ -451,42 +429,15 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         } else {
             sqlQuery.append(" AND AA.NSEQ = 1 ");
         }
-
+ 
         if (!StringUtils.isBlank(pic)) {
             sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
                     .append(pic)
                     .append("||'%' ) ");
         }
-
-//        if (role.equals("RO_GAVMS_PICAHM")) {
-//            sqlQuery.append(" AND CC.VNRP = FGD.NRP ")
-//                    .append(" AND BB.VPGBLCD = CC.VAREA ")
-//                    .append(" AND CC.VRGSROLE IN ('PG91-01','PG91-03') ")
-//                    .append(" AND FGD.VEND_VND_CODE = 'AHM' ")
-//                    .append(" AND BB.VPGBLCD LIKE 'PG10%' ")
-//                    .append(" AND CC.VNRP = MKA.IIDNRP ") //                    .append(" AND CC.VNRP = '")
-//                    //                    .append(nrp)
-//                    //                    .append("' ")
-//                    //                    .append(areaTypeQuery)
-//                    ;
-//        }
+ 
         sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID and A.VOTSTYPE = B.VOTSTYPE ");
 
-//        if (role.equals("RO_GAVMS_PICAHM")) {
-//            sqlQuery.append("INNER JOIN ( "
-//                    + "    SELECT DISTINCT MPO.VNRP, MPO.VAREA, MPO.VOTSTYPE, FGD.NAME, DP.VPGBLNM, FGD.VHANDPHONE  "
-//                    + "    FROM AHMHRNTM_MSTPICOTS MPO, AHMHRNTM_DTLPRMGBLS DP,  FMHRD_GENERAL_DATAS FGD, AHMMOERP_MSTKARYAWANS@AHMPS MKA  "
-//                    + "    WHERE "
-//                    + "        SYSDATE BETWEEN MPO.DBGNEFFDT AND MPO.DENDEFFDT  "
-//                    + "        AND DP.VPGBLCD = MPO.VAREA  "
-//                    + "        AND DP.VPGBLCD LIKE 'PG10%'  "
-//                    + "        AND MPO.VNRP = FGD.NRP  "
-//                    + "        AND MPO.VNRP = MKA.IIDNRP  "
-//                    + "        AND FGD.VEND_VND_CODE = 'AHM' "
-//                    + "        AND MPO.VRGSROLE IN ('PG91-01','PG91-03') "
-////                    + "        AND FGD.NRP = '" + nrp + "' "
-//                    + "    ) NEW ON A.VOTSTYPE = NEW.VOTSTYPE AND B.VPLANT = NEW.VAREA AND NEW.VNRP = '" + nrp + "' ");
-//        }
         sqlQuery.append("INNER JOIN AHMHRNTM_DTLPRMGBLS E on B.VPLANT = E.VPGBLCD  ")
                 .append("INNER JOIN AHMHRNTM_DTLPRMGBLS D ON A.VOTSTYPE = D.VPGBLCD ")
                 .append("LEFT JOIN AHMHRNTM_DTLPRMGBLS F ON A.VCOMPANY = F.VPGBLCD ")
@@ -513,14 +464,14 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    AND "
                 + "        (:vacstat IS NULL OR UPPER(A.VVACSTTS) LIKE '%'||:vacstat||'%' )  "
         );
-
+        
         if (role.equals("RO_GAVMS_PICAHM")) {
             sqlQuery.append(areaTypeQuery);
         }
-
+        
         if (!StringUtils.isBlank(begineff) || !StringUtils.isBlank(endeff)) {
             sqlQuery.append(" AND (");
-
+ 
             if (!StringUtils.isBlank(begineff)) {
                 sqlQuery.append(" ('")
                         .append(begineff)
@@ -543,9 +494,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             }
             sqlQuery.append(" ) ");
         }
-
+ 
         SQLQuery query = getCurrentSession().createSQLQuery(sqlQuery.toString());
-
+ 
         query.setParameter("votsid", votsid)
                 .setParameter("vname", vname)
                 .setParameter("vpersid", vpersid)
@@ -555,7 +506,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .setParameter("outstat", outstat)
                 .setParameter("plant", plant)
                 .setParameter("vacstat", vacstat);
-
+ 
         int counter = 0;
         try {
             List lists = query.list();
@@ -566,7 +517,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         }
         return counter;
     }
-
+ 
     private void orderClause(DtoParamPaging input, StringBuilder query, Map<String, String> clause, String param) {
         if (input.getSort() != null && !StringUtils.isEmpty(input.getSort())) {
             query.append(" ORDER BY ");
@@ -575,16 +526,16 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 query.append(input.getOrder() + " ");
             }
         }
-
+ 
     }
-
+ 
     private void voSetter(DtoParamPaging input) {
         try {
             if (input.getSort() == null) {
-
+ 
             } else {
                 String param = input.getSort();
-
+ 
                 switch (param) {
                     case "outId":
                         getParam = "A.VOTSID";
@@ -631,33 +582,33 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                         break;
                     default:
                         getParam = null;
-
+ 
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+ 
     @Override
     public String confirmId(String id, String status) {
         SQLQuery qResult = getCurrentSession()
                 .createSQLQuery(Vms022Constant.SQL_CONFIRM_ID);
-
+ 
         qResult.setParameter("VOTSID", id)
                 .setParameter("OUTSTAT", status);
         return (String) qResult.uniqueResult();
     }
-
+ 
     @Override
     public String getName(String id) {
         SQLQuery qResult = getCurrentSession()
                 .createSQLQuery(Vms022Constant.SQL_GET_NAME);
-
+ 
         qResult.setParameter("VOTSID", id);
         return (String) qResult.uniqueResult();
     }
-
+ 
     @Override
     public String getNote(String id) {
         SQLQuery qResult = getCurrentSession()
@@ -667,22 +618,22 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                         + "    AHMHRNTM_HDROTSEMPS  "
                         + " where  "
                         + "    votsid = :VOTSID ");
-
+ 
         qResult.setParameter("VOTSID", id);
         return (String) qResult.uniqueResult();
     }
-
+ 
     private byte[] readBytesFromFile(String pathFile) {
         FileInputStream fileInputStream = null;
         byte[] bytesArray = null;
         try {
             File file = new File(pathFile);
             bytesArray = new byte[(int) file.length()];
-
+ 
             //read file into bytes[]
             fileInputStream = new FileInputStream(file);
             fileInputStream.read(bytesArray);
-
+ 
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -693,38 +644,38 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     e.printStackTrace();
                 }
             }
-
+ 
         }
         return bytesArray;
     }
-
+ 
     public String getPicAreaType(String nrp) {
-
+ 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(Vms022Constant.SQL_GET_AREA_TYPE);
-
+ 
         sqlQuery.setParameter("NRP", nrp);
-
+ 
         List queryResult = sqlQuery.list();
         String vo = "";
         if (!queryResult.isEmpty()) {
             int i = 0;
             Object[] obj;
-
+ 
             vo += "AND ( ";
-
+ 
             for (Object object : queryResult) {
                 obj = (Object[]) object;
                 i++;
-
+ 
                 if (i == queryResult.size()) {
                     vo += "(B.VPLANT = '" + (String) obj[1] + "' AND A.VOTSTYPE = '" + (String) obj[2] + "' ) ";
                 } else {
                     vo += "(B.VPLANT = '" + (String) obj[1] + "' AND A.VOTSTYPE = '" + (String) obj[2] + "' ) OR";
                 }
             }
-
+ 
             vo += " ) ";
-
+ 
         }
         return vo;
     }
