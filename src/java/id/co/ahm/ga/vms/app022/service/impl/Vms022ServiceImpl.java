@@ -164,16 +164,8 @@ public class Vms022ServiceImpl implements Vms022Service {
     public DtoResponseWorkspace showMonitoring(DtoParamPaging dto, VoUserCred userCred) {
 
         String userId = getUserId(userCred);
-        String role = "";
         String roleFromFront = AhmStringUtil.hasValue(dto.getSearch().get("role")) ? (dto.getSearch().get("role") + "").toUpperCase() : "";
         String nrp = AhmStringUtil.hasValue(dto.getSearch().get("userid")) ? (dto.getSearch().get("userid") + "").toUpperCase() : "";
-
-        List<Ahmitb2eMstusrroles> formFunctionList = ahmitb2eMstusrrolesDao.getListUserRole(userId);
-
-        for (Ahmitb2eMstusrroles data : formFunctionList) {
-            Ahmitb2eMstusrrolesPk desc = data.getAhmitb2eMstusrrolesPk();
-            role = desc.getVroleid();
-        }
 
         List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, userId, roleFromFront, nrp);
         int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, userId, roleFromFront, nrp);

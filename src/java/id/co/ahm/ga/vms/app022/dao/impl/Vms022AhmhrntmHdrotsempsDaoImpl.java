@@ -157,27 +157,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     .append("||'%' ) ");
         }
 
-        if (role.equals("RO_GAVMS_PICAHM")) {
-            sqlQuery.append(areaTypeQuery);
-        }
-
         sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID and A.VOTSTYPE = B.VOTSTYPE ");
-
-//        if (role.equals("RO_GAVMS_PICAHM")) {
-//            sqlQuery.append("INNER JOIN ( "
-//                    + "    SELECT DISTINCT MPO.VNRP, MPO.VAREA, MPO.VOTSTYPE, FGD.NAME, DP.VPGBLNM, FGD.VHANDPHONE  "
-//                    + "    FROM AHMHRNTM_MSTPICOTS MPO, AHMHRNTM_DTLPRMGBLS DP,  FMHRD_GENERAL_DATAS FGD, AHMMOERP_MSTKARYAWANS@AHMPS MKA  "
-//                    + "    WHERE "
-//                    + "        SYSDATE BETWEEN MPO.DBGNEFFDT AND MPO.DENDEFFDT  "
-//                    + "        AND DP.VPGBLCD = MPO.VAREA  "      V
-//                    + "        AND DP.VPGBLCD LIKE 'PG10%'  "     V
-//                    + "        AND MPO.VNRP = FGD.NRP  "          V
-//                    + "        AND MPO.VNRP = MKA.IIDNRP  "       V
-//                    + "        AND FGD.VEND_VND_CODE = 'AHM' "    V
-//                    + "        AND MPO.VRGSROLE IN ('PG91-01','PG91-03') "    V
-////                    + "        AND FGD.NRP = '" + nrp + "' "
-//                    + "    ) NEW ON A.VOTSTYPE = NEW.VOTSTYPE AND B.VPLANT = NEW.VAREA ");
-//        }
         sqlQuery.append("INNER JOIN AHMHRNTM_DTLPRMGBLS E on B.VPLANT = E.VPGBLCD  ")
                 .append("INNER JOIN AHMHRNTM_DTLPRMGBLS D ON A.VOTSTYPE = D.VPGBLCD ")
                 .append("LEFT JOIN AHMHRNTM_DTLPRMGBLS F ON A.VCOMPANY = F.VPGBLCD ")
@@ -208,9 +188,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         if (role.equals("RO_GAVMS_PICAHM")) {
             sqlQuery.append(areaTypeQuery);
         }
-//        if (role.equals("RO_GAVMS_PICAHM")) {
-//        sqlQuery.append(" AND NEW.VNRP = '").append(nrp).append("' ");
-//        }
         if (!StringUtils.isBlank(begineff) || !StringUtils.isBlank(endeff)) {
             sqlQuery.append(" AND (");
 
