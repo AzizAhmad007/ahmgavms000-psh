@@ -32,7 +32,7 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
                 + " WHERE  "
                 + " A.VOTSTYPE = :VOTSTYPE "
                 + " AND  "
-                + " SYSDATE BETWEEN A.DBGNEFFDT AND A.DENDEFFDT "
+                + " AND TRUNC(SYSDATE) BETWEEN TRUNC(A.DBGNEFFDT) AND TRUNC(A.DENDEFFDT) "
                 + " AND B.VPGBLCD = A.VAREA "
                 + " AND B.VPGBLCD LIKE 'PG10%' "
                 + " AND A.VNRP = C.NRP "
