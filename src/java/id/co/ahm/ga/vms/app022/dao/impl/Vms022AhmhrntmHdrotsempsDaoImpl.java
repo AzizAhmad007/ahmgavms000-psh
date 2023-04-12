@@ -127,9 +127,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("    BB.VPGBLNM, BB.VPGBLCD, CC.VOTSTYPE ")
                 .append("  FROM AHMHRNTM_DTLOTSREGS AA, AHMHRNTM_DTLPRMGBLS BB, AHMHRNTM_MSTPICOTS CC, AHMHRNTM_HDROTSEMPS DD");
 
-        if (role.equals("RO_GAVMS_PICAHM")) {
-            sqlQuery.append(", FMHRD_GENERAL_DATAS FGD, AHMMOERP_MSTKARYAWANS@AHMPS MKA ");
-        }
+//        if (role.equals("RO_GAVMS_PICAHM")) {
+//            sqlQuery.append(", FMHRD_GENERAL_DATAS FGD, AHMMOERP_MSTKARYAWANS@AHMPS MKA ");
+//        }
 
         sqlQuery.append("  WHERE AA.VREGID = 'PLNT' ")
                 .append("  AND AA.VOTSID = DD.VOTSID ")
@@ -399,9 +399,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("    BB.VPGBLNM, BB.VPGBLCD, CC.VOTSTYPE ")
                 .append("  FROM AHMHRNTM_DTLOTSREGS AA, AHMHRNTM_DTLPRMGBLS BB, AHMHRNTM_MSTPICOTS CC, AHMHRNTM_HDROTSEMPS DD");
 
-        if (role.equals("RO_GAVMS_PICAHM")) {
-            sqlQuery.append(", FMHRD_GENERAL_DATAS FGD, AHMMOERP_MSTKARYAWANS@AHMPS MKA ");
-        }
+//        if (role.equals("RO_GAVMS_PICAHM")) {
+//            sqlQuery.append(", FMHRD_GENERAL_DATAS FGD, AHMMOERP_MSTKARYAWANS@AHMPS MKA ");
+//        }
 
         sqlQuery.append("  WHERE AA.VREGID = 'PLNT' ")
                 .append("  AND AA.VOTSID = DD.VOTSID ")
