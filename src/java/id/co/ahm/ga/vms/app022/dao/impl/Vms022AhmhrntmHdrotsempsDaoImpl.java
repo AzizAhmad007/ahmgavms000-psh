@@ -140,7 +140,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         if (role.equals("RO_GAVMS_PICAHM")) {
             sqlQuery.append("  AND CC.VNRP = '")
                     .append(nrp)
-                    .append("' ");
+                    .append("' ")
+                    .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ")
+                    ;
         }
 
         if (!StringUtils.isBlank(plant)) {
@@ -424,7 +426,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         if (!StringUtils.isBlank(pic)) {
             sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
                     .append(pic)
-                    .append("||'%' ) ");
+                    .append("||'%' ) ")
+                    .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ")
+                    ;
         }
 
         sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID and A.VOTSTYPE = B.VOTSTYPE ");
