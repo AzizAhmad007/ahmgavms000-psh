@@ -31,7 +31,6 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
                 + " FROM AHMHRNTM_MSTPICOTS A, AHMHRNTM_DTLPRMGBLS B, FMHRD_GENERAL_DATAS C, AHMMOERP_MSTKARYAWANS@ahmps D "
                 + " WHERE  "
                 + " A.VOTSTYPE = :VOTSTYPE "
-                + " AND  "
                 + " AND TRUNC(SYSDATE) BETWEEN TRUNC(A.DBGNEFFDT) AND TRUNC(A.DENDEFFDT) "
                 + " AND B.VPGBLCD = A.VAREA "
                 + " AND B.VPGBLCD LIKE 'PG10%' "
