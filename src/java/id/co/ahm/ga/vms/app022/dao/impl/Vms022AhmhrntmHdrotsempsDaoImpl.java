@@ -185,9 +185,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "        (:vacstat IS NULL OR UPPER(A.VVACSTTS) LIKE '%'||:vacstat||'%' )  "
         );
 
-        if (role.equals("RO_GAVMS_PICAHM")) {
-            sqlQuery.append(areaTypeQuery);
-        }
+//        if (role.equals("RO_GAVMS_PICAHM")) {
+//            sqlQuery.append(areaTypeQuery);
+//        }
         if (!StringUtils.isBlank(begineff) || !StringUtils.isBlank(endeff)) {
             sqlQuery.append(" AND (");
 
@@ -456,9 +456,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "        (:vacstat IS NULL OR UPPER(A.VVACSTTS) LIKE '%'||:vacstat||'%' )  "
         );
 
-        if (role.equals("RO_GAVMS_PICAHM")) {
-            sqlQuery.append(areaTypeQuery);
-        }
+//        if (role.equals("RO_GAVMS_PICAHM")) {
+//            sqlQuery.append(areaTypeQuery);
+//        }
 
         if (!StringUtils.isBlank(begineff) || !StringUtils.isBlank(endeff)) {
             sqlQuery.append(" AND (");
