@@ -463,7 +463,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             createCell(rowHeaderTable, "End Work Effective Date", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Pass Card Expiry Date", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Pass Card Number", col++, styleHeaderTable1);
-            createCell(rowHeaderTable, "Notes", col++, styleHeaderTable1);                      //new
+            createCell(rowHeaderTable, "Note", col++, styleHeaderTable1);                      //new
             createCell(rowHeaderTable, "Covid19 Vaccine Status", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Covid19 Last Vaccinate Type", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Covid19 Last Vaccinate Date", col++, styleHeaderTable1);
