@@ -374,6 +374,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                         vo.setVstatus("WAITING");
                         vo.setVpckupsts("NOTDONE");
                         vo.setVcardname(trimOutName);
+                        vo.setCreateBy(userCred.getUserid());
 
 //comment because still of disscussion
                         //start
