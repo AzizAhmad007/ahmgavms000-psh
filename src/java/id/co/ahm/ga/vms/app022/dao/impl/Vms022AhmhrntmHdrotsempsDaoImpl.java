@@ -130,7 +130,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 //        if (role.equals("RO_GAVMS_PICAHM")) {
 //            sqlQuery.append(", FMHRD_GENERAL_DATAS FGD, AHMMOERP_MSTKARYAWANS@AHMPS MKA ");
 //        }
-
         sqlQuery.append("  WHERE AA.VREGID = 'PLNT' ")
                 .append("  AND AA.VOTSID = DD.VOTSID ")
                 .append("  AND CC.VOTSTYPE = DD.VOTSTYPE ")
@@ -141,8 +140,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             sqlQuery.append("  AND CC.VNRP = '")
                     .append(nrp)
                     .append("' ")
-                    .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ")
-                    ;
+                    .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ");
         }
 
         if (!StringUtils.isBlank(plant)) {
@@ -175,17 +173,42 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "        UPPER(A.VPERSID) LIKE UPPER('%'||:vpersid||'%') "
                 + "    AND "
                 + "        UPPER(A.NAHMCARDORI ) LIKE UPPER('%'||:idcard||'%') "
-                + "    AND "
-                + "        UPPER(A.VOTSTYPE ) LIKE UPPER('%'||:outtype||'%') "
-                + "    AND "
-                + "        UPPER(A.VCOMPANY ) LIKE UPPER('%'||:company||'%') "
-                + "    AND "
-                + "        (:outstat IS NULL OR UPPER(A.VOTSSTTS) LIKE '%'||:outstat||'%' ) "
-                + "    AND "
-                + "        (:plant IS NULL OR UPPER(B.VPLANT) LIKE '%'||:plant||'%' ) "
-                + "    AND "
-                + "        (:vacstat IS NULL OR UPPER(A.VVACSTTS) LIKE '%'||:vacstat||'%' )  "
         );
+
+        //Outsource Company Param
+        if (!company.equals("")) {
+            sqlQuery.append("    AND UPPER(A.VOTSSTTS) = UPPER('")
+                    .append(company)
+                    .append("') ");
+        }
+
+        //Outsource Status Param
+        if (!outstat.equals("") && !outstat.equals(" ")) {
+            sqlQuery.append("    AND UPPER(A.VOTSSTTS) = UPPER('")
+                    .append(outstat)
+                    .append("') ");
+        }
+
+        //Outsource Type Param
+        if (!outtype.equals("")) {
+            sqlQuery.append("    AND A.VOTSTYPE = '")
+                    .append(outtype)
+                    .append("' ");
+        }
+
+        //Plant Param
+        if (!plant.equals("")) {
+            sqlQuery.append("    AND A.VOTSTYPE = '")
+                    .append(plant)
+                    .append("' ");
+        }
+
+        //Vaccine Status Param
+        if (!vacstat.equals("") && !vacstat.equals(" ")) {
+            sqlQuery.append("    AND UPPER(A.VVACSTTS) = UPPER('")
+                    .append(vacstat)
+                    .append("') ");
+        }
 
 //        if (role.equals("RO_GAVMS_PICAHM")) {
 //            sqlQuery.append(areaTypeQuery);
@@ -228,11 +251,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .setParameter("vname", vname)
                 .setParameter("vpersid", vpersid)
                 .setParameter("idcard", idcard)
-                .setParameter("outtype", outtype)
-                .setParameter("company", company)
-                .setParameter("outstat", outstat)
-                .setParameter("plant", plant)
-                .setParameter("vacstat", vacstat);
+                ;
 
         try {
             List lists = query.list();
@@ -402,7 +421,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 //        if (role.equals("RO_GAVMS_PICAHM")) {
 //            sqlQuery.append(", FMHRD_GENERAL_DATAS FGD, AHMMOERP_MSTKARYAWANS@AHMPS MKA ");
 //        }
-
         sqlQuery.append("  WHERE AA.VREGID = 'PLNT' ")
                 .append("  AND AA.VOTSID = DD.VOTSID ")
                 .append("  AND CC.VOTSTYPE = DD.VOTSTYPE ")
@@ -427,8 +445,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
                     .append(pic)
                     .append("||'%' ) ")
-                    .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ")
-                    ;
+                    .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ");
         }
 
         sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID and A.VOTSTYPE = B.VOTSTYPE ");
@@ -463,7 +480,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 //        if (role.equals("RO_GAVMS_PICAHM")) {
 //            sqlQuery.append(areaTypeQuery);
 //        }
-
         if (!StringUtils.isBlank(begineff) || !StringUtils.isBlank(endeff)) {
             sqlQuery.append(" AND (");
 
