@@ -241,30 +241,31 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             Sheet sheet = workbook.createSheet("Sheet1");
             //for sheet naming end
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 10));
-            sheet.setColumnWidth(0, 7500);
-            sheet.setColumnWidth(1, 10000);
-            sheet.setColumnWidth(2, 7500);
-            sheet.setColumnWidth(3, 7500);
-            sheet.setColumnWidth(4, 7500);
-            sheet.setColumnWidth(5, 7500);
-            sheet.setColumnWidth(6, 7500);
-            sheet.setColumnWidth(7, 7500);
-            sheet.setColumnWidth(8, 7500);
-            sheet.setColumnWidth(9, 7500);
-            sheet.setColumnWidth(10, 7500);
-            sheet.setColumnWidth(11, 7500);
-            sheet.setColumnWidth(12, 7500);
-            sheet.setColumnWidth(13, 7500);
-            sheet.setColumnWidth(14, 7500);
-            sheet.setColumnWidth(15, 7500);
-            sheet.setColumnWidth(16, 7500);
-            sheet.setColumnWidth(17, 7500);
-            sheet.setColumnWidth(18, 7500);
-            sheet.setColumnWidth(19, 10000);
-            sheet.setColumnWidth(20, 10000);
-            sheet.setColumnWidth(21, 7500);
-            sheet.setColumnWidth(22, 7500);
-            sheet.setColumnWidth(23, 7500);
+            sheet.setColumnWidth(0, 7500);      //Outsource ID
+            sheet.setColumnWidth(1, 10000);     //Outsource Name
+            sheet.setColumnWidth(2, 7500);      //Phone Number Outsource
+            sheet.setColumnWidth(3, 7500);      //NIK
+            sheet.setColumnWidth(4, 7500);      //Outsource Type
+            sheet.setColumnWidth(5, 7500);      //Supplier
+            sheet.setColumnWidth(6, 7500);      //Outsource Company
+            sheet.setColumnWidth(7, 7500);      //Outsource Status
+            sheet.setColumnWidth(8, 7500);      //Job Detail
+            sheet.setColumnWidth(9, 7500);      //Plant
+            sheet.setColumnWidth(10, 7500);     //Access
+            sheet.setColumnWidth(11, 7500);     //Gate Level Access
+            sheet.setColumnWidth(12, 7500);     //Begin Work Eff Date
+            sheet.setColumnWidth(13, 7500);     //End Work Eff Date
+            sheet.setColumnWidth(14, 7500);     //Pass Card Expiry Date
+            sheet.setColumnWidth(15, 7500);     //Pass Card Number
+            sheet.setColumnWidth(16, 10000);    //Note                          //new
+            sheet.setColumnWidth(17, 7500);     //Covid19 Vaccine Status
+            sheet.setColumnWidth(18, 7500);     //Covid19 Last Vaccinate Type
+            sheet.setColumnWidth(19, 7500);     //Covid19 Last Vaccinate Date
+            sheet.setColumnWidth(20, 10000);    //Covid19 Summary Vaccinate Status
+            sheet.setColumnWidth(21, 10000);    //Notes Covid19 Vaccinate Status
+            sheet.setColumnWidth(22, 7500);     //PIC AHM
+            sheet.setColumnWidth(23, 7500);     //Modified By
+            sheet.setColumnWidth(24, 7500);     //Modified Date
  
             Font headerFont = sheet.getWorkbook().createFont();
             headerFont.setBold(true);
@@ -462,6 +463,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
             createCell(rowHeaderTable, "End Work Effective Date", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Pass Card Expiry Date", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Pass Card Number", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Notes", col++, styleHeaderTable1);                      //new
             createCell(rowHeaderTable, "Covid19 Vaccine Status", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Covid19 Last Vaccinate Type", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Covid19 Last Vaccinate Date", col++, styleHeaderTable1);
@@ -538,6 +540,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                 createCell(rowContentData, item.getEndDateText(), col++, styleContentTable2WithWrap);
                 createCell(rowContentData, item.getPassExpiryDateText(), col++, styleContentTable2WithWrap);
                 createCell(rowContentData, item.getPassNumber(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, item.getNote(), col++, styleContentTable1WithWrap);          //new
                 createCell(rowContentData, item.getVacStatus(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getVacTypeName(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getVacDateText(), col++, styleContentTable2WithWrap);
