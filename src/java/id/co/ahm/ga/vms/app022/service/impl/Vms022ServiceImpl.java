@@ -358,6 +358,12 @@ public class Vms022ServiceImpl implements Vms022Service {
                         } else if (nseq < 1000000) {
                             vNseq += String.valueOf(nseq);
                         }
+                        
+                        String trimOutName = getdata.getOutName();
+                        
+                        if(trimOutName.length() > 18) {
+                            trimOutName = trimOutName.substring(0, 17);
+                        }
 
                         AhmhrntmTxnidreps vo = new AhmhrntmTxnidreps();
                         vo.setVwrkorderno(vNseq);
@@ -367,7 +373,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                         vo.setVremark(getdata.getNote());
                         vo.setVstatus("WAITING");
                         vo.setVpckupsts("NOTDONE");
-                        vo.setVcardname(getdata.getOutName());
+                        vo.setVcardname(trimOutName);
 
 //comment because still of disscussion
                         //start
