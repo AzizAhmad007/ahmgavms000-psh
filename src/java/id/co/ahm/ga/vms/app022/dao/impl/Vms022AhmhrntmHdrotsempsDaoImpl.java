@@ -148,7 +148,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     .append(plant)
                     .append("' ");
         } else {
-            sqlQuery.append(" AND AA.NSEQ = 1 ");
+            sqlQuery.append(" AND ROWNUM = 1 ");
         }
 
         if (!StringUtils.isBlank(pic)) {
@@ -438,7 +438,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     .append(plant)
                     .append("' ");
         } else {
-            sqlQuery.append(" AND AA.NSEQ = 1 ");
+            sqlQuery.append(" AND ROWNUM = 1 ");
         }
 
         if (!StringUtils.isBlank(pic)) {
