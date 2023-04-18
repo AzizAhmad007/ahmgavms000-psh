@@ -261,9 +261,9 @@ public class Vms022Rest {
         DtoParamPaging dtoParam = new DtoParamPaging();
         dtoParam.setOffset(0);
         dtoParam.setLimit(0);
-        dtoParam.setSort("desc");
+        dtoParam.setSort(null);
         dtoParam.setSearch(search);
-        dtoParam.setOrder("outId");
+        dtoParam.setOrder("");
  
         DtoResponseWorkspace dtoResponseWorkspace = vms022Service.getExcel(dtoParam);
         List<Vms022VoMonitoring> vms022VoMonitor = (List<Vms022VoMonitoring>) dtoResponseWorkspace.getData();
