@@ -255,6 +255,7 @@ public class Vms022Rest {
         search.put("outStatus", outStatus);
         search.put("plant", areaName);
         search.put("vacStatus", vacStatus);
+        search.put("role", role);
 
         DtoParamPaging dtoParam = new DtoParamPaging();
         dtoParam.setOffset(0);
