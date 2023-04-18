@@ -255,6 +255,8 @@ public class Vms022Rest {
         search.put("outStatus", outStatus);
         search.put("plant", areaName);
         search.put("vacStatus", vacStatus);
+        search.put("userid", userid);
+        search.put("role", role);
  
         DtoParamPaging dtoParam = new DtoParamPaging();
         dtoParam.setOffset(0);
@@ -263,7 +265,7 @@ public class Vms022Rest {
         dtoParam.setSearch(search);
         dtoParam.setOrder("");
  
-        DtoResponseWorkspace dtoResponseWorkspace = vms022Service.getExcel(dtoParam, user);
+        DtoResponseWorkspace dtoResponseWorkspace = vms022Service.getExcel(dtoParam);
         List<Vms022VoMonitoring> vms022VoMonitor = (List<Vms022VoMonitoring>) dtoResponseWorkspace.getData();
         ModelAndView modelAndView = new ModelAndView(new Vms022ExportExcel());
         modelAndView.addObject("dtoParam", dtoParam);

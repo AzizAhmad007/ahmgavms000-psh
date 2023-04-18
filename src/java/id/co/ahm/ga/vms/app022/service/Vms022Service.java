@@ -43,7 +43,7 @@ public interface Vms022Service {
     
     public DtoResponseWorkspace checkingDate(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
     
-    public DtoResponsePagingWorkspace getExcel(DtoParamPaging dto, VoUserCred userCred);
+    public DtoResponsePagingWorkspace getExcel(DtoParamPaging dto);
     
     public DtoResponse testing (DtoParamPaging dto);
     

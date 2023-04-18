@@ -224,25 +224,25 @@ public class Vms022ServiceImpl implements Vms022Service {
     }
  
     @Override
-    public DtoResponsePagingWorkspace getExcel(DtoParamPaging dto, VoUserCred userCred) {
+    public DtoResponsePagingWorkspace getExcel(DtoParamPaging dto) {
  
-        String userId = getUserId(userCred);
-        List<Ahmitb2eMstusrroles> formFunctionList = ahmitb2eMstusrrolesDao.getListUserRole(userId);
-        String role = "";
+//        String userId = getUserId(userCred);
+//        List<Ahmitb2eMstusrroles> formFunctionList = ahmitb2eMstusrrolesDao.getListUserRole(userId);
+//        String role = "";
         String nrp = AhmStringUtil.hasValue(dto.getSearch().get("userid")) ? (dto.getSearch().get("userid") + "").toUpperCase() : "";
-//        String roleFromFront = AhmStringUtil.hasValue(dto.getSearch().get("role")) ? (dto.getSearch().get("role") + "").toUpperCase() : "";
+        String roleFromFront = AhmStringUtil.hasValue(dto.getSearch().get("role")) ? (dto.getSearch().get("role") + "").toUpperCase() : "";
  
-        for (Ahmitb2eMstusrroles data : formFunctionList) {
-            Ahmitb2eMstusrrolesPk desc = data.getAhmitb2eMstusrrolesPk();
-            if (desc.getVroleid().equals("RO_GAVMS_PICAHM")) {
-                role = desc.getVroleid();
-            } else if (desc.getVroleid().equals("RO_GAVMS_OFCSECT")) {
-                role = desc.getVroleid();
-            }
-        }
+//        for (Ahmitb2eMstusrroles data : formFunctionList) {
+//            Ahmitb2eMstusrrolesPk desc = data.getAhmitb2eMstusrrolesPk();
+//            if (desc.getVroleid().equals("RO_GAVMS_PICAHM")) {
+//                role = desc.getVroleid();
+//            } else if (desc.getVroleid().equals("RO_GAVMS_OFCSECT")) {
+//                role = desc.getVroleid();
+//            }
+//        }
  
-        List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, userId, role, nrp);
-        int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, userId, role, nrp);
+        List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, nrp, roleFromFront, nrp);
+        int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, nrp, roleFromFront, nrp);
  
         for (Vms022VoMonitoring vo : list) {
             String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());
