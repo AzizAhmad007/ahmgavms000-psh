@@ -370,19 +370,20 @@ public class Vms022ServiceImpl implements Vms022Service {
                         vo.setVpckupsts("NOTDONE");
                         vo.setVcardname(trimOutName);
                         vo.setCreateBy(userCred.getUserid());
+                        
+                        startWorkflow(idWF, vNseq, userCred.getUserid(), userCred, idHist);
  
 //comment because still of disscussion
                         //start
-                        vo.setVwflowid(idWF);
-                        Boolean get = vms022AhmitwfsMstwfdochistDao.generateHistory(vNseq, userCred.getUsername(), getdata.getOutId(), idWF, idHist);
-                        if (get == false) {
-                            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, null);
-                        }
+//                        vo.setVwflowid(idWF);
+//                        Boolean get = vms022AhmitwfsMstwfdochistDao.generateHistory(vNseq, userCred.getUsername(), getdata.getOutId(), idWF, idHist);
+//                        if (get == false) {
+//                            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, null);
+//                        }
                         //end
                         vms022ahmhrntmHdrotsempsDao.update(mp);
                         vms022ahmhrntmHdrotsempsDao.flush();
                         
-                        startWorkflow(idWF, vNseq, userCred.getUserid(), userCred, idHist);
                         if (validateWO.isEmpty()) {
                             vms022ahmhrntmTxnidrepsDao.save(vo);
                             vms022ahmhrntmTxnidrepsDao.flush();
