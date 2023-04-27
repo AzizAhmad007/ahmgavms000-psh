@@ -197,11 +197,11 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         }
 
         //Plant Param
-        if (!plant.equals("")) {
-            sqlQuery.append("    AND A.VOTSTYPE = '")
-                    .append(plant)
-                    .append("' ");
-        }
+//        if (!plant.equals("")) {
+//            sqlQuery.append("    AND A.VOTSTYPE = '")
+//                    .append(plant)
+//                    .append("' ");
+//        }
 
         //Vaccine Status Param
         if (!vacstat.equals("") && !vacstat.equals(" ")) {
