@@ -16,6 +16,12 @@ public class Vms022Constant {
 
     public static final String STATUS_WAITING_FOR_PIC = "Waiting for Approval PIC";
     public static final String STATUS_WAITING_FOR_SEC = "Waiting for Approval Security";
+    
+    public static final String workflowId = "WF_AHMHRNTM_ID_Card_Replacement";
+
+    public static final String moduleId = "ahmgavms";
+    public static final String appId = "ahmgavms022";
+    public static final String descWorkflow = "Workflow for ID Card Replacement";
 
     public static final String SQL_GET_PLANTS_BY_USERID
             = "";

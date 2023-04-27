@@ -26,6 +26,8 @@ import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.jx.b2e.app000.dao.Ahmitb2eMstusrrolesDao;
 import id.co.ahm.jx.b2e.app000.model.Ahmitb2eMstusrroles;
 import id.co.ahm.jx.b2e.app000.model.Ahmitb2eMstusrrolesPk;
+import id.co.ahm.jx.wfs.app000.service.WorkflowService;
+import id.co.ahm.jx.wfs.app000.vo.VoWfsParam;
 import id.co.ahm.jxf.constant.StatusMsgEnum;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponse;
@@ -35,6 +37,7 @@ import id.co.ahm.jxf.util.AhmStringUtil;
 import id.co.ahm.jxf.util.DateUtil;
 import id.co.ahm.jxf.util.DtoHelper;
 import id.co.ahm.jxf.vo.VoMessageWorkspace;
+import id.co.ahm.jxf.vo.VoPstUserCred;
 import id.co.ahm.jxf.vo.VoUserCred;
 import java.io.File;
 import java.io.FileInputStream;
@@ -84,6 +87,10 @@ public class Vms022ServiceImpl implements Vms022Service {
  
     public final static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-YYYY");
     public final static LocalDateTime now = LocalDateTime.now();
+
+    @Autowired
+    @Qualifier(value = "wfService")
+    private WorkflowService wfService;
  
     @Autowired
     @Qualifier("ahmitb2eMstusrrolesDao")
@@ -226,20 +233,8 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Override
     public DtoResponsePagingWorkspace getExcel(DtoParamPaging dto) {
  
-//        String userId = getUserId(userCred);
-//        List<Ahmitb2eMstusrroles> formFunctionList = ahmitb2eMstusrrolesDao.getListUserRole(userId);
-//        String role = "";
         String nrp = AhmStringUtil.hasValue(dto.getSearch().get("userid")) ? (dto.getSearch().get("userid") + "").toUpperCase() : "";
         String roleFromFront = AhmStringUtil.hasValue(dto.getSearch().get("role")) ? (dto.getSearch().get("role") + "").toUpperCase() : "";
- 
-//        for (Ahmitb2eMstusrroles data : formFunctionList) {
-//            Ahmitb2eMstusrrolesPk desc = data.getAhmitb2eMstusrrolesPk();
-//            if (desc.getVroleid().equals("RO_GAVMS_PICAHM")) {
-//                role = desc.getVroleid();
-//            } else if (desc.getVroleid().equals("RO_GAVMS_OFCSECT")) {
-//                role = desc.getVroleid();
-//            }
-//        }
  
         List<Vms022VoMonitoring> list = vms022ahmhrntmHdrotsempsDao.getSearchData(dto, nrp, roleFromFront, nrp);
         int count = vms022ahmhrntmHdrotsempsDao.countSearchData(dto, nrp, roleFromFront, nrp);
@@ -378,11 +373,11 @@ public class Vms022ServiceImpl implements Vms022Service {
  
 //comment because still of disscussion
                         //start
-//                        vo.setVwflowid(idWF);
-//                        Boolean get = vms022AhmitwfsMstwfdochistDao.generateHistory(vNseq, userCred.getUsername(), getdata.getOutId(), idWF, idHist);
-//                        if (get == false) {
-//                            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, null);
-//                        }
+                        vo.setVwflowid(idWF);
+                        Boolean get = vms022AhmitwfsMstwfdochistDao.generateHistory(vNseq, userCred.getUsername(), getdata.getOutId(), idWF, idHist);
+                        if (get == false) {
+                            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, null);
+                        }
                         //end
                         vms022ahmhrntmHdrotsempsDao.update(mp);
                         vms022ahmhrntmHdrotsempsDao.flush();
@@ -404,6 +399,19 @@ public class Vms022ServiceImpl implements Vms022Service {
         } else {
             throw new Vms022Exception("Role Not Exist!");
         }
+    }
+    
+    public void startWorkflow(String wfID, String WorkOrder, String nrp, VoUserCred user, String idHist) {
+        Map<String, Object> mapWorkFlow = new HashMap<>();
+        mapWorkFlow.put("@AHMHRNTM046Originator", user);
+        
+        VoWfsParam voWorkflow = new VoWfsParam();
+        voWorkflow.setWfid(Vms022Constant.workflowId);
+        voWorkflow.setDocid(idHist);
+        voWorkflow.setDesc(Vms022Constant.descWorkflow);
+        voWorkflow.setVariables(mapWorkFlow);
+
+        wfService.startWorkflow(Vms022Constant.moduleId, Vms022Constant.appId, voWorkflow, user);
     }
  
     @Override
