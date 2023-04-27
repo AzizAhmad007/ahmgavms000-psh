@@ -154,7 +154,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         if (!StringUtils.isBlank(pic)) {
             sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
                     .append(pic)
-                    .append("||'%' ) ");
+                    .append("||'%' ) ")
+                    .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ");
         }
 
         sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID and A.VOTSTYPE = B.VOTSTYPE ");
@@ -202,7 +203,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 //                    .append(plant)
 //                    .append("' ");
 //        }
-
         //Vaccine Status Param
         if (!vacstat.equals("") && !vacstat.equals(" ")) {
             sqlQuery.append("    AND UPPER(A.VVACSTTS) = UPPER('")
@@ -250,8 +250,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         query.setParameter("votsid", votsid)
                 .setParameter("vname", vname)
                 .setParameter("vpersid", vpersid)
-                .setParameter("idcard", idcard)
-                ;
+                .setParameter("idcard", idcard);
 
         try {
             List lists = query.list();
@@ -430,7 +429,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         if (role.equals("RO_GAVMS_PICAHM")) {
             sqlQuery.append("  AND CC.VNRP = '")
                     .append(nrp)
-                    .append("' ");
+                    .append("' ")
+                    .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ");
         }
 
         if (!StringUtils.isBlank(plant)) {
@@ -458,24 +458,48 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                         + "WHERE  "
                         + "    1 = 1 "
                         + "    AND  "
-                        + "        A.VOTSID LIKE '%'||:votsid||'%'  ");
+                        + "        UPPER(A.VOTSID) LIKE UPPER('%'||:votsid||'%')  ");
         sqlQuery.append("    AND  "
-                + "        A.VNAME LIKE '%'||:vname||'%'  "
+                + "        UPPER(A.VNAME) LIKE UPPER('%'||:vname||'%')  "
                 + "    AND "
-                + "        A.VPERSID LIKE '%'||:vpersid||'%' "
+                + "        UPPER(A.VPERSID) LIKE UPPER('%'||:vpersid||'%') "
                 + "    AND "
-                + "        A.NAHMCARDORI LIKE '%'||:idcard||'%' "
-                + "    AND "
-                + "        A.VOTSTYPE LIKE '%'||:outtype||'%' "
-                + "    AND "
-                + "        A.VCOMPANY LIKE '%'||:company||'%' "
-                + "    AND "
-                + "        (:outstat IS NULL OR UPPER(A.VOTSSTTS) LIKE '%'||:outstat||'%' ) "
-                + "    AND "
-                + "        (:plant IS NULL OR B.VPLANT LIKE '%'||:plant||'%' ) "
-                + "    AND "
-                + "        (:vacstat IS NULL OR UPPER(A.VVACSTTS) LIKE '%'||:vacstat||'%' )  "
+                + "        UPPER(A.NAHMCARDORI ) LIKE UPPER('%'||:idcard||'%') "
         );
+
+        //Outsource Company Param
+        if (!company.equals("")) {
+            sqlQuery.append("    AND UPPER(A.VOTSSTTS) = UPPER('")
+                    .append(company)
+                    .append("') ");
+        }
+
+        //Outsource Status Param
+        if (!outstat.equals("") && !outstat.equals(" ")) {
+            sqlQuery.append("    AND UPPER(A.VOTSSTTS) = UPPER('")
+                    .append(outstat)
+                    .append("') ");
+        }
+
+        //Outsource Type Param
+        if (!outtype.equals("")) {
+            sqlQuery.append("    AND A.VOTSTYPE = '")
+                    .append(outtype)
+                    .append("' ");
+        }
+
+        //Plant Param
+//        if (!plant.equals("")) {
+//            sqlQuery.append("    AND A.VOTSTYPE = '")
+//                    .append(plant)
+//                    .append("' ");
+//        }
+        //Vaccine Status Param
+        if (!vacstat.equals("") && !vacstat.equals(" ")) {
+            sqlQuery.append("    AND UPPER(A.VVACSTTS) = UPPER('")
+                    .append(vacstat)
+                    .append("') ");
+        }
 
 //        if (role.equals("RO_GAVMS_PICAHM")) {
 //            sqlQuery.append(areaTypeQuery);
