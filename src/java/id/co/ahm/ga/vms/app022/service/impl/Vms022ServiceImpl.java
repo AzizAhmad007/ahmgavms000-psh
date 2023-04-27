@@ -403,7 +403,7 @@ public class Vms022ServiceImpl implements Vms022Service {
     
     public void startWorkflow(String wfID, String WorkOrder, String nrp, VoUserCred user, String idHist) {
         Map<String, Object> mapWorkFlow = new HashMap<>();
-        mapWorkFlow.put("@AHMHRNTM046Originator", user);
+        mapWorkFlow.put("@AHMHRNTM046Originator", user.getUsername());
         
         VoWfsParam voWorkflow = new VoWfsParam();
         voWorkflow.setWfid(Vms022Constant.workflowId);
