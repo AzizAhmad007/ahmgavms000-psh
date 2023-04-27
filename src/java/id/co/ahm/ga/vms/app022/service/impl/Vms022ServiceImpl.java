@@ -409,7 +409,7 @@ public class Vms022ServiceImpl implements Vms022Service {
         
         VoWfsParam voWorkflow = new VoWfsParam();
         voWorkflow.setWfid(Vms022Constant.workflowId);
-        voWorkflow.setDocid(idHist);
+        voWorkflow.setDocid(wfID);
         voWorkflow.setDesc(Vms022Constant.descWorkflow);
         voWorkflow.setVariables(mapWorkFlow);
 
