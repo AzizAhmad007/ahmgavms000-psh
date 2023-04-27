@@ -449,7 +449,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         }
 
         sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID and A.VOTSTYPE = B.VOTSTYPE ");
-
         sqlQuery.append("INNER JOIN AHMHRNTM_DTLPRMGBLS E on B.VPLANT = E.VPGBLCD  ")
                 .append("INNER JOIN AHMHRNTM_DTLPRMGBLS D ON A.VOTSTYPE = D.VPGBLCD ")
                 .append("LEFT JOIN AHMHRNTM_DTLPRMGBLS F ON A.VCOMPANY = F.VPGBLCD ")
@@ -535,22 +534,11 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         query.setParameter("votsid", votsid)
                 .setParameter("vname", vname)
                 .setParameter("vpersid", vpersid)
-                .setParameter("idcard", idcard)
-                .setParameter("outtype", outtype)
-                .setParameter("company", company)
-                .setParameter("outstat", outstat)
-                .setParameter("plant", plant)
-                .setParameter("vacstat", vacstat);
+                .setParameter("idcard", idcard);
 
-        int counter = 0;
-        try {
-            List lists = query.list();
-            for (int i = 0; i < lists.size(); i++) {
-                counter++;
-            }
-        } catch (SQLGrammarException e) {
-        }
-        return counter;
+        List lists = query.list();
+        
+        return lists.size();
     }
 
     private void orderClause(DtoParamPaging input, StringBuilder query, Map<String, String> clause, String param) {
