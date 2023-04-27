@@ -381,6 +381,8 @@ public class Vms022ServiceImpl implements Vms022Service {
                         //end
                         vms022ahmhrntmHdrotsempsDao.update(mp);
                         vms022ahmhrntmHdrotsempsDao.flush();
+                        
+                        startWorkflow(idWF, vNseq, userCred.getUserid(), userCred, idHist);
                         if (validateWO.isEmpty()) {
                             vms022ahmhrntmTxnidrepsDao.save(vo);
                             vms022ahmhrntmTxnidrepsDao.flush();
