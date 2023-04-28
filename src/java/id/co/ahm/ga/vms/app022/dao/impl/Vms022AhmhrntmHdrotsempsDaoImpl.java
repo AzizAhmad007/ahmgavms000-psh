@@ -134,7 +134,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("  AND AA.VOTSID = DD.VOTSID ")
                 .append("  AND CC.VOTSTYPE = DD.VOTSTYPE ")
                 .append("  AND AA.VPLANT = BB.VPGBLCD ")
-                .append("  AND CC.VAREA = AA.VPLANT ");
+                .append("  AND CC.VAREA = AA.VPLANT ")
+                .append("  AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ")
+                ;
 
         if (role.equals("RO_GAVMS_PICAHM")) {
             sqlQuery.append("  AND CC.VNRP = '")
@@ -424,7 +426,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("  AND AA.VOTSID = DD.VOTSID ")
                 .append("  AND CC.VOTSTYPE = DD.VOTSTYPE ")
                 .append("  AND AA.VPLANT = BB.VPGBLCD ")
-                .append("  AND CC.VAREA = AA.VPLANT ");
+                .append("  AND CC.VAREA = AA.VPLANT ")
+                .append("  AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ")
+                ;
 
         if (role.equals("RO_GAVMS_PICAHM")) {
             sqlQuery.append("  AND CC.VNRP = '")
