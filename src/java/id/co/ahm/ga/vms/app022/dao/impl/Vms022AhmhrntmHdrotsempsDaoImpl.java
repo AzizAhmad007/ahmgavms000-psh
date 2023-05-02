@@ -256,7 +256,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .setParameter("idcard", idcard);
 
         try {
+            int tempRow = 0;
             List lists = query.list();
+            String tempId = "";
             for (int i = 0; i < lists.size(); i++) {
                 Object[] obj = (Object[]) lists.get(i);
                 Vms022VoMonitoring vo = new Vms022VoMonitoring();
@@ -343,10 +345,17 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                         vo.setFilePhoto(Base64.getEncoder().encodeToString(bFileVac));
                     }
                 }
-                vo.setRowNum(i);
-                vo.setGateName("=========testing");
-
-                result.add(vo);
+//                vo.setRowNum(i);
+//                vo.setGateName("=========testing");
+                
+                if (tempId.equals(obj[0] + "")) {
+                    tempId = obj[0] + "";
+                } else {
+                    tempRow++;
+                    tempId = obj[0] + "";
+                    vo.setRowNum(tempRow);
+                    result.add(vo);
+                }
 
             }
         } catch (HibernateException e) {
@@ -534,6 +543,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             }
             sqlQuery.append(" ) ");
         }
+        
+        sqlQuery.append(" ORDER BY A.VNAME desc ");
 
         SQLQuery query = getCurrentSession().createSQLQuery(sqlQuery.toString());
 
@@ -542,9 +553,36 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .setParameter("vpersid", vpersid)
                 .setParameter("idcard", idcard);
 
-        List lists = query.list();
+        int counter = 0;
+        try {
+            List lists = query.list();
+            
+            String tempId = "";
 
-        return lists.size();
+            for (int i = 0; i < lists.size(); i++) {
+                Object[] obj = (Object[]) lists.get(i);
+                Vms022VoMonitoring vo = new Vms022VoMonitoring();
+
+                Boolean res = tempId.equals(obj[0] + "");
+                System.out.println("isi id = " + tempId);             
+                System.out.println("isi obj = " + obj[0] + "");
+                System.out.println("hasil if else = " + res);
+                if (tempId.equals(obj[0] + "")) {
+                    tempId = obj[0] + "";
+                } else {
+                    tempId = obj[0] + "";
+                    counter++;
+                }
+            }
+            System.out.println("JUMLAH COUNTER = " + counter);
+        } catch (SQLGrammarException e) {
+        }
+
+        return counter;
+
+//        List lists = query.list();
+//
+//        return lists.size();
     }
 
     private void orderClause(DtoParamPaging input, StringBuilder query, Map<String, String> clause, String param) {
