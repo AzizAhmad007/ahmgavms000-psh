@@ -181,7 +181,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
         //Outsource Company Param
         if (!company.equals("")) {
-            sqlQuery.append("    AND UPPER(A.VOTSSTTS) = UPPER('")
+            sqlQuery.append("    AND UPPER(A.VCOMPANY) = UPPER('")
                     .append(company)
                     .append("') ");
         }
@@ -483,7 +483,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
         //Outsource Company Param
         if (!company.equals("")) {
-            sqlQuery.append("    AND UPPER(A.VOTSSTTS) = UPPER('")
+            sqlQuery.append("    AND UPPER(A.VCOMPANY) = UPPER('")
                     .append(company)
                     .append("') ");
         }
