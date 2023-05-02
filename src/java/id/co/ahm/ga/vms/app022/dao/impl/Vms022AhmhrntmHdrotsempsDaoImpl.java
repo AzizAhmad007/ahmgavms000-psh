@@ -134,7 +134,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("  AND AA.VOTSID = DD.VOTSID ")
                 .append("  AND CC.VOTSTYPE = DD.VOTSTYPE ")
                 .append("  AND AA.VPLANT = BB.VPGBLCD ")
-                .append("  AND CC.VAREA = AA.VPLANT ")
                 .append("  AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ");
 
         if (role.equals("RO_GAVMS_PICAHM")) {
@@ -150,7 +149,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     .append("' ");
         } else {
 //            sqlQuery.append(" AND AA.NSEQ = 1 ");
-            sqlQuery.append(" AND BB.VPGBLCD LIKE 'PG10%' ")
+            sqlQuery.append("  AND CC.VAREA = AA.VPLANT ")
+                    .append(" AND BB.VPGBLCD LIKE 'PG10%' ")
                     .append(" AND TRUNC(SYSDATE) BETWEEN TRUNC(BB.DBGNEFFDT) AND TRUNC(BB.DENDEFFDT) ");
         }
 
@@ -427,7 +427,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("  AND AA.VOTSID = DD.VOTSID ")
                 .append("  AND CC.VOTSTYPE = DD.VOTSTYPE ")
                 .append("  AND AA.VPLANT = BB.VPGBLCD ")
-                .append("  AND CC.VAREA = AA.VPLANT ")
                 .append("  AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ");
 
         if (role.equals("RO_GAVMS_PICAHM")) {
@@ -443,7 +442,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     .append("' ");
         } else {
 //            sqlQuery.append(" AND AA.NSEQ = 1 ");
-            sqlQuery.append(" AND BB.VPGBLCD LIKE 'PG10%' ")
+            sqlQuery.append("  AND CC.VAREA = AA.VPLANT ")
+                    .append(" AND BB.VPGBLCD LIKE 'PG10%' ")
                     .append(" AND TRUNC(SYSDATE) BETWEEN TRUNC(BB.DBGNEFFDT) AND TRUNC(BB.DENDEFFDT) ");
         }
 
