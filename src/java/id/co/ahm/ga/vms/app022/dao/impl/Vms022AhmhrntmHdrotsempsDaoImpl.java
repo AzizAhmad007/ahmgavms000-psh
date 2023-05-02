@@ -47,6 +47,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
     @Override
     public List<Vms022VoMonitoring> getSearchData(DtoParamPaging input, String userId, String role, String nrp) {
         List<Vms022VoMonitoring> result = new ArrayList<>();
+        List<String> tempResult = new ArrayList<>();
         Map<String, String> sortMap = new HashMap<>();
         StringBuilder sqlQuery = new StringBuilder();
         String tes = "";
@@ -348,11 +349,20 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 //                vo.setRowNum(i);
 //                vo.setGateName("=========testing");
                 
-                if (tempId.equals(obj[0] + "")) {
-                    tempId = obj[0] + "";
+//                if (tempId.equals(obj[0] + "")) {
+
+                Boolean a = tempResult.contains(obj[0] + "");
+                System.out.println("BENER APA SALAH HASILNYA? " + a);
+
+                if (tempResult.contains(obj[0] + "")) {
+//                    tempId = obj[0] + "";
+                    
+                    tempResult.add(obj[0] + "");
                 } else {
                     tempRow++;
-                    tempId = obj[0] + "";
+//                    tempId = obj[0] + "";
+                    tempResult.add(obj[0] + "");
+                    
                     vo.setRowNum(tempRow);
                     result.add(vo);
                 }
@@ -361,6 +371,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         } catch (HibernateException e) {
             return result;
         }
+        System.out.println("VALUE OR RESULT = " + result.size());
         return result;
     }
 
