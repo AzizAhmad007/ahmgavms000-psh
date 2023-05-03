@@ -82,7 +82,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
         String areaTypeQuery = getPicAreaType(nrp);
 
-        sqlQuery.append("SELECT  "
+        sqlQuery.append("SELECT DISTINCT "
                 + "    A.VOTSID as OUTID,  "
                 + "    A.VNAME as OUTNAME,  "
                 + "    A.VPERSID as PERSID,  "
@@ -92,8 +92,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    CASE WHEN F.VPGBLNM is not null THEN COALESCE(F.VPGBLNM, '') "
                 + "     ELSE COALESCE(Z.VVENDORDESC, '') END AS COMPANYNAME, "
                 + "    A.VOTSSTTS as OUTSTATUS,  "
-                + "    B.VPLANT as AREA,  "
-                + "    E.VPGBLNM as AREANAME,  "
+                //                + "    B.VPLANT as AREA,  "
+                //                + "    E.VPGBLNM as AREANAME,  "
                 + "    A.VVACSTTS as VACSTATUS,  "
                 + "    A.DBGNEFFDT as BEGINDATE,  "
                 + "    A.DENDEFFDT as ENDDATE,  "
@@ -116,9 +116,10 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    A.VVACDTL as VACSUMMARY,  "
                 + "    A.VNTVS as VACNOTE,  "
                 + "    A.VAPPDISCLM as DISCLAIMER,  "
-                + "    RAWTOHEX(A.ROTSEMPSHS) as ID,  "
-                + "    A.BPHOTO as FOTO  "
-                + "FROM   "
+                + "    RAWTOHEX(A.ROTSEMPSHS) as ID "
+                //                + ",  "
+                //                + "    A.BPHOTO as FOTO  "
+                + " FROM   "
                 + "    AHMHRNTM_HDROTSEMPS A  ");
 
         sqlQuery.append("INNER JOIN ")
@@ -128,14 +129,12 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("    BB.VPGBLNM, BB.VPGBLCD, CC.VOTSTYPE ")
                 .append("  FROM AHMHRNTM_DTLOTSREGS AA, AHMHRNTM_DTLPRMGBLS BB, AHMHRNTM_MSTPICOTS CC, AHMHRNTM_HDROTSEMPS DD");
 
-//        if (role.equals("RO_GAVMS_PICAHM")) {
-//            sqlQuery.append(", FMHRD_GENERAL_DATAS FGD, AHMMOERP_MSTKARYAWANS@AHMPS MKA ");
-//        }
         sqlQuery.append("  WHERE AA.VREGID = 'PLNT' ")
                 .append("  AND AA.VOTSID = DD.VOTSID ")
                 .append("  AND CC.VOTSTYPE = DD.VOTSTYPE ")
                 .append("  AND AA.VPLANT = BB.VPGBLCD ")
-                .append("  AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ");
+                .append("  AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ")
+                .append("  AND CC.VAREA = AA.VPLANT ");
 
         if (role.equals("RO_GAVMS_PICAHM")) {
             sqlQuery.append("  AND CC.VNRP = '")
@@ -144,14 +143,13 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ");
         }
 
+        //Plant Area Param
         if (!StringUtils.isBlank(plant)) {
             sqlQuery.append(" AND AA.VPLANT = '")
                     .append(plant)
                     .append("' ");
         } else {
-//            sqlQuery.append(" AND AA.NSEQ = 1 ");
-            sqlQuery.append("  AND CC.VAREA = AA.VPLANT ")
-                    .append(" AND BB.VPGBLCD LIKE 'PG10%' ")
+            sqlQuery.append(" AND BB.VPGBLCD LIKE 'PG10%' ")
                     .append(" AND TRUNC(SYSDATE) BETWEEN TRUNC(BB.DBGNEFFDT) AND TRUNC(BB.DENDEFFDT) ");
         }
 
@@ -201,12 +199,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     .append("' ");
         }
 
-        //Plant Param
-//        if (!plant.equals("")) {
-//            sqlQuery.append("    AND A.VOTSTYPE = '")
-//                    .append(plant)
-//                    .append("' ");
-//        }
         //Vaccine Status Param
         if (!vacstat.equals("") && !vacstat.equals(" ")) {
             sqlQuery.append("    AND UPPER(A.VVACSTTS) = UPPER('")
@@ -214,9 +206,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     .append("') ");
         }
 
-//        if (role.equals("RO_GAVMS_PICAHM")) {
-//            sqlQuery.append(areaTypeQuery);
-//        }
         if (!StringUtils.isBlank(begineff) || !StringUtils.isBlank(endeff)) {
             sqlQuery.append(" AND (");
 
@@ -272,106 +261,105 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 vo.setCompany(obj[5] == null ? "" : obj[5] + "");
                 vo.setCompanyName(obj[6] == null ? "" : obj[6] + "");
                 vo.setOutStatus(obj[7] == null ? "" : obj[7] + "");
-                vo.setArea(obj[8] == null ? "" : obj[8] + "");
-                vo.setAreaName(obj[9] == null ? "" : obj[9] + "");
-                vo.setVacStatus(obj[10] == null ? "" : obj[10] + "");
-                if (obj[11] != null) {
-                    vo.setBeginDate((Date) obj[11]);
-                    vo.setBeginDateText(DateUtil.dateToString((Date) obj[11], "dd-MMM-yyyy"));
+//                vo.setArea(obj[8] == null ? "" : obj[8] + "");
+//                vo.setAreaName(obj[9] == null ? "" : obj[9] + "");
+                vo.setVacStatus(obj[8] == null ? "" : obj[8] + "");
+                if (obj[9] != null) {
+                    vo.setBeginDate((Date) obj[9]);
+                    vo.setBeginDateText(DateUtil.dateToString((Date) obj[9], "dd-MMM-yyyy"));
                 } else {
                     vo.setBeginDateText("");
                 }
-                if (obj[12] != null) {
-                    vo.setEndDate((Date) obj[12]);
-                    vo.setEndDateText(DateUtil.dateToString((Date) obj[12], "dd-MMM-yyyy"));
+                if (obj[10] != null) {
+                    vo.setEndDate((Date) obj[10]);
+                    vo.setEndDateText(DateUtil.dateToString((Date) obj[10], "dd-MMM-yyyy"));
                 } else {
                     vo.setEndDateText("");
                 }
-                vo.setPassNumber(obj[13] == null ? "" : obj[13] + "");
+                vo.setPassNumber(obj[11] == null ? "" : obj[11] + "");
 
                 if (vo.getPassNumber().equals("0")) {
                     vo.setPassNumber("");
                 }
 
-                if (obj[14] != null) {
-                    vo.setPassExpiryDate((Date) obj[14]);
-                    vo.setPassExpiryDateText(DateUtil.dateToString((Date) obj[14], "dd-MMM-yyyy"));
+                if (obj[12] != null) {
+                    vo.setPassExpiryDate((Date) obj[12]);
+                    vo.setPassExpiryDateText(DateUtil.dateToString((Date) obj[12], "dd-MMM-yyyy"));
                 } else {
                     vo.setPassExpiryDateText("");
                 }
-                vo.setModifyBy(obj[15] == null ? "" : obj[15] + "");
-                if (obj[16] != null) {
-                    vo.setModifyDate((Date) obj[16]);
-                    vo.setModifyDateText(DateUtil.dateToString((Date) obj[16], "dd-MMM-yyyy"));
+                vo.setModifyBy(obj[13] == null ? "" : obj[13] + "");
+                if (obj[14] != null) {
+                    vo.setModifyDate((Date) obj[14]);
+                    vo.setModifyDateText(DateUtil.dateToString((Date) obj[14], "dd-MMM-yyyy"));
                 } else {
                     vo.setModifyDateText("");
                 }
-                vo.setPhoneNo(obj[17] == null ? "" : obj[17] + "");
-                vo.setFileNameKtp(obj[18] == null ? "" : obj[18] + "");
-                vo.setSupplier(obj[19] == null ? "" : obj[19] + "");
-                vo.setJob(obj[20] == null ? "" : obj[20] + "");
-                vo.setAccessReader(obj[21] == null ? "" : obj[21] + "");
-                vo.setCanteen(obj[22] == null ? "" : obj[22] + "");
-                vo.setSecurityGate(obj[23] == null ? "" : obj[23] + "");
-                vo.setNote(obj[24] == null ? "" : obj[24] + "");
-                vo.setFileNamePhoto(obj[25] == null ? "" : obj[25] + "");
-                vo.setVacType(obj[26] == null ? "" : obj[26] + "");
-                vo.setVacTypeName(obj[27] == null ? "" : obj[27] + "");
-                if (obj[28] != null) {
-                    vo.setVacDate((Date) obj[28]);
-                    vo.setVacDateText(DateUtil.dateToString((Date) obj[28], "dd-MMM-yyyy"));
+                vo.setPhoneNo(obj[15] == null ? "" : obj[15] + "");
+                vo.setFileNameKtp(obj[16] == null ? "" : obj[16] + "");
+                vo.setSupplier(obj[17] == null ? "" : obj[17] + "");
+                vo.setJob(obj[18] == null ? "" : obj[18] + "");
+                vo.setAccessReader(obj[19] == null ? "" : obj[19] + "");
+                vo.setCanteen(obj[20] == null ? "" : obj[20] + "");
+                vo.setSecurityGate(obj[21] == null ? "" : obj[21] + "");
+                vo.setNote(obj[22] == null ? "" : obj[22] + "");
+                vo.setFileNamePhoto(obj[23] == null ? "" : obj[23] + "");
+                vo.setVacType(obj[24] == null ? "" : obj[24] + "");
+                vo.setVacTypeName(obj[25] == null ? "" : obj[25] + "");
+                if (obj[26] != null) {
+                    vo.setVacDate((Date) obj[26]);
+                    vo.setVacDateText(DateUtil.dateToString((Date) obj[26], "dd-MMM-yyyy"));
                 } else {
                     vo.setVacDateText("");
                 }
-                vo.setVacSummary(obj[29] == null ? "" : obj[29] + "");
-                vo.setVacNote(obj[30] == null ? "" : obj[30] + "");
-                vo.setDiclaimer(obj[31] == null ? "" : obj[31] + "");
-                vo.setId(obj[32] == null ? "" : obj[32] + "");
-                if (obj[33] != null) {
-                    byte[] dt = null;
-                    Blob tmp = (Blob) obj[33];
+                vo.setVacSummary(obj[27] == null ? "" : obj[27] + "");
+                vo.setVacNote(obj[28] == null ? "" : obj[28] + "");
+                vo.setDiclaimer(obj[29] == null ? "" : obj[29] + "");
+                vo.setId(obj[30] == null ? "" : obj[30] + "");
 
-                    try {
-                        dt = tmp.getBytes(1, (int) tmp.length());
-                        vo.setFilePhoto(Base64.getEncoder().encodeToString(dt));
+                vo.setFilePhoto(getPhoto(vo.getOutId(), vo.getFileNamePhoto(), input, role, nrp));
 
-                    } catch (SQLException ex) {
-                        Logger.getLogger(Vms022AhmhrntmHdrotsempsDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    if (vo.getFileNamePhoto().isEmpty()) {
-                        vo.setFilePhoto("");
-                    } else {
-                        byte[] bFileVac = readBytesFromFile(pathServer + vo.getFileNamePhoto());
-                        vo.setFilePhoto(Base64.getEncoder().encodeToString(bFileVac));
-                    }
-                }
-//                vo.setRowNum(i);
+//                if (obj[33] != null) {
+//                    byte[] dt = null;
+//                    Blob tmp = (Blob) obj[33];
+//
+//                    try {
+//                        dt = tmp.getBytes(1, (int) tmp.length());
+//                        vo.setFilePhoto(Base64.getEncoder().encodeToString(dt));
+//
+//                    } catch (SQLException ex) {
+//                        Logger.getLogger(Vms022AhmhrntmHdrotsempsDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                } else {
+//                    if (vo.getFileNamePhoto().isEmpty()) {
+//                        vo.setFilePhoto("");
+//                    } else {
+//                        byte[] bFileVac = readBytesFromFile(pathServer + vo.getFileNamePhoto());
+//                        vo.setFilePhoto(Base64.getEncoder().encodeToString(bFileVac));
+//                    }
+//                }
+                vo.setRowNum(i);
 //                vo.setGateName("=========testing");
-                
+
 //                if (tempId.equals(obj[0] + "")) {
-
-                Boolean a = tempResult.contains(obj[0] + "");
-                System.out.println("BENER APA SALAH HASILNYA? " + a);
-
-                if (tempResult.contains(obj[0] + "")) {
-//                    tempId = obj[0] + "";
-                    
-                    tempResult.add(obj[0] + "");
-                } else {
-                    tempRow++;
-//                    tempId = obj[0] + "";
-                    tempResult.add(obj[0] + "");
-                    
-                    vo.setRowNum(tempRow);
-                    result.add(vo);
-                }
-
+//                Boolean a = tempResult.contains(obj[0] + "");
+//                System.out.println("BENER APA SALAH HASILNYA? " + a);
+//
+//                if (tempResult.contains(obj[0] + "")) {
+//                    tempResult.add(obj[0] + "");
+//
+//                } else {
+//                    tempRow++;
+//                    tempResult.add(obj[0] + "");
+//
+//                    vo.setRowNum(tempRow);
+                result.add(vo);
+//                }
             }
         } catch (HibernateException e) {
             return result;
         }
-        System.out.println("VALUE OR RESULT = " + result.size());
+
         return result;
     }
 
@@ -394,7 +382,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
         String areaTypeQuery = getPicAreaType(nrp);
 
-        sqlQuery.append("SELECT  "
+        sqlQuery.append("SELECT DISTINCT "
                 + "    A.VOTSID as OUTID,  "
                 + "    A.VNAME as OUTNAME,  "
                 + "    A.VPERSID as PERSID,  "
@@ -404,8 +392,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    CASE WHEN F.VPGBLNM is not null THEN COALESCE(F.VPGBLNM, '') "
                 + "     ELSE COALESCE(Z.VVENDORDESC, '') END AS COMPANYNAME, "
                 + "    A.VOTSSTTS as OUTSTATUS,  "
-                + "    B.VPLANT as AREA,  "
-                + "    E.VPGBLNM as AREANAME,  "
+                //                + "    B.VPLANT as AREA,  "
+                //                + "    E.VPGBLNM as AREANAME,  "
                 + "    A.VVACSTTS as VACSTATUS,  "
                 + "    A.DBGNEFFDT as BEGINDATE,  "
                 + "    A.DENDEFFDT as ENDDATE,  "
@@ -428,9 +416,10 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    A.VVACDTL as VACSUMMARY,  "
                 + "    A.VNTVS as VACNOTE,  "
                 + "    A.VAPPDISCLM as DISCLAIMER,  "
-                + "    RAWTOHEX(A.ROTSEMPSHS) as ID,  "
-                + "    A.BPHOTO as FOTO  "
-                + "FROM   "
+                + "    RAWTOHEX(A.ROTSEMPSHS) as ID "
+                //                + ",  "
+                //                + "    A.BPHOTO as FOTO  "
+                + " FROM   "
                 + "    AHMHRNTM_HDROTSEMPS A  ");
 
         sqlQuery.append("INNER JOIN ")
@@ -440,13 +429,11 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("    BB.VPGBLNM, BB.VPGBLCD, CC.VOTSTYPE ")
                 .append("  FROM AHMHRNTM_DTLOTSREGS AA, AHMHRNTM_DTLPRMGBLS BB, AHMHRNTM_MSTPICOTS CC, AHMHRNTM_HDROTSEMPS DD");
 
-//        if (role.equals("RO_GAVMS_PICAHM")) {
-//            sqlQuery.append(", FMHRD_GENERAL_DATAS FGD, AHMMOERP_MSTKARYAWANS@AHMPS MKA ");
-//        }
         sqlQuery.append("  WHERE AA.VREGID = 'PLNT' ")
                 .append("  AND AA.VOTSID = DD.VOTSID ")
                 .append("  AND CC.VOTSTYPE = DD.VOTSTYPE ")
                 .append("  AND AA.VPLANT = BB.VPGBLCD ")
+                .append("  AND CC.VAREA = AA.VPLANT ")
                 .append("  AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ");
 
         if (role.equals("RO_GAVMS_PICAHM")) {
@@ -456,14 +443,13 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ");
         }
 
+        //Plant Area Param
         if (!StringUtils.isBlank(plant)) {
             sqlQuery.append(" AND AA.VPLANT = '")
                     .append(plant)
                     .append("' ");
         } else {
-//            sqlQuery.append(" AND AA.NSEQ = 1 ");
-            sqlQuery.append("  AND CC.VAREA = AA.VPLANT ")
-                    .append(" AND BB.VPGBLCD LIKE 'PG10%' ")
+            sqlQuery.append(" AND BB.VPGBLCD LIKE 'PG10%' ")
                     .append(" AND TRUNC(SYSDATE) BETWEEN TRUNC(BB.DBGNEFFDT) AND TRUNC(BB.DENDEFFDT) ");
         }
 
@@ -513,12 +499,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     .append("' ");
         }
 
-        //Plant Param
-//        if (!plant.equals("")) {
-//            sqlQuery.append("    AND A.VOTSTYPE = '")
-//                    .append(plant)
-//                    .append("' ");
-//        }
         //Vaccine Status Param
         if (!vacstat.equals("") && !vacstat.equals(" ")) {
             sqlQuery.append("    AND UPPER(A.VVACSTTS) = UPPER('")
@@ -526,9 +506,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     .append("') ");
         }
 
-//        if (role.equals("RO_GAVMS_PICAHM")) {
-//            sqlQuery.append(areaTypeQuery);
-//        }
         if (!StringUtils.isBlank(begineff) || !StringUtils.isBlank(endeff)) {
             sqlQuery.append(" AND (");
 
@@ -554,7 +531,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             }
             sqlQuery.append(" ) ");
         }
-        
+
         sqlQuery.append(" ORDER BY A.VNAME desc ");
 
         SQLQuery query = getCurrentSession().createSQLQuery(sqlQuery.toString());
@@ -567,33 +544,29 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         int counter = 0;
         try {
             List lists = query.list();
-            
+
             String tempId = "";
 
             for (int i = 0; i < lists.size(); i++) {
-                Object[] obj = (Object[]) lists.get(i);
-                Vms022VoMonitoring vo = new Vms022VoMonitoring();
-
-                Boolean res = tempId.equals(obj[0] + "");
-                System.out.println("isi id = " + tempId);             
-                System.out.println("isi obj = " + obj[0] + "");
-                System.out.println("hasil if else = " + res);
-                if (tempId.equals(obj[0] + "")) {
-                    tempId = obj[0] + "";
-                } else {
-                    tempId = obj[0] + "";
-                    counter++;
-                }
+//                Object[] obj = (Object[]) lists.get(i);
+//                Vms022VoMonitoring vo = new Vms022VoMonitoring();
+//
+//                Boolean res = tempId.equals(obj[0] + "");
+//                System.out.println("isi id = " + tempId);
+//                System.out.println("isi obj = " + obj[0] + "");
+//                System.out.println("hasil if else = " + res);
+//                if (tempId.equals(obj[0] + "")) {
+//                    tempId = obj[0] + "";
+//                } else {
+//                    tempId = obj[0] + "";
+                counter++;
+//                }
             }
-            System.out.println("JUMLAH COUNTER = " + counter);
+//            System.out.println("JUMLAH COUNTER = " + counter);
         } catch (SQLGrammarException e) {
         }
 
         return counter;
-
-//        List lists = query.list();
-//
-//        return lists.size();
     }
 
     private void orderClause(DtoParamPaging input, StringBuilder query, Map<String, String> clause, String param) {
@@ -666,6 +639,182 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private String getPhoto(String outId, String namePhoto, DtoParamPaging input, String role, String nrp) {
+
+        StringBuilder sqlQuery = new StringBuilder();
+
+        String votsid = AhmStringUtil.hasValue(input.getSearch().get("outId")) ? (input.getSearch().get("outId") + "").toUpperCase() : "";
+        String vname = AhmStringUtil.hasValue(input.getSearch().get("outName")) ? (input.getSearch().get("outName") + "").toUpperCase() : "";
+        String vpersid = AhmStringUtil.hasValue(input.getSearch().get("nik")) ? (input.getSearch().get("nik") + "").toUpperCase() : "";
+        String begineff = AhmStringUtil.hasValue(input.getSearch().get("beginDate")) ? (input.getSearch().get("beginDate") + "").toUpperCase() : "";
+        String endeff = AhmStringUtil.hasValue(input.getSearch().get("endDate")) ? (input.getSearch().get("endDate") + "").toUpperCase() : "";
+        String idcard = AhmStringUtil.hasValue(input.getSearch().get("passNumber")) ? (input.getSearch().get("passNumber") + "").toUpperCase() : "";
+        String outtype = AhmStringUtil.hasValue(input.getSearch().get("outType")) ? (input.getSearch().get("outType") + "").toUpperCase() : "";
+        String company = AhmStringUtil.hasValue(input.getSearch().get("company")) ? (input.getSearch().get("company") + "").toUpperCase() : "";
+        String outstat = AhmStringUtil.hasValue(input.getSearch().get("outStatus")) ? (input.getSearch().get("outStatus") + "").toUpperCase() : "";
+        String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
+        String vacstat = AhmStringUtil.hasValue(input.getSearch().get("vacStatus")) ? (input.getSearch().get("vacStatus") + "").toUpperCase() : "";
+        String pic = AhmStringUtil.hasValue(input.getSearch().get("pic")) ? (input.getSearch().get("pic") + "").toUpperCase() : "";
+
+        sqlQuery.append("SELECT  "
+                + "    A.BPHOTO as FOTO,  "
+                + "    A.VMODI as MODIFIED,  "
+                + "    A.DMODI as MODIFIEDDATE  "
+                + "FROM   "
+                + "    AHMHRNTM_HDROTSEMPS A  ");
+
+        sqlQuery.append("INNER JOIN ")
+                .append("( ")
+                .append("  SELECT ")
+                .append("    DISTINCT AA.VPLANT, AA.VOTSID, AA.VPERSID, ")
+                .append("    BB.VPGBLNM, BB.VPGBLCD, CC.VOTSTYPE ")
+                .append("  FROM AHMHRNTM_DTLOTSREGS AA, AHMHRNTM_DTLPRMGBLS BB, AHMHRNTM_MSTPICOTS CC, AHMHRNTM_HDROTSEMPS DD");
+
+        sqlQuery.append("  WHERE AA.VREGID = 'PLNT' ")
+                .append("  AND AA.VOTSID = DD.VOTSID ")
+                .append("  AND CC.VOTSTYPE = DD.VOTSTYPE ")
+                .append("  AND AA.VPLANT = BB.VPGBLCD ")
+                .append("  AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ");
+
+        if (role.equals("RO_GAVMS_PICAHM")) {
+            sqlQuery.append("  AND CC.VNRP = '")
+                    .append(nrp)
+                    .append("' ")
+                    .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ");
+        }
+
+        if (!StringUtils.isBlank(plant)) {
+            sqlQuery.append(" AND AA.VPLANT = '")
+                    .append(plant)
+                    .append("' ");
+        } else {
+            sqlQuery.append("  AND CC.VAREA = AA.VPLANT ")
+                    .append(" AND BB.VPGBLCD LIKE 'PG10%' ")
+                    .append(" AND TRUNC(SYSDATE) BETWEEN TRUNC(BB.DBGNEFFDT) AND TRUNC(BB.DENDEFFDT) ");
+        }
+
+        if (!StringUtils.isBlank(pic)) {
+            sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
+                    .append(pic)
+                    .append("||'%' ) ")
+                    .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ");
+        }
+
+        sqlQuery.append(" ) B ON A.VOTSID = B.VOTSID and A.VPERSID = B.VPERSID and A.VOTSTYPE = B.VOTSTYPE ");
+        sqlQuery.append("INNER JOIN AHMHRNTM_DTLPRMGBLS E on B.VPLANT = E.VPGBLCD  ")
+                .append("INNER JOIN AHMHRNTM_DTLPRMGBLS D ON A.VOTSTYPE = D.VPGBLCD ")
+                .append("LEFT JOIN AHMHRNTM_DTLPRMGBLS F ON A.VCOMPANY = F.VPGBLCD ")
+                .append("LEFT JOIN AHMMOMSC_MSTVENDORS@ahmps Z ON A.VCOMPANY = Z.VVENDORID ")
+                .append("LEFT JOIN AHMHRNTM_DTLPRMGBLS G ON A.VVACTYPE = G.VPGBLCD ")
+                .append("WHERE  ")
+                .append("    ROWNUM = 1 ")
+                .append("    AND  ")
+                .append("        UPPER(A.VOTSID) = UPPER(" + outId + ")  ")
+                .append("    AND  ")
+                .append("        UPPER(A.VNAME) LIKE UPPER('%'||:vname||'%')  ")
+                .append("    AND ")
+                .append("        UPPER(A.VPERSID) LIKE UPPER('%'||:vpersid||'%') ")
+                .append("    AND ")
+                .append("        UPPER(A.NAHMCARDORI ) LIKE UPPER('%'||:idcard||'%') ");
+
+        //Outsource Company Param
+        if (!company.equals("")) {
+            sqlQuery.append("    AND UPPER(A.VCOMPANY) = UPPER('")
+                    .append(company)
+                    .append("') ");
+        }
+
+        //Outsource Status Param
+        if (!outstat.equals("") && !outstat.equals(" ")) {
+            sqlQuery.append("    AND UPPER(A.VOTSSTTS) = UPPER('")
+                    .append(outstat)
+                    .append("') ");
+        }
+
+        //Outsource Type Param
+        if (!outtype.equals("")) {
+            sqlQuery.append("    AND A.VOTSTYPE = '")
+                    .append(outtype)
+                    .append("' ");
+        }
+
+        //Vaccine Status Param
+        if (!vacstat.equals("") && !vacstat.equals(" ")) {
+            sqlQuery.append("    AND UPPER(A.VVACSTTS) = UPPER('")
+                    .append(vacstat)
+                    .append("') ");
+        }
+
+        if (!StringUtils.isBlank(begineff) || !StringUtils.isBlank(endeff)) {
+            sqlQuery.append(" AND (");
+
+            if (!StringUtils.isBlank(begineff)) {
+                sqlQuery.append(" ('")
+                        .append(begineff)
+                        .append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
+            }
+            if (!StringUtils.isBlank(endeff) && StringUtils.isBlank(begineff)) {
+                sqlQuery.append(" ('")
+                        .append(endeff)
+                        .append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
+            } else {
+                sqlQuery.append(" OR ('")
+                        .append(endeff)
+                        .append("' BETWEEN A.DBGNEFFDT AND A.DENDEFFDT)");
+            }
+            if (!StringUtils.isBlank(begineff) && !StringUtils.isBlank(endeff)) {
+                sqlQuery.append(" OR (A.DBGNEFFDT BETWEEN '")
+                        .append(begineff).append("' AND '").append(endeff).append("') ")
+                        .append(" OR (A.DENDEFFDT BETWEEN '")
+                        .append(begineff).append("' AND '").append(endeff).append("') ");
+            }
+            sqlQuery.append(" ) ");
+        }
+
+        Query query = getCurrentSession().createSQLQuery(sqlQuery.toString());
+
+        query.setParameter("vname", vname)
+                .setParameter("vpersid", vpersid)
+                .setParameter("idcard", idcard);
+
+        String imgResult = "";
+
+        try {
+
+            List lists = query.list();
+
+            for (int i = 0; i < lists.size(); i++) {
+                Object[] obj = (Object[]) lists.get(i);
+
+                if (obj[0] != null) {
+                    byte[] dt = null;
+                    Blob tmp = (Blob) obj[0];
+
+                    try {
+                        dt = tmp.getBytes(1, (int) tmp.length());
+                        imgResult = Base64.getEncoder().encodeToString(dt);
+
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Vms022AhmhrntmHdrotsempsDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    if (namePhoto.isEmpty()) {
+                        imgResult = "";
+                    } else {
+                        byte[] bFileVac = readBytesFromFile(pathServer + namePhoto);
+                        imgResult = Base64.getEncoder().encodeToString(bFileVac);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.getMessage();
+            return imgResult;
+        }
+
+        return imgResult;
     }
 
     @Override
