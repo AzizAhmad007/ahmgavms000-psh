@@ -14,6 +14,7 @@ import id.co.ahm.jxf.dto.DtoParamPaging;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.exception.GenericJDBCException;
@@ -121,7 +122,7 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
     }
     
     @Override
-    public String getPlantForExcel(String outid, String nik) {
+    public String getPlantForExcel(String outid, String nik, String pic) {
     
         StringBuilder sql = new StringBuilder();
 
@@ -131,12 +132,22 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
                 + "     B.VPGBLNM "
                 + " FROM "
                 + " AHMHRNTM_HDROTSEMPS C "
-                + " INNER JOIN AHMHRNTM_DTLOTSREGS A ON C.VOTSID = A.VOTSID and C.VPERSID = A.VPERSID "
+                + " INNER JOIN AHMHRNTM_DTLOTSREGS A ON C.VOTSID = A.VOTSID AND C.VPERSID = A.VPERSID "
                 + " INNER JOIN AHMHRNTM_DTLPRMGBLS B ON A.VPLANT = B.VPGBLCD "
-                + " WHERE"
+                + " INNER JOIN AHMHRNTM_MSTPICOTS D ON A.VPLANT = D.VAREA AND C.VOTSTYPE = D.VOTSTYPE "
+                + " WHERE "
                 + "     A.VREGID in('PLNT','GATE') "
                 + "     AND C.VOTSID = :VOTSID "
                 + "     AND C.VPERSID = :VPERSID ");
+
+        if (!StringUtils.isBlank(pic)) {
+            sql.append(" AND D.VNRP = '")
+                    .append(pic)
+                    .append("' ")
+                    .append(" AND D.VRGSROLE IN ('PG91-01', 'PG91-03') ");
+        }
+        
+        
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
