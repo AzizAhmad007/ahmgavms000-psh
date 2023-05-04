@@ -21,7 +21,7 @@ public interface Vms022AhmhrntmDtlprmgblsDao extends HrDao<AhmhrntmDtlprmgbls, S
     
     public List<Vms022VoLov> getPlant(String outid, String nik);
     
-    public String getPlantForExcel(String outid, String nik);
+    public String getPlantForExcel(String outid, String nik, String nrp);
     
     public String getPlantIDForExcel(String outid, String nik);
     
