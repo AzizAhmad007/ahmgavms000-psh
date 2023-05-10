@@ -122,7 +122,7 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
     }
     
     @Override
-    public String getPlantForExcel(String outid, String nik, String nrp) {
+    public String getPlantForExcel(String outid, String nik, String nrp, String role) {
     
         StringBuilder sql = new StringBuilder();
 
@@ -140,7 +140,7 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
                 + "     AND C.VOTSID = :VOTSID "
                 + "     AND C.VPERSID = :VPERSID ");
 
-        if (!StringUtils.isBlank(nrp)) {
+        if (role.equalsIgnoreCase("RO_GAVMS_PICAHM")) {
             sql.append(" AND D.VNRP = '")
                     .append(nrp)
                     .append("' ")

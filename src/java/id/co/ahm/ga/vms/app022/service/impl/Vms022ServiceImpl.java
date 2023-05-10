@@ -182,7 +182,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                 String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());
                 vo.setGateName(getGateList);
 
-                String getPlantList = vms022ahmhrntmDtlprmgblsDao.getPlantForExcel(vo.getOutId(), vo.getPersId(), nrp);
+                String getPlantList = vms022ahmhrntmDtlprmgblsDao.getPlantForExcel(vo.getOutId(), vo.getPersId(), nrp, roleFromFront);
                 vo.setAreaName(getPlantList);
                 
                 
@@ -248,7 +248,7 @@ public class Vms022ServiceImpl implements Vms022Service {
             String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());
             vo.setGateName(getGateList);
 
-            String getPlantList = vms022ahmhrntmDtlprmgblsDao.getPlantForExcel(vo.getOutId(), vo.getPersId(), pic);
+            String getPlantList = vms022ahmhrntmDtlprmgblsDao.getPlantForExcel(vo.getOutId(), vo.getPersId(), pic, roleFromFront);
             vo.setAreaName(getPlantList);
 
             String getPlantIDList = vms022ahmhrntmDtlprmgblsDao.getPlantIDForExcel(vo.getOutId(), vo.getPersId());
