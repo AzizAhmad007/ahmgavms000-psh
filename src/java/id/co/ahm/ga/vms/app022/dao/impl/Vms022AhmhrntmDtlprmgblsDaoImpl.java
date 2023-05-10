@@ -127,7 +127,7 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
         StringBuilder sql = new StringBuilder();
 
         sql.append("SELECT "
-                + "     A.NSEQ, "
+                + "     distinct "
                 + "     A.VPLANT, "
                 + "     B.VPGBLNM "
                 + " FROM "
