@@ -228,7 +228,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                 }
             }
         } catch (Exception e) {
-            return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.GAGAL, "GAGAL", null, list, count);
+            return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.GAGAL, "GAGAL", null, null, 0);
         }
 
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, list, count);

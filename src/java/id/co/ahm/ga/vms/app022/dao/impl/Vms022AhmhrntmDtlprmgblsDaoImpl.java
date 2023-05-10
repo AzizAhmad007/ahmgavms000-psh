@@ -124,6 +124,8 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
     @Override
     public String getPlantForExcel(String outid, String nik, String nrp, String role) {
     
+        try {
+        
         StringBuilder sql = new StringBuilder();
 
         sql.append("SELECT "
@@ -164,15 +166,19 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
                 obj = (Object[]) object;    
 
                 if (limitText) {
-                    vo += obj[2].toString();
+                    vo += obj[1].toString();
                     limitText = false;
                 } else {
-                    vo += "; " + obj[2].toString();
+                    vo += "; " + obj[1].toString();
                 }
 
             }
         }
         return vo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
     }
     
     @Override
