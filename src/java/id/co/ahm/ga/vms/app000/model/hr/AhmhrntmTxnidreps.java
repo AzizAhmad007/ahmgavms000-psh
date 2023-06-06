@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package id.co.ahm.ga.vms.app000.model;
+package id.co.ahm.ga.vms.app000.model.hr;
 
 import id.co.ahm.jxf.model.DefaultEntityImpl;
 import java.io.Serializable;

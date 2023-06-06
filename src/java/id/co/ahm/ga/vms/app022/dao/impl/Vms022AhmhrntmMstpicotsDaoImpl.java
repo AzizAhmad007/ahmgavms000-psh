@@ -5,7 +5,7 @@
  */
 package id.co.ahm.ga.vms.app022.dao.impl;
 
-import id.co.ahm.ga.vms.app000.model.AhmhrntmMstpicots;
+import id.co.ahm.ga.vms.app000.model.hr.AhmhrntmMstpicots;
 import id.co.ahm.ga.vms.app022.constant.Vms022Constant;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmMstpicotsDao;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
@@ -42,8 +42,8 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
         sql.append(area);
         sql.append(")");
 
-        sql.append(" AND A.VRGSROLE IN ('PG91-01','PG91-03') "
-        );
+//        sql.append(" AND A.VRGSROLE IN ('PG91-01','PG91-03') "
+//        );
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
@@ -89,8 +89,8 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
         sql.append(area);
         sql.append(")");
 
-        sql.append(" AND A.VRGSROLE IN ('PG91-01','PG91-03') "
-        );
+//        sql.append(" AND A.VRGSROLE IN ('PG91-01','PG91-03') "
+//        );
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
@@ -148,9 +148,9 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
                 + "    AND "
                 + "        c.vend_vnd_code = 'AHM' "
                 + "    AND  "
-                + "        A.VAREA in (:area) "
-                + "    AND  "
-                + "        A.VRGSROLE IN ('PG91-01','PG91-03')");
+                + "        A.VAREA in (:area) " );
+//                + "    AND  "
+//                + "        A.VRGSROLE IN ('PG91-01','PG91-03')");
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 

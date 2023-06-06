@@ -5,15 +5,27 @@
  */
 package id.co.ahm.ga.vms.app022.service.impl;
 
-import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsemps;
-import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsempsPk;
-import id.co.ahm.ga.vms.app000.model.AhmhrntmTxnidreps;
+import id.co.ahm.ga.vms.app000.model.AhmitiamDtlerrlogs;
+import id.co.ahm.ga.vms.app000.model.AhmitiamDtlerrlogsPk;
+import id.co.ahm.ga.vms.app000.model.AhmitiamDtlevntlogs;
+import id.co.ahm.ga.vms.app000.model.AhmitiamDtlevntlogsPk;
+import id.co.ahm.ga.vms.app000.model.AhmitiamHdrerrlogs;
+import id.co.ahm.ga.vms.app000.model.AhmitiamHdrerrlogsPk;
+import id.co.ahm.ga.vms.app000.model.AhmitiamHdrevntlogs;
+import id.co.ahm.ga.vms.app000.model.AhmitiamHdrevntlogsPk;
+import id.co.ahm.ga.vms.app000.model.hr.AhmhrntmHdrotsemps;
+import id.co.ahm.ga.vms.app000.model.hr.AhmhrntmHdrotsempsPk;
+import id.co.ahm.ga.vms.app000.model.hr.AhmhrntmTxnidreps;
 import id.co.ahm.ga.vms.app022.constant.Vms022Constant;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlotsregsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlprmgblsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmHdrotsempsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmMstpicotsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmTxnidrepsDao;
+import id.co.ahm.ga.vms.app022.dao.Vms022AhmitiamDtlerrlogsDao;
+import id.co.ahm.ga.vms.app022.dao.Vms022AhmitiamDtlevntlogsDao;
+import id.co.ahm.ga.vms.app022.dao.Vms022AhmitiamHdrerrlogsDao;
+import id.co.ahm.ga.vms.app022.dao.Vms022AhmitiamHdrevntlogsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmitwfsMstwfdochistDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022ObjectDao;
 import id.co.ahm.ga.vms.app022.exception.Vms022Exception;
@@ -74,6 +86,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vaultwebapi.EntCardProfile;
+import vaultwebapi.EntReplyCode;
 
 /**
  *
@@ -123,6 +137,22 @@ public class Vms022ServiceImpl implements Vms022Service {
     @Autowired
     @Qualifier("vms022AhmitwfsMstwfdochistDao")
     private Vms022AhmitwfsMstwfdochistDao vms022AhmitwfsMstwfdochistDao;
+
+    @Autowired
+    @Qualifier("vms022AhmitiamDtlerrlogsDao")
+    private Vms022AhmitiamDtlerrlogsDao vms022AhmitiamDtlerrlogsDao;
+
+    @Autowired
+    @Qualifier("vms022AhmitiamDtlevntlogsDao")
+    private Vms022AhmitiamDtlevntlogsDao vms022AhmitiamDtlevntlogsDao;
+
+    @Autowired
+    @Qualifier("vms022AhmitiamHdrerrlogsDao")
+    private Vms022AhmitiamHdrerrlogsDao vms022AhmitiamHdrerrlogsDao;
+
+    @Autowired
+    @Qualifier("vms022AhmitiamHdrevntlogsDao")
+    private Vms022AhmitiamHdrevntlogsDao vms022AhmitiamHdrevntlogsDao;
 
     @Override
     public DtoResponseWorkspace getFormAuthorization(VoUserCred userCred) {
@@ -184,8 +214,7 @@ public class Vms022ServiceImpl implements Vms022Service {
 
                 String getPlantList = vms022ahmhrntmDtlprmgblsDao.getPlantForExcel(vo.getOutId(), vo.getPersId(), nrp, roleFromFront);
                 vo.setAreaName(getPlantList);
-                
-                
+
                 if (StringUtils.isBlank(vo.getCompanyName()) && StringUtils.isBlank(vo.getCompany())) {
                     List<Vms022VoLov> compNameList = vms022ObjectDao.lovCompExternal(dto, userId, "FILTER");
 
@@ -376,14 +405,6 @@ public class Vms022ServiceImpl implements Vms022Service {
                         vo.setVcardname(trimOutName);
                         vo.setCreateBy(userCred.getUserid());
 
-//comment because still of disscussion
-                        //start
-//                        vo.setVwflowid(idWF);
-//                        Boolean get = vms022AhmitwfsMstwfdochistDao.generateHistory(vNseq, userCred.getUsername(), getdata.getOutId(), idWF, idHist);
-//                        if (get == false) {
-//                            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, null);
-//                        }
-                        //end
                         vms022ahmhrntmHdrotsempsDao.update(mp);
                         vms022ahmhrntmHdrotsempsDao.flush();
 
@@ -391,6 +412,90 @@ public class Vms022ServiceImpl implements Vms022Service {
                             vms022ahmhrntmTxnidrepsDao.save(vo);
                             vms022ahmhrntmTxnidrepsDao.flush();
                             startWorkflow(idWF, vNseq, userCred.getUserid(), userCred, idHist, vNseq);
+                        }
+
+                        if (!"".equals(getdata.getPassNumber())) {
+                            if ("Updated".equals(mp.getVcategory()) || "Perpanjangan".equals(mp.getVcategory())) {
+                                boolean test = false;
+                                String uuid = UUID.randomUUID().toString();
+
+                                String accLvl = vms022ahmhrntmDtlprmgblsDao.getGateForApprove(mp.getVotsid(), mp.getVpersid());
+
+                                EntCardProfile cardProfile = new EntCardProfile();
+                                cardProfile.setCardNo(mp.getNahmcardid().toString());
+                                cardProfile.setName(mp.getVname());
+                                cardProfile.setStaffNo(mp.getVotsid());
+                                cardProfile.setDepartment(mp.getVotstype());
+                                cardProfile.setAccessLevel(accLvl);
+                                cardProfile.setCompany(mp.getVcompany());
+                                cardProfile.setNRIC(mp.getVpersid());
+                                //remark masih bingung
+                                cardProfile.setEmail("");
+                                cardProfile.setActiveStatus(true);
+                                cardProfile.setLiftAccessLevel("1");
+                                cardProfile.setJoiningDate(DateUtil.dateToString(mp.getDbgneffdt(), "dd-MMM-yyyy"));
+                                cardProfile.setResignDate(DateUtil.dateToString(mp.getDendeffdt(), "dd-MMM-yyyy"));
+
+                                EntReplyCode vault = updateCard(uuid, cardProfile);
+
+                                if ("-1".equals(vault.getErrCode())) {
+                                    AhmitiamHdrevntlogsPk hdrEvntPk = new AhmitiamHdrevntlogsPk();
+                                    hdrEvntPk.setVeventid(uuid);
+                                    hdrEvntPk.setVnrp(getdata.getOutId());
+                                    hdrEvntPk.setVprocess("IAM018");
+                                    AhmitiamHdrevntlogs hdrEvnt = new AhmitiamHdrevntlogs();
+                                    hdrEvnt.setAhmitiamHdrevntlogs(hdrEvnt);
+
+                                    vms022AhmitiamHdrevntlogsDao.save(hdrEvnt);
+                                    vms022AhmitiamHdrevntlogsDao.flush();
+
+                                    AhmitiamDtlevntlogsPk dtlEvntPk = new AhmitiamDtlevntlogsPk();
+                                    dtlEvntPk.setVeventid(uuid);
+                                    dtlEvntPk.setVnrp(getdata.getOutId());
+                                    dtlEvntPk.setVprocess("IAM018");
+                                    dtlEvntPk.setNseq(1);
+                                    AhmitiamDtlevntlogs dtlEvnt = new AhmitiamDtlevntlogs();
+                                    dtlEvnt.setAhmitiamDtlevntlogPk(dtlEvntPk);
+                                    dtlEvnt.setVevent(mp.getVcategory() + " Outsource Success");
+                                    dtlEvnt.setVeventdesc(mp.getVcategory() + "-" + mp.getVotsid() + "-" + accLvl + "-" + mp.getVcompany() + "-" + mp.getVpersid());
+
+                                    vms022AhmitiamDtlevntlogsDao.save(dtlEvnt);
+                                    vms022AhmitiamDtlevntlogsDao.flush();
+
+                                } else {
+
+                                    AhmitiamHdrerrlogsPk hdrErrPk = new AhmitiamHdrerrlogsPk();
+                                    hdrErrPk.setVeventid(uuid);
+                                    hdrErrPk.setVnrp(getdata.getOutId());
+                                    hdrErrPk.setVproccess("IAM018");
+                                    AhmitiamHdrerrlogs hdrErr = new AhmitiamHdrerrlogs();
+                                    hdrErr.setAhmitiamHdrerrlogsPk(hdrErrPk);
+
+                                    vms022AhmitiamHdrerrlogsDao.save(hdrErr);
+                                    vms022AhmitiamHdrerrlogsDao.flush();
+
+                                    AhmitiamDtlerrlogsPk dtlErrPk = new AhmitiamDtlerrlogsPk();
+                                    dtlErrPk.setVeventid(uuid);
+                                    dtlErrPk.setVnrp(getdata.getOutId());
+                                    dtlErrPk.setVprocess("IAM018");
+                                    dtlErrPk.setNseq(1);
+                                    AhmitiamDtlerrlogs dtlErr = new AhmitiamDtlerrlogs();
+                                    dtlErr.setAhmitiamDtlerrlogsPk(dtlErrPk);
+                                    dtlErr.setVerrorcode(vault.getErrCode());
+                                    dtlErr.setVerrordesc(vault.getErrMessage());
+                                    dtlErr.setVdata(mp.getVcategory() + "-" + mp.getVotsid() + "-" + accLvl + "-" + mp.getVcompany() + "-" + mp.getVpersid());
+
+                                    vms022AhmitiamDtlerrlogsDao.save(dtlErr);
+                                    vms022AhmitiamDtlerrlogsDao.flush();
+                                }
+
+                            }
+                        }
+
+                        vo.setVwflowid(idWF);
+                        Boolean get = vms022AhmitwfsMstwfdochistDao.generateHistory(vNseq, userCred.getUsername(), getdata.getOutId(), idWF, idHist);
+                        if (get == false) {
+                            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, null);
                         }
 
                     }
@@ -660,6 +765,12 @@ public class Vms022ServiceImpl implements Vms022Service {
         cellTblHdr.setCellStyle(styleTblHdr);
         cellTblHdr.setCellValue(obj);
 
+    }
+    
+        private static EntReplyCode updateCard(java.lang.String cardNo, EntCardProfile cardProfile) {
+        vaultwebapi.VaultWebAPI service = new vaultwebapi.VaultWebAPI();
+        vaultwebapi.VaultWebAPISoap port = service.getVaultWebAPISoap();
+        return port.updateCard(cardNo, cardProfile);
     }
 
 }

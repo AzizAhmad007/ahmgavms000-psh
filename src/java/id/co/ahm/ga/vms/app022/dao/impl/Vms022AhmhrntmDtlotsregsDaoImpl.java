@@ -5,8 +5,8 @@
  */
 package id.co.ahm.ga.vms.app022.dao.impl;
 
-import id.co.ahm.ga.vms.app000.model.AhmhrntmDtlotsregs;
-import id.co.ahm.ga.vms.app000.model.AhmhrntmDtlotsregsPk;
+import id.co.ahm.ga.vms.app000.model.hr.AhmhrntmDtlotsregs;
+import id.co.ahm.ga.vms.app000.model.hr.AhmhrntmDtlotsregsPk;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlotsregsDao;
 import id.co.ahm.jxf.dao.HrHibernateDao;
 import java.util.ArrayList;

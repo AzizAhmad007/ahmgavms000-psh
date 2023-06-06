@@ -5,7 +5,7 @@
  */
 package id.co.ahm.ga.vms.app022.dao.impl;
 
-import id.co.ahm.ga.vms.app000.model.AhmhrntmDtlprmgbls;
+import id.co.ahm.ga.vms.app000.model.hr.AhmhrntmDtlprmgbls;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlprmgblsDao;
 import id.co.ahm.ga.vms.app022.util.Vms022QueryUtil;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
@@ -307,6 +307,39 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
                 }
 
             }
+        }
+        return vo;
+    }
+    
+     @Override
+    public String getGateForApprove(String outid, String nik) {
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("SELECT "
+                + "    A.VPGBLNM "
+                + "FROM "
+                + "    AHMHRNTM_DTLPRMGBLs A "
+                + "    INNER JOIN AHMHRNTM_DTLOTSREGS B ON B.VGATE = A.VPGBLNM "
+                + "WHERE "
+                + "        VPGBLCD LIKE 'PG85%' "
+                + "    AND "
+                + "        B.VOTSID =:VOTSID "
+                + "    AND "
+                + "        B.VPERSID =:VPERSID "
+                + "    AND "
+                + "        VREGID LIKE ( 'GATE' ) ");
+
+        SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
+
+        sqlQuery.setParameter("VOTSID", outid)
+                .setParameter("VPERSID", nik);
+
+        List queryResult = sqlQuery.list();
+        String vo = "";
+        if (queryResult.size() > 0) {
+
+            vo = sqlQuery.uniqueResult().toString();
+
         }
         return vo;
     }

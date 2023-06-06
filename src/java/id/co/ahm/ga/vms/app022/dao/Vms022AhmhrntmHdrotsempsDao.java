@@ -5,8 +5,8 @@
  */
 package id.co.ahm.ga.vms.app022.dao;
 
-import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsemps;
-import id.co.ahm.ga.vms.app000.model.AhmhrntmHdrotsempsPk;
+import id.co.ahm.ga.vms.app000.model.hr.AhmhrntmHdrotsemps;
+import id.co.ahm.ga.vms.app000.model.hr.AhmhrntmHdrotsempsPk;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
 import id.co.ahm.jxf.dao.HrDao;
 import id.co.ahm.jxf.dto.DtoParamPaging;

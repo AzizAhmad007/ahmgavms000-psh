@@ -6,8 +6,8 @@
 package id.co.ahm.ga.vms.app022.dao;
 
 import id.co.ahm.jxf.dao.HrDao;
-import id.co.ahm.ga.vms.app000.model.AhmhrntmMstuprnums;
-import id.co.ahm.ga.vms.app000.model.AhmhrntmMstuprnumsPk;
+import id.co.ahm.ga.vms.app000.model.hr.AhmhrntmMstuprnums;
+import id.co.ahm.ga.vms.app000.model.hr.AhmhrntmMstuprnumsPk;
 
 /**
  *

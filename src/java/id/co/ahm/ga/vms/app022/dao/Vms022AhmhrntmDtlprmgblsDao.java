@@ -5,7 +5,7 @@
  */
 package id.co.ahm.ga.vms.app022.dao;
 
-import id.co.ahm.ga.vms.app000.model.AhmhrntmDtlprmgbls;
+import id.co.ahm.ga.vms.app000.model.hr.AhmhrntmDtlprmgbls;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
 import id.co.ahm.jxf.dao.HrDao;
 import id.co.ahm.jxf.dto.DtoParamPaging;
@@ -28,5 +28,7 @@ public interface Vms022AhmhrntmDtlprmgblsDao extends HrDao<AhmhrntmDtlprmgbls, S
     public List<Vms022VoLov> getGate(String outid, String nik);
     
     public String getGateForExcel(String outid, String nik);
+    
+    public String getGateForApprove(String outid, String nik);
     
 }

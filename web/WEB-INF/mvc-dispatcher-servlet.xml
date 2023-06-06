@@ -117,7 +117,7 @@
     <bean class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" id="sessionFactoryHr">        
         <property name="packagesToScan" >
             <list>                        
-                <value>id.co.ahm.ga.vms.app000.model</value>
+                <value>id.co.ahm.ga.vms.app000.model.hr</value>
             </list>
         </property>
         <property name="dataSource" ref="dataSourceHr"/>

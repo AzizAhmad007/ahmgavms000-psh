@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package id.co.ahm.ga.vms.app000.model;
+package id.co.ahm.ga.vms.app000.model.hr;
 
 import id.co.ahm.jxf.model.DefaultEntityImpl;
 import java.io.Serializable;

@@ -7,8 +7,8 @@ package id.co.ahm.ga.vms.app022.dao.impl;
 
 import id.co.ahm.jxf.dao.HrHibernateDao;
 import org.springframework.stereotype.Repository;
-import id.co.ahm.ga.vms.app000.model.AhmhrntmMstuprnums;
-import id.co.ahm.ga.vms.app000.model.AhmhrntmMstuprnumsPk;
+import id.co.ahm.ga.vms.app000.model.hr.AhmhrntmMstuprnums;
+import id.co.ahm.ga.vms.app000.model.hr.AhmhrntmMstuprnumsPk;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmMstuprnumsDao;
 
 /**
