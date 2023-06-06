@@ -24,14 +24,15 @@ import org.hibernate.annotations.DynamicUpdate;
 public class AhmitiamHdrevntlogs extends DefaultEntityImpl implements Serializable {
 
     @EmbeddedId
-    private AhmitiamHdrevntlogs ahmitiamHdrevntlogs;
+    private AhmitiamHdrevntlogsPk ahmitiamHdrevntlogs;
 
-    public AhmitiamHdrevntlogs getAhmitiamHdrevntlogs() {
+    public AhmitiamHdrevntlogsPk getAhmitiamHdrevntlogs() {
         return ahmitiamHdrevntlogs;
     }
 
-    public void setAhmitiamHdrevntlogs(AhmitiamHdrevntlogs ahmitiamHdrevntlogs) {
+    public void setAhmitiamHdrevntlogs(AhmitiamHdrevntlogsPk ahmitiamHdrevntlogs) {
         this.ahmitiamHdrevntlogs = ahmitiamHdrevntlogs;
     }
+
 
 }

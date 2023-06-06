@@ -444,7 +444,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                                     hdrEvntPk.setVnrp(getdata.getOutId());
                                     hdrEvntPk.setVprocess("IAM018");
                                     AhmitiamHdrevntlogs hdrEvnt = new AhmitiamHdrevntlogs();
-                                    hdrEvnt.setAhmitiamHdrevntlogs(hdrEvnt);
+                                    hdrEvnt.setAhmitiamHdrevntlogs(hdrEvntPk);
 
                                     vms022AhmitiamHdrevntlogsDao.save(hdrEvnt);
                                     vms022AhmitiamHdrevntlogsDao.flush();
