@@ -1,0 +1,1653 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="VaultWebAPI" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="VaultWebAPI" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Vault Enterprise Web API</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="VaultWebAPI">
+      <s:element name="AddSupremaFP">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CardNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tmp1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tmp2" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="DownloadTemplate" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddSupremaFPResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddSupremaFPResult" type="tns:entReplyCode" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="entReplyCode">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ErrCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ErrMessage" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MediaID" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="DeleteSupremaFP">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CardNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="DownloadTemplate" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteSupremaFPResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DeleteSupremaFPResult" type="tns:entReplyCode" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddCard">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CardProfile" type="tns:entCardProfile" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="entCardProfile">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CardNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CardPinNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CardType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Department" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Company" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Gentle" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AccessLevel" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LiftAccessLevel" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="BypassAP" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="ActiveStatus" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="NonExpired" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExpiredDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VehicleNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FloorNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UnitNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ParkingNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StaffNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Title" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Position" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NRIC" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Passport" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Race" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DOB" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="JoiningDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ResignDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Address1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Address2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PostalCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="City" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="State" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MobileNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Photo" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DownloadCard" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddCardResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddCardResult" type="tns:entReplyCode" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateCard">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CardNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CardProfile" type="tns:entCardProfile" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateCardResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateCardResult" type="tns:entReplyCode" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetCardStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CardNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="CardStatus" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="DownloadCard" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetCardStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SetCardStatusResult" type="tns:entReplyCode" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteCard">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CardNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="DeleteFromDevice" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteCardResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DeleteCardResult" type="tns:entReplyCode" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateCardAccessLevel">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CardNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="AccessLevel" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="DownloadCard" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateCardAccessLevelResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateCardAccessLevelResult" type="tns:entReplyCode" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAccessLevel">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAccessLevelResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAccessLevelResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLiftAccessLevel">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetLiftAccessLevelResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetLiftAccessLevelResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllDoor">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAllDoorResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllDoorResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLiftDoor">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetLiftDoorResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetLiftDoorResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLiftInterval">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetLiftIntervalResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetLiftIntervalResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDoorTimeZone">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetDoorTimeZoneResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDoorTimeZoneResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetCardAccessCustom">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DoorCardAccess" type="tns:ArrayOfEntDoorCardAccess" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfEntDoorCardAccess">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="entDoorCardAccess" nillable="true" type="tns:entDoorCardAccess" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="entDoorCardAccess">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CardNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DoorName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TimeZone" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SetCardAccessCustomResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SetCardAccessCustomResult" type="tns:entReplyCode" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetCardLiftAccess">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LiftCardAccess" type="tns:ArrayOfEntLiftCardAccess" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfEntLiftCardAccess">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="entLiftCardAccess" nillable="true" type="tns:entLiftCardAccess" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="entLiftCardAccess">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CardNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DoorName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LiftID" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SetCardLiftAccessResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SetCardLiftAccessResult" type="tns:entReplyCode" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FalcoPulseDoorOpen">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="tokenLoginID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tokenLoginPass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="IP" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DoorID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="aError" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FalcoPulseDoorOpenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FalcoPulseDoorOpenResult" type="tns:entReplyCode" />
+            <s:element minOccurs="0" maxOccurs="1" name="aError" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FalcoSecurityOn">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="tokenLoginID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tokenLoginPass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="IP" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DoorID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="aError" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FalcoSecurityOnResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FalcoSecurityOnResult" type="tns:entReplyCode" />
+            <s:element minOccurs="0" maxOccurs="1" name="aError" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FalcoSecurityOff">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="tokenLoginID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tokenLoginPass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="IP" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DoorID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="aError" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FalcoSecurityOffResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FalcoSecurityOffResult" type="tns:entReplyCode" />
+            <s:element minOccurs="0" maxOccurs="1" name="aError" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FalcoEntryBarrierOpen">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="tokenLoginID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tokenLoginPass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="IP" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DoorID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="aError" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FalcoEntryBarrierOpenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FalcoEntryBarrierOpenResult" type="tns:entReplyCode" />
+            <s:element minOccurs="0" maxOccurs="1" name="aError" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FalcoExitBarrierOpen">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="tokenLoginID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tokenLoginPass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="IP" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DoorID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="aError" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FalcoExitBarrierOpenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FalcoExitBarrierOpenResult" type="tns:entReplyCode" />
+            <s:element minOccurs="0" maxOccurs="1" name="aError" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DoorAlive">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UnitNo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DoorAliveResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DoorAliveResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UploadCardByDoorUnitNo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CardNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="UnitNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CustomAccessTZ" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UploadCardByDoorUnitNoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UploadCardByDoorUnitNoResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="entReplyCode" nillable="true" type="tns:entReplyCode" />
+      <s:element name="DataTable" nillable="true">
+        <s:complexType>
+          <s:sequence>
+            <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+            <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="AddSupremaFPSoapIn">
+    <wsdl:part name="parameters" element="tns:AddSupremaFP" />
+  </wsdl:message>
+  <wsdl:message name="AddSupremaFPSoapOut">
+    <wsdl:part name="parameters" element="tns:AddSupremaFPResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteSupremaFPSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteSupremaFP" />
+  </wsdl:message>
+  <wsdl:message name="DeleteSupremaFPSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteSupremaFPResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddCardSoapIn">
+    <wsdl:part name="parameters" element="tns:AddCard" />
+  </wsdl:message>
+  <wsdl:message name="AddCardSoapOut">
+    <wsdl:part name="parameters" element="tns:AddCardResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCardSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateCard" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCardSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateCardResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetCardStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:SetCardStatus" />
+  </wsdl:message>
+  <wsdl:message name="SetCardStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:SetCardStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteCardSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteCard" />
+  </wsdl:message>
+  <wsdl:message name="DeleteCardSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteCardResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCardAccessLevelSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateCardAccessLevel" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCardAccessLevelSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateCardAccessLevelResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAccessLevelSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAccessLevel" />
+  </wsdl:message>
+  <wsdl:message name="GetAccessLevelSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAccessLevelResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetLiftAccessLevelSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLiftAccessLevel" />
+  </wsdl:message>
+  <wsdl:message name="GetLiftAccessLevelSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLiftAccessLevelResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllDoorSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllDoor" />
+  </wsdl:message>
+  <wsdl:message name="GetAllDoorSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllDoorResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetLiftDoorSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLiftDoor" />
+  </wsdl:message>
+  <wsdl:message name="GetLiftDoorSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLiftDoorResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetLiftIntervalSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLiftInterval" />
+  </wsdl:message>
+  <wsdl:message name="GetLiftIntervalSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLiftIntervalResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDoorTimeZoneSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDoorTimeZone" />
+  </wsdl:message>
+  <wsdl:message name="GetDoorTimeZoneSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDoorTimeZoneResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetCardAccessCustomSoapIn">
+    <wsdl:part name="parameters" element="tns:SetCardAccessCustom" />
+  </wsdl:message>
+  <wsdl:message name="SetCardAccessCustomSoapOut">
+    <wsdl:part name="parameters" element="tns:SetCardAccessCustomResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetCardLiftAccessSoapIn">
+    <wsdl:part name="parameters" element="tns:SetCardLiftAccess" />
+  </wsdl:message>
+  <wsdl:message name="SetCardLiftAccessSoapOut">
+    <wsdl:part name="parameters" element="tns:SetCardLiftAccessResponse" />
+  </wsdl:message>
+  <wsdl:message name="FalcoPulseDoorOpenSoapIn">
+    <wsdl:part name="parameters" element="tns:FalcoPulseDoorOpen" />
+  </wsdl:message>
+  <wsdl:message name="FalcoPulseDoorOpenSoapOut">
+    <wsdl:part name="parameters" element="tns:FalcoPulseDoorOpenResponse" />
+  </wsdl:message>
+  <wsdl:message name="FalcoSecurityOnSoapIn">
+    <wsdl:part name="parameters" element="tns:FalcoSecurityOn" />
+  </wsdl:message>
+  <wsdl:message name="FalcoSecurityOnSoapOut">
+    <wsdl:part name="parameters" element="tns:FalcoSecurityOnResponse" />
+  </wsdl:message>
+  <wsdl:message name="FalcoSecurityOffSoapIn">
+    <wsdl:part name="parameters" element="tns:FalcoSecurityOff" />
+  </wsdl:message>
+  <wsdl:message name="FalcoSecurityOffSoapOut">
+    <wsdl:part name="parameters" element="tns:FalcoSecurityOffResponse" />
+  </wsdl:message>
+  <wsdl:message name="FalcoEntryBarrierOpenSoapIn">
+    <wsdl:part name="parameters" element="tns:FalcoEntryBarrierOpen" />
+  </wsdl:message>
+  <wsdl:message name="FalcoEntryBarrierOpenSoapOut">
+    <wsdl:part name="parameters" element="tns:FalcoEntryBarrierOpenResponse" />
+  </wsdl:message>
+  <wsdl:message name="FalcoExitBarrierOpenSoapIn">
+    <wsdl:part name="parameters" element="tns:FalcoExitBarrierOpen" />
+  </wsdl:message>
+  <wsdl:message name="FalcoExitBarrierOpenSoapOut">
+    <wsdl:part name="parameters" element="tns:FalcoExitBarrierOpenResponse" />
+  </wsdl:message>
+  <wsdl:message name="DoorAliveSoapIn">
+    <wsdl:part name="parameters" element="tns:DoorAlive" />
+  </wsdl:message>
+  <wsdl:message name="DoorAliveSoapOut">
+    <wsdl:part name="parameters" element="tns:DoorAliveResponse" />
+  </wsdl:message>
+  <wsdl:message name="UploadCardByDoorUnitNoSoapIn">
+    <wsdl:part name="parameters" element="tns:UploadCardByDoorUnitNo" />
+  </wsdl:message>
+  <wsdl:message name="UploadCardByDoorUnitNoSoapOut">
+    <wsdl:part name="parameters" element="tns:UploadCardByDoorUnitNoResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddSupremaFPHttpGetIn">
+    <wsdl:part name="CardNo" type="s:string" />
+    <wsdl:part name="Tmp1" type="s:string" />
+    <wsdl:part name="Tmp2" type="s:string" />
+    <wsdl:part name="DownloadTemplate" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AddSupremaFPHttpGetOut">
+    <wsdl:part name="Body" element="tns:entReplyCode" />
+  </wsdl:message>
+  <wsdl:message name="DeleteSupremaFPHttpGetIn">
+    <wsdl:part name="CardNo" type="s:string" />
+    <wsdl:part name="DownloadTemplate" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DeleteSupremaFPHttpGetOut">
+    <wsdl:part name="Body" element="tns:entReplyCode" />
+  </wsdl:message>
+  <wsdl:message name="SetCardStatusHttpGetIn">
+    <wsdl:part name="CardNo" type="s:string" />
+    <wsdl:part name="CardStatus" type="s:string" />
+    <wsdl:part name="DownloadCard" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SetCardStatusHttpGetOut">
+    <wsdl:part name="Body" element="tns:entReplyCode" />
+  </wsdl:message>
+  <wsdl:message name="DeleteCardHttpGetIn">
+    <wsdl:part name="CardNo" type="s:string" />
+    <wsdl:part name="DeleteFromDevice" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DeleteCardHttpGetOut">
+    <wsdl:part name="Body" element="tns:entReplyCode" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCardAccessLevelHttpGetIn">
+    <wsdl:part name="CardNo" type="s:string" />
+    <wsdl:part name="AccessLevel" type="s:string" />
+    <wsdl:part name="DownloadCard" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCardAccessLevelHttpGetOut">
+    <wsdl:part name="Body" element="tns:entReplyCode" />
+  </wsdl:message>
+  <wsdl:message name="GetAccessLevelHttpGetIn" />
+  <wsdl:message name="GetAccessLevelHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="GetLiftAccessLevelHttpGetIn" />
+  <wsdl:message name="GetLiftAccessLevelHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="GetAllDoorHttpGetIn" />
+  <wsdl:message name="GetAllDoorHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="GetLiftDoorHttpGetIn" />
+  <wsdl:message name="GetLiftDoorHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="GetLiftIntervalHttpGetIn" />
+  <wsdl:message name="GetLiftIntervalHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="GetDoorTimeZoneHttpGetIn" />
+  <wsdl:message name="GetDoorTimeZoneHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="DoorAliveHttpGetIn">
+    <wsdl:part name="UnitNo" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DoorAliveHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="UploadCardByDoorUnitNoHttpGetIn">
+    <wsdl:part name="CardNo" type="s:string" />
+    <wsdl:part name="UnitNo" type="s:string" />
+    <wsdl:part name="CustomAccessTZ" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UploadCardByDoorUnitNoHttpGetOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="AddSupremaFPHttpPostIn">
+    <wsdl:part name="CardNo" type="s:string" />
+    <wsdl:part name="Tmp1" type="s:string" />
+    <wsdl:part name="Tmp2" type="s:string" />
+    <wsdl:part name="DownloadTemplate" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AddSupremaFPHttpPostOut">
+    <wsdl:part name="Body" element="tns:entReplyCode" />
+  </wsdl:message>
+  <wsdl:message name="DeleteSupremaFPHttpPostIn">
+    <wsdl:part name="CardNo" type="s:string" />
+    <wsdl:part name="DownloadTemplate" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DeleteSupremaFPHttpPostOut">
+    <wsdl:part name="Body" element="tns:entReplyCode" />
+  </wsdl:message>
+  <wsdl:message name="SetCardStatusHttpPostIn">
+    <wsdl:part name="CardNo" type="s:string" />
+    <wsdl:part name="CardStatus" type="s:string" />
+    <wsdl:part name="DownloadCard" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SetCardStatusHttpPostOut">
+    <wsdl:part name="Body" element="tns:entReplyCode" />
+  </wsdl:message>
+  <wsdl:message name="DeleteCardHttpPostIn">
+    <wsdl:part name="CardNo" type="s:string" />
+    <wsdl:part name="DeleteFromDevice" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DeleteCardHttpPostOut">
+    <wsdl:part name="Body" element="tns:entReplyCode" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCardAccessLevelHttpPostIn">
+    <wsdl:part name="CardNo" type="s:string" />
+    <wsdl:part name="AccessLevel" type="s:string" />
+    <wsdl:part name="DownloadCard" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCardAccessLevelHttpPostOut">
+    <wsdl:part name="Body" element="tns:entReplyCode" />
+  </wsdl:message>
+  <wsdl:message name="GetAccessLevelHttpPostIn" />
+  <wsdl:message name="GetAccessLevelHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="GetLiftAccessLevelHttpPostIn" />
+  <wsdl:message name="GetLiftAccessLevelHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="GetAllDoorHttpPostIn" />
+  <wsdl:message name="GetAllDoorHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="GetLiftDoorHttpPostIn" />
+  <wsdl:message name="GetLiftDoorHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="GetLiftIntervalHttpPostIn" />
+  <wsdl:message name="GetLiftIntervalHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="GetDoorTimeZoneHttpPostIn" />
+  <wsdl:message name="GetDoorTimeZoneHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="DoorAliveHttpPostIn">
+    <wsdl:part name="UnitNo" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="DoorAliveHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:message name="UploadCardByDoorUnitNoHttpPostIn">
+    <wsdl:part name="CardNo" type="s:string" />
+    <wsdl:part name="UnitNo" type="s:string" />
+    <wsdl:part name="CustomAccessTZ" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UploadCardByDoorUnitNoHttpPostOut">
+    <wsdl:part name="Body" element="tns:DataTable" />
+  </wsdl:message>
+  <wsdl:portType name="VaultWebAPISoap">
+    <wsdl:operation name="AddSupremaFP">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Register card fingerprint template for door access</wsdl:documentation>
+      <wsdl:input message="tns:AddSupremaFPSoapIn" />
+      <wsdl:output message="tns:AddSupremaFPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteSupremaFP">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Delete suprema template from door access system</wsdl:documentation>
+      <wsdl:input message="tns:DeleteSupremaFPSoapIn" />
+      <wsdl:output message="tns:DeleteSupremaFPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddCard">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Register new card for door access</wsdl:documentation>
+      <wsdl:input message="tns:AddCardSoapIn" />
+      <wsdl:output message="tns:AddCardSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCard">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Update card profile for door access</wsdl:documentation>
+      <wsdl:input message="tns:UpdateCardSoapIn" />
+      <wsdl:output message="tns:UpdateCardSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetCardStatus">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Enable or Disable card status for door access</wsdl:documentation>
+      <wsdl:input message="tns:SetCardStatusSoapIn" />
+      <wsdl:output message="tns:SetCardStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCard">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Delete card profile for door access</wsdl:documentation>
+      <wsdl:input message="tns:DeleteCardSoapIn" />
+      <wsdl:output message="tns:DeleteCardSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCardAccessLevel">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Update card Access Level</wsdl:documentation>
+      <wsdl:input message="tns:UpdateCardAccessLevelSoapIn" />
+      <wsdl:output message="tns:UpdateCardAccessLevelSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAccessLevel">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get Access Level list from system</wsdl:documentation>
+      <wsdl:input message="tns:GetAccessLevelSoapIn" />
+      <wsdl:output message="tns:GetAccessLevelSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftAccessLevel">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get Lift Access Level list from system</wsdl:documentation>
+      <wsdl:input message="tns:GetLiftAccessLevelSoapIn" />
+      <wsdl:output message="tns:GetLiftAccessLevelSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDoor">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get All the Door Controller List from system</wsdl:documentation>
+      <wsdl:input message="tns:GetAllDoorSoapIn" />
+      <wsdl:output message="tns:GetAllDoorSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftDoor">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get Door Controller List For liFt type</wsdl:documentation>
+      <wsdl:input message="tns:GetLiftDoorSoapIn" />
+      <wsdl:output message="tns:GetLiftDoorSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftInterval">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get all the lift interval type available from system</wsdl:documentation>
+      <wsdl:input message="tns:GetLiftIntervalSoapIn" />
+      <wsdl:output message="tns:GetLiftIntervalSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDoorTimeZone">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get all the door time zone available from system</wsdl:documentation>
+      <wsdl:input message="tns:GetDoorTimeZoneSoapIn" />
+      <wsdl:output message="tns:GetDoorTimeZoneSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetCardAccessCustom">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Register card door access time zone and access right </wsdl:documentation>
+      <wsdl:input message="tns:SetCardAccessCustomSoapIn" />
+      <wsdl:output message="tns:SetCardAccessCustomSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetCardLiftAccess">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Register card lift access interval </wsdl:documentation>
+      <wsdl:input message="tns:SetCardLiftAccessSoapIn" />
+      <wsdl:output message="tns:SetCardLiftAccessSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FalcoPulseDoorOpen">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Open Door</wsdl:documentation>
+      <wsdl:input message="tns:FalcoPulseDoorOpenSoapIn" />
+      <wsdl:output message="tns:FalcoPulseDoorOpenSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FalcoSecurityOn">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Security On</wsdl:documentation>
+      <wsdl:input message="tns:FalcoSecurityOnSoapIn" />
+      <wsdl:output message="tns:FalcoSecurityOnSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FalcoSecurityOff">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Security Off</wsdl:documentation>
+      <wsdl:input message="tns:FalcoSecurityOffSoapIn" />
+      <wsdl:output message="tns:FalcoSecurityOffSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FalcoEntryBarrierOpen">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Barrier Open</wsdl:documentation>
+      <wsdl:input message="tns:FalcoEntryBarrierOpenSoapIn" />
+      <wsdl:output message="tns:FalcoEntryBarrierOpenSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FalcoExitBarrierOpen">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Barrier Exit Open</wsdl:documentation>
+      <wsdl:input message="tns:FalcoExitBarrierOpenSoapIn" />
+      <wsdl:output message="tns:FalcoExitBarrierOpenSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DoorAlive">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Check the door controller online status</wsdl:documentation>
+      <wsdl:input message="tns:DoorAliveSoapIn" />
+      <wsdl:output message="tns:DoorAliveSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadCardByDoorUnitNo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Upload card  to specific controller only with return status</wsdl:documentation>
+      <wsdl:input message="tns:UploadCardByDoorUnitNoSoapIn" />
+      <wsdl:output message="tns:UploadCardByDoorUnitNoSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="VaultWebAPIHttpGet">
+    <wsdl:operation name="AddSupremaFP">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Register card fingerprint template for door access</wsdl:documentation>
+      <wsdl:input message="tns:AddSupremaFPHttpGetIn" />
+      <wsdl:output message="tns:AddSupremaFPHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteSupremaFP">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Delete suprema template from door access system</wsdl:documentation>
+      <wsdl:input message="tns:DeleteSupremaFPHttpGetIn" />
+      <wsdl:output message="tns:DeleteSupremaFPHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetCardStatus">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Enable or Disable card status for door access</wsdl:documentation>
+      <wsdl:input message="tns:SetCardStatusHttpGetIn" />
+      <wsdl:output message="tns:SetCardStatusHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCard">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Delete card profile for door access</wsdl:documentation>
+      <wsdl:input message="tns:DeleteCardHttpGetIn" />
+      <wsdl:output message="tns:DeleteCardHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCardAccessLevel">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Update card Access Level</wsdl:documentation>
+      <wsdl:input message="tns:UpdateCardAccessLevelHttpGetIn" />
+      <wsdl:output message="tns:UpdateCardAccessLevelHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAccessLevel">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get Access Level list from system</wsdl:documentation>
+      <wsdl:input message="tns:GetAccessLevelHttpGetIn" />
+      <wsdl:output message="tns:GetAccessLevelHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftAccessLevel">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get Lift Access Level list from system</wsdl:documentation>
+      <wsdl:input message="tns:GetLiftAccessLevelHttpGetIn" />
+      <wsdl:output message="tns:GetLiftAccessLevelHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDoor">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get All the Door Controller List from system</wsdl:documentation>
+      <wsdl:input message="tns:GetAllDoorHttpGetIn" />
+      <wsdl:output message="tns:GetAllDoorHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftDoor">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get Door Controller List For liFt type</wsdl:documentation>
+      <wsdl:input message="tns:GetLiftDoorHttpGetIn" />
+      <wsdl:output message="tns:GetLiftDoorHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftInterval">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get all the lift interval type available from system</wsdl:documentation>
+      <wsdl:input message="tns:GetLiftIntervalHttpGetIn" />
+      <wsdl:output message="tns:GetLiftIntervalHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDoorTimeZone">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get all the door time zone available from system</wsdl:documentation>
+      <wsdl:input message="tns:GetDoorTimeZoneHttpGetIn" />
+      <wsdl:output message="tns:GetDoorTimeZoneHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DoorAlive">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Check the door controller online status</wsdl:documentation>
+      <wsdl:input message="tns:DoorAliveHttpGetIn" />
+      <wsdl:output message="tns:DoorAliveHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadCardByDoorUnitNo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Upload card  to specific controller only with return status</wsdl:documentation>
+      <wsdl:input message="tns:UploadCardByDoorUnitNoHttpGetIn" />
+      <wsdl:output message="tns:UploadCardByDoorUnitNoHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="VaultWebAPIHttpPost">
+    <wsdl:operation name="AddSupremaFP">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Register card fingerprint template for door access</wsdl:documentation>
+      <wsdl:input message="tns:AddSupremaFPHttpPostIn" />
+      <wsdl:output message="tns:AddSupremaFPHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteSupremaFP">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Delete suprema template from door access system</wsdl:documentation>
+      <wsdl:input message="tns:DeleteSupremaFPHttpPostIn" />
+      <wsdl:output message="tns:DeleteSupremaFPHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetCardStatus">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Enable or Disable card status for door access</wsdl:documentation>
+      <wsdl:input message="tns:SetCardStatusHttpPostIn" />
+      <wsdl:output message="tns:SetCardStatusHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCard">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Delete card profile for door access</wsdl:documentation>
+      <wsdl:input message="tns:DeleteCardHttpPostIn" />
+      <wsdl:output message="tns:DeleteCardHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCardAccessLevel">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Update card Access Level</wsdl:documentation>
+      <wsdl:input message="tns:UpdateCardAccessLevelHttpPostIn" />
+      <wsdl:output message="tns:UpdateCardAccessLevelHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAccessLevel">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get Access Level list from system</wsdl:documentation>
+      <wsdl:input message="tns:GetAccessLevelHttpPostIn" />
+      <wsdl:output message="tns:GetAccessLevelHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftAccessLevel">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get Lift Access Level list from system</wsdl:documentation>
+      <wsdl:input message="tns:GetLiftAccessLevelHttpPostIn" />
+      <wsdl:output message="tns:GetLiftAccessLevelHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDoor">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get All the Door Controller List from system</wsdl:documentation>
+      <wsdl:input message="tns:GetAllDoorHttpPostIn" />
+      <wsdl:output message="tns:GetAllDoorHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftDoor">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get Door Controller List For liFt type</wsdl:documentation>
+      <wsdl:input message="tns:GetLiftDoorHttpPostIn" />
+      <wsdl:output message="tns:GetLiftDoorHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftInterval">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get all the lift interval type available from system</wsdl:documentation>
+      <wsdl:input message="tns:GetLiftIntervalHttpPostIn" />
+      <wsdl:output message="tns:GetLiftIntervalHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDoorTimeZone">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get all the door time zone available from system</wsdl:documentation>
+      <wsdl:input message="tns:GetDoorTimeZoneHttpPostIn" />
+      <wsdl:output message="tns:GetDoorTimeZoneHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DoorAlive">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Check the door controller online status</wsdl:documentation>
+      <wsdl:input message="tns:DoorAliveHttpPostIn" />
+      <wsdl:output message="tns:DoorAliveHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadCardByDoorUnitNo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Upload card  to specific controller only with return status</wsdl:documentation>
+      <wsdl:input message="tns:UploadCardByDoorUnitNoHttpPostIn" />
+      <wsdl:output message="tns:UploadCardByDoorUnitNoHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="VaultWebAPISoap" type="tns:VaultWebAPISoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddSupremaFP">
+      <soap:operation soapAction="VaultWebAPI/AddSupremaFP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteSupremaFP">
+      <soap:operation soapAction="VaultWebAPI/DeleteSupremaFP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCard">
+      <soap:operation soapAction="VaultWebAPI/AddCard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCard">
+      <soap:operation soapAction="VaultWebAPI/UpdateCard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetCardStatus">
+      <soap:operation soapAction="VaultWebAPI/SetCardStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCard">
+      <soap:operation soapAction="VaultWebAPI/DeleteCard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCardAccessLevel">
+      <soap:operation soapAction="VaultWebAPI/UpdateCardAccessLevel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccessLevel">
+      <soap:operation soapAction="VaultWebAPI/GetAccessLevel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftAccessLevel">
+      <soap:operation soapAction="VaultWebAPI/GetLiftAccessLevel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDoor">
+      <soap:operation soapAction="VaultWebAPI/GetAllDoor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftDoor">
+      <soap:operation soapAction="VaultWebAPI/GetLiftDoor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftInterval">
+      <soap:operation soapAction="VaultWebAPI/GetLiftInterval" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDoorTimeZone">
+      <soap:operation soapAction="VaultWebAPI/GetDoorTimeZone" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetCardAccessCustom">
+      <soap:operation soapAction="VaultWebAPI/SetCardAccessCustom" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetCardLiftAccess">
+      <soap:operation soapAction="VaultWebAPI/SetCardLiftAccess" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FalcoPulseDoorOpen">
+      <soap:operation soapAction="VaultWebAPI/FalcoPulseDoorOpen" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FalcoSecurityOn">
+      <soap:operation soapAction="VaultWebAPI/FalcoSecurityOn" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FalcoSecurityOff">
+      <soap:operation soapAction="VaultWebAPI/FalcoSecurityOff" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FalcoEntryBarrierOpen">
+      <soap:operation soapAction="VaultWebAPI/FalcoEntryBarrierOpen" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FalcoExitBarrierOpen">
+      <soap:operation soapAction="VaultWebAPI/FalcoExitBarrierOpen" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DoorAlive">
+      <soap:operation soapAction="VaultWebAPI/DoorAlive" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadCardByDoorUnitNo">
+      <soap:operation soapAction="VaultWebAPI/UploadCardByDoorUnitNo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="VaultWebAPISoap12" type="tns:VaultWebAPISoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddSupremaFP">
+      <soap12:operation soapAction="VaultWebAPI/AddSupremaFP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteSupremaFP">
+      <soap12:operation soapAction="VaultWebAPI/DeleteSupremaFP" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddCard">
+      <soap12:operation soapAction="VaultWebAPI/AddCard" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCard">
+      <soap12:operation soapAction="VaultWebAPI/UpdateCard" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetCardStatus">
+      <soap12:operation soapAction="VaultWebAPI/SetCardStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCard">
+      <soap12:operation soapAction="VaultWebAPI/DeleteCard" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCardAccessLevel">
+      <soap12:operation soapAction="VaultWebAPI/UpdateCardAccessLevel" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccessLevel">
+      <soap12:operation soapAction="VaultWebAPI/GetAccessLevel" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftAccessLevel">
+      <soap12:operation soapAction="VaultWebAPI/GetLiftAccessLevel" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDoor">
+      <soap12:operation soapAction="VaultWebAPI/GetAllDoor" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftDoor">
+      <soap12:operation soapAction="VaultWebAPI/GetLiftDoor" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftInterval">
+      <soap12:operation soapAction="VaultWebAPI/GetLiftInterval" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDoorTimeZone">
+      <soap12:operation soapAction="VaultWebAPI/GetDoorTimeZone" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetCardAccessCustom">
+      <soap12:operation soapAction="VaultWebAPI/SetCardAccessCustom" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetCardLiftAccess">
+      <soap12:operation soapAction="VaultWebAPI/SetCardLiftAccess" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FalcoPulseDoorOpen">
+      <soap12:operation soapAction="VaultWebAPI/FalcoPulseDoorOpen" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FalcoSecurityOn">
+      <soap12:operation soapAction="VaultWebAPI/FalcoSecurityOn" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FalcoSecurityOff">
+      <soap12:operation soapAction="VaultWebAPI/FalcoSecurityOff" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FalcoEntryBarrierOpen">
+      <soap12:operation soapAction="VaultWebAPI/FalcoEntryBarrierOpen" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FalcoExitBarrierOpen">
+      <soap12:operation soapAction="VaultWebAPI/FalcoExitBarrierOpen" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DoorAlive">
+      <soap12:operation soapAction="VaultWebAPI/DoorAlive" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadCardByDoorUnitNo">
+      <soap12:operation soapAction="VaultWebAPI/UploadCardByDoorUnitNo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="VaultWebAPIHttpGet" type="tns:VaultWebAPIHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="AddSupremaFP">
+      <http:operation location="/AddSupremaFP" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteSupremaFP">
+      <http:operation location="/DeleteSupremaFP" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetCardStatus">
+      <http:operation location="/SetCardStatus" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCard">
+      <http:operation location="/DeleteCard" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCardAccessLevel">
+      <http:operation location="/UpdateCardAccessLevel" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccessLevel">
+      <http:operation location="/GetAccessLevel" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftAccessLevel">
+      <http:operation location="/GetLiftAccessLevel" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDoor">
+      <http:operation location="/GetAllDoor" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftDoor">
+      <http:operation location="/GetLiftDoor" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftInterval">
+      <http:operation location="/GetLiftInterval" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDoorTimeZone">
+      <http:operation location="/GetDoorTimeZone" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DoorAlive">
+      <http:operation location="/DoorAlive" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadCardByDoorUnitNo">
+      <http:operation location="/UploadCardByDoorUnitNo" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="VaultWebAPIHttpPost" type="tns:VaultWebAPIHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="AddSupremaFP">
+      <http:operation location="/AddSupremaFP" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteSupremaFP">
+      <http:operation location="/DeleteSupremaFP" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetCardStatus">
+      <http:operation location="/SetCardStatus" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCard">
+      <http:operation location="/DeleteCard" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCardAccessLevel">
+      <http:operation location="/UpdateCardAccessLevel" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccessLevel">
+      <http:operation location="/GetAccessLevel" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftAccessLevel">
+      <http:operation location="/GetLiftAccessLevel" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDoor">
+      <http:operation location="/GetAllDoor" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftDoor">
+      <http:operation location="/GetLiftDoor" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLiftInterval">
+      <http:operation location="/GetLiftInterval" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDoorTimeZone">
+      <http:operation location="/GetDoorTimeZone" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DoorAlive">
+      <http:operation location="/DoorAlive" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadCardByDoorUnitNo">
+      <http:operation location="/UploadCardByDoorUnitNo" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="VaultWebAPI">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Vault Enterprise Web API</wsdl:documentation>
+    <wsdl:port name="VaultWebAPISoap" binding="tns:VaultWebAPISoap">
+      <soap:address location="http://10.9.10.77/vaultpro/VaultWebAPI.asmx" />
+    </wsdl:port>
+    <wsdl:port name="VaultWebAPISoap12" binding="tns:VaultWebAPISoap12">
+      <soap12:address location="http://10.9.10.77/vaultpro/VaultWebAPI.asmx" />
+    </wsdl:port>
+    <wsdl:port name="VaultWebAPIHttpGet" binding="tns:VaultWebAPIHttpGet">
+      <http:address location="http://10.9.10.77/vaultpro/VaultWebAPI.asmx" />
+    </wsdl:port>
+    <wsdl:port name="VaultWebAPIHttpPost" binding="tns:VaultWebAPIHttpPost">
+      <http:address location="http://10.9.10.77/vaultpro/VaultWebAPI.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
