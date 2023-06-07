@@ -552,27 +552,27 @@ public class Vms022ServiceImpl implements Vms022Service {
 
                         }
 
-                        AhmitwfsMstwfdocstat newDocstat = new AhmitwfsMstwfdocstat();
-                        newDocstat.setVwfguid(idWF);
-                        newDocstat.setVwfid(WF);
-                        newDocstat.setVwfversion("1");
-                        newDocstat.setVdocid(vNseq);
-
-                        ahmitwfsMstwfdocstatDao.save(newDocstat);
-                        ahmitwfsMstwfdocstatDao.flush();
-
-
-                        AhmitwfsMstwfdochist newDochist = new AhmitwfsMstwfdochist();
-                        newDochist.setVwfguid(idWF);
-                        newDochist.setVhistid(idHist);
-                        newDochist.setVtaskid("AHMGAVMS022");
-                        newDochist.setVeventtype("WAITING_FOR_VERIFICATION");
-                        newDochist.setVtaskresult("Waiting For Verification");
-                        newDochist.setVnote("Waiting For Verification");
-                        newDochist.setVdocid(getdata.getOutId());
-
-                        vms022AhmitwfsMstwfdochistDao.save(newDochist);
-                        vms022AhmitwfsMstwfdochistDao.flush();
+//                        AhmitwfsMstwfdocstat newDocstat = new AhmitwfsMstwfdocstat();
+//                        newDocstat.setVwfguid(idWF);
+//                        newDocstat.setVwfid(WF);
+//                        newDocstat.setVwfversion("1");
+//                        newDocstat.setVdocid(vNseq);
+//
+//                        ahmitwfsMstwfdocstatDao.save(newDocstat);
+//                        ahmitwfsMstwfdocstatDao.flush();
+//
+//
+//                        AhmitwfsMstwfdochist newDochist = new AhmitwfsMstwfdochist();
+//                        newDochist.setVwfguid(idWF);
+//                        newDochist.setVhistid(idHist);
+//                        newDochist.setVtaskid("AHMGAVMS022");
+//                        newDochist.setVeventtype("WAITING_FOR_VERIFICATION");
+//                        newDochist.setVtaskresult("Waiting For Verification");
+//                        newDochist.setVnote("Waiting For Verification");
+//                        newDochist.setVdocid(getdata.getOutId());
+//
+//                        vms022AhmitwfsMstwfdochistDao.save(newDochist);
+//                        vms022AhmitwfsMstwfdochistDao.flush();
 
 
                     }
