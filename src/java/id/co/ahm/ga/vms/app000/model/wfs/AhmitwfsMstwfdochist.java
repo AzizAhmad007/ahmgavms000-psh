@@ -45,6 +45,17 @@ public class AhmitwfsMstwfdochist extends DefaultEntityImpl implements Serializa
     
     @Column(name = "VNOTE")
     private String vnote;
+    
+    @Column(name = "VDOCID")
+    private String vdocid;
+
+    public String getVdocid() {
+        return vdocid;
+    }
+
+    public void setVdocid(String vdocid) {
+        this.vdocid = vdocid;
+    }   
 
     public String getVwfguid() {
         return vwfguid;

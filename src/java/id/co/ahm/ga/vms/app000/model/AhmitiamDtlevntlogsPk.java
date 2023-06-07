@@ -6,6 +6,7 @@
 package id.co.ahm.ga.vms.app000.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -16,17 +17,17 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class AhmitiamDtlevntlogsPk implements Serializable {
 
-    @Column(name = "RERLOG_VEVENTID", nullable = false, length = 40)
+    @Column(name = "REVLOG_VEVENTID", nullable = false, length = 40)
     private String veventid;
 
-    @Column(name = "RERLOG_VNRP", nullable = false, length = 10)
+    @Column(name = "REVLOG_VNRP", nullable = false, length = 10)
     private String vnrp;
 
-    @Column(name = "RERLOG_VPROCESS", nullable = false, length = 30)
+    @Column(name = "REVLOG_VPROCESS", nullable = false, length = 30)
     private String vprocess;
 
     @Column(name = "NSEQ", nullable = true, length = 3)
-    private Number nseq;
+    private BigDecimal nseq;
 
     public String getVeventid() {
         return veventid;
@@ -52,11 +53,11 @@ public class AhmitiamDtlevntlogsPk implements Serializable {
         this.vprocess = vprocess;
     }
 
-    public Number getNseq() {
+    public BigDecimal getNseq() {
         return nseq;
     }
 
-    public void setNseq(Number nseq) {
+    public void setNseq(BigDecimal nseq) {
         this.nseq = nseq;
     }
     

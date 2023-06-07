@@ -139,6 +139,36 @@ public class Vms022ValidationDateUtil {
         }
         return false;
     }
+    
+     public static boolean checkSysDate(Date date2) {
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(new Date());
+        int day1 = cal1.get(Calendar.DAY_OF_MONTH);
+        int month1 = cal1.get(Calendar.MONTH) + 1;
+        int year1 = cal1.get(Calendar.YEAR);
+
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(date2);
+        int day2 = cal2.get(Calendar.DAY_OF_MONTH);
+        int month2 = cal2.get(Calendar.MONTH) + 1;
+        int year2 = cal2.get(Calendar.YEAR);
+
+        if (year1 > year2) { // check year
+            return true;
+        } else if (year1 == year2) { // if year is equal
+            if (month1 > month2) { // check month
+                return true;
+            } else if (month1 == month2) { // if month is equal
+                if (day1 > day2) { // check day
+                    return true;
+                }
+                else if (day1 == day2) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public static boolean checkNotActive(Date date1, Date date2) {
         //date1 end date 2 begin

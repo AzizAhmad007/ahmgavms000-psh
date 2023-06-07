@@ -20,7 +20,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicInsert
 @DynamicUpdate
 @Entity
-@Table(name = "AHMITIAM_HDREVNTLOG")
+@Table(name = "AHMITIAM_HDREVNTLOGS")
 public class AhmitiamHdrevntlogs extends DefaultEntityImpl implements Serializable {
 
     @EmbeddedId
