@@ -69,6 +69,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -550,8 +552,7 @@ public class Vms022ServiceImpl implements Vms022Service {
 
                         }
 
-                        System.out.println("kholis 1");
-
+                        Logger.getLogger(Vms022ServiceImpl.class.getName()).log(Level.SEVERE, null, "kholis 1");
                         AhmitwfsMstwfdocstat newDocstat = new AhmitwfsMstwfdocstat();
                         newDocstat.setVwfguid(idWF);
                         newDocstat.setVwfid(WF);
@@ -561,7 +562,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                         ahmitwfsMstwfdocstatDao.save(newDocstat);
                         ahmitwfsMstwfdocstatDao.flush();
 
-                        System.out.println("kholis 2");
+                        Logger.getLogger(Vms022ServiceImpl.class.getName()).log(Level.SEVERE, null, "kholis 2");
 
                         AhmitwfsMstwfdochist newDochist = new AhmitwfsMstwfdochist();
                         newDochist.setVwfguid(idWF);
@@ -575,7 +576,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                         vms022AhmitwfsMstwfdochistDao.save(newDochist);
                         vms022AhmitwfsMstwfdochistDao.flush();
 
-                        System.out.println("kholis 3");
+                        Logger.getLogger(Vms022ServiceImpl.class.getName()).log(Level.SEVERE, null, "kholis 3");
 
                     }
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, ("Approve success"), null, null);
