@@ -550,6 +550,8 @@ public class Vms022ServiceImpl implements Vms022Service {
                             
                         }
                         
+                        System.out.println("kholis 1");
+                        
                         AhmitwfsMstwfdocstat newDocstat = new AhmitwfsMstwfdocstat();
                         newDocstat.setVwfguid(idWF);
                         newDocstat.setVwfid(WF);
@@ -558,6 +560,9 @@ public class Vms022ServiceImpl implements Vms022Service {
                         
                         ahmitwfsMstwfdocstatDao.save(newDocstat);
                         ahmitwfsMstwfdocstatDao.flush();
+                        
+                                                System.out.println("kholis 2");
+
                         
                         AhmitwfsMstwfdochist newDochist = new AhmitwfsMstwfdochist();
                         newDochist.setVwfguid(idWF);
@@ -570,6 +575,9 @@ public class Vms022ServiceImpl implements Vms022Service {
 
                         vms022AhmitwfsMstwfdochistDao.save(newDochist);
                         vms022AhmitwfsMstwfdochistDao.flush();
+                        
+                                                System.out.println("kholis 3");
+
 
                     }
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, ("Approve success"), null, null);
