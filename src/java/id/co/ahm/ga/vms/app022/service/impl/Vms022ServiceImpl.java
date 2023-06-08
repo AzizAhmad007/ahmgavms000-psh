@@ -551,6 +551,8 @@ public class Vms022ServiceImpl implements Vms022Service {
                             }
 
                         }
+                        
+                        System.out.println("test");
 
 //                        AhmitwfsMstwfdocstat newDocstat = new AhmitwfsMstwfdocstat();
 //                        newDocstat.setVwfguid(idWF);
