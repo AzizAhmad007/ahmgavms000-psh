@@ -429,9 +429,9 @@ public class Vms022ServiceImpl implements Vms022Service {
                             vms022ahmhrntmTxnidrepsDao.save(vo);
                             vms022ahmhrntmTxnidrepsDao.flush();
                             startWorkflow(idWF, vNseq, userCred.getUserid(), userCred, idHist, vNseq);
-                        }
+                        }   
 
-                        if (mp.getNahmcardid() != BigDecimal.ZERO) {
+                        if (mp.getNahmcardid() != BigDecimal.ZERO ) {
                             if ("Updated".equals(mp.getVcategory()) || "Perpanjangan".equals(mp.getVcategory())) {
                                 String uuid = UUID.randomUUID().toString();
 
@@ -552,18 +552,14 @@ public class Vms022ServiceImpl implements Vms022Service {
 
                         }
 
-                        System.out.println("kholis 1 " + userCred.getUsername() );
-//                        AhmitwfsMstwfdocstat newDocstat = new AhmitwfsMstwfdocstat();
-//                        newDocstat.setVwfguid(idWF);
-//                        newDocstat.setVwfid(WF);
-//                        newDocstat.setVwfversion("1");
-//                        newDocstat.setVdocid(vNseq);
-//                        newDocstat.setCreateBy(userCred.getUsername());
-//                        newDocstat.setCreateDate(new Date());
-//
-//                        ahmitwfsMstwfdocstatDao.save(newDocstat);
-//                        ahmitwfsMstwfdocstatDao.flush();
-//                        System.out.println("kholis 2");
+                        AhmitwfsMstwfdocstat newDocstat = new AhmitwfsMstwfdocstat();
+                        newDocstat.setVwfguid(idWF);
+                        newDocstat.setVwfid(WF);
+                        newDocstat.setVwfversion("1");
+                        newDocstat.setVdocid(vNseq);
+
+                        ahmitwfsMstwfdocstatDao.save(newDocstat);
+                        ahmitwfsMstwfdocstatDao.flush();
 
                         AhmitwfsMstwfdochist newDochist = new AhmitwfsMstwfdochist();
                         newDochist.setVwfguid(idWF);
@@ -573,12 +569,9 @@ public class Vms022ServiceImpl implements Vms022Service {
                         newDochist.setVtaskresult("Waiting For Verification");
                         newDochist.setVnote("Waiting For Verification");
                         newDochist.setVdocid(getdata.getOutId());
-                        newDochist.setCreateBy(userCred.getUsername());
-                        newDochist.setCreateDate(new Date());
-                        
+
                         vms022AhmitwfsMstwfdochistDao.save(newDochist);
                         vms022AhmitwfsMstwfdochistDao.flush();
-                        System.out.println("kholis 3");
 
                     }
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, ("Approve success"), null, null);
@@ -587,6 +580,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                 e.printStackTrace();
                 Map<String, Object> msg = new HashMap<>();
                 msg.put("e", e.getMessage());
+                 msg.put("usename ", userCred.getUsername());
                 return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, msg);
             }
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Failed Approve data"), null, null);
