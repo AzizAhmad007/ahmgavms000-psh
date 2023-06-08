@@ -117,10 +117,7 @@ public class Vms022Rest {
     public @ResponseBody
     DtoResponseWorkspace approvingSingle(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody Vms022VoMonitoring getdata) {
-        System.out.println("token " + token + " : ini token");
         VoUserCred user = tokenPshUtil.getUserCred(token);
-        System.out.println("username " + user.getUsername() + " : ini username");
-        System.out.println("user id " + user.getUserid()+ " : ini user id");
 
         return vms022Service.approve(getdata, user);
 
