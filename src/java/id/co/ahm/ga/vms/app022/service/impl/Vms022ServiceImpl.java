@@ -429,9 +429,9 @@ public class Vms022ServiceImpl implements Vms022Service {
                             vms022ahmhrntmTxnidrepsDao.save(vo);
                             vms022ahmhrntmTxnidrepsDao.flush();
                             startWorkflow(idWF, vNseq, userCred.getUserid(), userCred, idHist, vNseq);
-                        }
+                        }   
 
-                        if (!"".equals(getdata.getPassNumber())) {
+                        if (mp.getNahmcardid() != BigDecimal.ZERO ) {
                             if ("Updated".equals(mp.getVcategory()) || "Perpanjangan".equals(mp.getVcategory())) {
                                 String uuid = UUID.randomUUID().toString();
 
@@ -561,7 +561,6 @@ public class Vms022ServiceImpl implements Vms022Service {
                         ahmitwfsMstwfdocstatDao.save(newDocstat);
                         ahmitwfsMstwfdocstatDao.flush();
 
-
                         AhmitwfsMstwfdochist newDochist = new AhmitwfsMstwfdochist();
                         newDochist.setVwfguid(idWF);
                         newDochist.setVhistid(idHist);
@@ -573,7 +572,6 @@ public class Vms022ServiceImpl implements Vms022Service {
 
                         vms022AhmitwfsMstwfdochistDao.save(newDochist);
                         vms022AhmitwfsMstwfdochistDao.flush();
-
 
                     }
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, ("Approve success"), null, null);
