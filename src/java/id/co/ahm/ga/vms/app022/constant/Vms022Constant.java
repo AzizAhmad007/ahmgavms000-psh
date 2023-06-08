@@ -19,8 +19,8 @@ public class Vms022Constant {
     
     public static final String workflowId = "WF_AHMHRNTM_ID_Card_Replacement";
 
-    public static final String moduleId = "ahmgavms";
-    public static final String appId = "ahmgavms022";
+    public static final String moduleId = "AHMGAVMS";
+    public static final String appId = "AHMGAVMS022";
     public static final String descWorkflow = "Workflow for ID Card Replacement";
 
     public static final String SQL_GET_PLANTS_BY_USERID

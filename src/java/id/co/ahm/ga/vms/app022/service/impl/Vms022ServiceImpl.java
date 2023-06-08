@@ -422,15 +422,6 @@ public class Vms022ServiceImpl implements Vms022Service {
                         vo.setVcardname(trimOutName);
                         vo.setCreateBy(userCred.getUserid());
 
-                        vms022ahmhrntmHdrotsempsDao.update(mp);
-                        vms022ahmhrntmHdrotsempsDao.flush();
-
-                        if (validateWO.isEmpty()) {
-                            vms022ahmhrntmTxnidrepsDao.save(vo);
-                            vms022ahmhrntmTxnidrepsDao.flush();
-                            startWorkflow(idWF, vNseq, userCred.getUserid(), userCred, idHist, vNseq);
-                        }
-
                         if (mp.getNahmcardid() != BigDecimal.ZERO) {
                             if ("Updated".equals(mp.getVcategory()) || "Perpanjangan".equals(mp.getVcategory())) {
                                 String uuid = UUID.randomUUID().toString();
@@ -534,47 +525,14 @@ public class Vms022ServiceImpl implements Vms022Service {
                             }
                         }
 
-                        String WF = "";
+                        vms022ahmhrntmHdrotsempsDao.update(mp);
+                        vms022ahmhrntmHdrotsempsDao.flush();
 
-                        while (true) {
-
-                            WF = "WF16771471";
-                            Random random = new Random();
-                            int randomNumber = random.nextInt(100000);
-                            String formattedNumber = String.format("%05d", randomNumber);
-                            WF = WF + formattedNumber;
-
-                            AhmitwfsMstwfdocstat docstat = ahmitwfsMstwfdocstatDao.findOne(WF);
-
-                            if (ObjectUtils.isEmpty(docstat)) {
-                                break;
-                            }
-
+                        if (validateWO.isEmpty()) {
+                            vms022ahmhrntmTxnidrepsDao.save(vo);
+                            vms022ahmhrntmTxnidrepsDao.flush();
+                            startWorkflow(idWF, vNseq, userCred.getUserid(), userCred, idHist, vNseq, mp.getVotsid());
                         }
-
-                        AhmitwfsMstwfdocstat newDocstat = new AhmitwfsMstwfdocstat();
-                        newDocstat.setVwfguid(idWF);
-                        newDocstat.setVwfid(WF);
-                        newDocstat.setVwfversion("1");
-                        newDocstat.setVdocid(vNseq);
-                        newDocstat.setCreateBy(userCred.getUsername());
-                        newDocstat.setCreateDate(new Date());
-                        ahmitwfsMstwfdocstatDao.save(newDocstat);
-                        ahmitwfsMstwfdocstatDao.flush();
-
-                        AhmitwfsMstwfdochist newDochist = new AhmitwfsMstwfdochist();
-                        newDochist.setVwfguid(idWF);
-                        newDochist.setVhistid(idHist);
-                        newDochist.setVtaskid("AHMGAVMS022");
-                        newDochist.setVeventtype("WAITING_FOR_VERIFICATION");
-                        newDochist.setVtaskresult("Waiting For Verification");
-                        newDochist.setVnote("Waiting For Verification");
-                        newDochist.setVdocid(getdata.getOutId());
-                        newDochist.setCreateBy(userCred.getUsername());
-                        newDochist.setCreateDate(new Date());
-                        
-                        vms022AhmitwfsMstwfdochistDao.save(newDochist);
-                        vms022AhmitwfsMstwfdochistDao.flush();
 
                     }
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, ("Approve success"), null, null);
@@ -591,14 +549,14 @@ public class Vms022ServiceImpl implements Vms022Service {
         }
     }
 
-    public void startWorkflow(String wfID, String WorkOrder, String nrp, VoUserCred user, String idHist, String seq) {
+    public void startWorkflow(String wfID, String WorkOrder, String nrp, VoUserCred user, String idHist, String seq, String outid) {
         Map<String, Object> mapWorkFlow = new HashMap<>();
         mapWorkFlow.put("@AHMHRNTM046Originator", user.getUsername());
 
         VoWfsParam voWorkflow = new VoWfsParam();
         voWorkflow.setWfid(Vms022Constant.workflowId);
         voWorkflow.setDocid(seq);
-        voWorkflow.setDesc(Vms022Constant.descWorkflow);
+        voWorkflow.setDesc(outid + "-" + DateUtil.dateToString(new Date(), "dd MMM yyyy"));
         voWorkflow.setVariables(mapWorkFlow);
 
         wfService.startWorkflow(Vms022Constant.moduleId, Vms022Constant.appId, voWorkflow, user);
