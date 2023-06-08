@@ -431,7 +431,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                             startWorkflow(idWF, vNseq, userCred.getUserid(), userCred, idHist, vNseq);
                         }
 
-                        if (!getdata.getPassNumber().isEmpty()) {
+                       if (mp.getNahmcardid() != BigDecimal.ZERO ) {
                             if ("Updated".equals(mp.getVcategory()) || "Perpanjangan".equals(mp.getVcategory())) {
                                 String uuid = UUID.randomUUID().toString();
 
