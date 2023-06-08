@@ -553,17 +553,17 @@ public class Vms022ServiceImpl implements Vms022Service {
                         }
 
                         System.out.println("kholis 1");
-                        AhmitwfsMstwfdocstat newDocstat = new AhmitwfsMstwfdocstat();
-                        newDocstat.setVwfguid(idWF);
-                        newDocstat.setVwfid(WF);
-                        newDocstat.setVwfversion("1");
-                        newDocstat.setVdocid(vNseq);
-                        newDocstat.setCreateBy(userCred.getUsername());
-                        newDocstat.setCreateDate(new Date());
-
-                        ahmitwfsMstwfdocstatDao.save(newDocstat);
-                        ahmitwfsMstwfdocstatDao.flush();
-                        System.out.println("kholis 2");
+//                        AhmitwfsMstwfdocstat newDocstat = new AhmitwfsMstwfdocstat();
+//                        newDocstat.setVwfguid(idWF);
+//                        newDocstat.setVwfid(WF);
+//                        newDocstat.setVwfversion("1");
+//                        newDocstat.setVdocid(vNseq);
+//                        newDocstat.setCreateBy(userCred.getUsername());
+//                        newDocstat.setCreateDate(new Date());
+//
+//                        ahmitwfsMstwfdocstatDao.save(newDocstat);
+//                        ahmitwfsMstwfdocstatDao.flush();
+//                        System.out.println("kholis 2");
 
                         AhmitwfsMstwfdochist newDochist = new AhmitwfsMstwfdochist();
                         newDochist.setVwfguid(idWF);
