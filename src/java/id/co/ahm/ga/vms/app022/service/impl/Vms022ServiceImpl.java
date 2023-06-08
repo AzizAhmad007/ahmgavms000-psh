@@ -552,7 +552,7 @@ public class Vms022ServiceImpl implements Vms022Service {
 
                         }
 
-                        System.out.println("kholis 1");
+                        System.out.println("kholis 1 " + userCred.getUsername() );
 //                        AhmitwfsMstwfdocstat newDocstat = new AhmitwfsMstwfdocstat();
 //                        newDocstat.setVwfguid(idWF);
 //                        newDocstat.setVwfid(WF);
