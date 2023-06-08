@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package id.co.ahm.ga.vms.app022.rest;
- 
+
 import id.co.ahm.ga.vms.app022.service.Vms022Service;
 import id.co.ahm.ga.vms.app022.util.Vms022DateTimeUtil;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoMonitoring;
@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
- 
+
 /**
  *
  * @author reza.mr
@@ -45,15 +45,15 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 @RequestMapping("/ga/vms022")
 public class Vms022Rest {
- 
+
     @Autowired
     @Qualifier(value = "vms022Service")
     private Vms022Service vms022Service;
- 
+
     @Autowired
     @Qualifier(value = "tokenPshUtil")
     private TokenPshUtil tokenPshUtil;
- 
+
     //success
     @RequestMapping(value = "test-mamank", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
@@ -63,17 +63,17 @@ public class Vms022Rest {
     ) {
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, null, null, null, 0);
     }
- 
+
     @RequestMapping(value = "getformauth", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     DtoResponseWorkspace getFormAuthorization(@RequestHeader(value = "token", defaultValue = "") String token) {
         VoUserCred userCred = tokenPshUtil.getUserCred(token);
- 
+
         return vms022Service.getFormAuthorization(userCred);
     }
- 
+
     @RequestMapping(value = "show-plant", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -81,6 +81,7 @@ public class Vms022Rest {
     DtoResponseWorkspace showPlant(@RequestHeader(value = "token") String token) {
         return vms022Service.showPlant();
     }
+
     @RequestMapping(value = "get-user-detail", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -93,10 +94,10 @@ public class Vms022Rest {
         getDetail.put("userid", user.getUserid());
         getDetail.put("email", user.getEmail());
         getDetail.put("domain", user.getDomain());
- 
+
         return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, getDetail);
     }
- 
+
     //success
     @RequestMapping(value = "monitoring", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
@@ -105,10 +106,10 @@ public class Vms022Rest {
     DtoResponseWorkspace showMonitoring(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody DtoParamPaging dto) {
         VoUserCred user = tokenPshUtil.getUserCred(token);
- 
+
         return vms022Service.showMonitoring(dto, user);
     }
- 
+
     //success
     @RequestMapping(value = "approve-single", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
@@ -116,12 +117,15 @@ public class Vms022Rest {
     public @ResponseBody
     DtoResponseWorkspace approvingSingle(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody Vms022VoMonitoring getdata) {
+        System.out.println("token " + token + " : ini token");
         VoUserCred user = tokenPshUtil.getUserCred(token);
- 
+        System.out.println("username " + user.getUsername() + " : ini username");
+        System.out.println("user id " + user.getUserid()+ " : ini user id");
+
         return vms022Service.approve(getdata, user);
- 
+
     }
- 
+
     //success
     @RequestMapping(value = "reject-single", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
@@ -130,10 +134,10 @@ public class Vms022Rest {
     DtoResponseWorkspace rejectingSingle(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody Vms022VoMonitoring getdata) {
         VoUserCred user = tokenPshUtil.getUserCred(token);
- 
+
         return vms022Service.reject(getdata, user);
     }
- 
+
     @RequestMapping(value = "approve", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -141,10 +145,10 @@ public class Vms022Rest {
     DtoResponseWorkspace approving(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody List<Vms022VoMonitoring> input) {
         VoUserCred user = tokenPshUtil.getUserCred(token);
- 
+
         return vms022Service.approving(input, user);
     }
- 
+
     @RequestMapping(value = "reject", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -152,10 +156,10 @@ public class Vms022Rest {
     DtoResponseWorkspace rejecting(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody List<Vms022VoMonitoring> getdata) {
         VoUserCred user = tokenPshUtil.getUserCred(token);
- 
+
         return vms022Service.rejecting(getdata, user);
     }
- 
+
     @RequestMapping(value = "check-date", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -163,56 +167,56 @@ public class Vms022Rest {
     DtoResponseWorkspace checkingDate(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody List<Vms022VoMonitoring> input) {
         VoUserCred user = tokenPshUtil.getUserCred(token);
- 
+
         return vms022Service.checkingDate(input, user);
     }
- 
+
     @RequestMapping(value = "get-plants", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     DtoResponseWorkspace getPlants(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody Vms022VoLov input) {
- 
+
         return vms022Service.showPlant(input);
     }
- 
+
     @RequestMapping(value = "get-gates", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     DtoResponseWorkspace getGates(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody Vms022VoLov input) {
- 
+
         return vms022Service.showGate(input);
     }
- 
+
     @RequestMapping(value = "get-pic-ahm", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     DtoResponseWorkspace getPicAhm(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody Vms022VoLov input) {
- 
+
         return vms022Service.showPicAhm(input);
     }
-    
+
     @RequestMapping(value = "export-excel", method = RequestMethod.GET)
-    public void ModelAndView (HttpServletRequest request,
+    public void ModelAndView(HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "token", defaultValue = "") String token,
             @RequestParam Map<String, Object> mapParam) {
-    
+
         DtoParamPaging input = new DtoParamPaging();
         input.setSearch(mapParam);
-        
+
         SimpleDateFormat fmt = new SimpleDateFormat("YYYYMMddHHmmss");
         String filename = "Verification Personal Data Partner & Outsource_" + fmt.format(new Date());
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-Disposition", "inline; filename=" + filename + ".xls");
-        
+
     }
- 
+
     @RequestMapping(value = "exreg", method = RequestMethod.POST)
     public ModelAndView exportRegulation(@RequestParam(name = "token", defaultValue = "") String token,
             @RequestParam(name = "oi") String outId,
@@ -229,19 +233,19 @@ public class Vms022Rest {
             @RequestParam(name = "c19vs") String vacStatus,
             @RequestParam(name = "ui") String userid,
             @RequestParam(name = "ro") String role) {
-        
+
         VoUserCred user = tokenPshUtil.getUserCred(token);
-        
+
         if (StringUtils.isNotEmpty(beginDateText)) {
             Date effectiveDateFrom = Vms022DateTimeUtil.stringToDate(beginDateText);
             beginDateText = Vms022DateTimeUtil.dateToString("dd-MMM-yyyy", effectiveDateFrom);
         }
- 
+
         if (StringUtils.isNotEmpty(endDateText)) {
             Date effectiveDateTo = Vms022DateTimeUtil.stringToDate(endDateText);
             endDateText = Vms022DateTimeUtil.dateToString("dd-MMM-yyyy", effectiveDateTo);
         }
- 
+
         Map<String, Object> search = new HashMap<>();
         search.put("outId", outId);
         search.put("outName", outName);
@@ -257,31 +261,31 @@ public class Vms022Rest {
         search.put("vacStatus", vacStatus);
         search.put("userid", userid);
         search.put("role", role);
- 
+
         DtoParamPaging dtoParam = new DtoParamPaging();
         dtoParam.setOffset(0);
         dtoParam.setLimit(0);
         dtoParam.setSort(null);
         dtoParam.setSearch(search);
         dtoParam.setOrder("");
- 
+
         DtoResponseWorkspace dtoResponseWorkspace = vms022Service.getExcel(dtoParam);
         List<Vms022VoMonitoring> vms022VoMonitor = (List<Vms022VoMonitoring>) dtoResponseWorkspace.getData();
         ModelAndView modelAndView = new ModelAndView(new Vms022ExportExcel());
         modelAndView.addObject("dtoParam", dtoParam);
         modelAndView.addObject("data", vms022VoMonitor);
- 
+
         return modelAndView;
     }
-    
+
     @RequestMapping(value = "testwing", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     DtoResponse testing(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody DtoParamPaging dto) {
- 
+
         return vms022Service.testing(dto);
     }
- 
+
 }
