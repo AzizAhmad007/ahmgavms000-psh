@@ -506,15 +506,15 @@ public class Vms022ServiceImpl implements Vms022Service {
 
                                 } else {
 
-                                    AhmitiamHdrerrlogsPk hdrErrPk = new AhmitiamHdrerrlogsPk();
-                                    hdrErrPk.setVeventid(uuid);
-                                    hdrErrPk.setVnrp(getdata.getOutId());
-                                    hdrErrPk.setVproccess("IAM018");
-                                    AhmitiamHdrerrlogs hdrErr = new AhmitiamHdrerrlogs();
-                                    hdrErr.setAhmitiamHdrerrlogsPk(hdrErrPk);
-
-                                    vms022AhmitiamHdrerrlogsDao.save(hdrErr);
-                                    vms022AhmitiamHdrerrlogsDao.flush();
+//                                    AhmitiamHdrerrlogsPk hdrErrPk = new AhmitiamHdrerrlogsPk();
+//                                    hdrErrPk.setVeventid(uuid);
+//                                    hdrErrPk.setVnrp(getdata.getOutId());
+//                                    hdrErrPk.setVproccess("IAM018");
+//                                    AhmitiamHdrerrlogs hdrErr = new AhmitiamHdrerrlogs();
+//                                    hdrErr.setAhmitiamHdrerrlogsPk(hdrErrPk);
+//
+//                                    vms022AhmitiamHdrerrlogsDao.save(hdrErr);
+//                                    vms022AhmitiamHdrerrlogsDao.flush();
 
                                     AhmitiamDtlerrlogsPk dtlErrPk = new AhmitiamDtlerrlogsPk();
                                     dtlErrPk.setVeventid(uuid);
