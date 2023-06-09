@@ -531,8 +531,8 @@ public class Vms022ServiceImpl implements Vms022Service {
                         if (validateWO.isEmpty()) {
                             vms022ahmhrntmTxnidrepsDao.save(vo);
                             vms022ahmhrntmTxnidrepsDao.flush();
-                            startWorkflow(idWF, vNseq, userCred.getUserid(), userCred, idHist, vNseq, mp.getVotsid());
                         }
+                            startWorkflow(idWF, vNseq, userCred.getUserid(), userCred, idHist, vNseq, mp.getVotsid());
 
                     }
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, ("Approve success"), null, null);
