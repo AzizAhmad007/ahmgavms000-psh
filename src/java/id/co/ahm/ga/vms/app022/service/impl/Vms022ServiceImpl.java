@@ -278,7 +278,7 @@ public class Vms022ServiceImpl implements Vms022Service {
             String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());
             vo.setGateName(getGateList);
 
-            String getPlantList = vms022ahmhrntmDtlprmgblsDao.getPlantForExcel(vo.getOutId(), vo.getPersId(), pic, roleFromFront);
+            String getPlantList = vms022ahmhrntmDtlprmgblsDao.getPlantForExcel(vo.getOutId(), vo.getPersId(), nrp, roleFromFront);
             vo.setAreaName(getPlantList);
 
             String getPlantIDList = vms022ahmhrntmDtlprmgblsDao.getPlantIDForExcel(vo.getOutId(), vo.getPersId());
@@ -427,15 +427,15 @@ public class Vms022ServiceImpl implements Vms022Service {
                                 cardProfile.setName(mp.getVname());
                                 cardProfile.setCardPinNo("");
                                 cardProfile.setCardType("");
-                                cardProfile.setDepartment(mp.getVotstype());
-                                cardProfile.setCompany(mp.getVcompany());
+                                cardProfile.setDepartment(getdata.getOutTypeName());
+                                cardProfile.setCompany(getdata.getCompanyName());
                                 cardProfile.setGentle("");
                                 cardProfile.setAccessLevel(accLvl);
                                 cardProfile.setLiftAccessLevel("1");
-                                cardProfile.setBypassAP(false);
+                                cardProfile.setBypassAP(true);
                                 cardProfile.setActiveStatus(true);
                                 cardProfile.setNonExpired(false);
-                                cardProfile.setExpiredDate("");
+                                cardProfile.setExpiredDate(getdata.getPassExpiryDateText());
                                 cardProfile.setVehicleNo("");
                                 cardProfile.setFloorNo("");
                                 cardProfile.setUnitNo("");
