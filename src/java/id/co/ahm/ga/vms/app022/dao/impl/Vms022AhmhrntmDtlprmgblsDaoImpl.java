@@ -120,70 +120,68 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
         }
         return vo;
     }
-    
+
     @Override
     public String getPlantForExcel(String outid, String nik, String nrp, String role) {
-    
+
         try {
-        
-        StringBuilder sql = new StringBuilder();
 
-        sql.append("SELECT "
-                + "     distinct "
-                + "     A.VPLANT, "
-                + "     B.VPGBLNM "
-                + " FROM "
-                + " AHMHRNTM_HDROTSEMPS C "
-                + " INNER JOIN AHMHRNTM_DTLOTSREGS A ON C.VOTSID = A.VOTSID AND C.VPERSID = A.VPERSID "
-                + " INNER JOIN AHMHRNTM_DTLPRMGBLS B ON A.VPLANT = B.VPGBLCD "
-                + " INNER JOIN AHMHRNTM_MSTPICOTS D ON A.VPLANT = D.VAREA AND C.VOTSTYPE = D.VOTSTYPE "
-                + " WHERE "
-                + "     A.VREGID in('PLNT','GATE') "
-                + "     AND C.VOTSID = :VOTSID "
-                + "     AND C.VPERSID = :VPERSID ");
+            StringBuilder sql = new StringBuilder();
 
-        if (role.equalsIgnoreCase("RO_GAVMS_PICAHM")) {
-            sql.append(" AND D.VNRP = '")
-                    .append(nrp)
-                    .append("' ")
-                    .append(" AND D.VRGSROLE IN ('PG91-01', 'PG91-03') ");
-        }
-        
-        
+            sql.append("SELECT "
+                    + "     distinct "
+                    + "     A.VPLANT, "
+                    + "     B.VPGBLNM "
+                    + " FROM "
+                    + " AHMHRNTM_HDROTSEMPS C "
+                    + " INNER JOIN AHMHRNTM_DTLOTSREGS A ON C.VOTSID = A.VOTSID AND C.VPERSID = A.VPERSID "
+                    + " INNER JOIN AHMHRNTM_DTLPRMGBLS B ON A.VPLANT = B.VPGBLCD "
+                    + " INNER JOIN AHMHRNTM_MSTPICOTS D ON A.VPLANT = D.VAREA AND C.VOTSTYPE = D.VOTSTYPE "
+                    + " WHERE "
+                    + "     A.VREGID in('PLNT','GATE') "
+                    + "     AND C.VOTSID = :VOTSID "
+                    + "     AND C.VPERSID = :VPERSID ");
 
-        SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
-
-        sqlQuery.setParameter("VOTSID", outid)
-                .setParameter("VPERSID", nik);
-
-        List queryResult = sqlQuery.list();
-        String vo = "";
-        if (queryResult.size() > 0) {
-            Object[] obj;
-            boolean limitText = true;
-
-            for (Object object : queryResult) {
-                obj = (Object[]) object;    
-
-                if (limitText) {
-                    vo += obj[1].toString();
-                    limitText = false;
-                } else {
-                    vo += "; " + obj[1].toString();
-                }
-
+            if (role.equalsIgnoreCase("RO_GAVMS_PICAHM")) {
+                sql.append(" AND D.VNRP = '")
+                        .append(nrp)
+                        .append("' ")
+                        .append(" AND D.VRGSROLE IN ('PG91-01', 'PG91-03') ");
             }
-        }
-        return vo;
+
+            SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
+
+            sqlQuery.setParameter("VOTSID", outid)
+                    .setParameter("VPERSID", nik);
+
+            List queryResult = sqlQuery.list();
+            String vo = "";
+            if (queryResult.size() > 0) {
+                Object[] obj;
+                boolean limitText = true;
+
+                for (Object object : queryResult) {
+                    obj = (Object[]) object;
+
+                    if (limitText) {
+                        vo += obj[1].toString();
+                        limitText = false;
+                    } else {
+                        vo += "; " + obj[1].toString();
+                    }
+
+                }
+            }
+            return vo;
         } catch (Exception e) {
             e.printStackTrace();
             return e.getMessage();
         }
     }
-    
+
     @Override
     public String getPlantIDForExcel(String outid, String nik) {
-    
+
         StringBuilder sql = new StringBuilder();
 
         sql.append("SELECT "
@@ -211,7 +209,7 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
             boolean limitText = true;
 
             for (Object object : queryResult) {
-                obj = (Object[]) object;    
+                obj = (Object[]) object;
 
                 if (limitText) {
                     vo += "'" + obj[1].toString() + "'";
@@ -297,7 +295,7 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
             boolean limitText = true;
 
             for (Object object : queryResult) {
-                obj = (Object[]) object;    
+                obj = (Object[]) object;
 
                 if (limitText) {
                     vo += obj[3].toString();
@@ -310,24 +308,21 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
         }
         return vo;
     }
-    
-     @Override
+
+    @Override
     public String getGateForApprove(String outid, String nik) {
         StringBuilder sql = new StringBuilder();
 
-        sql.append("SELECT "
-                + "    A.VPGBLNM "
-                + "FROM "
-                + "    AHMHRNTM_DTLPRMGBLs A "
-                + "    INNER JOIN AHMHRNTM_DTLOTSREGS B ON B.VGATE = A.VPGBLNM "
-                + "WHERE "
-                + "        VPGBLCD LIKE 'PG85%' "
-                + "    AND "
-                + "        B.VOTSID =:VOTSID "
-                + "    AND "
-                + "        B.VPERSID =:VPERSID "
-                + "    AND "
-                + "        VREGID LIKE ( 'GATE' ) ");
+        sql.append("SELECT  "
+                + "                     D.VPGBLNM "
+                + "                 FROM  "
+                + "                 AHMHRNTM_HDROTSEMPS C  "
+                + "                 INNER JOIN AHMHRNTM_DTLOTSREGS A ON C.VOTSID = A.VOTSID and C.VPERSID = A.VPERSID  "
+                + "                 INNER JOIN AHMHRNTM_DTLPRMGBLS D ON A.VGATE = D.VPGBLCD  "
+                + "                 WHERE "
+                + "                     A.VREGID in('GATE')  "
+                + "                     AND C.VOTSID = :VOTSID  "
+                + "                     AND C.VPERSID = :VPERSID ");
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 

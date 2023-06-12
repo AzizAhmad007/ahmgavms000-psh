@@ -17,7 +17,6 @@ import id.co.ahm.ga.vms.app000.model.AhmitiamHdrevntlogsPk;
 import id.co.ahm.ga.vms.app000.model.hr.AhmhrntmHdrotsemps;
 import id.co.ahm.ga.vms.app000.model.hr.AhmhrntmHdrotsempsPk;
 import id.co.ahm.ga.vms.app000.model.hr.AhmhrntmTxnidreps;
-import id.co.ahm.ga.vms.app000.model.wfs.AhmitwfsMstwfdochist;
 import id.co.ahm.ga.vms.app022.constant.Vms022Constant;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlotsregsDao;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmhrntmDtlprmgblsDao;
@@ -41,7 +40,6 @@ import id.co.ahm.jx.b2e.app000.dao.Ahmitb2eMstusrrolesDao;
 import id.co.ahm.jx.b2e.app000.model.Ahmitb2eMstusrroles;
 import id.co.ahm.jx.b2e.app000.model.Ahmitb2eMstusrrolesPk;
 import id.co.ahm.jx.wfs.app000.dao.AhmitwfsMstwfdocstatDao;
-import id.co.ahm.jx.wfs.app000.model.AhmitwfsMstwfdocstat;
 import id.co.ahm.jx.wfs.app000.service.WorkflowService;
 import id.co.ahm.jx.wfs.app000.vo.VoWfsParam;
 import id.co.ahm.jxf.constant.StatusMsgEnum;
@@ -67,10 +65,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -88,7 +83,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 import vaultwebapi.EntCardProfile;
 import vaultwebapi.EntReplyCode;
 
@@ -490,7 +484,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                                     AhmitiamDtlevntlogs dtlEvnt = new AhmitiamDtlevntlogs();
                                     dtlEvnt.setAhmitiamDtlevntlogPk(dtlEvntPk);
                                     dtlEvnt.setVevent(mp.getVcategory() + " Outsource Success");
-                                    dtlEvnt.setVeventdesc(mp.getVcategory() + "-" + mp.getVotsid() + "-" + accLvl + "-" + mp.getVcompany() + "-" + mp.getVpersid());
+                                    dtlEvnt.setVeventdesc(mp.getVcategory() + "-" + mp.getNahmcardid() + "-" + mp.getVotsid() + "-" + accLvl + "-" + mp.getVcompany() + "-" + mp.getVpersid());
 
                                     vms022AhmitiamDtlevntlogsDao.save(dtlEvnt);
                                     vms022AhmitiamDtlevntlogsDao.flush();
@@ -515,7 +509,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                                     AhmitiamDtlerrlogs dtlErr = new AhmitiamDtlerrlogs();
                                     dtlErr.setAhmitiamDtlerrlogsPk(dtlErrPk);
                                     dtlErr.setVerrorcode(vault.getErrCode());
-                                    dtlErr.setVerrordesc(vault.getErrMessage());
+                                    dtlErr.setVerrordesc(vault.getErrMessage() + "-" + mp.getVcategory() + "-" + mp.getNahmcardid() + "-" + mp.getVotsid() + "-" + accLvl + "-" + mp.getVcompany() + "-" + mp.getVpersid());
                                     dtlErr.setVdata(jsonString);
 
                                     vms022AhmitiamDtlerrlogsDao.save(dtlErr);
@@ -528,11 +522,13 @@ public class Vms022ServiceImpl implements Vms022Service {
                         vms022ahmhrntmHdrotsempsDao.update(mp);
                         vms022ahmhrntmHdrotsempsDao.flush();
 
-                        if (validateWO.isEmpty()) {
-                            vms022ahmhrntmTxnidrepsDao.save(vo);
-                            vms022ahmhrntmTxnidrepsDao.flush();
-                        }
+                        if ("New".equals(mp.getVcategory())) {
+                            if (validateWO.isEmpty()) {
+                                vms022ahmhrntmTxnidrepsDao.save(vo);
+                                vms022ahmhrntmTxnidrepsDao.flush();
+                            }
                             startWorkflow(idWF, vNseq, userCred.getUserid(), userCred, idHist, vNseq, mp.getVotsid());
+                        }
 
                     }
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, ("Approve success"), null, null);
