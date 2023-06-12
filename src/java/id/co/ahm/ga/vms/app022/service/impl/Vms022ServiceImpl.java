@@ -179,7 +179,7 @@ public class Vms022ServiceImpl implements Vms022Service {
             }
         }
 
-        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, result);
+        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, formFunctionList);
     }
 
     private String getUserId(VoUserCred userCred) {
