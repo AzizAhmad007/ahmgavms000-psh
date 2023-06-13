@@ -484,7 +484,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                                     AhmitiamDtlevntlogs dtlEvnt = new AhmitiamDtlevntlogs();
                                     dtlEvnt.setAhmitiamDtlevntlogPk(dtlEvntPk);
                                     dtlEvnt.setVevent(mp.getVcategory() + " Outsource Success");
-                                    dtlEvnt.setVeventdesc(mp.getVcategory() + "-" + mp.getNahmcardori() + "-" + mp.getVotsid() + "-" + accLvl + "-" + mp.getVcompany() + "-" + mp.getVpersid());
+                                    dtlEvnt.setVeventdesc(mp.getVcategory() + "-" + mp.getNahmcardori() + "-" + mp.getVotsid() + "-" + accLvl + "-" + getdata.getCompanyName() + "-" + mp.getVpersid());
 
                                     vms022AhmitiamDtlevntlogsDao.save(dtlEvnt);
                                     vms022AhmitiamDtlevntlogsDao.flush();
@@ -509,7 +509,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                                     AhmitiamDtlerrlogs dtlErr = new AhmitiamDtlerrlogs();
                                     dtlErr.setAhmitiamDtlerrlogsPk(dtlErrPk);
                                     dtlErr.setVerrorcode(vault.getErrCode());
-                                    dtlErr.setVerrordesc(vault.getErrMessage() + "-" + mp.getVcategory() + "-" + mp.getNahmcardori() + "-" + mp.getVotsid() + "-" + accLvl + "-" + mp.getVcompany() + "-" + mp.getVpersid());
+                                    dtlErr.setVerrordesc(vault.getErrMessage() + "-" + mp.getVcategory() + "-" + mp.getNahmcardori() + "-" + mp.getVotsid() + "-" + accLvl + "-" +  getdata.getCompanyName() + "-" + mp.getVpersid());
                                     dtlErr.setVdata(jsonString);
 
                                     vms022AhmitiamDtlerrlogsDao.save(dtlErr);
