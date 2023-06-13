@@ -12,6 +12,10 @@
         }
 
         /* The Modal (background) */
+        .hide-this {
+            display: none;
+        }
+
         .modal {
             display: none;
             /* Hidden by default */
@@ -405,9 +409,9 @@
             border-right: 1px #eaeaea solid !important;
         }
 
-        #ahmgavms022_list_datatable_wrapper div.DTFC_RightBodyLiner .DTFC_NoData td {
+        /* #ahmgavms022_list_datatable_wrapper div.DTFC_RightBodyLiner .DTFC_NoData td { */
             /* border-left: 0px !important; */
-        }
+        /* } */
 
         .ahmgavms022-datatables-template {
             display: none !important;
@@ -445,7 +449,7 @@
     <div id="formContentOuter" class="sub-pages">
         <!-- Home Pages -->
         <div class="sub-page sub-page-default" data-section="list"
-            data-path="Transaction>Verification Personal Data Partner & Outsource">
+            data-path="Transaction>Verification Personal Data Partner">
             <div style="display: none;">
                 <form id="ahmgavms022_download_form" method="post" action="#">
                     <input type="hidden" name="oi" value="" />
@@ -460,6 +464,9 @@
                     <input type="hidden" name="os" value="" />
                     <input type="hidden" name="p" value="" />
                     <input type="hidden" name="c19vs" value="" />
+                    <input type="hidden" name="ui" value="" />
+                    <input type="hidden" name="ro" value="" />
+                    <input type="hidden" name="token" value="" />
                 </form>
             </div>
             <div class="form-maincontent form-block grid" id="ahmgavms022form">
@@ -491,7 +498,7 @@
                                 <label>Periode</label>
                                 <div class="input-control text" data-role="datepicker">
                                     <input name="ahmgavms022_filter_PeriodeFrom" id="ahmgavms022_filter_PeriodeFrom"
-                                        value="" runat="server" />
+                                        value="" runat="server"/>
                                     <button class="btn-date"></button>
                                 </div>
                             </div>
@@ -511,7 +518,7 @@
                                     type="text" placeholder="" maxlength="20" />
                             </div>
                         </div>
-                        <div class="span4">
+                        <div class="span4" id="ahmgavms022_div_picAhm">
                             <label>PIC AHM</label>
                             <div class="input-control text lookup" data-role="input-control"
                                 data-lookupid="AHMGAVMSL001" data-callback="{
@@ -529,24 +536,50 @@
                     <div class="span6">
                         <div class="span4">
                             <label>Outsource Type</label>
-                            <div class="input-control text lookup" data-role="input-control"
-                                data-lookupid="AHMGAVMSL002" data-callback="{
+                            <div id="ahmgavms022_div_filter_OutType_Pic" >
+                                <div class="input-control text lookup" data-role="input-control"
+                                    data-lookupid="AHMGAVMSL004" data-lookup-values="{'nrp':ahmgavms022_userid}" data-callback="{
+                                    '1':$('#ahmgavms022_filter_IdOutType_Pic'),
+                                    '2':$('#ahmgavms022_filter_OutType_Pic')
+                                }">
+                                <input id="ahmgavms022_filter_IdOutType_Pic" type="hidden" />
+                                <input name="ahmgavms022_filter_OutType_Pic" id="ahmgavms022_filter_OutType_Pic" type="text"
+                                    placeholder="" maxlength="25" data-lookup-param="vparam"/>
+                                <button id="ahmgavms022_filter_OutType_Pic_button" class="btn-lookup" tabindex="-1"
+                                    onclick="_fw_openDynamicLookup(this);"></button>
+                                </div>
+                            </div>
+                            <div id="ahmgavms022_div_filter_OutType_Ofc">
+                                <div class="input-control text lookup" data-role="input-control"
+                                    data-lookupid="AHMGAVMSL002" data-callback="{
+                                    '1':$('#ahmgavms022_filter_IdOutType_Ofc'),
+                                    '2':$('#ahmgavms022_filter_OutType_Ofc')
+                                }">
+                                <input id="ahmgavms022_filter_IdOutType_Ofc" type="hidden" />
+                                <input name="ahmgavms022_filter_OutType_Ofc" id="ahmgavms022_filter_OutType_Ofc" type="text"
+                                    placeholder="" maxlength="25" data-lookup-param="vparam"/>
+                                <button id="ahmgavms022_filter_OutType_Ofc_button" class="btn-lookup" tabindex="-1"
+                                    onclick="_fw_openDynamicLookup(this);"></button>
+                                </div>
+                            </div>
+                            <!-- <div id="ahmgavms022_div_filter_OutType" class="input-control text lookup" data-role="input-control"
+                                data-lookupid="AHMGAVMSL004" data-lookup-values="{'nrp':ahmgavms022_userid}" data-callback="{
                                     '1':$('#ahmgavms022_filter_IdOutType'),
                                     '2':$('#ahmgavms022_filter_OutType')
                                 }">
                                 <input id="ahmgavms022_filter_IdOutType" type="hidden" />
                                 <input name="ahmgavms022_filter_OutType" id="ahmgavms022_filter_OutType" type="text"
-                                    placeholder="" maxlength="25" />
+                                    placeholder="" maxlength="25" data-lookup-param="vparam"/>
                                 <button id="ahmgavms022_filter_OutType_button" class="btn-lookup" tabindex="-1"
                                     onclick="_fw_openDynamicLookup(this);"></button>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="span4">
                             <label>Outsource Status</label>
                             <div class="input-control select dropdown" data-role="input-control">
                                 <select name="ahmgavms022_filter_OutStatus" id="ahmgavms022_filter_OutStatus">
                                     <option value="" selected="">-</option>
-                                    <option value=" ">All</option>
+                                    <!-- <option value=" ">All</option> -->
                                     <option value="Waiting for Approval PIC">Waiting for Approval PIC</option>
                                     <option value="Waiting for Approval Security">Waiting for Approval Security</option>
                                     <option value="Active">Active</option>
@@ -571,32 +604,16 @@
                         </div>
                         <div class="span4">
                             <label>Plant</label>
-                            <div class="input-control select dropdown" data-role="input-control">
-                                <select name="ahmgavms022_filter_Plant" id="ahmgavms022_filter_Plant">
-                                    <option value="" selected="">-</option>
-                                    <option value=" ">All</option>
-                                    <option value="PG10-00">ALL PLANT</option>
-                                    <option value="PG10-01">Sunter Gedung IT</option>
-                                    <option value="PG10-02">Sunter Lobby Selatan</option>
-                                    <option value="PG10-03">Pegangsaan Lobby</option>
-                                    <option value="PG10-04">Pegangsaan Ruang IT</option>
-                                    <option value="PG10-05">Sunter Gedung Utara</option>
-                                    <option value="PG10-06">Pegangsaan Timur Timur</option>
-                                    <option value="PG10-07">SUNTER</option>
-                                    <option value="PG10-08">Sunter Barat</option>
-                                    <option value="PG10-09">Jakarta Timur</option>
-                                    <option value="PG10-10">Jakarta Barat</option>
-                                </select>
-                            </div>
+                            <div class="input-control select dropdown" data-role="input-control" id="ahmgavms022_filter_Plant_div"></div>
                         </div>
                         <div class="span4">
                             <label>Covid19 Vaccine Status</label>
                             <div class="input-control select dropdown" data-role="input-control">
                                 <select name="ahmgavms022_filter_CovVacStat" id="ahmgavms022_filter_CovVacStat">
                                     <option value="" selected="">-</option>
-                                    <option value=" ">All</option>
-                                    <option value="Vaksin Pertama">Already Vaccinated</option>
-                                    <option value="Vaksin Dosis Lengkap">Not Yet Vaccinated</option>
+                                    <!-- <option value=" ">All</option> -->
+                                    <option value="Already Vaccinated">Already Vaccinated</option>
+                                    <option value="Not Yet Vaccinated">Not Yet Vaccinated</option>
                                 </select>
                             </div>
                         </div>
@@ -610,7 +627,7 @@
                                 Search
                             </button>
                             <button class="button medium default" name="ahmgavms022_export_button"
-                                id="ahmgavms022_export_button" onclick="test_function();">
+                                id="ahmgavms022_export_button" onclick="Export();">
                                 <i class="icon-file-excel on-left"></i>
                                 Export To Excel
                             </button>
@@ -648,121 +665,13 @@
             <div id="ahmgavms022_list" class="listContainer">
                 <table id="ahmgavms022_list_datatable" class="responsiveTable table bordered order-column nowrap"
                     aria-describedby=""  style="width:100%" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <!-- <th class="tblHeader" data-field-id="checkbox">checkbox</th> -->
-                            <th class="tblHeader" data-field-id="checkbox"></th>
-                            <th>ID Hide</th>
-                            <th>Outsource ID</th>
-                            <th>Outsource Name</th>
-                            <th>NIK</th>
-                            <th>Outsource Type</th>
-                            <th>Outsource Type Hide</th>
-                            <th>Outsource Company Hide</th>
-                            <th>Outsource Company</th>
-                            <th>Outsource Status</th>
-                            <th>Plant Hide</th>
-                            <th>Plant</th>
-                            <th>Access Reader Hide</th>
-                            <th>Canteen Hide</th>
-                            <th>Security Gate Hide</th>
-                            <th>Covid19 Vaccine Status</th>
-                            <th>Covid19 Vaccine Last Type Hide</th>
-                            <th>Covid19 Vaccine Last Date Hide</th>
-                            <th>Begin Work Effective Date</th>
-                            <th>End Work Effective Date</th>
-                            <th>Pass Card Number</th>
-                            <th>Pass Card Expiry Date</th>
-                            <th>Phone Number Hide</th>
-                            <th>Vaccine Summary Hide</th>
-                            <th>Note Hide</th>
-                            <th>Note Vaccine Hide</th>
-                            <th>Modified By</th>
-                            <th>Modified Date</th>
-                            <th>Pas Foto Hide</th>
-                            <th>Action</th>
-                            <th class="tblHeader" data-field-id="no">No</th>
-                        </tr>
-                        <!-- <tr>
-                            <th class="tblHeader tblHeaderFilter  priority2">
-                                <div class="input-control text" data-role="input-control">
-                                    <input name="tes1" id="tes1" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
-                                </div>
-                            </th>
-                            <th class="tblHeader tblHeaderFilter  priority2">
-                                <div class="input-control text" data-role="input-control">
-                                    <input name="tes2" id="tes2" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
-                                </div>
-                            </th>
-                            <th class="tblHeader tblHeaderFilter  priority2">
-                                <div class="input-control text" data-role="input-control">
-                                    <input name="tes3" id="tes3" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
-                                </div>
-                            </th>
-                            <th class="tblHeader tblHeaderFilter  priority2">
-                                <div class="input-control text" data-role="input-control">
-                                    <input name="tes4" id="tes4" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
-                                </div>
-                            </th>
-                            <th class="tblHeader tblHeaderFilter  priority2">
-                                <div class="input-control text" data-role="input-control">
-                                    <input name="tes5" id="tes5" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
-                                </div>
-                            </th>
-                            <th class="tblHeader tblHeaderFilter  priority2">
-                                <div class="input-control text" data-role="input-control">
-                                    <input name="tes6" id="tes6" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
-                                </div>
-                            </th>
-                            <th class="tblHeader tblHeaderFilter  priority2">
-                                <div class="input-control text" data-role="input-control">
-                                    <input name="tes7" id="tes7" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
-                                </div>
-                            </th>
-                            <th class="tblHeader tblHeaderFilter  priority2">
-                                <div class="input-control text" data-role="input-control">
-                                    <input name="tes8" id="tes8" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
-                                </div>
-                            </th>
-                            <th class="tblHeader tblHeaderFilter  priority2">
-                                <div class="input-control text" data-role="input-control">
-                                    <input name="tes9" id="tes9" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
-                                </div>
-                            </th>
-                            <th class="tblHeader tblHeaderFilter  priority2">
-                                <div class="input-control text" data-role="input-control">
-                                    <input name="tes10" id="tes10" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
-                                </div>
-                            </th>
-                            <th class="tblHeader tblHeaderFilter  priority2">
-                                <div class="input-control text" data-role="input-control">
-                                    <input name="tes11" id="tes11" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
-                                </div>
-                            </th>
-                            <th class="tblHeader tblHeaderFilter  priority2">
-                                <div class="input-control text" data-role="input-control">
-                                    <input name="tes12" id="tes12" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
-                                </div>
-                            </th>
-                            <th class="tblHeader tblHeaderFilter  priority2">
-                                <div class="input-control text" data-role="input-control">
-                                    <input name="tes13" id="tes13" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
-                                </div>
-                            </th>
-                            <th class="tblHeader tblHeaderFilter  priority2">
-                                <div class="input-control text" data-role="input-control">
-                                    <input name="tes14" id="tes14" type="text" value="" maxlength="50" onkeypress="ahmfaibs002p01FilterSearch(event, this)">
-                                </div>
-                            </th>
-                        </tr> -->
-                    </thead>
-                    <tbody></tbody>
+                    
                 </table>
             </div>
         </div>
 
         <div class="sub-page" data-section="detail"
-            data-path="Transaction>Verification Personal Data Partner & Outsource>Detail">
+            data-path="Transaction>Verification Personal Data Partner>Detail">
             <div class="form-maincontent form-block grid">
                 <input class="ahmgavms022_detail_Id" name="ahmgavms022_detail_Id" type="hidden">
                 <input id="ahmgavms022_detail_OutType_id" type="hidden">
@@ -819,7 +728,7 @@
                                                     class="glyphicon  glyphicon-folder-open fg-white"></i></a>
 
                                             <a class="buttonktp" id="ahmgavms022p02PrevFileKtp"
-                                                onclick="ahmgavms022PreviewHandler(this, 'ahmgavms022_detail_AttachKtp', 'DETAIL');"
+                                                onclick="ahmgavms022_PreviewHandler(this, 'ahmgavms022_detail_AttachKtp', 'DETAIL');"
                                                 style="cursor: pointer; margin-left: 85px;"><i
                                                     class="glyphicon  glyphicon-search icon-search fg-white"></i></a>
 
@@ -991,7 +900,7 @@
                                                 style="cursor: pointer; display: none;"><i
                                                     class="glyphicon  glyphicon-folder-open fg-white"></i></a>
                                             <a class="buttonphoto" id="ahmgavms022p02PrevFilePhoto"
-                                                onclick="ahmgavms022PreviewHandler(this, 'ahmgavms021p04Photo', 'DETAIL');"
+                                                onclick="ahmgavms022_PreviewHandler(this, 'ahmgavms021p04Photo', 'DETAIL');"
                                                 style="cursor: pointer; margin-left: 55px;"><i
                                                     class="glyphicon  glyphicon-search icon-search fg-white"></i></a>
                                             <a class="buttonphoto" id="ahmgavms022p02DeleteFilePhoto"
@@ -1022,38 +931,44 @@
                             <input name="ahmgavms022_detail_CovVacStatus" id="ahmgavms022_detail_CovVacStatus"
                                 type="text" placeholder="" disabled />
                         </div>
-                        <label>Cov19 Last Vaccine Type</label>
-                        <div class="input-control text" data-role="input-control">
-                            <input name="ahmgavms022_detail_CovLastVacType" id="ahmgavms022_detail_CovLastVacType"
-                                type="text" placeholder="" disabled />
-                        </div>
-                        <label>Cov19 Last Vaccine Date</label>
-                        <div class="input-control text" data-role="input-control">
-                            <input name="ahmgavms022_detail_CovLastVacDate" id="ahmgavms022_detail_CovLastVacDate"
-                                type="text" placeholder="" disabled />
-                        </div>
-                        <label>Cov19 Summary Vaccine Status</label>
-                        <div class="input-control text" data-role="input-control">
-                            <input name="ahmgavms022_detail_CovSumVacStatus" id="ahmgavms022_detail_CovSumVacStatus"
-                                type="text" placeholder="" disabled />
-                        </div>
-                        <div id="ahmgavms022_image_vaccine_div">
-                            <label for="ahmgavms022p02ImageVac">Cov19 Vaccine Certificate</label>
-                            <div class="col-md-6">
-                                <ul id="ahmgavms022p02ImageVacList" class="list-group containersvroll">
-                                </ul>
+                       
+                        <div id="ahmgavms022_already_group">
+                            <label>Cov19 Last Vaccine Type</label>
+                            <div class="input-control text" data-role="input-control">
+                                <input name="ahmgavms022_detail_CovLastVacType" id="ahmgavms022_detail_CovLastVacType"
+                                    type="text" placeholder="" disabled />
+                            </div>
+                            <label>Cov19 Last Vaccine Date</label>
+                            <div class="input-control text" data-role="input-control">
+                                <input name="ahmgavms022_detail_CovLastVacDate" id="ahmgavms022_detail_CovLastVacDate"
+                                    type="text" placeholder="" disabled />
+                            </div>
+                            <label>Cov19 Summary Vaccine Status</label>
+                            <div class="input-control text" data-role="input-control">
+                                <input name="ahmgavms022_detail_CovSumVacStatus" id="ahmgavms022_detail_CovSumVacStatus"
+                                    type="text" placeholder="" disabled />
+                            </div>
+                            <div id="ahmgavms022_image_vaccine_div">
+                                <label for="ahmgavms022p02ImageVac">Cov19 Vaccine Certificate</label>
+                                <div class="col-md-6">
+                                    <ul id="ahmgavms022p02ImageVacList" class="list-group containersvroll">
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                        <label>Note Cov19 Vaccine Status</label>
-                        <div class="input-control textarea" data-role="input-control">
-                            <textarea name="ahmgavms022_detail_NoteCovVacStatus"
-                                id="ahmgavms022_detail_NoteCovVacStatus" type="text" placeholder="" disabled></textarea>
-                        </div>
-                        <div id="ahmgavms022_attachment_div">
-                            <label for="ahmgavms022p02ImageAttach">Attachment</label>
-                            <div class="col-md-6">
-                                <ul id="ahmgavms022p02ImageAttachList" class="list-group containersvroll">
-                                </ul>
+
+                        <div id="ahmgavms022_notYetVaccine_group">
+                            <label>Note Cov19 Vaccine Status</label>
+                            <div class="input-control textarea" data-role="input-control">
+                                <textarea name="ahmgavms022_detail_NoteCovVacStatus"
+                                    id="ahmgavms022_detail_NoteCovVacStatus" type="text" placeholder="" disabled></textarea>
+                            </div>
+                            <div id="ahmgavms022_attachment_div">
+                                <label for="ahmgavms022p02ImageAttach">Attachment</label>
+                                <div class="col-md-6">
+                                    <ul id="ahmgavms022p02ImageAttachList" class="list-group containersvroll">
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                         <div class="form-maincontent form-block grid">
@@ -1168,10 +1083,10 @@
                 </div>
             </div>
         </div>
-        <!-- end -->
+        <!-- end --> 
 
         <div class="sub-page" data-section="list-confirmation"
-            data-path="Transaction>Verification Personal Data Partner & Outsource>Confirmation">
+            data-path="Transaction>Verification Personal Data Partner>Confirmation">
             <div class="form-maincontent form-block grid">
                 <div class="row">
                     <div class="span12">
@@ -1192,7 +1107,7 @@
         </div>
 
         <div class="sub-page" data-section="confirmation"
-            data-path="Transaction>Verification Personal Data Partner & Outsource>Detail>Confirmation">
+            data-path="Transaction>Verification Personal Data Partner>Detail>Confirmation">
             <div class="form-maincontent form-block grid">
                 <div class="row">
                     <div class="span12">
@@ -1219,16 +1134,10 @@
                     class="actionlink-title">Detail</span></a>
         </div>
         <div id="ahmgavms022_list_check">
-            <div class="input-control checkbox" style="margin-left: 0px!important">
-                <label>
-                    <input type="checkbox" name="chkItem"
-                        onclick="_fw_table_check(this); ahmgavms022_list_check_action(this)" id="{id}" data-id="{id}" outstat="{outStatus}">
-                    <span class="check"></span>
-                    </input>
-                </label>
-            </div>
+            
         </div>
     </div>
+    <!--[PAGE:FOOTER]-->
 </div>
 <link rel="stylesheet" type="text/css" href="assets/css/datatables/responsive.dataTables.min.css" />
 <link rel="stylesheet" type="text/css" href="apps/AHMGAVMS/assets/css/fixedColumns.dataTables.3.3.1.min.css" />
