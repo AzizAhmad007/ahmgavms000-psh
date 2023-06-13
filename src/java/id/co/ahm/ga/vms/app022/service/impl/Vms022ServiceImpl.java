@@ -416,7 +416,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                         vo.setVcardname(trimOutName);
                         vo.setCreateBy(userCred.getUserid());
 
-                        if (mp.getNahmcardid() != BigDecimal.ZERO) {
+                        if (mp.getNahmcardori() != BigDecimal.ZERO) {
                             if ("Updated".equals(mp.getVcategory()) || "Perpanjangan".equals(mp.getVcategory())) {
                                 String uuid = UUID.randomUUID().toString();
 
