@@ -213,8 +213,8 @@ public class Vms022ServiceImpl implements Vms022Service {
                 String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());
                 vo.setGateName(getGateList);
 
-                String getPlantList = vms022ahmhrntmDtlprmgblsDao.getPlantForExcel(vo.getOutId(), vo.getPersId(), nrp, roleFromFront);
-                vo.setAreaName(getPlantList);
+                    String getPlantList = vms022ahmhrntmDtlprmgblsDao.getPlantForExcel(vo.getOutId(), vo.getPersId(), nrp, roleFromFront);
+                    vo.setAreaName(getPlantList);
 
                 if (StringUtils.isBlank(vo.getCompanyName()) && StringUtils.isBlank(vo.getCompany())) {
                     List<Vms022VoLov> compNameList = vms022ObjectDao.lovCompExternal(dto, userId, "FILTER");
@@ -349,16 +349,7 @@ public class Vms022ServiceImpl implements Vms022Service {
 
                         mp.setVotsstts(getdata.getOutStatus());
 
-                        Date end = DateUtil.stringToDate(getdata.getPassExpiryDateText(), "dd-MMM-yyyy");
-                        int endYear = Integer.valueOf(DateUtil.dateToString(end, "yyyy"));
-                        int currYear = Integer.valueOf(DateUtil.dateToString(new Date(), "yyyy"));
-                        String tempExp = "";
-                        tempExp = getdata.getPassExpiryDateText();
-                        if (endYear > currYear) {
-                            tempExp = "31-Dec-" + currYear;
-                        }
-
-                        mp.setDpassexp(DateUtil.stringToDate(tempExp, "dd-MMM-yyyy"));
+                        mp.setDpassexp(DateUtil.stringToDate(getdata.getPassExpiryDateText(), "dd-MMM-yyyy"));
                         mp.setDstatus(DateUtil.stringToDate(getdata.getDateStatus(), "dd-MM-yyyy"));
                         mp.setLastModBy(userCred.getUserid());
 
