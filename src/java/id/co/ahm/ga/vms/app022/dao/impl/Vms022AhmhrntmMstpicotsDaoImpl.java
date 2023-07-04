@@ -42,9 +42,6 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
         sql.append(area);
         sql.append(")");
 
-//        sql.append(" AND A.VRGSROLE IN ('PG91-01','PG91-03') "
-//        );
-
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
         sqlQuery.setParameter("VOTSTYPE", outType);
@@ -88,9 +85,6 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
         sql.append(" AND A.VAREA in (");
         sql.append(area);
         sql.append(")");
-
-//        sql.append(" AND A.VRGSROLE IN ('PG91-01','PG91-03') "
-//        );
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
@@ -149,8 +143,6 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
                 + "        c.vend_vnd_code = 'AHM' "
                 + "    AND  "
                 + "        A.VAREA in (:area) " );
-//                + "    AND  "
-//                + "        A.VRGSROLE IN ('PG91-01','PG91-03')");
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
@@ -168,19 +160,6 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
 
     @Override
     public String getPicAreaType(String nrp) {
-//        StringBuilder sql = new StringBuilder();
-
-//        sql.append("SELECT DISTINCT (A.VNRP), C.NAME, B.VPGBLNM, C.VHANDPHONE  "
-//                + " FROM AHMHRNTM_MSTPICOTS A, AHMHRNTM_DTLPRMGBLS B, FMHRD_GENERAL_DATAS C, AHMMOERP_MSTKARYAWANS@ahmps D "
-//                + " WHERE  "
-//                + " A.VOTSTYPE = :VOTSTYPE "
-//                + " AND  "
-//                + " SYSDATE BETWEEN A.DBGNEFFDT AND A.DENDEFFDT "
-//                + " AND B.VPGBLCD = A.VAREA "
-//                + " AND B.VPGBLCD LIKE 'PG10%' "
-//                + " AND A.VNRP = C.NRP "
-//                + " AND A.VNRP = D.IIDNRP"
-//                + " AND C.VEND_VND_CODE = 'AHM' ");
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(Vms022Constant.SQL_GET_AREA_TYPE);
 
         sqlQuery.setParameter("NRP", nrp);

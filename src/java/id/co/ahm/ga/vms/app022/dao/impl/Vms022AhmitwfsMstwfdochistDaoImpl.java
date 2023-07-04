@@ -7,8 +7,6 @@ package id.co.ahm.ga.vms.app022.dao.impl;
 import id.co.ahm.ga.vms.app000.model.wfs.AhmitwfsMstwfdochist;
 import id.co.ahm.ga.vms.app022.dao.Vms022AhmitwfsMstwfdochistDao;
 import id.co.ahm.jxf.dao.WfsHibernateDao;
-import java.util.Random;
-import org.hibernate.SQLQuery;
 import org.springframework.stereotype.Repository;
 
 /**

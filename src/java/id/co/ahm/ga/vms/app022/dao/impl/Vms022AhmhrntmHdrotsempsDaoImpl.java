@@ -260,8 +260,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 vo.setCompany(obj[5] == null ? "" : obj[5] + "");
                 vo.setCompanyName(obj[6] == null ? "" : obj[6] + "");
                 vo.setOutStatus(obj[7] == null ? "" : obj[7] + "");
-//                vo.setArea(obj[8] == null ? "" : obj[8] + "");
-//                vo.setAreaName(obj[9] == null ? "" : obj[9] + "");
                 vo.setVacStatus(obj[8] == null ? "" : obj[8] + "");
                 if (obj[9] != null) {
                     vo.setBeginDate((Date) obj[9]);
@@ -317,43 +315,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 vo.setId(obj[30] == null ? "" : obj[30] + "");
 
                 vo.setFilePhoto(getPhoto(vo.getOutId(), vo.getFileNamePhoto(), input, role, nrp));
-
-//                if (obj[33] != null) {
-//                    byte[] dt = null;
-//                    Blob tmp = (Blob) obj[33];
-//
-//                    try {
-//                        dt = tmp.getBytes(1, (int) tmp.length());
-//                        vo.setFilePhoto(Base64.getEncoder().encodeToString(dt));
-//
-//                    } catch (SQLException ex) {
-//                        Logger.getLogger(Vms022AhmhrntmHdrotsempsDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                } else {
-//                    if (vo.getFileNamePhoto().isEmpty()) {
-//                        vo.setFilePhoto("");
-//                    } else {
-//                        byte[] bFileVac = readBytesFromFile(pathServer + vo.getFileNamePhoto());
-//                        vo.setFilePhoto(Base64.getEncoder().encodeToString(bFileVac));
-//                    }
-//                }
                 vo.setRowNum(i);
-//                vo.setGateName("=========testing");
-
-//                if (tempId.equals(obj[0] + "")) {
-//                Boolean a = tempResult.contains(obj[0] + "");
-//                System.out.println("BENER APA SALAH HASILNYA? " + a);
-//
-//                if (tempResult.contains(obj[0] + "")) {
-//                    tempResult.add(obj[0] + "");
-//
-//                } else {
-//                    tempRow++;
-//                    tempResult.add(obj[0] + "");
-//
-//                    vo.setRowNum(tempRow);
                 result.add(vo);
-//                }
             }
         } catch (HibernateException e) {
             return result;
@@ -391,8 +354,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    CASE WHEN F.VPGBLNM is not null THEN COALESCE(F.VPGBLNM, '') "
                 + "     ELSE COALESCE(Z.VVENDORDESC, '') END AS COMPANYNAME, "
                 + "    A.VOTSSTTS as OUTSTATUS,  "
-                //                + "    B.VPLANT as AREA,  "
-                //                + "    E.VPGBLNM as AREANAME,  "
                 + "    A.VVACSTTS as VACSTATUS,  "
                 + "    A.DBGNEFFDT as BEGINDATE,  "
                 + "    A.DENDEFFDT as ENDDATE,  "
@@ -416,8 +377,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    A.VNTVS as VACNOTE,  "
                 + "    A.VAPPDISCLM as DISCLAIMER,  "
                 + "    RAWTOHEX(A.ROTSEMPSHS) as ID "
-                //                + ",  "
-                //                + "    A.BPHOTO as FOTO  "
                 + " FROM   "
                 + "    AHMHRNTM_HDROTSEMPS A  ");
 
@@ -546,21 +505,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             String tempId = "";
 
             for (int i = 0; i < lists.size(); i++) {
-//                Object[] obj = (Object[]) lists.get(i);
-//                Vms022VoMonitoring vo = new Vms022VoMonitoring();
-//
-//                Boolean res = tempId.equals(obj[0] + "");
-//                System.out.println("isi id = " + tempId);
-//                System.out.println("isi obj = " + obj[0] + "");
-//                System.out.println("hasil if else = " + res);
-//                if (tempId.equals(obj[0] + "")) {
-//                    tempId = obj[0] + "";
-//                } else {
-//                    tempId = obj[0] + "";
                 counter++;
-//                }
             }
-//            System.out.println("JUMLAH COUNTER = " + counter);
         } catch (SQLGrammarException e) {
         }
 

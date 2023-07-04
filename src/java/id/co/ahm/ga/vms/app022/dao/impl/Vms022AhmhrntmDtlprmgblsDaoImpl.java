@@ -14,7 +14,6 @@ import id.co.ahm.jxf.dto.DtoParamPaging;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.exception.GenericJDBCException;
