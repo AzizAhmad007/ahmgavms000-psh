@@ -229,6 +229,8 @@ public class Vms022Rest {
             @RequestParam(name = "p") String areaName,
             @RequestParam(name = "c19vs") String vacStatus,
             @RequestParam(name = "ui") String userid,
+            @RequestParam(name = "sortCol") String sortCol,
+            @RequestParam(name = "sort") String sort,
             @RequestParam(name = "ro") String role) {
 
         VoUserCred user = tokenPshUtil.getUserCred(token);
@@ -262,9 +264,9 @@ public class Vms022Rest {
         DtoParamPaging dtoParam = new DtoParamPaging();
         dtoParam.setOffset(0);
         dtoParam.setLimit(0);
-        dtoParam.setSort(null);
+        dtoParam.setSort(sortCol);
         dtoParam.setSearch(search);
-        dtoParam.setOrder("");
+        dtoParam.setOrder(sort);
 
         DtoResponseWorkspace dtoResponseWorkspace = vms022Service.getExcel(dtoParam);
         List<Vms022VoMonitoring> vms022VoMonitor = (List<Vms022VoMonitoring>) dtoResponseWorkspace.getData();
