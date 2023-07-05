@@ -214,7 +214,7 @@ public class Vms022Rest {
 
     }
 
-    @RequestMapping(value = "exreg", method = RequestMethod.POST)
+    @RequestMapping(value = "exreg", method = RequestMethod.GET)
     public ModelAndView exportRegulation(@RequestParam(name = "token", defaultValue = "") String token,
             @RequestParam(name = "oi") String outId,
             @RequestParam(name = "on") String outName,
