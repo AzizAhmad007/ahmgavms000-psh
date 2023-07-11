@@ -140,7 +140,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             sqlQuery.append("  AND CC.VNRP = '")
                     .append(nrp)
                     .append("' ")
-                    .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ");
+                    .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ")
+                    .append("  AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ");
         }
 
         //Plant Area Param
@@ -398,7 +399,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             sqlQuery.append("  AND CC.VNRP = '")
                     .append(nrp)
                     .append("' ")
-                    .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ");
+                    .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ")
+                    .append("  AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ");
         }
 
         //Plant Area Param
