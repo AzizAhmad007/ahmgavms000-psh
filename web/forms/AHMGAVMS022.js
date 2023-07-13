@@ -72,6 +72,10 @@ var formObject = $('#ahmgavms022_form');
 
 var ahmgavms022_ = new Object();
 var data = [];
+var ahmgavms022_detail_old_expiry_date;
+var ahmgavms022_excel_order_col;
+var ahmgavms022_excel_order;
+
 
 var htmlCheckboxPicDisabled = `<div class="input-control checkbox" style="margin-left: 0px!important">
     <label>
@@ -286,12 +290,9 @@ function ahmgavms022getToken() {
         reqdate: "18102016 104800"
     };
 
-    // _fw_postJson($('#ahmgavms022_form'), catcher, 'https://portaldev.ahm.co.id/jx01/ahmsvityyy000-psh/rest/it/yyy001/get-token', function (ret) {
-    //     if (ret.status === '1') {
             ahmgavms022_token = "Q1Jv4n8WuT4rQYDevwbfRd9JMBEt327cNW9HZxU74hOyLibBybpujWXIxmJhFSNMCY9uQgNObYqYd/MO7droSBZpDU6b8N+Bn+UHWHKJ5sey7KaJq3O1e8u8j84cFb+EJl+gQ5ti6thsGqLVDeu9Qw==";
             ahmgavms022_get_form_authorization();
-        // }
-    // });
+
 }
 
 function ahmgavms022_get_form_authorization() {
@@ -328,8 +329,6 @@ function ahmgavms022_get_form_authorization() {
             ahmgavms022_list_datatable = ahmgavms022_list_datatable_init_no_checkbox();
 
         } else if (ahmgavms022_roles == "RO_GAVMS_SCHSEC") {
-            // $("#ahmgavms022_detail_ExpDate_button").removeAttr("disabled");
-            // $("#ahmgavms022_detail_ExpDate").removeAttr("disabled");
             $('#ahmgavms022_filter_approve_button').remove();
             $('#ahmgavms022_filter_reject_button').remove();
             document.getElementById("ahmgavms022_filter_OutStatus").selectedIndex = 2;
@@ -388,13 +387,8 @@ function ahmgavms022_list_datatable_init() {
                 data: function (d) {
                     var sortby = d.columns[d.order[0].column].data;
                     var order = d.order[0].dir;
-
-                    // if (ahmgavms022_firstScan == 0) {
-                    //     sortby = 'outId';
-                    //     order = 'desc';
-                    // }
-
-                    // ahmgavms022_firstScan++;
+                    ahmgavms022_excel_order_col = d.columns[d.order[0].column].data;
+                    ahmgavms022_excel_order = d.order[0].dir;
 
                     var OutsourceIdFilter = $('#ahmgavms022_filter_OutId').val();
                     var OutsourceNameFilter = $('#ahmgavms022_filter_OutName').val();
@@ -528,7 +522,6 @@ function ahmgavms022_list_datatable_init() {
                                 return $("#ahmgavms022_list_check").clone().html().replaceAll("{id}", data.id).replaceAll("{outStatus}", data.outStatus).replaceAll("{rowNum}", data.rowNum).replaceAll("{Note}", data.note).replaceAll("{OutId}", data.outId).replaceAll("{OutName}", data.outName);
                             }
                         } else {
-                            // $("#ahmgavms022_list_check").addClass('hide-this');
                             $('#ahmgavms022_list_check').html(htmlCheckboxPicDisabled); //for checkbox
                             return $("#ahmgavms022_list_check").clone().html().replaceAll("{id}", data.id).replaceAll("{outStatus}", data.outStatus).replaceAll("{rowNum}", data.rowNum).replaceAll("{Note}", data.note).replaceAll("{OutId}", data.outId).replaceAll("{OutName}", data.outName);
                         }
@@ -596,13 +589,8 @@ function ahmgavms022_list_datatable_init() {
                 data: function (d) {
                     var sortby = d.columns[d.order[0].column].data;
                     var order = d.order[0].dir;
-
-                    // if (ahmgavms022_firstScan == 0) {
-                    //     sortby = 'outId';
-                    //     order = 'desc';
-                    // }
-
-                    // ahmgavms022_firstScan++;
+                    ahmgavms022_excel_order_col = d.columns[d.order[0].column].data;
+                    ahmgavms022_excel_order = d.order[0].dir;
 
                     var OutsourceIdFilter = $('#ahmgavms022_filter_OutId').val();
                     var OutsourceNameFilter = $('#ahmgavms022_filter_OutName').val();
@@ -798,9 +786,11 @@ function ahmgavms022_list_datatable_init_no_checkbox() {
                     }
                 },
                 data: function (d) {
-
+                   
                     var sortby = d.columns[d.order[0].column].data;
                     var order = d.order[0].dir;
+                    ahmgavms022_excel_order_col = d.columns[d.order[0].column].data;
+                    ahmgavms022_excel_order = d.order[0].dir;
 
                     var OutsourceIdFilter = $('#ahmgavms022_filter_OutId').val();
                     var OutsourceNameFilter = $('#ahmgavms022_filter_OutName').val();
@@ -973,6 +963,8 @@ function ahmgavms022_list_datatable_init_no_checkbox() {
 
                     var sortby = d.columns[d.order[0].column].data;
                     var order = d.order[0].dir;
+                    ahmgavms022_excel_order_col = d.columns[d.order[0].column].data;
+                    ahmgavms022_excel_order = d.order[0].dir;
 
                     var OutsourceIdFilter = $('#ahmgavms022_filter_OutId').val();
                     var OutsourceNameFilter = $('#ahmgavms022_filter_OutName').val();
@@ -1255,12 +1247,13 @@ function ahmgavms022_filter_search_button_action(obj) {
         var periodevalidTo = $("#ahmgavms022_filter_PeriodeTo").val();
 
         if (periodeFrom != '' && periodevalidTo != '') {
-            var from = new Date(periodeFrom);
-            var to = new Date(periodevalidTo);
+            var from = moment(periodeFrom, "DD-MMM-YYYY").toDate();           
+            var to = moment(periodevalidTo, "DD-MMM-YYYY").toDate();
 
             if (from.getTime() > to.getTime()) {               
-                var errorMessage = 'Periode Date From harus lebih kecil dari Periode Date To';
+                var errorMessage = 'Periode Date To harus lebih kecil atau sama dengan dari Periode Date To';
                 _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
+                return false;
             }
         }
 
@@ -1272,19 +1265,6 @@ function ahmgavms022_filter_search_button_action(obj) {
         ahmgavms022_list_datatable.ajax.reload();
 
         _fw_filterpanel_toggle($('#ahmgavms022_filter_collapse_button'));
-
-        // var countdatabody = JSON.stringify({
-        //     offset: 0,
-        //     limit: 0,
-        //     search: objectSearch
-        // });
-
-        // _fw_postJson(obj, countdatabody, ahmgavms022_url_root + '/monitoring', function (ret) {
-        //     if (ret.status === '1') {
-        //         ahmgavms022_list_datatable_total_data = ret.recordsTotal;
-        //     }
-        // });
-
     }
 
     //reset data called variable
@@ -1383,21 +1363,6 @@ function ahmgavms022_filter_approve_reject_button(obj, val) {
         ahmgavms022_list_datatable_check_submit_outname_array = ahmgavms022_list_datatable_check_outname_array;
         ahmgavms022_list_datatable_check_submit_outstatus_array = ahmgavms022_list_datatable_check_outstatus_array;
 
-
-        //validation expiry date    
-       let expiryDate = $('#ahmgavms022_detail_ExpDate').val();
-       let endDate = $('#ahmgavms022_detail_EndEffDate').val();
-       let currentDate = new Date();
-       let expiryYear = expiryDate.getFullYear();
-       let currentYear = currentDate.getFullYear();
-       let endYear = endDate.getFullYear();
-
-       if (endYear > currentYear) {
-        if(expiryYear >= endYear){
-        _fw_setMessage(formObject, 0, `Expiry Date Pass Card tidak valid'`);
-        }
-       }
-
         //check if selected checkbox has required validation or not
         for (let x in ahmgavms022_list_datatable_check_submit_array) {
             var getid = ahmgavms022_list_datatable_check_submit_outstatus_array[x].slice(1);
@@ -1434,6 +1399,7 @@ function ahmgavms022_filter_approve_reject_button(obj, val) {
 }
 
 function ahmgavms022_detail_button_previous_action(obj) {
+
     ahmgavms022_detail_rownum_getter -= 1;
 
     var objFrame = $(obj).closest('.tab-frame');
@@ -1520,11 +1486,15 @@ function ahmgavms022_detail_button_previous_action(obj) {
                 $('#ahmgavms022_detail_CovLastVacDate').val(item.vacDateText);
                 $('#ahmgavms022_detail_CovLastVacType').val(item.vacTypeName);
 
+
                 if ($('#ahmgavms022_detail_CovVacStatus').val() == "ALREADY VACCINATED") {
                     $('#ahmgavms022_already_group').removeClass('hide-this');
                     $('#ahmgavms022_notYetVaccine_group').addClass('hide-this');
-                } else {
+                } else if($('#ahmgavms022_detail_CovVacStatus').val() == "NOT YET VACCINATED") {
                     $('#ahmgavms022_notYetVaccine_group').removeClass('hide-this');
+                    $('#ahmgavms022_already_group').addClass('hide-this');
+                }else{
+                    $('#ahmgavms022_notYetVaccine_group').addClass('hide-this');
                     $('#ahmgavms022_already_group').addClass('hide-this');
                 }
 
@@ -1534,6 +1504,7 @@ function ahmgavms022_detail_button_previous_action(obj) {
                 detail_note_for_confirm = item.note;
                 detail_department_for_confirm = item.outTypeName
                 detail_company_for_confirm = item.companyName
+                ahmgavms022_detail_old_expiry_date = item.passExpiryDateText;
 
 
                 ahmgavms022_detail_status_submit = item.outStatus;
@@ -1831,8 +1802,11 @@ function ahmgavms022_detail_button_next_action(obj) {
                 if ($('#ahmgavms022_detail_CovVacStatus').val() == "ALREADY VACCINATED") {
                     $('#ahmgavms022_already_group').removeClass('hide-this');
                     $('#ahmgavms022_notYetVaccine_group').addClass('hide-this');
-                } else {
+                } else if($('#ahmgavms022_detail_CovVacStatus').val() == "NOT YET VACCINATED") {
                     $('#ahmgavms022_notYetVaccine_group').removeClass('hide-this');
+                    $('#ahmgavms022_already_group').addClass('hide-this');
+                }else{
+                    $('#ahmgavms022_notYetVaccine_group').addClass('hide-this');
                     $('#ahmgavms022_already_group').addClass('hide-this');
                 }
 
@@ -1842,6 +1816,7 @@ function ahmgavms022_detail_button_next_action(obj) {
                 detail_note_for_confirm = item.note;
                 detail_department_for_confirm = item.outTypeName
                 detail_company_for_confirm = item.companyName
+                ahmgavms022_detail_old_expiry_date = item.passExpiryDateText;
 
                 ahmgavms022_detail_status_submit = item.outStatus;
 
@@ -2120,7 +2095,7 @@ function ahmgavms022_detail_button_action(obj) {
     detail_company_for_confirm = getRow.companyName
     var ahmgavms022_detail_area = getRow.area;
     var ahmgavms022_detail_outType = getRow.outType;
-
+    ahmgavms022_detail_old_expiry_date = getRow.passExpiryDateText;
    
 
 
@@ -2157,8 +2132,11 @@ function ahmgavms022_detail_button_action(obj) {
     if ($('#ahmgavms022_detail_CovVacStatus').val() == "ALREADY VACCINATED") {
         $('#ahmgavms022_already_group').removeClass('hide-this');
         $('#ahmgavms022_notYetVaccine_group').addClass('hide-this');
-    } else {
+    } else if($('#ahmgavms022_detail_CovVacStatus').val() == "NOT YET VACCINATED") {
         $('#ahmgavms022_notYetVaccine_group').removeClass('hide-this');
+        $('#ahmgavms022_already_group').addClass('hide-this');
+    }else{
+        $('#ahmgavms022_notYetVaccine_group').addClass('hide-this');
         $('#ahmgavms022_already_group').addClass('hide-this');
     }
 
@@ -2414,7 +2392,6 @@ function ahmgavms022_detail_gates_datatable_init() {
         ahmgavms022_detail_gates_datatable_data_temp.push(data);
     });
 
-    // function ahmgavms022_detail_ListDateAccessLevel_datatable_init() {
     var datatable = $('#ahmgavms022_detail_gates_datatable').DataTable({
         destroy: true,
         filter: false,
@@ -2510,11 +2487,14 @@ function ahmgavms022_detail_pic_datatable_init() {
 }
 
 function ahmgavms022_detail_back_button_action(obj) {
-    // var objFrame = $(obj).closest('.tab-frame');
-    // var newFrame = $(".sub-page[data-section='list']", objFrame);
-
     _fw_navigateSubPage(obj, 'list');
 }
+
+function getDateWithoutTime(date) {
+    const currentDate = new Date(date);
+    currentDate.setHours(0, 0, 0, 0);
+    return currentDate;
+  }
 
 function ahmgavms022_detail_approve_button_action(obj) {
     var objFrame = $(obj).closest('.tab-frame');
@@ -2523,48 +2503,52 @@ function ahmgavms022_detail_approve_button_action(obj) {
     var stringdend = $('#ahmgavms022_detail_EndEffDate').val();
     var stringdexp = $('#ahmgavms022_detail_ExpDate').val();
     var getting = [];
+    const months = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      ];
 
-    var now = moment(new Date(), 'YYYY').toDate();
+    let maxExpDate;
+    let tempExp;
 
-    var yearNow = moment(now).format('YYYY');
-    var yearExp = stringdexp.substring(stringdend.length, 7);
-
+    let DateOldExp = moment(ahmgavms022_detail_old_expiry_date,"DD-MMM-YYYY").toDate();
     var dateExp = moment(stringdexp, 'DD-MMM-YYYY').toDate();
     var dateEffDate = moment(stringdend, 'DD-MMM-YYYY').toDate();
 
-    //ok
-    if (Number(dateExp) > Number(dateEffDate)) {
-        var errorMessage = '<li>Expiry Date must be lower then End Effective Date!</li>';
+    //validasi mandatory expiry date
+    if($('#ahmgavms022_detail_ExpDate').val() == ""){
+        var  errorMessage = `<li>Pass Card Expiry Date cannot be empty.</li>`;      
         _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
         return false;
     }
 
-    if (Number(yearExp) < Number(yearNow)) {
-        var errorMessage = '<li>Expiry Date must be equal with this year!</li>';
-        _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
-        return false;
-    }
+    //validasi expiry date di page response jika dia security  
+    if(ahmgavms022_roles == "RO_GAVMS_OFCSECT"){
+        const validateDateExp = getDateWithoutTime(new Date(dateExp));
+        const validateDateExpOld = getDateWithoutTime(new Date(DateOldExp));
+        const validateDateNow = getDateWithoutTime(new Date());
+        const validateDateEnd = getDateWithoutTime(new Date(dateEffDate));
 
-    //ok
-    if (Number(dateExp) < Number(now)) {
-        var errorMessage = '<li>Expiry Date must be greater then now!</li>';
-        _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
-        return false;
-    }
 
-    let expiryDate =moment($('#ahmgavms022_detail_ExpDate').val(), 'DD-MMM-YYYY').toDate();
-    let endDate = moment($('#ahmgavms022_detail_EndEffDate').val(), 'DD-MMM-YYYY').toDate();
-    let currentDate = moment(new Date(), 'DD-MMM-YYYY').toDate();;
-    let expiryYear = moment(expiryDate).format('YYYY');
-    let currentYear = moment(currentDate).format('YYYY');
-    let endYear = moment(endDate).format('YYYY');
+        if (validateDateExp > validateDateEnd) {
 
-    if (endYear > currentYear) {
-        if(expiryYear >= endYear){
-            var errorMessage = '<li>Expiry Date Pass Card tidak valid</li>';
+              var  errorMessage = `<li>Pass Card Expiry Date Can Not be Less Than System Date and Can Not be Greater Than ${DateOldExp.getDate()} ${months[DateOldExp.getMonth()]} ${DateOldExp.getFullYear()} </li>`;      
             _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
             return false;
         }
+
+
+        if (validateDateExp > validateDateExpOld) {
+            var errorMessage = `<li>Pass Card Expiry Date Can Not be Less Than System Date and Can Not be Greater Than ${DateOldExp.getDate()} ${months[DateOldExp.getMonth()]} ${DateOldExp.getFullYear()} </li>`;           
+            _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
+            return false;
+        }
+
+        if (validateDateExp < validateDateNow) {
+            var errorMessage = `<li>Pass Card Expiry Date Can Not be Less Than System Date and Can Not be Greater Than ${DateOldExp.getDate()} ${months[DateOldExp.getMonth()]} ${DateOldExp.getFullYear()} </li>`;
+            _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
+            return false;
+        }
+    
     }
 
     var catcher = {
@@ -2623,6 +2607,13 @@ function ahmgavms022_detail_reject_button_action(obj) {
     var htmlVal = '';
 
     if ($('#ahmgavms022_detail_disclaimer').prop("checked") == true) {
+
+        if($('#ahmgavms022_detail_ExpDate').val() == ""){
+            var  errorMessage = `<li>Pass Card Expiry Date cannot be empty.</li>`;      
+            _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
+            return false;
+        }
+
         approve_reject_confirmation = 'REJECT';
         htmlVal = htmlVal + '<h2>The following data will be reject. Are you sure?</h2>';
         htmlVal += '<div class="input-control textarea" data-role="input-control">' +
@@ -2735,7 +2726,6 @@ function ahmgavms022_detail_btn_sure_action(obj) {
                     _fw_setMessage(formObject, 1, ret.message);
                     approve_reject_confirmation = '';
                     setTimeout(function () {
-                        ahmgavms022_detail_rownum_getter -= 1;
                         ahmgavms022_list_datatable_total_data -= 1;
 
                         if (ahmgavms022_list_datatable_total_data == 0) {
@@ -2768,7 +2758,6 @@ function ahmgavms022_detail_btn_sure_action(obj) {
                         _fw_setMessage(formObject, 1, ret.message);
                         approve_reject_confirmation = '';
                         setTimeout(function () {
-                            ahmgavms022_detail_rownum_getter -= 1;
                             ahmgavms022_list_datatable_total_data -= 1;
 
                             if (ahmgavms022_list_datatable_total_data == 0) {
@@ -2923,7 +2912,7 @@ function ahmgavms022_list_btn_sure_action(obj) {
     }
 }
 
-//[Begin] Imgage Preview Modal
+//[Begin] Image Preview Modal
 function ahmgavms022_PreviewHandler(obj, idx, type) {
     var modal = document.getElementById("myModal");
     var modalImg = document.getElementById("img01");
@@ -2999,6 +2988,8 @@ function Export() {
     downloadForm.c19vs.value = Covid19VaccineStatusFilter;
     downloadForm.ui.value = ahmgavms022_userid;
     downloadForm.ro.value = ahmgavms022_roles;
+    downloadForm.sortCol.value = ahmgavms022_excel_order_col;
+    downloadForm.sort.value = ahmgavms022_excel_order;
     downloadForm.token.value = ahmgavms022_token;
 
 
