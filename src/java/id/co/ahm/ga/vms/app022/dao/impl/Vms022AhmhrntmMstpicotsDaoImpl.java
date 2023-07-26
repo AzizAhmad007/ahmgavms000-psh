@@ -28,14 +28,13 @@ public class Vms022AhmhrntmMstpicotsDaoImpl extends HrHibernateDao<AhmhrntmMstpi
         StringBuilder sql = new StringBuilder();
 
         sql.append("SELECT DISTINCT A.VNRP, C.NAME, B.VPGBLNM, C.VHANDPHONE  "
-                + " FROM AHMHRNTM_MSTPICOTS A, AHMHRNTM_DTLPRMGBLS B, FMHRD_GENERAL_DATAS C, AHMMOERP_MSTKARYAWANS@ahmps D "
+                + " FROM AHMHRNTM_MSTPICOTS A, AHMHRNTM_DTLPRMGBLS B, FMHRD_GENERAL_DATAS C "
                 + " WHERE  "
                 + " A.VOTSTYPE = :VOTSTYPE "
                 + " AND TRUNC(SYSDATE) BETWEEN TRUNC(A.DBGNEFFDT) AND TRUNC(A.DENDEFFDT) "
                 + " AND B.VPGBLCD = A.VAREA "
                 + " AND B.VPGBLCD LIKE 'PG10%' "
                 + " AND A.VNRP = C.NRP "
-                + " AND A.VNRP = D.IIDNRP"
                 + " AND C.VEND_VND_CODE = 'AHM' ");
 
         sql.append(" AND A.VAREA in (");
