@@ -92,8 +92,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    CASE WHEN F.VPGBLNM is not null THEN COALESCE(F.VPGBLNM, '') "
                 + "     ELSE COALESCE(Z.VVENDORDESC, '') END AS COMPANYNAME, "
                 + "    A.VOTSSTTS as OUTSTATUS,  "
-                //                + "    B.VPLANT as AREA,  "
-                //                + "    E.VPGBLNM as AREANAME,  "
                 + "    A.VVACSTTS as VACSTATUS,  "
                 + "    A.DBGNEFFDT as BEGINDATE,  "
                 + "    A.DENDEFFDT as ENDDATE,  "
@@ -117,8 +115,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    A.VNTVS as VACNOTE,  "
                 + "    A.VAPPDISCLM as DISCLAIMER,  "
                 + "    RAWTOHEX(A.ROTSEMPSHS) as ID "
-                //                + ",  "
-                //                + "    A.BPHOTO as FOTO  "
                 + " FROM   "
                 + "    AHMHRNTM_HDROTSEMPS A  ");
 
@@ -247,7 +243,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
         try {
             int tempRow = 0;
-            List lists = query.list();
+            List lists = query.list(); 
             String tempId = "";
             for (int i = 0; i < lists.size(); i++) {
                 Object[] obj = (Object[]) lists.get(i);

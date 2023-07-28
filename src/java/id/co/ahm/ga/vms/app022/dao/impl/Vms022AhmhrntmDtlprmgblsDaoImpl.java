@@ -95,7 +95,8 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
                 + " WHERE"
                 + "     A.VREGID in('PLNT','GATE') "
                 + "     AND C.VOTSID = :VOTSID "
-                + "     AND C.VPERSID = :VPERSID ");
+                + "     AND C.VPERSID = :VPERSID "
+                + " AND TRUNC(SYSDATE) BETWEEN TRUNC(B.DBGNEFFDT) AND TRUNC(B.DENDEFFDT) ");
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
@@ -139,7 +140,8 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
                     + " WHERE "
                     + "     A.VREGID in('PLNT','GATE') "
                     + "     AND C.VOTSID = :VOTSID "
-                    + "     AND C.VPERSID = :VPERSID ");
+                    + "     AND C.VPERSID = :VPERSID "
+                    + " AND TRUNC(SYSDATE) BETWEEN TRUNC(B.DBGNEFFDT) AND TRUNC(B.DENDEFFDT) ");
 
             if (role.equalsIgnoreCase("RO_GAVMS_PICAHM")) {
                 sql.append(" AND D.VNRP = '")
@@ -194,7 +196,8 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
                 + " WHERE"
                 + "     A.VREGID in('PLNT','GATE') "
                 + "     AND C.VOTSID = :VOTSID "
-                + "     AND C.VPERSID = :VPERSID ");
+                + "     AND C.VPERSID = :VPERSID "
+                + " AND TRUNC(SYSDATE) BETWEEN TRUNC(B.DBGNEFFDT) AND TRUNC(B.DENDEFFDT)");
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
@@ -238,7 +241,8 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
                 + " WHERE"
                 + "     A.VREGID in('PLNT','GATE') "
                 + "     AND C.VOTSID = :VOTSID "
-                + "     AND C.VPERSID = :VPERSID ");
+                + "     AND C.VPERSID = :VPERSID "
+                + " AND TRUNC(SYSDATE) BETWEEN TRUNC(D.DBGNEFFDT) AND TRUNC(D.DENDEFFDT)");
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
@@ -280,7 +284,8 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
                 + " WHERE"
                 + "     A.VREGID in('PLNT','GATE') "
                 + "     AND C.VOTSID = :VOTSID "
-                + "     AND C.VPERSID = :VPERSID ");
+                + "     AND C.VPERSID = :VPERSID "
+                + " AND TRUNC(SYSDATE) BETWEEN TRUNC(D.DBGNEFFDT) AND TRUNC(D.DENDEFFDT)");
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 
@@ -321,7 +326,8 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
                 + "                 WHERE "
                 + "                     A.VREGID in('GATE')  "
                 + "                     AND C.VOTSID = :VOTSID  "
-                + "                     AND C.VPERSID = :VPERSID ");
+                + "                     AND C.VPERSID = :VPERSID "
+                + " AND TRUNC(SYSDATE) BETWEEN TRUNC(D.DBGNEFFDT) AND TRUNC(D.DENDEFFDT) ");
 
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 

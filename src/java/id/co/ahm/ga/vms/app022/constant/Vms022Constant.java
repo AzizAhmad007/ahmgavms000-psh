@@ -91,7 +91,8 @@ public class Vms022Constant {
             + "    AND MPO.VNRP = FGD.NRP  "
             + "    AND MPO.VNRP = MKA.IIDNRP  "
             + "    AND FGD.VEND_VND_CODE = 'AHM'  "
-            + "    AND MPO.VNRP = :NRP ";
+            + "    AND MPO.VNRP = :NRP "
+            + "    AND TRUNC(SYSDATE) BETWEEN TRUNC(DP.DBGNEFFDT) AND TRUNC(DP.DENDEFFDT) ";
 
     public static final String SQL_VALIDATE_WORK_ORDER
             = "select vwrkorderno from AHMHRNTM_TXNIDREPS  "
