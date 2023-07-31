@@ -82,7 +82,42 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
         String areaTypeQuery = getPicAreaType(nrp);
 
-        sqlQuery.append("SELECT DISTINCT "
+        sqlQuery.append(" SELECT "
+                + "    OUTID, "
+                + "    OUTNAME, "
+                + "    PERSID, "
+                + "    OUTTYPE, "
+                + "    OUTTYPENAME, "
+                + "    COMPANY, "
+                + "    COMPANYNAME, "
+                + "    OUTSTATUS, "
+                + "    VACSTATUS, "
+                + "    BEGINDATE, "
+                + "    ENDDATE, "
+                + "    PASSNUMBER, "
+                + "    PASSEXPIRY, "
+                + "    MODIFIED, "
+                + "    MODIFIEDDATE, "
+                + "    PHONENO, "
+                + "    FILENAMEKTP, "
+                + "    SUPPLIER, "
+                + "    JOBDETAIL, "
+                + "    ABSENCERDR, "
+                + "    CANTEEN, "
+                + "    SECGATE, "
+                + "    NOTES, "
+                + "    FILENAMEPHOTO, "
+                + "    VACTYPE, "
+                + "    VACTYPENAME, "
+                + "    VACDATE, "
+                + "    VACSUMMARY, "
+                + "    VACNOTE, "
+                + "    DISCLAIMER, "
+                + "    ID, "
+                + "    LISTAGG(PLANT,';') WITHIN GROUP(ORDER BY PLANT) AS PLANT_COMBINED "
+                + "FROM "
+                + "    ( "
+                + " SELECT DISTINCT "
                 + "    A.VOTSID as OUTID,  "
                 + "    A.VNAME as OUTNAME,  "
                 + "    A.VPERSID as PERSID,  "
@@ -114,7 +149,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    A.VVACDTL as VACSUMMARY,  "
                 + "    A.VNTVS as VACNOTE,  "
                 + "    A.VAPPDISCLM as DISCLAIMER,  "
-                + "    RAWTOHEX(A.ROTSEMPSHS) as ID "
+                + "    RAWTOHEX(A.ROTSEMPSHS) as ID,"
+                + "    B.VPGBLNM PLANT "
                 + " FROM   "
                 + "    AHMHRNTM_HDROTSEMPS A  ");
 
@@ -130,14 +166,14 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("  AND CC.VOTSTYPE = DD.VOTSTYPE ")
                 .append("  AND AA.VPLANT = BB.VPGBLCD ")
                 .append("  AND CC.VAREA = AA.VPLANT ")
+                .append(" AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ")
                 .append(" AND TRUNC(SYSDATE) BETWEEN TRUNC(BB.DBGNEFFDT) AND TRUNC(BB.DENDEFFDT) ");
 
         if (role.equals("RO_GAVMS_PICAHM")) {
             sqlQuery.append("  AND CC.VNRP = '")
                     .append(nrp)
                     .append("' ")
-                    .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ")
-                    .append("  AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ");
+                    .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ");
         }
 
         //Plant Area Param
@@ -228,6 +264,40 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             sqlQuery.append(" ) ");
         }
 
+        sqlQuery.append("  ) SUBQUERY "
+                + "GROUP BY "
+                + "    OUTID, "
+                + "    OUTNAME, "
+                + "    PERSID, "
+                + "    OUTTYPE, "
+                + "    OUTTYPENAME, "
+                + "    COMPANY, "
+                + "    COMPANYNAME, "
+                + "    OUTSTATUS, "
+                + "    VACSTATUS, "
+                + "    BEGINDATE, "
+                + "    ENDDATE, "
+                + "    PASSNUMBER, "
+                + "    PASSEXPIRY, "
+                + "    MODIFIED, "
+                + "    MODIFIEDDATE, "
+                + "    PHONENO, "
+                + "    FILENAMEKTP, "
+                + "    SUPPLIER, "
+                + "    JOBDETAIL, "
+                + "    ABSENCERDR, "
+                + "    CANTEEN, "
+                + "    SECGATE, "
+                + "    NOTES, "
+                + "    FILENAMEPHOTO, "
+                + "    VACTYPE, "
+                + "    VACTYPENAME, "
+                + "    VACDATE, "
+                + "    VACSUMMARY, "
+                + "    VACNOTE, "
+                + "    DISCLAIMER, "
+                + "    ID ");
+
         voSetter(input);
 
         orderClause(input, sqlQuery, sortMap, getParam);
@@ -243,7 +313,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
         try {
             int tempRow = 0;
-            List lists = query.list(); 
+            List lists = query.list();
             String tempId = "";
             for (int i = 0; i < lists.size(); i++) {
                 Object[] obj = (Object[]) lists.get(i);
@@ -312,6 +382,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 vo.setId(obj[30] == null ? "" : obj[30] + "");
 
                 vo.setFilePhoto(getPhoto(vo.getOutId(), vo.getFileNamePhoto(), input, role, nrp));
+                vo.setAreaName(obj[31] == null ? "" : obj[31] + "");
                 vo.setRowNum(i);
                 result.add(vo);
             }
@@ -340,8 +411,42 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         String pic = AhmStringUtil.hasValue(input.getSearch().get("pic")) ? (input.getSearch().get("pic") + "").toUpperCase() : "";
 
         String areaTypeQuery = getPicAreaType(nrp);
-
-        sqlQuery.append("SELECT DISTINCT "
+        sqlQuery.append(" SELECT "
+                + "    OUTID, "
+                + "    OUTNAME, "
+                + "    PERSID, "
+                + "    OUTTYPE, "
+                + "    OUTTYPENAME, "
+                + "    COMPANY, "
+                + "    COMPANYNAME, "
+                + "    OUTSTATUS, "
+                + "    VACSTATUS, "
+                + "    BEGINDATE, "
+                + "    ENDDATE, "
+                + "    PASSNUMBER, "
+                + "    PASSEXPIRY, "
+                + "    MODIFIED, "
+                + "    MODIFIEDDATE, "
+                + "    PHONENO, "
+                + "    FILENAMEKTP, "
+                + "    SUPPLIER, "
+                + "    JOBDETAIL, "
+                + "    ABSENCERDR, "
+                + "    CANTEEN, "
+                + "    SECGATE, "
+                + "    NOTES, "
+                + "    FILENAMEPHOTO, "
+                + "    VACTYPE, "
+                + "    VACTYPENAME, "
+                + "    VACDATE, "
+                + "    VACSUMMARY, "
+                + "    VACNOTE, "
+                + "    DISCLAIMER, "
+                + "    ID, "
+                + "    LISTAGG(PLANT,';') WITHIN GROUP(ORDER BY PLANT) AS PLANT_COMBINED "
+                + "FROM "
+                + "    ( "
+                + " SELECT DISTINCT "
                 + "    A.VOTSID as OUTID,  "
                 + "    A.VNAME as OUTNAME,  "
                 + "    A.VPERSID as PERSID,  "
@@ -373,7 +478,8 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    A.VVACDTL as VACSUMMARY,  "
                 + "    A.VNTVS as VACNOTE,  "
                 + "    A.VAPPDISCLM as DISCLAIMER,  "
-                + "    RAWTOHEX(A.ROTSEMPSHS) as ID "
+                + "    RAWTOHEX(A.ROTSEMPSHS) as ID,"
+                + "    B.VPGBLNM PLANT  "
                 + " FROM   "
                 + "    AHMHRNTM_HDROTSEMPS A  ");
 
@@ -389,14 +495,14 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("  AND CC.VOTSTYPE = DD.VOTSTYPE ")
                 .append("  AND AA.VPLANT = BB.VPGBLCD ")
                 .append("  AND CC.VAREA = AA.VPLANT ")
-                .append(" AND TRUNC(SYSDATE) BETWEEN TRUNC(BB.DBGNEFFDT) AND TRUNC(BB.DENDEFFDT) ");
+                .append(" AND TRUNC(SYSDATE) BETWEEN TRUNC(BB.DBGNEFFDT) AND TRUNC(BB.DENDEFFDT) ")
+                .append("  AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ");
 
         if (role.equals("RO_GAVMS_PICAHM")) {
             sqlQuery.append("  AND CC.VNRP = '")
                     .append(nrp)
                     .append("' ")
-                    .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ")
-                    .append("  AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ");
+                    .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ");
         }
 
         //Plant Area Param
@@ -487,7 +593,39 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             sqlQuery.append(" ) ");
         }
 
-        sqlQuery.append(" ORDER BY A.VNAME desc ");
+        sqlQuery.append("  ) SUBQUERY "
+                + "GROUP BY "
+                + "    OUTID, "
+                + "    OUTNAME, "
+                + "    PERSID, "
+                + "    OUTTYPE, "
+                + "    OUTTYPENAME, "
+                + "    COMPANY, "
+                + "    COMPANYNAME, "
+                + "    OUTSTATUS, "
+                + "    VACSTATUS, "
+                + "    BEGINDATE, "
+                + "    ENDDATE, "
+                + "    PASSNUMBER, "
+                + "    PASSEXPIRY, "
+                + "    MODIFIED, "
+                + "    MODIFIEDDATE, "
+                + "    PHONENO, "
+                + "    FILENAMEKTP, "
+                + "    SUPPLIER, "
+                + "    JOBDETAIL, "
+                + "    ABSENCERDR, "
+                + "    CANTEEN, "
+                + "    SECGATE, "
+                + "    NOTES, "
+                + "    FILENAMEPHOTO, "
+                + "    VACTYPE, "
+                + "    VACTYPENAME, "
+                + "    VACDATE, "
+                + "    VACSUMMARY, "
+                + "    VACNOTE, "
+                + "    DISCLAIMER, "
+                + "    ID ");
 
         SQLQuery query = getCurrentSession().createSQLQuery(sqlQuery.toString());
 
@@ -531,47 +669,46 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
                 switch (param) {
                     case "outId":
-                        getParam = "A.VOTSID";
+                        getParam = "OUTID";
                         break;
                     case "outName":
-                        getParam = "A.VNAME";
+                        getParam = "OUTNAME";
                         break;
                     case "persId":
-                        getParam = "A.VPERSID";
+                        getParam = "PERSID";
                         break;
                     case "outTypeName":
-                        getParam = "D.VPGBLNM";
+                        getParam = "OUTTYPE";
                         break;
                     case "companyName":
-                        getParam = "CASE WHEN F.VPGBLNM is not null THEN COALESCE(F.VPGBLNM, '')"
-                                + "     ELSE COALESCE(Z.VVENDORDESC, '') END";
+                        getParam = "COMPANYNAME";
                         break;
                     case "outStatus":
-                        getParam = "A.VOTSSTTS";
+                        getParam = "OUTSTATUS";
                         break;
                     case "areaName":
-                        getParam = "E.VPGBLNM";
+                        getParam = "PLANT_COMBINED";
                         break;
                     case "vacStatus":
-                        getParam = "A.VVACSTTS";
+                        getParam = "VACSTATUS";
                         break;
                     case "beginDateText":
-                        getParam = "A.DBGNEFFDT";
+                        getParam = "BEGINDATE";
                         break;
                     case "endDateText":
-                        getParam = "A.DENDEFFDT";
+                        getParam = "ENDDATE";
                         break;
                     case "passNumber":
-                        getParam = "A.NAHMCARDORI";
+                        getParam = "PASSNUMBER";
                         break;
                     case "passExpiryDateText":
-                        getParam = "A.DPASSEXP";
+                        getParam = "PASSEXPIRY";
                         break;
                     case "modifyBy":
-                        getParam = "A.VMODI";
+                        getParam = "MODIFIED";
                         break;
                     case "modifyDateText":
-                        getParam = "A.DMODI";
+                        getParam = "MODIFIEDDATE";
                         break;
                     default:
                         getParam = null;

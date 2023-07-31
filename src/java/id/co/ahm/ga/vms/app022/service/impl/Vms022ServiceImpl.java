@@ -211,9 +211,6 @@ public class Vms022ServiceImpl implements Vms022Service {
                 String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());
                 vo.setGateName(getGateList);
 
-                    String getPlantList = vms022ahmhrntmDtlprmgblsDao.getPlantForExcel(vo.getOutId(), vo.getPersId(), nrp, roleFromFront);
-                    vo.setAreaName(getPlantList);
-
                 if (StringUtils.isBlank(vo.getCompanyName()) && StringUtils.isBlank(vo.getCompany())) {
                     List<Vms022VoLov> compNameList = vms022ObjectDao.lovCompExternal(dto, userId, "FILTER");
 
@@ -254,7 +251,7 @@ public class Vms022ServiceImpl implements Vms022Service {
                     }
                     vo.setFileSk(listAttcs);
                 }
-            }
+            }          
         } catch (Exception e) {
             return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.GAGAL, "GAGAL", null, null, 0);
         }
