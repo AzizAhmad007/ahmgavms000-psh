@@ -678,7 +678,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                         getParam = "PERSID";
                         break;
                     case "outTypeName":
-                        getParam = "OUTTYPE";
+                        getParam = "OUTTYPENAME";
                         break;
                     case "companyName":
                         getParam = "COMPANYNAME";
