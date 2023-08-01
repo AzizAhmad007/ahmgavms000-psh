@@ -45,7 +45,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
     private String getParam;
 
     @Override
-    public List<Vms022VoMonitoring> getSearchData(DtoParamPaging input, String userId, String role, String nrp) {
+    public List<Vms022VoMonitoring> getSearchData(DtoParamPaging input, String userId, String role, String nrp,boolean isExport) {
         List<Vms022VoMonitoring> result = new ArrayList<>();
         List<String> tempResult = new ArrayList<>();
         Map<String, String> sortMap = new HashMap<>();
@@ -81,6 +81,9 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         String pic = AhmStringUtil.hasValue(input.getSearch().get("pic")) ? (input.getSearch().get("pic") + "").toUpperCase() : "";
 
         String areaTypeQuery = getPicAreaType(nrp);
+        if (!input.getSearch().get("plant").equals("")) {
+            sqlQuery.append("SELECT * FROM ( ");
+        }
 
         sqlQuery.append(" SELECT "
                 + "    OUTID, "
@@ -169,7 +172,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append(" AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ")
                 .append(" AND TRUNC(SYSDATE) BETWEEN TRUNC(BB.DBGNEFFDT) AND TRUNC(BB.DENDEFFDT) ");
 
-        if (role.equals("RO_GAVMS_PICAHM")) {
+        if (role.equals("RO_GAVMS_PICAHM") && !isExport) {
             sqlQuery.append("  AND CC.VNRP = '")
                     .append(nrp)
                     .append("' ")
@@ -185,7 +188,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
             sqlQuery.append(" AND BB.VPGBLCD LIKE 'PG10%' ");
         }
 
-        if (!StringUtils.isBlank(pic)) {
+        if (!StringUtils.isBlank(pic) && !isExport) {
             sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
                     .append(pic)
                     .append("||'%' ) ")
@@ -301,6 +304,13 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         voSetter(input);
 
         orderClause(input, sqlQuery, sortMap, getParam);
+
+        if (!input.getSearch().get("plant").equals("")) {
+            sqlQuery.append(" ) ")
+                    .append(" WHERE PLANT_COMBINED LIKE('%")
+                    .append(input.getSearch().get("plant"))
+                    .append("%')");
+        }
 
         Query query = getCurrentSession().createSQLQuery(sqlQuery.toString())
                 .setFirstResult(input.getOffset())

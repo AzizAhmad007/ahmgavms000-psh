@@ -16,15 +16,15 @@ import java.util.List;
  *
  * @author reza.mr
  */
-public interface Vms022AhmhrntmHdrotsempsDao extends HrDao<AhmhrntmHdrotsemps, AhmhrntmHdrotsempsPk>{
-    
-    public List<Vms022VoMonitoring> getSearchData(DtoParamPaging input, String userId, String role, String nrp);
-    
+public interface Vms022AhmhrntmHdrotsempsDao extends HrDao<AhmhrntmHdrotsemps, AhmhrntmHdrotsempsPk> {
+
+    public List<Vms022VoMonitoring> getSearchData(DtoParamPaging input, String userId, String role, String nrp, boolean isExport);
+
     public int countSearchData(DtoParamPaging input, String userId, String role, String nrp);
-    
-    public String confirmId (String id, String status);
-    
-    public String getName (String id);
-    
-    public String getNote (String id);
+
+    public String confirmId(String id, String status);
+
+    public String getName(String id);
+
+    public String getNote(String id);
 }

@@ -255,7 +255,7 @@ function ahmgavms022_setPlantDropDown() {
         if (ret.status === '1') {
 
             for (let x in ret.data) {
-                tempVal += `<option value="` + ret.data[x].id + `">` + ret.data[x].name + `</option>`
+                tempVal += `<option value="` + ret.data[x].name + `">` + ret.data[x].name + `</option>`
             }
             tempVal += `</select>`;
         } else {
@@ -1251,7 +1251,7 @@ function ahmgavms022_filter_search_button_action(obj) {
             var to = moment(periodevalidTo, "DD-MMM-YYYY").toDate();
 
             if (from.getTime() > to.getTime()) {               
-                var errorMessage = 'Periode Date To harus lebih kecil atau sama dengan dari Periode Date To';
+                var errorMessage = '[Periode Date From] must be less or equal to [Periode Date To]';
                 _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
                 return false;
             }
