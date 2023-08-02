@@ -518,7 +518,7 @@
                                     onclick="_fw_openDynamicLookup(this);"></button>
                                 </div>
                             </div>
-                            <div id="ahmgavms022_div_filter_OutType_Ofc">
+                            <div id="ahmgavms022_div_filter_OutType_Ofc" class="hide-this">
                                 <div class="input-control text lookup" data-role="input-control"
                                     data-lookupid="AHMGAVMSL002" data-callback="{
                                     '1':$('#ahmgavms022_filter_IdOutType_Ofc'),
@@ -561,7 +561,11 @@
                         </div>
                         <div class="span4">
                             <label>Plant</label>
-                            <div class="input-control select dropdown" data-role="input-control" id="ahmgavms022_filter_Plant_div"></div>
+                            <div class="input-control select dropdown" data-role="input-control" id="ahmgavms022_filter_Plant_div">
+                                <select name="ahmgavms022_filter_Plant" id="ahmgavms022_filter_Plant">
+                                    <option value="" selected="">-</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="span4">
                             <label>Covid19 Vaccine Status</label>

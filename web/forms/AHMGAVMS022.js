@@ -244,7 +244,7 @@ $('#ahmgavms022_filter_PeriodeTo').val(ahmgavms022_date_to_default.toShortFormat
 //=========== document.ready end ===========
 
 function ahmgavms022_setPlantDropDown() {
-
+    $('#ahmgavms022_filter_Plant').empty();
     let tempVal = `<select name="ahmgavms022_filter_Plant" id="ahmgavms022_filter_Plant">
                         <option value="" selected="">-</option>`;
 
@@ -258,15 +258,11 @@ function ahmgavms022_setPlantDropDown() {
 
     _fw_postJson($('#ahmgavms022_form'), vo, ahmgavms022_url_root + '/show-plant', function (ret) {
         if (ret.status === '1') {
-
-            for (let x in ret.data) {
-                tempVal += `<option value="` + ret.data[x].name + `">` + ret.data[x].name + `</option>`
-            }
-            tempVal += `</select>`;
-        } else {
-            `</select>`
+            $('#ahmgavms022_filter_Plant').append('<option value="" selected="">-</option>');
+            $.each(ret.data, function (i, v) {
+                $('#ahmgavms022_filter_Plant').append('<option value="' + v.name + '">' + v.name + '</option>');
+            });
         }
-        $('#ahmgavms022_filter_Plant_div').html(tempVal);
     });
 }
 
@@ -316,7 +312,6 @@ function ahmgavms022_get_form_authorization() {
 
             $('#ahmgavms022_list_datatable').html(htmlTablePic); //for table
             $('#ahmgavms022_list_check').html(htmlCheckboxPic); //for checkbox
-            $('#ahmgavms022_div_filter_OutType_Ofc').addClass('hide-this'); //hide ofc lov
             $('#ahmgavms022_div_picAhm').addClass('hide-this');
 
             ahmgavms022_list_datatable = ahmgavms022_list_datatable_init();
@@ -332,6 +327,7 @@ function ahmgavms022_get_form_authorization() {
             $('#ahmgavms022_list_datatable').html(htmlTableSec); //for table
             $('#ahmgavms022_list_check').html(htmlCheckboxSec); //for checkbox
             $('#ahmgavms022_div_filter_OutType_Pic').addClass('hide-this'); //hide pic lov
+            $('#ahmgavms022_div_filter_OutType_Ofc').removeClass('hide-this');
 
             ahmgavms022_list_datatable = ahmgavms022_list_datatable_init_no_checkbox();
 
@@ -344,6 +340,7 @@ function ahmgavms022_get_form_authorization() {
             $('#ahmgavms022_list_datatable').html(htmlTableSec); //for table
             $('#ahmgavms022_list_check').html(htmlCheckboxSec); //for checkbox
             $('#ahmgavms022_div_filter_OutType_Pic').addClass('hide-this'); //hide pic lov
+            $('#ahmgavms022_div_filter_OutType_Ofc').removeClass('hide-this');
 
             ahmgavms022_list_datatable = ahmgavms022_list_datatable_init_no_checkbox();
 
