@@ -45,7 +45,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
     private String getParam;
 
     @Override
-    public List<Vms022VoMonitoring> getSearchData(DtoParamPaging input, String userId, String role, String nrp, boolean isExport) {
+    public List<Vms022VoMonitoring> getSearchData(DtoParamPaging input, String userId, String role, String nrp) {
         List<Vms022VoMonitoring> result = new ArrayList<>();
         List<String> tempResult = new ArrayList<>();
         Map<String, String> sortMap = new HashMap<>();
@@ -172,7 +172,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append(" AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ")
                 .append(" AND TRUNC(SYSDATE) BETWEEN TRUNC(BB.DBGNEFFDT) AND TRUNC(BB.DENDEFFDT) ");
 
-        if (role.equals("RO_GAVMS_PICAHM") && !isExport) {
+        if (role.equals("RO_GAVMS_PICAHM")) {
             sqlQuery.append("  AND CC.VNRP = '")
                     .append(nrp)
                     .append("' ")
@@ -181,7 +181,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
         sqlQuery.append(" AND BB.VPGBLCD LIKE 'PG10%' ");
 
-        if (!StringUtils.isBlank(pic) && !isExport) {
+        if (!StringUtils.isBlank(pic)) {
             sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
                     .append(pic)
                     .append("||'%' ) ")
@@ -397,7 +397,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
     }
 
     @Override
-    public int countSearchData(DtoParamPaging input, String userId, String role, String nrp, boolean isExport) {
+    public int countSearchData(DtoParamPaging input, String userId, String role, String nrp) {
         StringBuilder sqlQuery = new StringBuilder();
 
         String votsid = AhmStringUtil.hasValue(input.getSearch().get("outId")) ? (input.getSearch().get("outId") + "").toUpperCase() : "";
@@ -505,7 +505,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append(" AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ")
                 .append(" AND TRUNC(SYSDATE) BETWEEN TRUNC(BB.DBGNEFFDT) AND TRUNC(BB.DENDEFFDT) ");
 
-        if (role.equals("RO_GAVMS_PICAHM") && !isExport) {
+        if (role.equals("RO_GAVMS_PICAHM")) {
             sqlQuery.append("  AND CC.VNRP = '")
                     .append(nrp)
                     .append("' ")
@@ -514,7 +514,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
 
         sqlQuery.append(" AND BB.VPGBLCD LIKE 'PG10%' ");
 
-        if (!StringUtils.isBlank(pic) && !isExport) {
+        if (!StringUtils.isBlank(pic)) {
             sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
                     .append(pic)
                     .append("||'%' ) ")
