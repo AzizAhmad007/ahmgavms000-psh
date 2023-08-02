@@ -201,7 +201,7 @@ public class Vms022ExportExcel extends Vms022BaseXlsxStreamingView {
                     }
                 }
  
-                if (filter.getKey().equalsIgnoreCase("areaName")) {
+                if (filter.getKey().equalsIgnoreCase("plant")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
  
