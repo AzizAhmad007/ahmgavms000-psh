@@ -53,6 +53,7 @@ public class Vms022Rest {
     @Autowired
     @Qualifier(value = "tokenPshUtil")
     private TokenPshUtil tokenPshUtil;
+    
 
     //success
     @RequestMapping(value = "test-mamank", method = RequestMethod.POST,
