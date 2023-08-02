@@ -45,7 +45,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
     private String getParam;
 
     @Override
-    public List<Vms022VoMonitoring> getSearchData(DtoParamPaging input, String userId, String role, String nrp,boolean isExport) {
+    public List<Vms022VoMonitoring> getSearchData(DtoParamPaging input, String userId, String role, String nrp, boolean isExport) {
         List<Vms022VoMonitoring> result = new ArrayList<>();
         List<String> tempResult = new ArrayList<>();
         Map<String, String> sortMap = new HashMap<>();
@@ -179,14 +179,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                     .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ");
         }
 
-        //Plant Area Param
-        if (!StringUtils.isBlank(plant)) {
-            sqlQuery.append(" AND AA.VPLANT = '")
-                    .append(plant)
-                    .append("' ");
-        } else {
-            sqlQuery.append(" AND BB.VPGBLCD LIKE 'PG10%' ");
-        }
+        sqlQuery.append(" AND BB.VPGBLCD LIKE 'PG10%' ");
 
         if (!StringUtils.isBlank(pic) && !isExport) {
             sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
@@ -404,7 +397,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
     }
 
     @Override
-    public int countSearchData(DtoParamPaging input, String userId, String role, String nrp) {
+    public int countSearchData(DtoParamPaging input, String userId, String role, String nrp, boolean isExport) {
         StringBuilder sqlQuery = new StringBuilder();
 
         String votsid = AhmStringUtil.hasValue(input.getSearch().get("outId")) ? (input.getSearch().get("outId") + "").toUpperCase() : "";
@@ -421,6 +414,10 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
         String pic = AhmStringUtil.hasValue(input.getSearch().get("pic")) ? (input.getSearch().get("pic") + "").toUpperCase() : "";
 
         String areaTypeQuery = getPicAreaType(nrp);
+        sqlQuery.append("SELECT COUNT (*) FROM ( ");
+        if (!input.getSearch().get("plant").equals("")) {
+            sqlQuery.append("SELECT * FROM ( ");
+        }
         sqlQuery.append(" SELECT "
                 + "    OUTID, "
                 + "    OUTNAME, "
@@ -489,7 +486,7 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    A.VNTVS as VACNOTE,  "
                 + "    A.VAPPDISCLM as DISCLAIMER,  "
                 + "    RAWTOHEX(A.ROTSEMPSHS) as ID,"
-                + "    B.VPGBLNM PLANT  "
+                + "    B.VPGBLNM PLANT "
                 + " FROM   "
                 + "    AHMHRNTM_HDROTSEMPS A  ");
 
@@ -505,26 +502,19 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .append("  AND CC.VOTSTYPE = DD.VOTSTYPE ")
                 .append("  AND AA.VPLANT = BB.VPGBLCD ")
                 .append("  AND CC.VAREA = AA.VPLANT ")
-                .append(" AND TRUNC(SYSDATE) BETWEEN TRUNC(BB.DBGNEFFDT) AND TRUNC(BB.DENDEFFDT) ")
-                .append("  AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ");
+                .append(" AND TRUNC(SYSDATE) BETWEEN TRUNC(CC.DBGNEFFDT) AND TRUNC(CC.DENDEFFDT) ")
+                .append(" AND TRUNC(SYSDATE) BETWEEN TRUNC(BB.DBGNEFFDT) AND TRUNC(BB.DENDEFFDT) ");
 
-        if (role.equals("RO_GAVMS_PICAHM")) {
+        if (role.equals("RO_GAVMS_PICAHM") && !isExport) {
             sqlQuery.append("  AND CC.VNRP = '")
                     .append(nrp)
                     .append("' ")
                     .append(" AND CC.VRGSROLE IN ('PG91-01', 'PG91-03') ");
         }
 
-        //Plant Area Param
-        if (!StringUtils.isBlank(plant)) {
-            sqlQuery.append(" AND AA.VPLANT = '")
-                    .append(plant)
-                    .append("' ");
-        } else {
-            sqlQuery.append(" AND BB.VPGBLCD LIKE 'PG10%' ");
-        }
+        sqlQuery.append(" AND BB.VPGBLCD LIKE 'PG10%' ");
 
-        if (!StringUtils.isBlank(pic)) {
+        if (!StringUtils.isBlank(pic) && !isExport) {
             sqlQuery.append(" AND CC.VNRP LIKE UPPER('%'||")
                     .append(pic)
                     .append("||'%' ) ")
@@ -637,6 +627,15 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 + "    DISCLAIMER, "
                 + "    ID ");
 
+        if (!input.getSearch().get("plant").equals("")) {
+            sqlQuery.append(" ) ")
+                    .append(" WHERE PLANT_COMBINED LIKE('%")
+                    .append(input.getSearch().get("plant"))
+                    .append("%')");
+        }
+
+        sqlQuery.append(" )");
+
         SQLQuery query = getCurrentSession().createSQLQuery(sqlQuery.toString());
 
         query.setParameter("votsid", votsid)
@@ -644,19 +643,18 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 .setParameter("vpersid", vpersid)
                 .setParameter("idcard", idcard);
 
-        int counter = 0;
-        try {
-            List lists = query.list();
+        Number results = 0;
+       try {
+            Object obj = (Object) query.uniqueResult();
 
-            String tempId = "";
-
-            for (int i = 0; i < lists.size(); i++) {
-                counter++;
+            if (obj != null) {
+                results = (Number) query.uniqueResult();
             }
-        } catch (SQLGrammarException e) {
-        }
 
-        return counter;
+            return results.intValue();
+        } catch (SQLGrammarException e) {
+            return results.intValue();
+        }
     }
 
     private void orderClause(DtoParamPaging input, StringBuilder query, Map<String, String> clause, String param) {
