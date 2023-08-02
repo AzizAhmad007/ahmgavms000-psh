@@ -11,6 +11,7 @@ import id.co.ahm.ga.vms.app022.util.Vms022QueryUtil;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
 import id.co.ahm.jxf.dao.HrHibernateDao;
 import id.co.ahm.jxf.dto.DtoParamPaging;
+import id.co.ahm.jxf.vo.VoUserCred;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,54 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
             query.setFirstResult(input.getOffset());
             query.setMaxResults(input.getLimit());
         }
+
+        List<Vms022VoLov> ress = new ArrayList<>();
+        try {
+            query.setResultTransformer(new ResultTransformer() {
+                public Object transformTuple(Object[] os, String[] strings) {
+
+                    Vms022VoLov v = new Vms022VoLov();
+                    v.setId((String) os[0]);
+                    if (os[1] != null) {
+                        v.setName((String) os[1]);
+                    } else {
+                        v.setName("");
+                    }
+                    v.setStat("N");
+
+                    return v;
+                }
+
+                public List transformList(List list) {
+                    return list;
+                }
+            });
+
+            return query.list();
+        } catch (GenericJDBCException | SQLGrammarException z) {
+            return ress;
+        }
+    }
+
+    @Override
+    public List<Vms022VoLov> lovPlantInternal(DtoParamPaging input) {
+        StringBuilder sql = new StringBuilder(""
+                + "SELECT "
+                + " DISTINCT B.VPGBLCD, "
+                + " B.VPGBLNM "
+                + "FROM "
+                + " AHMHRNTM_MSTPICOTS A, "
+                + " AHMHRNTM_DTLPRMGBLS B "
+                + "WHERE A.VAREA = B.VPGBLCD AND "
+                + " TRUNC(SYSDATE) BETWEEN TRUNC(A.DBGNEFFDT) AND TRUNC(A.DENDEFFDT) AND  "
+                + " TRUNC(SYSDATE) BETWEEN TRUNC(B.DBGNEFFDT) AND TRUNC(B.DENDEFFDT) AND  "
+                + " B.VPGBLCD LIKE 'PG10%' AND "
+                + " A.VNRP = :NRP ");
+
+        sql.append(" ORDER BY VPGBLCD ");
+
+        Query query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setParameter("NRP", input.getSearch().get("nrp"));
 
         List<Vms022VoLov> ress = new ArrayList<>();
         try {
@@ -141,14 +190,8 @@ public class Vms022AhmhrntmDtlprmgblsDaoImpl extends HrHibernateDao<AhmhrntmDtlp
                     + "     A.VREGID in('PLNT','GATE') "
                     + "     AND C.VOTSID = :VOTSID "
                     + "     AND C.VPERSID = :VPERSID "
-                    + " AND TRUNC(SYSDATE) BETWEEN TRUNC(B.DBGNEFFDT) AND TRUNC(B.DENDEFFDT) ");
-
-            if (role.equalsIgnoreCase("RO_GAVMS_PICAHM")) {
-                sql.append(" AND D.VNRP = '")
-                        .append(nrp)
-                        .append("' ")
-                        .append(" AND D.VRGSROLE IN ('PG91-01', 'PG91-03') ");
-            }
+                    + " AND TRUNC(SYSDATE) BETWEEN TRUNC(B.DBGNEFFDT) AND TRUNC(B.DENDEFFDT) "
+                    + "  AND D.VRGSROLE IN ('PG91-01', 'PG91-03')  ");
 
             SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
 

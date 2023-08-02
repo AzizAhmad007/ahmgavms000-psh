@@ -191,8 +191,13 @@ public class Vms022ServiceImpl implements Vms022Service {
     }
 
     @Override
-    public DtoResponseWorkspace showPlant() {
-        List<Vms022VoLov> list = vms022ahmhrntmDtlprmgblsDao.lovPlant(null, true);
+    public DtoResponseWorkspace showPlant(DtoParamPaging dto, VoUserCred userCred) {
+         List<Vms022VoLov> list = new ArrayList<>();
+        if ("RO_GAVMS_PICAHM".equalsIgnoreCase(dto.getSearch().get("role").toString())) {
+            list = vms022ahmhrntmDtlprmgblsDao.lovPlantInternal(dto);
+        } else {
+             list = vms022ahmhrntmDtlprmgblsDao.lovPlant(null, true);
+        }
         return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, list);
     }
 
@@ -273,8 +278,11 @@ public class Vms022ServiceImpl implements Vms022Service {
             String getGateList = vms022ahmhrntmDtlprmgblsDao.getGateForExcel(vo.getOutId(), vo.getPersId());
             vo.setGateName(getGateList);
 
+            String getPlantList = vms022ahmhrntmDtlprmgblsDao.getPlantForExcel(vo.getOutId(), vo.getPersId(), nrp, roleFromFront);
+            vo.setAreaName(getPlantList);
+
             String getPlantIDList = vms022ahmhrntmDtlprmgblsDao.getPlantIDForExcel(vo.getOutId(), vo.getPersId());
-            vo.setAreaName(getPlantIDList);
+            vo.setArea(getPlantIDList);
 
             String getPicList = vms022AhmhrntmMstpicotsDao.getPicAhmForExcel(vo.getOutType(), vo.getArea());
             vo.setPic(getPicList);

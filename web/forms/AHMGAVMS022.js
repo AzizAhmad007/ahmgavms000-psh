@@ -240,7 +240,6 @@ $('#ahmgavms022_filter_PeriodeFrom').val(ahmgavms022_date_periode_default.toShor
 $('#ahmgavms022_filter_PeriodeTo').val(ahmgavms022_date_to_default.toShortFormat());
 // [End] for set date in filter session
 
-ahmgavms022_setPlantDropDown();
 
 //=========== document.ready end ===========
 
@@ -249,7 +248,13 @@ function ahmgavms022_setPlantDropDown() {
     let tempVal = `<select name="ahmgavms022_filter_Plant" id="ahmgavms022_filter_Plant">
                         <option value="" selected="">-</option>`;
 
-    vo = {};
+    vo = {
+        search : {
+            "role" : ahmgavms022_roles,
+            "nrp"  : ahmgavms022_userid
+
+        }
+    };
 
     _fw_postJson($('#ahmgavms022_form'), vo, ahmgavms022_url_root + '/show-plant', function (ret) {
         if (ret.status === '1') {
@@ -306,6 +311,7 @@ function ahmgavms022_get_form_authorization() {
         }
 
         if (ahmgavms022_roles == "RO_GAVMS_PICAHM") {
+            ahmgavms022_setPlantDropDown();
             document.getElementById("ahmgavms022_filter_OutStatus").selectedIndex = 1;
 
             $('#ahmgavms022_list_datatable').html(htmlTablePic); //for table
@@ -316,6 +322,7 @@ function ahmgavms022_get_form_authorization() {
             ahmgavms022_list_datatable = ahmgavms022_list_datatable_init();
 
         } else if (ahmgavms022_roles == "RO_GAVMS_OFCSECT") {
+            ahmgavms022_setPlantDropDown();
             $("#ahmgavms022_detail_ExpDate_button").removeAttr("disabled");
             $("#ahmgavms022_detail_ExpDate").removeAttr("disabled");
             $('#ahmgavms022_filter_approve_button').remove();
@@ -329,6 +336,7 @@ function ahmgavms022_get_form_authorization() {
             ahmgavms022_list_datatable = ahmgavms022_list_datatable_init_no_checkbox();
 
         } else if (ahmgavms022_roles == "RO_GAVMS_SCHSEC") {
+            ahmgavms022_setPlantDropDown();
             $('#ahmgavms022_filter_approve_button').remove();
             $('#ahmgavms022_filter_reject_button').remove();
             document.getElementById("ahmgavms022_filter_OutStatus").selectedIndex = 2;

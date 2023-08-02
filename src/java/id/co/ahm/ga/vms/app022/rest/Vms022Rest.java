@@ -78,8 +78,11 @@ public class Vms022Rest {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    DtoResponseWorkspace showPlant(@RequestHeader(value = "token") String token) {
-        return vms022Service.showPlant();
+    DtoResponseWorkspace showPlant(@RequestHeader(value = "token") String token,
+            @RequestBody DtoParamPaging dto) {
+         VoUserCred userCred = tokenPshUtil.getUserCred(token);
+         
+        return vms022Service.showPlant(dto,userCred);
     }
 
     @RequestMapping(value = "get-user-detail", method = RequestMethod.POST,

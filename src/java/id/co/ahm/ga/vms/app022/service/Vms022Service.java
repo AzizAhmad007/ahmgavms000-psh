@@ -20,33 +20,33 @@ import org.apache.poi.ss.usermodel.Workbook;
  * @author reza.mr
  */
 public interface Vms022Service {
-    
+
     public DtoResponseWorkspace getFormAuthorization(VoUserCred userCred);
-    
-    public DtoResponseWorkspace showPlant(); 
-    
+
+    public DtoResponseWorkspace showPlant(DtoParamPaging dto, VoUserCred userCred);
+
     public DtoResponseWorkspace showMonitoring(DtoParamPaging input, VoUserCred userCred);
-    
+
     public DtoResponseWorkspace showPlant(Vms022VoLov input);
-    
+
     public DtoResponseWorkspace showGate(Vms022VoLov input);
-    
+
     public DtoResponseWorkspace showPicAhm(Vms022VoLov input);
-    
+
     public DtoResponseWorkspace approve(Vms022VoMonitoring getdata, VoUserCred userCred);
-    
+
     public DtoResponseWorkspace approving(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
-    
+
     public DtoResponseWorkspace reject(Vms022VoMonitoring getdata, VoUserCred userCred);
-    
+
     public DtoResponseWorkspace rejecting(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
-    
+
     public DtoResponseWorkspace checkingDate(List<Vms022VoMonitoring> getdata, VoUserCred userCred);
-    
+
     public DtoResponsePagingWorkspace getExcel(DtoParamPaging dto);
-    
-    public DtoResponse testing (DtoParamPaging dto);
-    
-    public Workbook exportData (DtoParamPaging dto);
-    
+
+    public DtoResponse testing(DtoParamPaging dto);
+
+    public Workbook exportData(DtoParamPaging dto);
+
 }
