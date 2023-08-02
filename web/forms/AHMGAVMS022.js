@@ -312,6 +312,7 @@ function ahmgavms022_get_form_authorization() {
 
             $('#ahmgavms022_list_datatable').html(htmlTablePic); //for table
             $('#ahmgavms022_list_check').html(htmlCheckboxPic); //for checkbox
+            // $('#ahmgavms022_div_filter_OutType_Ofc').addClass('hide-this'); //hide ofc lov
             $('#ahmgavms022_div_picAhm').addClass('hide-this');
 
             ahmgavms022_list_datatable = ahmgavms022_list_datatable_init();
@@ -427,7 +428,7 @@ function ahmgavms022_list_datatable_init() {
                     objectSearch.outType = OutsourceTypeFilter;
                     objectSearch.company = OutsourceCompanyFilter;
                     objectSearch.outStatus = OutsourceStatusFilter;
-                    objectSearch.plant = PlantFilter;
+                    objectSearch.plant = PlantFilter == null ? "" : PlantFilter;
                     objectSearch.vacStatus = Covid19VaccineStatusFilter;
                     objectSearch.userid = ahmgavms022_userid;
                     objectSearch.role = ahmgavms022_roles;
@@ -829,7 +830,7 @@ function ahmgavms022_list_datatable_init_no_checkbox() {
                     objectSearch.outType = OutsourceTypeFilter;
                     objectSearch.company = OutsourceCompanyFilter;
                     objectSearch.outStatus = OutsourceStatusFilter;
-                    objectSearch.plant = PlantFilter;
+                    objectSearch.plant = PlantFilter == null ? "" : PlantFilter;
                     objectSearch.vacStatus = Covid19VaccineStatusFilter;
                     objectSearch.userid = ahmgavms022_userid;
                     objectSearch.role = ahmgavms022_roles;
