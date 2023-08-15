@@ -1,36 +1,36 @@
 //[Begin] Variable Declaration
 var ahmgavms022_url_root = 'req/ahmgavms022/jx05/ahmgavms000-psh/rest/ga/vms022';
-
+ 
 var ahmgavms022_roles = "";
 var ahmgavms022_token = "";
 var ahmgavms022_userid = "";
 var ahmgavms022_username = "";
 var ahmgavms022_email = "";
-
+ 
 var ahmgavms022_list_datatable_total_data;
-
+ 
 var ahmgavms022_list_datatable = null;
-
+ 
 var ahmgavms022_order_global = null;
 var ahmgavms022_sort_global = null;
-
+ 
 var ahmgavms022_list_datatable_check = null;
-
+ 
 var ahmgavms022_firstScan = 0;
-
+ 
 var ahmgavms022_list_datatable_check_array = [];
 var ahmgavms022_list_datatable_check_outstatus_array = [];
 var ahmgavms022_list_datatable_check_note_array = [];
 var ahmgavms022_list_datatable_check_outid_array = [];
 var ahmgavms022_list_datatable_check_outname_array = [];
-
+ 
 var ahmgavms022_list_datatable_check_submit_array = [];
 var ahmgavms022_list_datatable_check_submit_outid_array = [];
 var ahmgavms022_list_datatable_check_submit_outname_array = [];
 var ahmgavms022_list_datatable_check_submit_outstatus_array = [];
 var ahmgavms022_list_datatable_check_submit_note_array = [];
 var ahmgavms022_list_datatable_current_page = null;
-
+ 
 var ahmgavms022_detail_plants_datatable = [];
 var ahmgavms022_detail_plants_datatable_data = {};
 var ahmgavms022_detail_gates_datatable = [];
@@ -38,27 +38,27 @@ var ahmgavms022_detail_gates_datatable_data = {};
 var ahmgavms022_detail_pic_datatable = [];
 var ahmgavms022_detail_pic_datatable_data = {};
 var ahmgavms022_detail_status_submit = "";
-
+ 
 var ahmgavms022_detail_list_id = [];
 var ahmgavms022_detail_list_code = "";
-
+ 
 var ahmgavms022_Ktp_Temp = null;
 var ahmgavms022_Photo_Temp = null;
 var ahmgavms022_Vac_array_Temp = null;
 var ahmgavms022_Attach_array_Temp = null;
-
+ 
 var ahmgavms022_form_auth_detail = false;
-
+ 
 var ahmgavms022_form_auth_add = false;
 var ahmgavms022_form_auth_edit = false;
 var ahmgavms022_form_auth_delete = false;
-
+ 
 var ahmgavms022_default_requirement = '';
 var ahmgavms022_detail_rownum_getter = 0;
 var ahmgavms022_detail_rownum_getter_from_pages = 0;
 var ahmgavms022_detail_param_getter = new Object();
 var selectedCheckboxId = [];
-
+ 
 var detail_id_for_confirm = '';
 var detail_outid_for_confirm = '';
 var detail_outname_for_confirm = '';
@@ -66,17 +66,17 @@ var detail_outstatus_for_confirm = '';
 var detail_note_for_confirm = '';
 var detail_company_for_confirm = '';
 var detail_department_for_confirm = '';
-
+ 
 var approve_reject_confirmation = '';
 var formObject = $('#ahmgavms022_form');
-
+ 
 var ahmgavms022_ = new Object();
 var data = [];
 var ahmgavms022_detail_old_expiry_date;
 var ahmgavms022_excel_order_col;
 var ahmgavms022_excel_order;
-
-
+ 
+ 
 var htmlCheckboxPicDisabled = `<div class="input-control checkbox" style="margin-left: 0px!important">
     <label>
         <input type="checkbox" name="chkItem"
@@ -94,7 +94,7 @@ var htmlCheckboxPicDisabled = `<div class="input-control checkbox" style="margin
         </input>
     </label>
 </div>`;
-
+ 
 var htmlCheckboxPic = `<div class="input-control checkbox" style="margin-left: 0px!important">
     <label>
         <input type="checkbox" name="chkItem"
@@ -111,7 +111,7 @@ var htmlCheckboxPic = `<div class="input-control checkbox" style="margin-left: 0
         </input>
     </label>
 </div>`;
-
+ 
 var htmlTablePic = `<thead>
     <tr>
         <th class="tblHeader" data-field-id="checkbox"></th>
@@ -148,7 +148,7 @@ var htmlTablePic = `<thead>
     </tr>
 </thead>
 <tbody></tbody>`;
-
+ 
 var htmlTableSec = `<thead>
     <tr>
         <th>ID Hide</th>
@@ -184,104 +184,78 @@ var htmlTableSec = `<thead>
     </tr>
 </thead>
 <tbody></tbody>`;
-
+ 
 var htmlCheckboxSec = `<div class="input-control checkbox" style="margin-left: 0px!important">
 </div>`;
-
-var htmlResponseApprove = `<div class="panel-info" id="ahmgavms022_detail_eula">
-<p style="font-size: 12px;">
-    Dengan mengisi data registrasi Mitra / Outsource, Saya menyatakan bahwa : <br><br>
-    1. Saya sudah mendapatkan persetujuan dari pihak mitra atau outsource yang
-    bersangkutan untuk memberikan data yang diperlukan oleh PT. Astra Honda Motor selama
-    bekerja di lingkungan PT. Astra Honda Motor. <br>
-    2. Saya sudah mendapatkan pernyataan dari pihak mitra atau outsource yang
-    bersangkutan bahwa data yang diberikan kepada PT. Astra Honda Motor adalah data yang
-    sesungguhnya dan dapat dipertanggungjawabkan. <br>
-    3. Pass Card Mitra / Outsource memiliki masa berlaku, sebagaimana yang tertera pada
-    data Pass Card Expiry Date. <br>
-    4. Jika terdapat perubahan data karyawan Mitra / Outsource, maka wajib melakukan
-    update terhadap data yang sudah diregistrasi. <br>
-    5. Pass Card yang sudah tidak dipergunakan wajib dikembalikan ke Security System
-    Development. <br>
-    6. Saya telah mensosialisasikan dan memastikan bahwa karyawan Mitra
-    & Outsource telah memahami dan mematuhi semua peraturan yang berlaku di PT. Astra
-    Honda Motor, serta bersedia bertanggung jawab jika ada pelanggaran yang dilakukan
-    terhadap peraturan tersebut.
-</p>
-</div>`
-
-var htmlResposeCheckBox = ` <input type="checkbox" name="ahmgavms022_detail_disclaimer" id="ahmgavms022_detail_disclaimer"
-value="Go" disabled>
-Saya telah membaca dan menyetujui semua ketentuan yang telah disebutkan.`
-
+ 
 ahmgavms022_.data = {};
 //[End] Variable Declaration
-
+ 
 //=========== document.ready begin ===========
 ahmgavms022_getUserDetail();
-
+ 
 var thisform = document.getElementById("ahmgavms022form");
 ahmgavms022_list_datatable_check = null;
 _fw_filterpanel_toggle($('#ahmgavms022_filter_collapse_button'));
 // var objectObj = new Object();
-
+ 
 const tudey = new Date();
 const yyyy = tudey.getFullYear();
 var mm = tudey.getMonth() + 1;
 var dd = tudey.getDate();
-
+ 
 if (dd < 10) dd = '0' + dd;
 if (mm < 10) mm = '0' + mm;
-
+ 
 const dateForStatus = dd + '-' + mm + '-' + yyyy;
-
+ 
 // [Begin] for set date in filter session
 Date.prototype.toShortFormat = function () {
     let monthNames = ["Jan", "Feb", "Mar", "Apr",
         "May", "Jun", "Jul", "Aug",
         "Sep", "Oct", "Nov", "Dec"];
-
+ 
     let day = this.getDate();
-
+ 
     let monthIndex = this.getMonth();
     let monthName = monthNames[monthIndex];
-
+ 
     let year = this.getFullYear();
-
+ 
     return `${day}-${monthName}-${year}`;
-
+ 
 }
 var today = new Date();
 var date_temp = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 var date_temp_string = date_temp.toString();
 var get_last_date = date_temp_string.substring(8, 10);
-
+ 
 var ahmgavms022_date_periode_default = new Date();
 var ahmgavms022_date_to_default = new Date();
-
+ 
 ahmgavms022_date_periode_default.setDate(1);
 ahmgavms022_date_to_default.setDate(get_last_date);
-
+ 
 $('#ahmgavms022_filter_PeriodeFrom').val(ahmgavms022_date_periode_default.toShortFormat());
 $('#ahmgavms022_filter_PeriodeTo').val(ahmgavms022_date_to_default.toShortFormat());
 // [End] for set date in filter session
-
-
+ 
+ 
 //=========== document.ready end ===========
-
+ 
 function ahmgavms022_setPlantDropDown() {
     $('#ahmgavms022_filter_Plant').empty();
     let tempVal = `<select name="ahmgavms022_filter_Plant" id="ahmgavms022_filter_Plant">
                         <option value="" selected="">-</option>`;
-
+ 
     vo = {
         search : {
             "role" : ahmgavms022_roles,
             "nrp"  : ahmgavms022_userid
-
+ 
         }
     };
-
+ 
     _fw_postJson($('#ahmgavms022_form'), vo, ahmgavms022_url_root + '/show-plant', function (ret) {
         if (ret.status === '1') {
             $('#ahmgavms022_filter_Plant').append('<option value="" selected="">-</option>');
@@ -291,12 +265,12 @@ function ahmgavms022_setPlantDropDown() {
         }
     });
 }
-
+ 
 function ahmgavms022_getUserDetail() {
-
+ 
     catcher = {
     };
-
+ 
     _fw_postJson($('#ahmgavms022_form'), catcher, ahmgavms022_url_root + '/get-user-detail', function (ret) {
         if (ret.status === '1') {
             ahmgavms022_userid = ret.data.userid;
@@ -307,44 +281,42 @@ function ahmgavms022_getUserDetail() {
         }
     });
 }
-
+ 
 function ahmgavms022getToken() {
-
+ 
     catcher = {
         username: ahmgavms022_username,
         email: ahmgavms022_email,
         userid: ahmgavms022_userid,
         reqdate: "18102016 104800"
     };
-
+ 
             ahmgavms022_token = "Q1Jv4n8WuT4rQYDevwbfRd9JMBEt327cNW9HZxU74hOyLibBybpujWXIxmJhFSNMCY9uQgNObYqYd/MO7droSBZpDU6b8N+Bn+UHWHKJ5sey7KaJq3O1e8u8j84cFb+EJl+gQ5ti6thsGqLVDeu9Qw==";
             ahmgavms022_get_form_authorization();
-
+ 
 }
-
+ 
 function ahmgavms022_get_form_authorization() {
     var formObject = $('#ahmgavms022_form');
     var data = JSON.stringify({});
-
+ 
     _fw_postJson(formObject, data, ahmgavms022_url_root + '/getformauth', function (ret) {
-
+ 
         if (ret.status === '1') {
             ahmgavms022_roles = ret.data[0].roleName;
         }
-
+ 
         if (ahmgavms022_roles == "RO_GAVMS_PICAHM") {
             ahmgavms022_setPlantDropDown();
             document.getElementById("ahmgavms022_filter_OutStatus").selectedIndex = 1;
-
+ 
             $('#ahmgavms022_list_datatable').html(htmlTablePic); //for table
             $('#ahmgavms022_list_check').html(htmlCheckboxPic); //for checkbox
             // $('#ahmgavms022_div_filter_OutType_Ofc').addClass('hide-this'); //hide ofc lov
             $('#ahmgavms022_div_picAhm').addClass('hide-this');
-            $('#ahmgavms022_detail_eula').removeClass('hide-this'); //for checkbox
-            $('#ahmgavms022_detail_disclaimer').removeClass('hide-this');//for checkbox
-
+ 
             ahmgavms022_list_datatable = ahmgavms022_list_datatable_init();
-
+ 
         } else if (ahmgavms022_roles == "RO_GAVMS_OFCSECT") {
             ahmgavms022_setPlantDropDown();
             $("#ahmgavms022_detail_ExpDate_button").removeAttr("disabled");
@@ -352,27 +324,29 @@ function ahmgavms022_get_form_authorization() {
             $('#ahmgavms022_filter_approve_button').remove();
             $('#ahmgavms022_filter_reject_button').remove();
             document.getElementById("ahmgavms022_filter_OutStatus").selectedIndex = 2;
-
+ 
             $('#ahmgavms022_list_datatable').html(htmlTableSec); //for table
             $('#ahmgavms022_list_check').html(htmlCheckboxSec); //for checkbox
             $('#ahmgavms022_div_filter_OutType_Pic').addClass('hide-this'); //hide pic lov
             $('#ahmgavms022_div_filter_OutType_Ofc').removeClass('hide-this');
-
+            $('#test').addClass('hide-this');
+ 
             ahmgavms022_list_datatable = ahmgavms022_list_datatable_init_no_checkbox();
-
+ 
         } else if (ahmgavms022_roles == "RO_GAVMS_SCHSEC") {
             ahmgavms022_setPlantDropDown();
             $('#ahmgavms022_filter_approve_button').remove();
             $('#ahmgavms022_filter_reject_button').remove();
             document.getElementById("ahmgavms022_filter_OutStatus").selectedIndex = 2;
-
+ 
             $('#ahmgavms022_list_datatable').html(htmlTableSec); //for table
             $('#ahmgavms022_list_check').html(htmlCheckboxSec); //for checkbox
             $('#ahmgavms022_div_filter_OutType_Pic').addClass('hide-this'); //hide pic lov
             $('#ahmgavms022_div_filter_OutType_Ofc').removeClass('hide-this');
-
+            $('#test').addClass('hide-this');
+ 
             ahmgavms022_list_datatable = ahmgavms022_list_datatable_init_no_checkbox();
-
+ 
         } else {
             _fw_setMessage(formObject, 0, '<ul class="errorList">Invalid Roles!</ul>');
             $('#ahmgavms022_list_datatable').remove();
@@ -381,13 +355,13 @@ function ahmgavms022_get_form_authorization() {
             $('#ahmgavms022form').remove();
             return false;
         }
-
+ 
         $('ahmgavms022_filter_search_button').click();
     });
 }
-
+ 
 function ahmgavms022_list_datatable_init() {
-
+ 
     if (ahmgavms022_firstScan == 0) {
         //1
         var datatable = $('#ahmgavms022_list_datatable').DataTable({
@@ -408,7 +382,7 @@ function ahmgavms022_list_datatable_init() {
                 url: ahmgavms022_url_root + '/monitoring',
                 contentType: 'application/json',
                 complete: function () {
-
+ 
                     if ($('#ahmgavms022_list_datatable_wrapper').find('div.totalDataText').html() === 'No data found.') {
                         $('#ahmgavms022_list_datatable_wrapper div.DTFC_LeftBodyLiner').find('table').removeClass('ahmgavms022-right-border-1px').addClass('ahmgavms022-right-border-0px');
                         $('#ahmgavms022_list_datatable_wrapper div.DTFC_LeftBodyWrapper').removeClass('ahmgavms022-right-border-1px').addClass('ahmgavms022-right-border-0px');
@@ -423,7 +397,7 @@ function ahmgavms022_list_datatable_init() {
                     var order = d.order[0].dir;
                     ahmgavms022_excel_order_col = d.columns[d.order[0].column].data;
                     ahmgavms022_excel_order = d.order[0].dir;
-
+ 
                     var OutsourceIdFilter = $('#ahmgavms022_filter_OutId').val();
                     var OutsourceNameFilter = $('#ahmgavms022_filter_OutName').val();
                     var NikFilter = $('#ahmgavms022_filter_Nik').val();
@@ -431,20 +405,20 @@ function ahmgavms022_list_datatable_init() {
                     var PeriodeToFilter = $('#ahmgavms022_filter_PeriodeTo').val();
                     var PassCardNumberFilter = $('#ahmgavms022_filter_PassCardNum').val();
                     var PicAhmFilter = $('#ahmgavms022_filter_IdPicAhm').val();
-
+ 
                     if (ahmgavms022_roles == "RO_GAVMS_PICAHM") {
                         var OutsourceTypeFilter = $('#ahmgavms022_filter_IdOutType_Pic').val();
-
+ 
                     } else {
                         var OutsourceTypeFilter = $('#ahmgavms022_filter_IdOutType_Ofc').val();
-
+ 
                     }
-
+ 
                     var OutsourceCompanyFilter = $('#ahmgavms022_filter_IdOutCompany').val();
                     var OutsourceStatusFilter = $('#ahmgavms022_filter_OutStatus').val();
                     var PlantFilter = $('#ahmgavms022_filter_Plant').val();
                     var Covid19VaccineStatusFilter = $('#ahmgavms022_filter_CovVacStat').val();
-
+ 
                     var objectSearch = new Object();
                     objectSearch.outId = OutsourceIdFilter;
                     objectSearch.outName = OutsourceNameFilter;
@@ -460,17 +434,17 @@ function ahmgavms022_list_datatable_init() {
                     objectSearch.vacStatus = Covid19VaccineStatusFilter;
                     objectSearch.userid = ahmgavms022_userid;
                     objectSearch.role = ahmgavms022_roles;
-
+ 
                     ahmgavms022_list_datatable_current_page = d.start;
-
+ 
                     ahmgavms022_detail_rownum_getter = 0;
                     ahmgavms022_detail_rownum_getter += d.start;
-
+ 
                     ahmgavms022_detail_param_getter = objectSearch;
-
+ 
                     ahmgavms022_order_global = order;
                     ahmgavms022_sort_global = sortby;
-
+ 
                     return JSON.stringify({
                         offset: d.start,
                         limit: d.length,
@@ -541,12 +515,12 @@ function ahmgavms022_list_datatable_init() {
                     responsivePriority: 1,
                     className: 'tblData checks',
                     render: function (data, type, full, meta) {
-
+ 
                         if ($("#ahmgavms022_list_check").hasClass('hide-this')) {
                             $("#ahmgavms022_list_check").removeClass('hide-this');
                         }
-
-
+ 
+ 
                         if (ahmgavms022_roles == "RO_GAVMS_PICAHM") {
                             if (data.outStatus.toUpperCase() == "WAITING FOR APPROVAL PIC") {
                                 $('#ahmgavms022_list_check').html(htmlCheckboxPic); //for checkbox
@@ -567,9 +541,9 @@ function ahmgavms022_list_datatable_init() {
                     orderable: false,
                     render: function (data, type, full, meta) {
                         var dataTableButtonHtml = '';
-
+ 
                         dataTableButtonHtml = dataTableButtonHtml + '<a class="linkedit button bg-transparent fg-darkCyan" href="#" onclick="ahmgavms022_detail_button_action(this)"></span> <span class="actionlink-title">Respond</span></a>';
-
+ 
                         return dataTableButtonHtml;
                     }
                 },
@@ -589,7 +563,7 @@ function ahmgavms022_list_datatable_init() {
                 }
             }
         });
-
+ 
     } else {
         //2
         var datatable = $('#ahmgavms022_list_datatable').DataTable({
@@ -610,7 +584,7 @@ function ahmgavms022_list_datatable_init() {
                 url: ahmgavms022_url_root + '/monitoring',
                 contentType: 'application/json',
                 complete: function () {
-
+ 
                     if ($('#ahmgavms022_list_datatable_wrapper').find('div.totalDataText').html() === 'No data found.') {
                         $('#ahmgavms022_list_datatable_wrapper div.DTFC_LeftBodyLiner').find('table').removeClass('ahmgavms022-right-border-1px').addClass('ahmgavms022-right-border-0px');
                         $('#ahmgavms022_list_datatable_wrapper div.DTFC_LeftBodyWrapper').removeClass('ahmgavms022-right-border-1px').addClass('ahmgavms022-right-border-0px');
@@ -625,7 +599,7 @@ function ahmgavms022_list_datatable_init() {
                     var order = d.order[0].dir;
                     ahmgavms022_excel_order_col = d.columns[d.order[0].column].data;
                     ahmgavms022_excel_order = d.order[0].dir;
-
+ 
                     var OutsourceIdFilter = $('#ahmgavms022_filter_OutId').val();
                     var OutsourceNameFilter = $('#ahmgavms022_filter_OutName').val();
                     var NikFilter = $('#ahmgavms022_filter_Nik').val();
@@ -633,20 +607,20 @@ function ahmgavms022_list_datatable_init() {
                     var PeriodeToFilter = $('#ahmgavms022_filter_PeriodeTo').val();
                     var PassCardNumberFilter = $('#ahmgavms022_filter_PassCardNum').val();
                     var PicAhmFilter = $('#ahmgavms022_filter_IdPicAhm').val();
-
+ 
                     if (ahmgavms022_roles == "RO_GAVMS_PICAHM") {
                         var OutsourceTypeFilter = $('#ahmgavms022_filter_IdOutType_Pic').val();
-
+ 
                     } else {
                         var OutsourceTypeFilter = $('#ahmgavms022_filter_IdOutType_Ofc').val();
-
+ 
                     }
-
+ 
                     var OutsourceCompanyFilter = $('#ahmgavms022_filter_IdOutCompany').val();
                     var OutsourceStatusFilter = $('#ahmgavms022_filter_OutStatus').val();
                     var PlantFilter = $('#ahmgavms022_filter_Plant').val();
                     var Covid19VaccineStatusFilter = $('#ahmgavms022_filter_CovVacStat').val();
-
+ 
                     var objectSearch = new Object();
                     objectSearch.outId = OutsourceIdFilter;
                     objectSearch.outName = OutsourceNameFilter;
@@ -662,17 +636,17 @@ function ahmgavms022_list_datatable_init() {
                     objectSearch.vacStatus = Covid19VaccineStatusFilter;
                     objectSearch.userid = ahmgavms022_userid;
                     objectSearch.role = ahmgavms022_roles;
-
+ 
                     ahmgavms022_list_datatable_current_page = d.start;
-
+ 
                     ahmgavms022_detail_rownum_getter = 0;
                     ahmgavms022_detail_rownum_getter += d.start;
-
+ 
                     ahmgavms022_detail_param_getter = objectSearch;
-
+ 
                     ahmgavms022_order_global = order;
                     ahmgavms022_sort_global = sortby;
-
+ 
                     return JSON.stringify({
                         offset: d.start,
                         limit: d.length,
@@ -754,9 +728,9 @@ function ahmgavms022_list_datatable_init() {
                     orderable: false,
                     render: function (data, type, full, meta) {
                         var dataTableButtonHtml = '';
-
+ 
                         dataTableButtonHtml = dataTableButtonHtml + '<a class="linkedit button bg-transparent fg-darkCyan" href="#" onclick="ahmgavms022_detail_button_action(this)"></span> <span class="actionlink-title">Respond</span></a>';
-
+ 
                         return dataTableButtonHtml;
                     }
                 },
@@ -776,20 +750,20 @@ function ahmgavms022_list_datatable_init() {
                 }
             }
         });
-
+ 
     }
     ahmgavms022_firstScan++;
-
+ 
     new $.fn.dataTable.FixedColumns(datatable, {
         leftColumns: 5,
         rightColumns: 3
     });
-
+ 
     return datatable;
 }
-
+ 
 function ahmgavms022_list_datatable_init_no_checkbox() {
-
+ 
     if (ahmgavms022_firstScan == 0) {
         var datatable = $('#ahmgavms022_list_datatable').DataTable({
             destroy: true,
@@ -809,7 +783,7 @@ function ahmgavms022_list_datatable_init_no_checkbox() {
                 url: ahmgavms022_url_root + '/monitoring',
                 contentType: 'application/json',
                 complete: function () {
-
+ 
                     if ($('#ahmgavms022_list_datatable_wrapper').find('div.totalDataText').html() === 'No data found.') {
                         $('#ahmgavms022_list_datatable_wrapper div.DTFC_LeftBodyLiner').find('table').removeClass('ahmgavms022-right-border-1px').addClass('ahmgavms022-right-border-0px');
                         $('#ahmgavms022_list_datatable_wrapper div.DTFC_LeftBodyWrapper').removeClass('ahmgavms022-right-border-1px').addClass('ahmgavms022-right-border-0px');
@@ -825,7 +799,7 @@ function ahmgavms022_list_datatable_init_no_checkbox() {
                     var order = d.order[0].dir;
                     ahmgavms022_excel_order_col = d.columns[d.order[0].column].data;
                     ahmgavms022_excel_order = d.order[0].dir;
-
+ 
                     var OutsourceIdFilter = $('#ahmgavms022_filter_OutId').val();
                     var OutsourceNameFilter = $('#ahmgavms022_filter_OutName').val();
                     var NikFilter = $('#ahmgavms022_filter_Nik').val();
@@ -833,20 +807,20 @@ function ahmgavms022_list_datatable_init_no_checkbox() {
                     var PeriodeToFilter = $('#ahmgavms022_filter_PeriodeTo').val();
                     var PassCardNumberFilter = $('#ahmgavms022_filter_PassCardNum').val();
                     var PicAhmFilter = $('#ahmgavms022_filter_IdPicAhm').val();
-
+ 
                     if (ahmgavms022_roles == "RO_GAVMS_PICAHM") {
                         var OutsourceTypeFilter = $('#ahmgavms022_filter_IdOutType_Pic').val();
-
+ 
                     } else {
                         var OutsourceTypeFilter = $('#ahmgavms022_filter_IdOutType_Ofc').val();
-
+ 
                     }
-
+ 
                     var OutsourceCompanyFilter = $('#ahmgavms022_filter_IdOutCompany').val();
                     var OutsourceStatusFilter = $('#ahmgavms022_filter_OutStatus').val();
                     var PlantFilter = $('#ahmgavms022_filter_Plant').val();
                     var Covid19VaccineStatusFilter = $('#ahmgavms022_filter_CovVacStat').val();
-
+ 
                     var objectSearch = new Object();
                     objectSearch.outId = OutsourceIdFilter;
                     objectSearch.outName = OutsourceNameFilter;
@@ -862,17 +836,17 @@ function ahmgavms022_list_datatable_init_no_checkbox() {
                     objectSearch.vacStatus = Covid19VaccineStatusFilter;
                     objectSearch.userid = ahmgavms022_userid;
                     objectSearch.role = ahmgavms022_roles;
-
+ 
                     ahmgavms022_list_datatable_current_page = d.start;
-
+ 
                     ahmgavms022_detail_rownum_getter = 0;
                     ahmgavms022_detail_rownum_getter += d.start;
-
+ 
                     ahmgavms022_detail_param_getter = objectSearch;
-
+ 
                     ahmgavms022_order_global = order;
                     ahmgavms022_sort_global = sortby;
-
+ 
                     return JSON.stringify({
                         offset: d.start,
                         limit: d.length,
@@ -941,9 +915,9 @@ function ahmgavms022_list_datatable_init_no_checkbox() {
                     orderable: false,
                     render: function (data, type, full, meta) {
                         var dataTableButtonHtml = '';
-
+ 
                         dataTableButtonHtml = dataTableButtonHtml + '<a class="linkedit button bg-transparent fg-darkCyan" href="#" onclick="ahmgavms022_detail_button_action(this)"></span> <span class="actionlink-title">Respond</span></a>';
-
+ 
                         return dataTableButtonHtml;
                     }
                 },
@@ -963,7 +937,7 @@ function ahmgavms022_list_datatable_init_no_checkbox() {
                 }
             }
         });
-
+ 
     } else {
         var datatable = $('#ahmgavms022_list_datatable').DataTable({
             destroy: true,
@@ -983,7 +957,7 @@ function ahmgavms022_list_datatable_init_no_checkbox() {
                 url: ahmgavms022_url_root + '/monitoring',
                 contentType: 'application/json',
                 complete: function () {
-
+ 
                     if ($('#ahmgavms022_list_datatable_wrapper').find('div.totalDataText').html() === 'No data found.') {
                         $('#ahmgavms022_list_datatable_wrapper div.DTFC_LeftBodyLiner').find('table').removeClass('ahmgavms022-right-border-1px').addClass('ahmgavms022-right-border-0px');
                         $('#ahmgavms022_list_datatable_wrapper div.DTFC_LeftBodyWrapper').removeClass('ahmgavms022-right-border-1px').addClass('ahmgavms022-right-border-0px');
@@ -994,12 +968,12 @@ function ahmgavms022_list_datatable_init_no_checkbox() {
                     }
                 },
                 data: function (d) {
-
+ 
                     var sortby = d.columns[d.order[0].column].data;
                     var order = d.order[0].dir;
                     ahmgavms022_excel_order_col = d.columns[d.order[0].column].data;
                     ahmgavms022_excel_order = d.order[0].dir;
-
+ 
                     var OutsourceIdFilter = $('#ahmgavms022_filter_OutId').val();
                     var OutsourceNameFilter = $('#ahmgavms022_filter_OutName').val();
                     var NikFilter = $('#ahmgavms022_filter_Nik').val();
@@ -1007,20 +981,20 @@ function ahmgavms022_list_datatable_init_no_checkbox() {
                     var PeriodeToFilter = $('#ahmgavms022_filter_PeriodeTo').val();
                     var PassCardNumberFilter = $('#ahmgavms022_filter_PassCardNum').val();
                     var PicAhmFilter = $('#ahmgavms022_filter_IdPicAhm').val();
-
+ 
                     if (ahmgavms022_roles == "RO_GAVMS_PICAHM") {
                         var OutsourceTypeFilter = $('#ahmgavms022_filter_IdOutType_Pic').val();
-
+ 
                     } else {
                         var OutsourceTypeFilter = $('#ahmgavms022_filter_IdOutType_Ofc').val();
-
+ 
                     }
-
+ 
                     var OutsourceCompanyFilter = $('#ahmgavms022_filter_IdOutCompany').val();
                     var OutsourceStatusFilter = $('#ahmgavms022_filter_OutStatus').val();
                     var PlantFilter = $('#ahmgavms022_filter_Plant').val();
                     var Covid19VaccineStatusFilter = $('#ahmgavms022_filter_CovVacStat').val();
-
+ 
                     var objectSearch = new Object();
                     objectSearch.outId = OutsourceIdFilter;
                     objectSearch.outName = OutsourceNameFilter;
@@ -1036,17 +1010,17 @@ function ahmgavms022_list_datatable_init_no_checkbox() {
                     objectSearch.vacStatus = Covid19VaccineStatusFilter;
                     objectSearch.userid = ahmgavms022_userid;
                     objectSearch.role = ahmgavms022_roles;
-
+ 
                     ahmgavms022_list_datatable_current_page = d.start;
-
+ 
                     ahmgavms022_detail_rownum_getter = 0;
                     ahmgavms022_detail_rownum_getter += d.start;
-
+ 
                     ahmgavms022_detail_param_getter = objectSearch;
-
+ 
                     ahmgavms022_order_global = order;
                     ahmgavms022_sort_global = sortby;
-
+ 
                     return JSON.stringify({
                         offset: d.start,
                         limit: d.length,
@@ -1114,9 +1088,9 @@ function ahmgavms022_list_datatable_init_no_checkbox() {
                     orderable: false,
                     render: function (data, type, full, meta) {
                         var dataTableButtonHtml = '';
-
+ 
                         dataTableButtonHtml = dataTableButtonHtml + '<a class="linkedit button bg-transparent fg-darkCyan" href="#" onclick="ahmgavms022_detail_button_action(this)"></span> <span class="actionlink-title">Respond</span></a>';
-
+ 
                         return dataTableButtonHtml;
                     }
                 },
@@ -1136,18 +1110,18 @@ function ahmgavms022_list_datatable_init_no_checkbox() {
                 }
             }
         });
-
+ 
     }
     ahmgavms022_firstScan++;
-
+ 
     new $.fn.dataTable.FixedColumns(datatable, {
         leftColumns: 4,
         rightColumns: 3
     });
-
+ 
     return datatable;
 }
-
+ 
 function ahmgavms022_list_datatable_draw_callback(setting) {
     debugger;
     if (typeof setting != 'undefined') {
@@ -1173,7 +1147,7 @@ function ahmgavms022_list_datatable_draw_callback(setting) {
             }),
             btnLast = $('<a href="#" class="icon icon-last-2 button medium default"></a>').click(function (e) {
                 e.stopPropagation();
-
+ 
                 $('#' + $(this).closest('.tablePaging').attr('data-table-id')).dataTable().api().page('last').draw('page');
                 return false;
             }),
@@ -1205,30 +1179,30 @@ function ahmgavms022_list_datatable_draw_callback(setting) {
         if (ln.length <= 0)
             ln = ctx;
         $('.tableButtons', ln).remove();
-
+ 
         var dataTableButtonHtml = '<div class="tableButtons" data-table-id="ahmgavms022_list_datatable">';
         dataTableButtonHtml = dataTableButtonHtml + '<div class="totalDataText">' + tpg + ' data found.</div>';
-
+ 
         dataTableButtonHtml = dataTableButtonHtml + '</div>';
-
+ 
         ln.prepend(dataTableButtonHtml);
-
+ 
         ahmgavms022_list_datatable_total_data = tpg;
         ahmgavms022_detail_rownum_getter_from_pages = setting._iDisplayStart;
     }
 }
-
+ 
 function ahmgavms022_filter_search_button_action(obj) {
-
+ 
     //[Begin] set detail properties
     document.getElementById("ahmgavms022_detail_approve_button").disabled = false;
     document.getElementById("ahmgavms022_detail_reject_button").disabled = false;
-
+ 
     if (!$('#ahmgavms022_detail_reject_button').hasClass('danger')) {
         $('#ahmgavms022_detail_reject_button').addClass('danger');
     }
     //[End] set detail properties
-
+ 
     //get data for search function
     var OutsourceIdFilter = $('#ahmgavms022_filter_OutId').val();
     var OutsourceNameFilter = $('#ahmgavms022_filter_OutName').val();
@@ -1239,16 +1213,16 @@ function ahmgavms022_filter_search_button_action(obj) {
     var PicAhmFilter = $('#ahmgavms022_filter_IdPicAhm').val();
     if (ahmgavms022_roles == "RO_GAVMS_PICAHM") {
         var OutsourceTypeFilter = $('#ahmgavms022_filter_IdOutType_Pic').val();
-
+ 
     } else {
         var OutsourceTypeFilter = $('#ahmgavms022_filter_IdOutType_Ofc').val();
-
+ 
     }
     var OutsourceCompanyFilter = $('#ahmgavms022_filter_IdOutCompany').val();
     var OutsourceStatusFilter = $('#ahmgavms022_filter_OutStatus').val();
     var PlantFilter = $('#ahmgavms022_filter_Plant').val();
     var Covid19VaccineStatusFilter = $('#ahmgavms022_filter_CovVacStat').val();
-
+ 
     var objectSearch = new Object();
     objectSearch.outId = OutsourceIdFilter;
     objectSearch.outName = OutsourceNameFilter;
@@ -1264,8 +1238,8 @@ function ahmgavms022_filter_search_button_action(obj) {
     objectSearch.vacStatus = Covid19VaccineStatusFilter;
     objectSearch.userid = ahmgavms022_userid;
     objectSearch.role = ahmgavms022_roles;
-
-
+ 
+ 
     if (OutsourceIdFilter == "" && OutsourceNameFilter == ""
         && NikFilter == "" && PeriodeFromFilter == "" && PeriodeToFilter == ""
         && PassCardNumberFilter == "" && PicAhmFilter == ""
@@ -1276,31 +1250,31 @@ function ahmgavms022_filter_search_button_action(obj) {
         _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
     } else {
         _fw_validation_clear(obj);
-
+ 
         var periodeFrom = $("#ahmgavms022_filter_PeriodeFrom").val();
         var periodevalidTo = $("#ahmgavms022_filter_PeriodeTo").val();
-
+ 
         if (periodeFrom != '' && periodevalidTo != '') {
             var from = moment(periodeFrom, "DD-MMM-YYYY").toDate();           
             var to = moment(periodevalidTo, "DD-MMM-YYYY").toDate();
-
+ 
             if (from.getTime() > to.getTime()) {               
                 var errorMessage = '[Periode Date From] must be less or equal to [Periode Date To]';
                 _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
                 return false;
             }
         }
-
+ 
         //reset data called variable
         ahmgavms022_detail_rownum_getter_from_pages = 0;
         ahmgavms022_list_datatable_check_array = [];
-
+ 
         //reload table
         ahmgavms022_list_datatable.ajax.reload();
-
+ 
         _fw_filterpanel_toggle($('#ahmgavms022_filter_collapse_button'));
     }
-
+ 
     //reset data called variable
     ahmgavms022_list_datatable_check_array = [];
     ahmgavms022_list_datatable_check_outstatus_array = [];
@@ -1308,19 +1282,19 @@ function ahmgavms022_filter_search_button_action(obj) {
     ahmgavms022_list_datatable_check_outid_array = [];
     ahmgavms022_list_datatable_check_outname_array = [];
 }
-
+ 
 //[Begin] Checkbox Table function
 function ahmgavms022_list_check_action(obj) {
-
+ 
     if ($(obj).prop('checked')) {
         selectedCheckboxId = $(obj).attr('data-id');
         selectedCheckboxOutStat = $(obj).attr('rownum') + $(obj).attr('outstat');
         selectedCheckboxNote = $(obj).attr('rownum') + $(obj).attr('note');
         selectedCheckboxOutId = $(obj).attr('rownum') + $(obj).attr('outid');
         selectedCheckboxOutName = $(obj).attr('rownum') + $(obj).attr('outname');
-
+ 
         if(ahmgavms022_list_datatable_check_array.includes(selectedCheckboxId)) {
-
+ 
         } else {
             //set data to variable
             ahmgavms022_list_datatable_check_array.push(selectedCheckboxId);
@@ -1329,22 +1303,22 @@ function ahmgavms022_list_check_action(obj) {
             ahmgavms022_list_datatable_check_outname_array.push(selectedCheckboxOutName);
             ahmgavms022_list_datatable_check_outstatus_array.push(selectedCheckboxOutStat.toUpperCase());
         }
-
-
+ 
+ 
     } else {
         selectedCheckboxId = $(obj).attr('data-id');
         selectedCheckboxOutStat = $(obj).attr('rownum') + $(obj).attr('outstat');
         selectedCheckboxNote = $(obj).attr('rownum') + $(obj).attr('note');
         selectedCheckboxOutId = $(obj).attr('rownum') + $(obj).attr('outid');
         selectedCheckboxOutName = $(obj).attr('rownum') + $(obj).attr('outname');
-
+ 
         //filtering data
         var ahmgavms022_list_datatable_uncheck_temp = ahmgavms022_list_datatable_check_array.filter(ahmgavms022_uncheck_delete_list_value);
         var ahmgavms022_list_datatable_uncheck_note_temp = ahmgavms022_list_datatable_check_note_array.filter(ahmgavms022_uncheck_delete_list_note_value);
         var ahmgavms022_list_datatable_uncheck_outid_temp = ahmgavms022_list_datatable_check_outid_array.filter(ahmgavms022_uncheck_delete_list_outid_value);
         var ahmgavms022_list_datatable_uncheck_outname_temp = ahmgavms022_list_datatable_check_outname_array.filter(ahmgavms022_uncheck_delete_list_outname_value);
         var ahmgavms022_list_datatable_uncheck_outstatus_temp = ahmgavms022_list_datatable_check_outstatus_array.filter(ahmgavms022_uncheck_delete_list_outstatus_value);
-
+ 
         //set data to variable
         ahmgavms022_list_datatable_check_array = ahmgavms022_list_datatable_uncheck_temp;
         ahmgavms022_list_datatable_check_note_array = ahmgavms022_list_datatable_uncheck_note_temp;
@@ -1352,109 +1326,109 @@ function ahmgavms022_list_check_action(obj) {
         ahmgavms022_list_datatable_check_outname_array = ahmgavms022_list_datatable_uncheck_outname_temp;
         ahmgavms022_list_datatable_check_outstatus_array = ahmgavms022_list_datatable_uncheck_outstatus_temp;
     }
-
+ 
 }
-
+ 
 function ahmgavms022_uncheck_delete_list_value(id) {
     return (id != selectedCheckboxId);
 }
-
+ 
 function ahmgavms022_uncheck_delete_list_note_value(id) {
     return (id != selectedCheckboxNote);
 }
-
+ 
 function ahmgavms022_uncheck_delete_list_outid_value(id) {
     return (id != selectedCheckboxOutId);
 }
-
+ 
 function ahmgavms022_uncheck_delete_list_outname_value(id) {
     return (id != selectedCheckboxOutName);
 }
-
+ 
 function ahmgavms022_uncheck_delete_list_outstatus_value(id) {
     return (id != selectedCheckboxOutStat);
 }
 //[End] Checkbox Table function
-
+ 
 //Approve & Reject from Main Page
 function ahmgavms022_filter_approve_reject_button(obj, val) {
     //check any checkbox selected
-
+ 
     if (ahmgavms022_list_datatable_check_array.length == 0) {
         var errorMessage = '<li>At least must check 1 field</li>';
         _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
         return false;
     }
-
+ 
     if (!ahmgavms022_roles == "RO_GAVMS_PICAHM") {
         _fw_setMessage(formObject, 0, 'This Role cannot do this action!');
         return false;
     } else {
-
+ 
         ahmgavms022_list_datatable_check_submit_array = ahmgavms022_list_datatable_check_array;
         ahmgavms022_list_datatable_check_submit_note_array = ahmgavms022_list_datatable_check_note_array;
         ahmgavms022_list_datatable_check_submit_outid_array = ahmgavms022_list_datatable_check_outid_array;
         ahmgavms022_list_datatable_check_submit_outname_array = ahmgavms022_list_datatable_check_outname_array;
         ahmgavms022_list_datatable_check_submit_outstatus_array = ahmgavms022_list_datatable_check_outstatus_array;
-
+ 
         //check if selected checkbox has required validation or not
         for (let x in ahmgavms022_list_datatable_check_submit_array) {
             var getid = ahmgavms022_list_datatable_check_submit_outstatus_array[x].slice(1);
-
+ 
             if (getid.toUpperCase() != 'WAITING FOR APPROVAL PIC') {
                 _fw_setMessage(formObject, 0, `Cannot Process Outsource Status data other than 'WAITING FOR APPROVAL PIC'`);
                 return false;
             }
         }
-
+ 
         for (let x in ahmgavms022_list_datatable_check_submit_array) {
             $('#' + ahmgavms022_list_datatable_check_submit_array[x] + '').prop('checked', false);
         }
-
+ 
         var objFrame = $(obj).closest('.tab-frame');
         var newFrame = $(".sub-page[data-section='list-confirmation']", objFrame);
         var htmlVal = '';
-
+ 
         htmlVal = htmlVal + '<h2>The following data will be ' + val + '. Are you sure?</h2>';
         htmlVal = htmlVal + '<p>' + ahmgavms022_list_datatable_check_submit_array.length + ' Items selected</p>';
-
+ 
         //set the reject note textfield
         if (val == "Reject") {
             htmlVal += '<div class="input-control textarea" data-role="input-control">' +
                 '<textarea name="ahmgavms022_reject_note" id="ahmgavms022_reject_note" type="text" placeholder="Insert The Reject Note" maxlength="100"></textarea>'
             '</div>';
         }
-
+ 
         approve_reject_confirmation = val;
         $('#ahmgavms022_h2_confirmation_list').html(htmlVal);
         _fw_formResetFields(newFrame);
         _fw_navigateSubPage(obj, 'list-confirmation');
     }
 }
-
+ 
 function ahmgavms022_detail_button_previous_action(obj) {
-
+ 
     ahmgavms022_detail_rownum_getter -= 1;
-
+ 
     var objFrame = $(obj).closest('.tab-frame');
     var newFrame = $(".sub-page[data-section='detail']", objFrame);
     _fw_formResetFields(newFrame);
-
+ 
     if (ahmgavms022_roles == "RO_GAVMS_OFCSECT") {
         $('#ahmgavms022_detail_ExpDate_button').show();
         document.getElementById("ahmgavms022_detail_ExpDate").disabled = false;
     }
-
+ 
     var ahmgavms022_detail_outType = "";
     var ahmgavms022_detail_area = "";
-
+ 
     document.getElementById("ahmgavms022_detail_approve_button").disabled = false;
     document.getElementById("ahmgavms022_detail_reject_button").disabled = false;
-
+ 
     if (!$('#ahmgavms022_detail_reject_button').hasClass('danger')) {
         $('#ahmgavms022_detail_reject_button').addClass('danger');
     }
-
+ 
     if (ahmgavms022_detail_rownum_getter < 1
         || ahmgavms022_detail_rownum_getter == 1) {
         document.getElementById("ahmgavms022_detail_button_previous").disabled = true;
@@ -1463,22 +1437,22 @@ function ahmgavms022_detail_button_previous_action(obj) {
         document.getElementById("ahmgavms022_detail_button_previous").disabled = false;
         document.getElementById("ahmgavms022_detail_button_next").disabled = false;
     }
-
+ 
     if (ahmgavms022_detail_rownum_getter > ahmgavms022_list_datatable_total_data
         || ahmgavms022_detail_rownum_getter == ahmgavms022_list_datatable_total_data) {
         document.getElementById("ahmgavms022_detail_button_next").disabled = true;
     } else {
         document.getElementById("ahmgavms022_detail_button_next").disabled = false;
     }
-
+ 
     if (ahmgavms022_roles != "RO_GAVMS_OFCSECT") {
         $('#ahmgavms022_detail_ExpDate_button').remove();
         document.getElementById("ahmgavms022_detail_ExpDate").disabled = true;
     }
-
+ 
     $('#ahmgavms022p02ImageVacList').empty();
     $('#ahmgavms022p02ImageAttachList').empty();
-
+ 
     var jsonbody = JSON.stringify({
         sort: ahmgavms022_sort_global,
         order: ahmgavms022_order_global,
@@ -1486,20 +1460,20 @@ function ahmgavms022_detail_button_previous_action(obj) {
         limit: 1,
         search: ahmgavms022_detail_param_getter
     });
-
+ 
     //get data detail
     _fw_postJson(formObject, jsonbody, ahmgavms022_url_root + '/monitoring', function (ret) {
         if (ret.status === '1') {
             $.each(ret.data, function (index, item) {
-
+ 
                 var supplier = item.supplier;
-
+ 
                 if (supplier == "S") {
                     supplier = "Supplier";
                 } else if (supplier == "N") {
                     supplier = "Non-Supplier"
                 }
-
+ 
                 $('#ahmgavms022_detail_OutId').val(item.outId);
                 $('#ahmgavms022_detail_OutName').val(item.outName);
                 $('#ahmgavms022_detail_PhoneOut').val(item.phoneNo);
@@ -1519,8 +1493,8 @@ function ahmgavms022_detail_button_previous_action(obj) {
                 $('#ahmgavms022_detail_NoteCovVacStatus').val(item.vacNote);
                 $('#ahmgavms022_detail_CovLastVacDate').val(item.vacDateText);
                 $('#ahmgavms022_detail_CovLastVacType').val(item.vacTypeName);
-
-
+ 
+ 
                 if ($('#ahmgavms022_detail_CovVacStatus').val() == "ALREADY VACCINATED") {
                     $('#ahmgavms022_already_group').removeClass('hide-this');
                     $('#ahmgavms022_notYetVaccine_group').addClass('hide-this');
@@ -1531,7 +1505,7 @@ function ahmgavms022_detail_button_previous_action(obj) {
                     $('#ahmgavms022_notYetVaccine_group').addClass('hide-this');
                     $('#ahmgavms022_already_group').addClass('hide-this');
                 }
-
+ 
                 detail_id_for_confirm = item.id;
                 detail_outid_for_confirm = item.outId;
                 detail_outname_for_confirm = item.outName;
@@ -1539,25 +1513,25 @@ function ahmgavms022_detail_button_previous_action(obj) {
                 detail_department_for_confirm = item.outTypeName
                 detail_company_for_confirm = item.companyName
                 ahmgavms022_detail_old_expiry_date = item.passExpiryDateText;
-
-
+ 
+ 
                 ahmgavms022_detail_status_submit = item.outStatus;
-
+ 
                 $("#ahmgavms022_detail_AttachKtp_Preview").attr('src', "data:image/jpg;base64, " + item.fileKtp);
                 $("#ahmgavms022p02PhotoPreview").attr('src', "data:image/jpg;base64, " + item.filePhoto);
                 ahmgavms022_Photo_Temp = item.filePhoto;
                 ahmgavms022_Ktp_Temp = item.fileKtp;
-
+ 
                 if (item.fileVaccines != null) {
                     $('#ahmgavms022_image_vaccine_div').show();
-
+ 
                     var ahmgavms022_detail_filevaccine_array = item.fileVaccines;
                     ahmgavms022_Vac_array_Temp = item.fileVaccines;
-
+ 
                     $.each(ahmgavms022_detail_filevaccine_array, function (i, v) {
-
+ 
                         var html = "";
-
+ 
                         html += '<li class="containerimgvac">';
                         html += '    <img id="ahmgavms022p02ExistImage' + i + 'VacPreview" class="imgprevvac" src="data:image/jpg;base64,' + ahmgavms022_detail_filevaccine_array[i].name + '" alt="" />';
                         html += ' <div class="overlayvac"></div>';
@@ -1572,25 +1546,25 @@ function ahmgavms022_detail_button_previous_action(obj) {
                         html += '    </div>';
                         html += ' </div>';
                         html += ' </li>';
-
+ 
                         $('#ahmgavms022p02ImageVacList').append(html);
                     });
                 } else {
                     $('#ahmgavms022_image_vaccine_div').hide();
-
+ 
                 }
-
-
+ 
+ 
                 var ahmgavms022_detail_fileSk_array = item.fileSk;
                 ahmgavms022_Attach_array_Temp = item.fileSk;
-
+ 
                 if (item.fileSk != null) {
                     $('#ahmgavms022_attachment_div').show();
-
+ 
                     $.each(ahmgavms022_detail_fileSk_array, function (i, v) {
-
+ 
                         var html = "";
-
+ 
                         html += '<li class="containerimgvac">';
                         html += '    <img id="ahmgavms022p04ExistImage' + i + 'AttachPreview" class="imgprevvac" src="data:image/jpg;base64,' + ahmgavms022_detail_fileSk_array[i].name + '" alt="" />';
                         html += ' <div class="overlayvac"></div>';
@@ -1605,52 +1579,52 @@ function ahmgavms022_detail_button_previous_action(obj) {
                         html += '    </div>';
                         html += ' </div>';
                         html += ' </li>';
-
+ 
                         $('#ahmgavms022p02ImageAttachList').append(html);
                     });
-
+ 
                 } else {
                     $('#ahmgavms022_attachment_div').hide();
                 }
-
+ 
                 ahmgavms022_detail_outType = item.outType;
                 ahmgavms022_detail_area = item.area;
                 var absenceReader = item.accessReader;
                 var canteen = item.canteen;
                 var securityGate = item.securityGate;
                 var disclaimer = item.diclaimer;
-
+ 
                 if (absenceReader === "Y") {
                     $('#ahmgavms022_detail_AccessAbsReader').prop('checked', true);
                 } else {
                     $('#ahmgavms022_detail_AccessAbsReader').prop('checked', false);
                 }
-
+ 
                 if (canteen === "Y") {
                     $('#ahmgavms022_detail_AccessCanteen').prop('checked', true);
                 } else {
                     $('#ahmgavms022_detail_AccessCanteen').prop('checked', false);
                 }
-
+ 
                 if (securityGate === "Y") {
                     $('#ahmgavms022_detail_AccessSecurityGate').prop('checked', true);
                 } else {
                     $('#ahmgavms022_detail_AccessSecurityGate').prop('checked', false);
                 }
-
+ 
                 if (disclaimer == "Y") {
                     $('#ahmgavms022_detail_disclaimer').prop('checked', true);
                 } else {
                     $('#ahmgavms022_detail_disclaimer').prop('checked', false);
                 }
-
-
+ 
+ 
                 ahmgavms022_detail_plants_datatable_data = [];
                 var dataParamPlantGate = JSON.stringify({
                     "id": $('#ahmgavms022_detail_OutId').val(),
                     "code": $('#ahmgavms022_detail_Nik').val()
                 });
-
+ 
                 //get detail plant table data
                 _fw_postJson(obj, dataParamPlantGate, ahmgavms022_url_root + '/get-plants', function (ret) {
                     if (ret.status === '1') {
@@ -1661,24 +1635,24 @@ function ahmgavms022_detail_button_previous_action(obj) {
                                 name: item.name
                             }
                             ahmgavms022_detail_plants_datatable_data.push(data);
-
+ 
                             var contain = item.id;
                             ahmgavms022_detail_list_code += "'" + contain + "',";
                         });
-
+ 
                         ahmgavms022_detail_list_code = ahmgavms022_detail_list_code.substring(0, ahmgavms022_detail_list_code.length - 1);
-
+ 
                         //set detail plant table data
                         ahmgavms022_detail_plants_datatable = ahmgavms022_detail_plants_datatable_init();
-
+ 
                         ahmgavms022_detail_pic_datatable_data = [];
                         var dataParamPic = JSON.stringify({
                             "code": ahmgavms022_detail_outType,
                             "area": ahmgavms022_detail_list_code
                         });
-
+ 
                         ahmgavms022_detail_list_code = "";
-
+ 
                         //get detail PIC AHM table data
                         _fw_postJson(obj, dataParamPic, ahmgavms022_url_root + '/get-pic-ahm', function (ret) {
                             if (ret.status === '1') {
@@ -1697,9 +1671,9 @@ function ahmgavms022_detail_button_previous_action(obj) {
                         });
                     }
                 });
-
+ 
                 ahmgavms022_detail_gates_datatable_data = [];
-
+ 
                 //get detail gates table data
                 _fw_postJson(obj, dataParamPlantGate, ahmgavms022_url_root + '/get-gates', function (ret) {
                     if (ret.status === '1') {
@@ -1716,12 +1690,12 @@ function ahmgavms022_detail_button_previous_action(obj) {
                         ahmgavms022_detail_gates_datatable = ahmgavms022_detail_gates_datatable_init();
                     }
                 });
-
+ 
                 if (ahmgavms022_roles == "RO_GAVMS_PICAHM") {
                     if (item.outStatus.toUpperCase() != "WAITING FOR APPROVAL PIC") {
                         document.getElementById("ahmgavms022_detail_approve_button").disabled = true;
                         document.getElementById("ahmgavms022_detail_reject_button").disabled = true;
-
+ 
                         if ($('#ahmgavms022_detail_reject_button').hasClass('danger')) {
                             $('#ahmgavms022_detail_reject_button').removeClass('danger');
                         }
@@ -1730,7 +1704,7 @@ function ahmgavms022_detail_button_previous_action(obj) {
                     if (item.outStatus.toUpperCase() != "WAITING FOR APPROVAL SECURITY") {
                         document.getElementById("ahmgavms022_detail_approve_button").disabled = true;
                         document.getElementById("ahmgavms022_detail_reject_button").disabled = true;
-
+ 
                         if ($('#ahmgavms022_detail_reject_button').hasClass('danger')) {
                             $('#ahmgavms022_detail_reject_button').removeClass('danger');
                         }
@@ -1739,40 +1713,40 @@ function ahmgavms022_detail_button_previous_action(obj) {
                     $('#ahmgavms022_detail_approve_button').hide();
                     $('#ahmgavms022_detail_reject_button').hide();
                 }
-
+ 
             });
         }
     });
-
+ 
 }
-
+ 
 function ahmgavms022_detail_button_next_action(obj) {
     ahmgavms022_detail_rownum_getter += 1;
-
+ 
     if (ahmgavms022_roles == "RO_GAVMS_OFCSECT") {
         $('#ahmgavms022_detail_ExpDate_button').show();
         document.getElementById("ahmgavms022_detail_ExpDate").disabled = false;
     }
-
+ 
     $('#ahmgavms022p02ImageVacList').empty();
     $('#ahmgavms022p02ImageAttachList').empty();
-
+ 
     var objFrame = $(obj).closest('.tab-frame');
     var newFrame = $(".sub-page[data-section='detail']", objFrame);
     _fw_formResetFields(newFrame);
-
+ 
     var ahmgavms022_detail_outType = "";
     var ahmgavms022_detail_area = "";
     var ahmgavms022_detail_OutId = "";
     var ahmgavms022_detail_Nik = "";
-
+ 
     document.getElementById("ahmgavms022_detail_approve_button").disabled = false;
     document.getElementById("ahmgavms022_detail_reject_button").disabled = false;
-
+ 
     if (!$('#ahmgavms022_detail_reject_button').hasClass('danger')) {
         $('#ahmgavms022_detail_reject_button').addClass('danger');
     }
-
+ 
     if (ahmgavms022_detail_rownum_getter > (ahmgavms022_list_datatable_total_data - 1)) {
         document.getElementById("ahmgavms022_detail_button_next").disabled = true;
         document.getElementById("ahmgavms022_detail_button_previous").disabled = false;
@@ -1780,19 +1754,19 @@ function ahmgavms022_detail_button_next_action(obj) {
         document.getElementById("ahmgavms022_detail_button_next").disabled = false;
         document.getElementById("ahmgavms022_detail_button_previous").disabled = false;
     }
-
+ 
     if (ahmgavms022_detail_rownum_getter < 1
         || ahmgavms022_detail_rownum_getter == 1) {
         document.getElementById("ahmgavms022_detail_button_previous").disabled = true;
     } else {
         document.getElementById("ahmgavms022_detail_button_previous").disabled = false;
     }
-
+ 
     if (ahmgavms022_roles != "RO_GAVMS_OFCSECT") {
         $('#ahmgavms022_detail_ExpDate_button').remove();
         document.getElementById("ahmgavms022_detail_ExpDate").disabled = true;
     }
-
+ 
     var jsonbody = JSON.stringify({
         sort: ahmgavms022_sort_global,
         order: ahmgavms022_order_global,
@@ -1800,19 +1774,19 @@ function ahmgavms022_detail_button_next_action(obj) {
         limit: 1,
         search: ahmgavms022_detail_param_getter
     });
-
+ 
     _fw_postJson(formObject, jsonbody, ahmgavms022_url_root + '/monitoring', function (ret) {
         if (ret.status === '1') {
             $.each(ret.data, function (index, item) {
-
+ 
                 var supplier = item.supplier;
-
+ 
                 if (supplier == "S") {
                     supplier = "Supplier";
                 } else if (supplier == "N") {
                     supplier = "Non-Supplier"
                 }
-
+ 
                 $('#ahmgavms022_detail_OutId').val(item.outId);
                 $('#ahmgavms022_detail_OutName').val(item.outName);
                 $('#ahmgavms022_detail_PhoneOut').val(item.phoneNo);
@@ -1832,7 +1806,7 @@ function ahmgavms022_detail_button_next_action(obj) {
                 $('#ahmgavms022_detail_NoteCovVacStatus').val(item.vacNote);
                 $('#ahmgavms022_detail_CovLastVacDate').val(item.vacDateText);
                 $('#ahmgavms022_detail_CovLastVacType').val(item.vacTypeName);
-
+ 
                 if ($('#ahmgavms022_detail_CovVacStatus').val() == "ALREADY VACCINATED") {
                     $('#ahmgavms022_already_group').removeClass('hide-this');
                     $('#ahmgavms022_notYetVaccine_group').addClass('hide-this');
@@ -1843,7 +1817,7 @@ function ahmgavms022_detail_button_next_action(obj) {
                     $('#ahmgavms022_notYetVaccine_group').addClass('hide-this');
                     $('#ahmgavms022_already_group').addClass('hide-this');
                 }
-
+ 
                 detail_id_for_confirm = item.id;
                 detail_outid_for_confirm = item.outId;
                 detail_outname_for_confirm = item.outName;
@@ -1851,24 +1825,24 @@ function ahmgavms022_detail_button_next_action(obj) {
                 detail_department_for_confirm = item.outTypeName
                 detail_company_for_confirm = item.companyName
                 ahmgavms022_detail_old_expiry_date = item.passExpiryDateText;
-
+ 
                 ahmgavms022_detail_status_submit = item.outStatus;
-
+ 
                 $("#ahmgavms022_detail_AttachKtp_Preview").attr('src', "data:image/jpg;base64, " + item.fileKtp);
                 $("#ahmgavms022p02PhotoPreview").attr('src', "data:image/jpg;base64, " + item.filePhoto);
                 ahmgavms022_Photo_Temp = item.filePhoto;
                 ahmgavms022_Ktp_Temp = item.fileKtp;
-
+ 
                 if (item.fileVaccines != null) {
                     $('#ahmgavms022_image_vaccine_div').show();
-
+ 
                     var ahmgavms022_detail_filevaccine_array = item.fileVaccines;
                     ahmgavms022_Vac_array_Temp = item.fileVaccines;
-
+ 
                     $.each(ahmgavms022_detail_filevaccine_array, function (i, v) {
-
+ 
                         var html = "";
-
+ 
                         html += '<li class="containerimgvac">';
                         html += '    <img id="ahmgavms022p02ExistImage' + i + 'VacPreview" class="imgprevvac" src="data:image/jpg;base64,' + ahmgavms022_detail_filevaccine_array[i].name + '" alt="" />';
                         html += ' <div class="overlayvac"></div>';
@@ -1883,24 +1857,24 @@ function ahmgavms022_detail_button_next_action(obj) {
                         html += '    </div>';
                         html += ' </div>';
                         html += ' </li>';
-
+ 
                         $('#ahmgavms022p02ImageVacList').append(html);
                     });
                 } else {
                     $('#ahmgavms022_image_vaccine_div').hide();
                 }
-
-
+ 
+ 
                 var ahmgavms022_detail_fileSk_array = item.fileSk;
                 ahmgavms022_Attach_array_Temp = item.fileSk;
-
+ 
                 if (item.fileSk != null) {
                     $('#ahmgavms022_attachment_div').show();
-
+ 
                     $.each(ahmgavms022_detail_fileSk_array, function (i, v) {
-
+ 
                         var html = "";
-
+ 
                         html += '<li class="containerimgvac">';
                         html += '    <img id="ahmgavms022p04ExistImage' + i + 'AttachPreview" class="imgprevvac" src="data:image/jpg;base64,' + ahmgavms022_detail_fileSk_array[i].name + '" alt="" />';
                         html += ' <div class="overlayvac"></div>';
@@ -1915,14 +1889,14 @@ function ahmgavms022_detail_button_next_action(obj) {
                         html += '    </div>';
                         html += ' </div>';
                         html += ' </li>';
-
+ 
                         $('#ahmgavms022p02ImageAttachList').append(html);
                     });
-
+ 
                 } else {
                     $('#ahmgavms022_attachment_div').hide();
                 }
-
+ 
                 ahmgavms022_detail_outType = item.outType;
                 ahmgavms022_detail_area = item.area;
                 ahmgavms022_detail_OutId = item.outId;
@@ -1931,37 +1905,37 @@ function ahmgavms022_detail_button_next_action(obj) {
                 var canteen = item.canteen;
                 var securityGate = item.securityGate;
                 var disclaimer = item.diclaimer;
-
+ 
                 if (absenceReader === "Y") {
                     $('#ahmgavms022_detail_AccessAbsReader').prop('checked', true);
                 } else {
                     $('#ahmgavms022_detail_AccessAbsReader').prop('checked', false);
                 }
-
+ 
                 if (canteen === "Y") {
                     $('#ahmgavms022_detail_AccessCanteen').prop('checked', true);
                 } else {
                     $('#ahmgavms022_detail_AccessCanteen').prop('checked', false);
                 }
-
+ 
                 if (securityGate === "Y") {
                     $('#ahmgavms022_detail_AccessSecurityGate').prop('checked', true);
                 } else {
                     $('#ahmgavms022_detail_AccessSecurityGate').prop('checked', false);
                 }
-
+ 
                 if (disclaimer == "Y") {
                     $('#ahmgavms022_detail_disclaimer').prop('checked', true);
                 } else {
                     $('#ahmgavms022_detail_disclaimer').prop('checked', false);
                 }
-
+ 
                 ahmgavms022_detail_plants_datatable_data = [];
                 var dataParamPlantGate = JSON.stringify({
                     "id": ahmgavms022_detail_OutId,
                     "code": ahmgavms022_detail_Nik
                 });
-
+ 
                 _fw_postJson(obj, dataParamPlantGate, ahmgavms022_url_root + '/get-plants', function (ret) {
                     if (ret.status === '1') {
                         $.each(ret.data, function (index, item) {
@@ -1971,24 +1945,24 @@ function ahmgavms022_detail_button_next_action(obj) {
                                 name: item.name
                             }
                             ahmgavms022_detail_plants_datatable_data.push(data);
-
+ 
                             var contain = item.id;
                             ahmgavms022_detail_list_code += "'" + contain + "',";
                         });
-
+ 
                         ahmgavms022_detail_list_code = ahmgavms022_detail_list_code.substring(0, ahmgavms022_detail_list_code.length - 1);
-
+ 
                         ahmgavms022_detail_plants_datatable = ahmgavms022_detail_plants_datatable_init();
-
+ 
                         ahmgavms022_detail_pic_datatable_data = [];
-
+ 
                         var dataParamPic = JSON.stringify({
                             "code": ahmgavms022_detail_outType,
                             "area": ahmgavms022_detail_list_code
                         });
-
+ 
                         ahmgavms022_detail_list_code = "";
-
+ 
                         _fw_postJson(obj, dataParamPic, ahmgavms022_url_root + '/get-pic-ahm', function (ret) {
                             if (ret.status === '1') {
                                 $.each(ret.data, function (index, item) {
@@ -2003,12 +1977,12 @@ function ahmgavms022_detail_button_next_action(obj) {
                                 ahmgavms022_detail_pic_datatable = ahmgavms022_detail_pic_datatable_init();
                             }
                         });
-
+ 
                     }
                 });
-
+ 
                 ahmgavms022_detail_gates_datatable_data = [];
-
+ 
                 _fw_postJson(obj, dataParamPlantGate, ahmgavms022_url_root + '/get-gates', function (ret) {
                     if (ret.status === '1') {
                         $.each(ret.data, function (index, item) {
@@ -2023,12 +1997,12 @@ function ahmgavms022_detail_button_next_action(obj) {
                         ahmgavms022_detail_gates_datatable = ahmgavms022_detail_gates_datatable_init();
                     }
                 });
-
+ 
                 if (ahmgavms022_roles == "RO_GAVMS_PICAHM") {
                     if (item.outStatus.toUpperCase() != "WAITING FOR APPROVAL PIC") {
                         document.getElementById("ahmgavms022_detail_approve_button").disabled = true;
                         document.getElementById("ahmgavms022_detail_reject_button").disabled = true;
-
+ 
                         if ($('#ahmgavms022_detail_reject_button').hasClass('danger')) {
                             $('#ahmgavms022_detail_reject_button').removeClass('danger');
                         }
@@ -2037,7 +2011,7 @@ function ahmgavms022_detail_button_next_action(obj) {
                     if (item.outStatus.toUpperCase() != "WAITING FOR APPROVAL SECURITY") {
                         document.getElementById("ahmgavms022_detail_approve_button").disabled = true;
                         document.getElementById("ahmgavms022_detail_reject_button").disabled = true;
-
+ 
                         if ($('#ahmgavms022_detail_reject_button').hasClass('danger')) {
                             $('#ahmgavms022_detail_reject_button').removeClass('danger');
                         }
@@ -2046,35 +2020,35 @@ function ahmgavms022_detail_button_next_action(obj) {
                     $('#ahmgavms022_detail_approve_button').hide();
                     $('#ahmgavms022_detail_reject_button').hide();
                 }
-
+ 
             });
         }
     });
 }
-
+ 
 function ahmgavms022_detail_button_action(obj) {
-
+ 
     var objFrame = $(obj).closest('.tab-frame');
     var newFrame = $(".sub-page[data-section='detail']", objFrame);
     var getRow = ahmgavms022_list_datatable.row($(obj).parents('tr')).data();
-
+ 
     document.getElementById("ahmgavms022_detail_approve_button").disabled = false;
     document.getElementById("ahmgavms022_detail_reject_button").disabled = false;
-
+ 
     if (!$('#ahmgavms022_detail_reject_button').hasClass('danger')) {
         $('#ahmgavms022_detail_reject_button').addClass('danger');
     }
-
+ 
     if (ahmgavms022_roles == "RO_GAVMS_OFCSECT") {
         $('#ahmgavms022_detail_ExpDate_button').show();
         document.getElementById("ahmgavms022_detail_ExpDate").disabled = false;
     }
-
+ 
     $('#ahmgavms022p02ImageVacList').empty();
     $('#ahmgavms022p02ImageAttachList').empty();
-
+ 
     ahmgavms022_detail_rownum_getter = ahmgavms022_detail_rownum_getter_from_pages + getRow.rowNum + 1;
-
+ 
     //validate previous detail button
     if (ahmgavms022_detail_rownum_getter < 1
         || ahmgavms022_detail_rownum_getter == 1) {
@@ -2082,7 +2056,7 @@ function ahmgavms022_detail_button_action(obj) {
     } else {
         document.getElementById("ahmgavms022_detail_button_previous").disabled = false;
     }
-
+ 
     //validate next detail button
     if (ahmgavms022_detail_rownum_getter > ahmgavms022_list_datatable_total_data
         || ahmgavms022_detail_rownum_getter == ahmgavms022_list_datatable_total_data) {
@@ -2090,12 +2064,12 @@ function ahmgavms022_detail_button_action(obj) {
     } else {
         document.getElementById("ahmgavms022_detail_button_next").disabled = false;
     }
-
+ 
     if (ahmgavms022_roles == "RO_GAVMS_PICAHM") {
         if (getRow.outStatus.toUpperCase() != "WAITING FOR APPROVAL PIC") {
             document.getElementById("ahmgavms022_detail_approve_button").disabled = true;
             document.getElementById("ahmgavms022_detail_reject_button").disabled = true;
-
+ 
             if ($('#ahmgavms022_detail_reject_button').hasClass('danger')) {
                 $('#ahmgavms022_detail_reject_button').removeClass('danger');
             }
@@ -2104,7 +2078,7 @@ function ahmgavms022_detail_button_action(obj) {
         if (getRow.outStatus.toUpperCase() != "WAITING FOR APPROVAL SECURITY") {
             document.getElementById("ahmgavms022_detail_approve_button").disabled = true;
             document.getElementById("ahmgavms022_detail_reject_button").disabled = true;
-
+ 
             if ($('#ahmgavms022_detail_reject_button').hasClass('danger')) {
                 $('#ahmgavms022_detail_reject_button').removeClass('danger');
             }
@@ -2113,12 +2087,12 @@ function ahmgavms022_detail_button_action(obj) {
         $('#ahmgavms022_detail_approve_button').hide();
         $('#ahmgavms022_detail_reject_button').hide();
     }
-
+ 
     if (ahmgavms022_roles != "RO_GAVMS_OFCSECT") {
         $('#ahmgavms022_detail_ExpDate_button').hide();
         document.getElementById("ahmgavms022_detail_ExpDate").disabled = true;
     }
-
+ 
     _fw_formResetFields(newFrame);
     detail_id_for_confirm = getRow.id;
     detail_outid_for_confirm = getRow.outId;
@@ -2131,18 +2105,18 @@ function ahmgavms022_detail_button_action(obj) {
     var ahmgavms022_detail_outType = getRow.outType;
     ahmgavms022_detail_old_expiry_date = getRow.passExpiryDateText;
    
-
-
+ 
+ 
     ahmgavms022_Ktp_Temp = getRow.fileKtp;
-
+ 
     var supplier = getRow.supplier;
-
+ 
     if (supplier == "S") {
         supplier = "Supplier";
     } else if (supplier == "N") {
         supplier = "Non-Supplier"
     }
-
+ 
     $('#ahmgavms022_detail_OutId').val(getRow.outId);
     $('#ahmgavms022_detail_OutName').val(getRow.outName);
     $('#ahmgavms022_detail_PhoneOut').val(getRow.phoneNo);
@@ -2162,7 +2136,7 @@ function ahmgavms022_detail_button_action(obj) {
     $('#ahmgavms022_detail_NoteCovVacStatus').val(getRow.vacNote);
     $('#ahmgavms022_detail_CovLastVacDate').val(getRow.vacDateText);
     $('#ahmgavms022_detail_CovLastVacType').val(getRow.vacTypeName);
-
+ 
     if ($('#ahmgavms022_detail_CovVacStatus').val() == "ALREADY VACCINATED") {
         $('#ahmgavms022_already_group').removeClass('hide-this');
         $('#ahmgavms022_notYetVaccine_group').addClass('hide-this');
@@ -2173,31 +2147,31 @@ function ahmgavms022_detail_button_action(obj) {
         $('#ahmgavms022_notYetVaccine_group').addClass('hide-this');
         $('#ahmgavms022_already_group').addClass('hide-this');
     }
-
+ 
     ahmgavms022_detail_status_submit = getRow.outStatus;
-
+ 
     $("#ahmgavms022_detail_AttachKtp_Preview").attr('src', "data:image/jpg;base64, " + getRow.fileKtp);
     $("#ahmgavms022p02PhotoPreview").attr('src', "data:image/jpg;base64, " + getRow.filePhoto);
     ahmgavms022_Photo_Temp = getRow.filePhoto;
     ahmgavms022_Ktp_Temp = getRow.fileKtp;
-
+ 
     if (getRow.outStatus.toUpperCase() != "WAITING FOR APPROVAL SECURITY") {
         $('#ahmgavms022_detail_ExpDate_button').hide();
         document.getElementById("ahmgavms022_detail_ExpDate").disabled = true;
     }
-
+ 
     if (getRow.fileVaccines == null) {
         $('#ahmgavms022_image_vaccine_div').hide();
     } else {
         $('#ahmgavms022_image_vaccine_div').show();
         var ahmgavms022_detail_filevaccine_array = getRow.fileVaccines;
-
+ 
         ahmgavms022_Vac_array_Temp = getRow.fileVaccines;
-
+ 
         $.each(ahmgavms022_detail_filevaccine_array, function (i, v) {
-
+ 
             var html = "";
-
+ 
             html += '<li class="containerimgvac">';
             html += '    <img id="ahmgavms022p02ExistImage' + i + 'VacPreview" class="imgprevvac" src="data:image/jpg;base64,' + ahmgavms022_detail_filevaccine_array[i].name + '" alt="" />';
             html += ' <div class="overlayvac"></div>';
@@ -2212,23 +2186,23 @@ function ahmgavms022_detail_button_action(obj) {
             html += '    </div>';
             html += ' </div>';
             html += ' </li>';
-
+ 
             $('#ahmgavms022p02ImageVacList').append(html);
         });
-
+ 
     }
-
-
+ 
+ 
     var ahmgavms022_detail_fileSk_array = getRow.fileSk;
     ahmgavms022_Attach_array_Temp = getRow.fileSk;
-
+ 
     if (getRow.fileSk != null) {
         $('#ahmgavms022_attachment_div').show();
-
+ 
         $.each(ahmgavms022_detail_fileSk_array, function (i, v) {
-
+ 
             var html = "";
-
+ 
             html += '<li class="containerimgvac">';
             html += '    <img id="ahmgavms022p04ExistImage' + i + 'AttachPreview" class="imgprevvac" src="data:image/jpg;base64,' + ahmgavms022_detail_fileSk_array[i].name + '" alt="" />';
             html += ' <div class="overlayvac"></div>';
@@ -2243,53 +2217,53 @@ function ahmgavms022_detail_button_action(obj) {
             html += '    </div>';
             html += ' </div>';
             html += ' </li>';
-
+ 
             $('#ahmgavms022p02ImageAttachList').append(html);
         });
-
+ 
     } else {
         $('#ahmgavms022_attachment_div').hide();
-
+ 
     }
-
-
-
-
+ 
+ 
+ 
+ 
     var absenceReader = getRow.accessReader;
     var canteen = getRow.canteen;
     var securityGate = getRow.securityGate;
     var disclaimer = getRow.diclaimer;
-
+ 
     if (absenceReader == "Y") {
         $('#ahmgavms022_detail_AccessAbsReader').prop('checked', true);
     } else {
         $('#ahmgavms022_detail_AccessAbsReader').prop('checked', false);
     }
-
+ 
     if (canteen == "Y") {
         $('#ahmgavms022_detail_AccessCanteen').prop('checked', true);
     } else {
         $('#ahmgavms022_detail_AccessCanteen').prop('checked', false);
     }
-
+ 
     if (securityGate == "Y") {
         $('#ahmgavms022_detail_AccessSecurityGate').prop('checked', true);
     } else {
         $('#ahmgavms022_detail_AccessSecurityGate').prop('checked', false);
     }
-
+ 
     if (disclaimer == "Y") {
         $('#ahmgavms022_detail_disclaimer').prop('checked', true);
     } else {
         $('#ahmgavms022_detail_disclaimer').prop('checked', false);
     }
-
+ 
     ahmgavms022_detail_plants_datatable_data = [];
     var dataParamPlantGate = JSON.stringify({
         "id": getRow.outId,
         "code": getRow.persId
     });
-
+ 
     _fw_postJson(obj, dataParamPlantGate, ahmgavms022_url_root + '/get-plants', function (ret) {
         if (ret.status === '1') {
             $.each(ret.data, function (index, item) {
@@ -2299,25 +2273,25 @@ function ahmgavms022_detail_button_action(obj) {
                     name: item.name
                 }
                 ahmgavms022_detail_plants_datatable_data.push(data);
-
+ 
                 var contain = item.id;
                 ahmgavms022_detail_list_code += "'" + contain + "',";
             });
-
+ 
             ahmgavms022_detail_list_code = ahmgavms022_detail_list_code.substring(0, ahmgavms022_detail_list_code.length - 1);
-
+ 
             ahmgavms022_detail_plants_datatable = ahmgavms022_detail_plants_datatable_init();
-
+ 
             ahmgavms022_detail_pic_datatable_data = [];
-
+ 
             var dataParamPic = JSON.stringify({
                 "code": ahmgavms022_detail_outType,
                 "area": ahmgavms022_detail_list_code
-
+ 
             });
-
+ 
             ahmgavms022_detail_list_code = "";
-
+ 
             _fw_postJson(obj, dataParamPic, ahmgavms022_url_root + '/get-pic-ahm', function (ret) {
                 if (ret.status === '1') {
                     $.each(ret.data, function (index, item) {
@@ -2334,9 +2308,9 @@ function ahmgavms022_detail_button_action(obj) {
             });
         }
     });
-
+ 
     ahmgavms022_detail_gates_datatable_data = [];
-
+ 
     _fw_postJson(obj, dataParamPlantGate, ahmgavms022_url_root + '/get-gates', function (ret) {
         if (ret.status === '1') {
             $.each(ret.data, function (index, item) {
@@ -2351,19 +2325,19 @@ function ahmgavms022_detail_button_action(obj) {
             ahmgavms022_detail_gates_datatable = ahmgavms022_detail_gates_datatable_init();
         }
     });
-
+ 
     _fw_navigateSubPage(obj, 'detail');
 }
-
+ 
 function ahmgavms022_detail_plants_datatable_init() {
     var datatableTemplateObject = $('#ahmgavms022_detail_plants_datatable_template').clone();
     datatableTemplateObject.attr('id', 'ahmgavms022_detail_plants_datatable');
     datatableTemplateObject.removeClass('ahmgavms022-datatables-template');
-
+ 
     $('#ahmgavms022_detail_plants').html(datatableTemplateObject);
-
+ 
     var ahmgavms022_detail_plants_datatable_data_temp = [];
-
+ 
     $.each(ahmgavms022_detail_plants_datatable_data, function (index, item) {
         var data = {
             seq: item.seq,
@@ -2372,7 +2346,7 @@ function ahmgavms022_detail_plants_datatable_init() {
         }
         ahmgavms022_detail_plants_datatable_data_temp.push(data);
     });
-
+ 
     var datatable = $('#ahmgavms022_detail_plants_datatable').DataTable({
         destroy: true,
         filter: false,
@@ -2398,24 +2372,24 @@ function ahmgavms022_detail_plants_datatable_init() {
                 "width": "5%"
             }
         ]
-
+ 
     });
     $('.totalDataText', $('#ahmgavms022_detail_plants_datatable_wrapper')).remove();
     $('.dataTables_customPaging', $('#ahmgavms022_detail_plants_datatable_wrapper')).remove();
-
+ 
     return datatable;
 }
-
+ 
 function ahmgavms022_detail_gates_datatable_init() {
-
+ 
     var DataTable_Template_Object = $('#ahmgavms022_detail_gates_datatable_template').clone();
     DataTable_Template_Object.attr('id', 'ahmgavms022_detail_gates_datatable');
     DataTable_Template_Object.removeClass('ahmgavms022-datatables-template');
-
+ 
     $('#ahmgavms022_detail_gates').html(DataTable_Template_Object);
-
+ 
     var ahmgavms022_detail_gates_datatable_data_temp = [];
-
+ 
     $.each(ahmgavms022_detail_gates_datatable_data, function (index, item) {
         var data = {
             seq: item.seq,
@@ -2425,7 +2399,7 @@ function ahmgavms022_detail_gates_datatable_init() {
         }
         ahmgavms022_detail_gates_datatable_data_temp.push(data);
     });
-
+ 
     var datatable = $('#ahmgavms022_detail_gates_datatable').DataTable({
         destroy: true,
         filter: false,
@@ -2454,22 +2428,22 @@ function ahmgavms022_detail_gates_datatable_init() {
             }
         ]
     });
-
+ 
     $('.totalDataText', $('#ahmgavms022_detail_gates_datatable_wrapper')).remove();
     $('.dataTables_customPaging', $('#ahmgavms022_detail_gates_datatable_wrapper')).remove();
-
+ 
     return datatable;
 }
-
+ 
 function ahmgavms022_detail_pic_datatable_init() {
     var datatableTemplateObject = $('#ahmgavms022_detail_listPicAhm_datatable_template').clone();
     datatableTemplateObject.attr('id', 'ahmgavms022_detail_listPicAhm_datatable');
     datatableTemplateObject.removeClass('ahmgavms022-datatables-template');
-
+ 
     $('#ahmgavms022_detail_listPicAhm').html(datatableTemplateObject);
-
+ 
     var ahmgavms022_detail_pic_datatable_data_temp = [];
-
+ 
     $.each(ahmgavms022_detail_pic_datatable_data, function (index, item) {
         var data = {
             nrp: item.nrp,
@@ -2479,7 +2453,7 @@ function ahmgavms022_detail_pic_datatable_init() {
         }
         ahmgavms022_detail_pic_datatable_data_temp.push(data);
     });
-
+ 
     var datatable = $('#ahmgavms022_detail_listPicAhm_datatable').DataTable({
         destroy: true,
         filter: false,
@@ -2510,26 +2484,26 @@ function ahmgavms022_detail_pic_datatable_init() {
             $(row).find('td:eq(2)').attr('data-title', 'area');
             $(row).find('td:eq(3)').attr('data-title', 'phoneNum');
         }
-
+ 
     });
-
+ 
     $('.totalDataText', $('#ahmgavms022_detail_listPicAhm_datatable_wrapper')).remove();
     $('.dataTables_customPaging', $('#ahmgavms022_detail_listPicAhm_datatable_wrapper')).remove();
-
+ 
     return datatable;
-
+ 
 }
-
+ 
 function ahmgavms022_detail_back_button_action(obj) {
     _fw_navigateSubPage(obj, 'list');
 }
-
+ 
 function getDateWithoutTime(date) {
     const currentDate = new Date(date);
     currentDate.setHours(0, 0, 0, 0);
     return currentDate;
   }
-
+ 
 function ahmgavms022_detail_approve_button_action(obj) {
     var objFrame = $(obj).closest('.tab-frame');
     var newFrame = $(".sub-page[data-section='confirmation']", objFrame);
@@ -2540,43 +2514,43 @@ function ahmgavms022_detail_approve_button_action(obj) {
     const months = [
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
       ];
-
+ 
     let maxExpDate;
     let tempExp;
-
+ 
     let DateOldExp = moment(ahmgavms022_detail_old_expiry_date,"DD-MMM-YYYY").toDate();
     var dateExp = moment(stringdexp, 'DD-MMM-YYYY').toDate();
     var dateEffDate = moment(stringdend, 'DD-MMM-YYYY').toDate();
-
+ 
     //validasi mandatory expiry date
     if($('#ahmgavms022_detail_ExpDate').val() == ""){
         var  errorMessage = `<li>Pass Card Expiry Date cannot be empty.</li>`;      
         _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
         return false;
     }
-
+ 
     //validasi expiry date di page response jika dia security  
     if(ahmgavms022_roles == "RO_GAVMS_OFCSECT"){
         const validateDateExp = getDateWithoutTime(new Date(dateExp));
         const validateDateExpOld = getDateWithoutTime(new Date(DateOldExp));
         const validateDateNow = getDateWithoutTime(new Date());
         const validateDateEnd = getDateWithoutTime(new Date(dateEffDate));
-
-
+ 
+ 
         if (validateDateExp > validateDateEnd) {
-
+ 
               var  errorMessage = `<li>Pass Card Expiry Date Can Not be Less Than System Date and Can Not be Greater Than ${DateOldExp.getDate()} ${months[DateOldExp.getMonth()]} ${DateOldExp.getFullYear()} </li>`;      
             _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
             return false;
         }
-
-
+ 
+ 
         if (validateDateExp > validateDateExpOld) {
             var errorMessage = `<li>Pass Card Expiry Date Can Not be Less Than System Date and Can Not be Greater Than ${DateOldExp.getDate()} ${months[DateOldExp.getMonth()]} ${DateOldExp.getFullYear()} </li>`;           
             _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
             return false;
         }
-
+ 
         if (validateDateExp < validateDateNow) {
             var errorMessage = `<li>Pass Card Expiry Date Can Not be Less Than System Date and Can Not be Greater Than ${DateOldExp.getDate()} ${months[DateOldExp.getMonth()]} ${DateOldExp.getFullYear()} </li>`;
             _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
@@ -2584,33 +2558,33 @@ function ahmgavms022_detail_approve_button_action(obj) {
         }
     
     }
-
+ 
     var catcher = {
         "endDateText": stringdend,
         "passExpiryDateText": stringdexp
     };
     getting.push(catcher);
-
+ 
     var forJSON = JSON.stringify(getting);
-
+ 
     _fw_postJson(obj, forJSON, ahmgavms022_url_root + '/check-date', function (ret) {
         if (ret.status === '1') {
-
+ 
             if ($('#ahmgavms022_detail_disclaimer').prop("checked") != true) {
                 var errorMessage = '<li>Disclaimer required.</li>';
                 _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
-
+ 
             } else if ($('#ahmgavms022_detail_ExpDate').val() == "") {
                 var errorMessage = '<li>Expiry Date Required.</li>';
                 _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
-
+ 
             } else {
                 approve_reject_confirmation = 'APPROVE';
                 htmlVal = htmlVal + '<h2>The following data will be approve. Are you sure?</h2>';
-
+ 
                 $('#ahmgavms022_h2_confirmation').html(htmlVal);
                 $('#ahmgavms022_decision_confirmation').val('approve');
-
+ 
                 _fw_formResetFields(newFrame);
                 _fw_navigateSubPage(obj, 'confirmation');
             }
@@ -2620,53 +2594,53 @@ function ahmgavms022_detail_approve_button_action(obj) {
             return false;
         }
     });
-
-
+ 
+ 
     var stringdend = $('#ahmgavms022_detail_EndEffDate').val();
     var stringdexp = $('#ahmgavms022_detail_ExpDate').val();
     var dend = moment(stringdend).unix();
     var dexp = moment(stringdexp).unix();
     dend = dend * -1;
     dexp = dexp * -1;
-
+ 
     var check = $('#ahmgavms022_detail_disclaimer');
     var checkObject = $('input[type="checkbox"][name="ahmgavms022_detail_disclaimer"]');
     var getvalue = $('input[type="radio"][name="ahmgaers009_addasset_permitcategory"]:checked');
-
+ 
 }
-
+ 
 function ahmgavms022_detail_reject_button_action(obj) {
     var objFrame = $(obj).closest('.tab-frame');
     var newFrame = $(".sub-page[data-section='confirmation']", objFrame);
     var htmlVal = '';
-
+ 
     if ($('#ahmgavms022_detail_disclaimer').prop("checked") == true) {
-
+ 
         if($('#ahmgavms022_detail_ExpDate').val() == ""){
             var  errorMessage = `<li>Pass Card Expiry Date cannot be empty.</li>`;      
             _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
             return false;
         }
-
+ 
         approve_reject_confirmation = 'REJECT';
         htmlVal = htmlVal + '<h2>The following data will be reject. Are you sure?</h2>';
         htmlVal += '<div class="input-control textarea" data-role="input-control">' +
             '<textarea name="ahmgavms022_detail_reject_note" id="ahmgavms022_detail_reject_note" type="text" placeholder="Insert The Reject Note" maxlength="100"></textarea>'
         '</div>';
-
+ 
         $('#ahmgavms022_h2_confirmation').html(htmlVal);
         $('#ahmgavms022_decision_confirmation').val('reject');
-
+ 
         _fw_formResetFields(newFrame);
-
+ 
         _fw_navigateSubPage(obj, 'confirmation');
-
+ 
     } else {
         var errorMessage = '<li>Disclaimer required.</li>';
         _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
     }
 }
-
+ 
 function ahmgavms022_detail_btn_sure_action(obj) {
  
     _fw_validation_clear(obj);
@@ -2679,7 +2653,7 @@ function ahmgavms022_detail_btn_sure_action(obj) {
  
     var send = "";
     var bypass = false;
-
+ 
     if (approve_reject_confirmation == "APPROVE") {
         if (ahmgavms022_detail_status_submit.toUpperCase() == "ACTIVE") {
             _fw_setMessage(formObject, 0, 'Failed Update Data. Outsource Status has been Activated!');
@@ -2731,13 +2705,13 @@ function ahmgavms022_detail_btn_sure_action(obj) {
             return false;
         }
     }
-
-
-
+ 
+ 
+ 
     if (ahmgavms022_roles == "RO_GAVMS_PICAHM" || ahmgavms022_roles == "RO_GAVMS_OFCSECT") {
-
+ 
         var expiryDate = $('#ahmgavms022_detail_ExpDate').val();
-
+ 
         var reason_reject = $('#ahmgavms022_detail_reject_note').val();
         var data = JSON.stringify({
             "id": id,
@@ -2752,7 +2726,7 @@ function ahmgavms022_detail_btn_sure_action(obj) {
             "passExpiryDateText": expiryDate,
             "dateStatus": dateForStatus
         });
-
+ 
         if (approve_reject_confirmation == 'APPROVE') {
             
             _fw_postJson(obj, data, ahmgavms022_url_root + '/approve-single', function (ret) {
@@ -2761,7 +2735,7 @@ function ahmgavms022_detail_btn_sure_action(obj) {
                     approve_reject_confirmation = '';
                     setTimeout(function () {
                         ahmgavms022_list_datatable_total_data -= 1;
-
+ 
                         if (ahmgavms022_list_datatable_total_data == 0) {
                             _fw_navigateSubPage(obj, 'list');
                             $('#ahmgavms022_filter_search_button').click();
@@ -2770,12 +2744,12 @@ function ahmgavms022_detail_btn_sure_action(obj) {
                         }
                         document.getElementById("ahmgavms022_detail_approve_button").disabled = true;
                         document.getElementById("ahmgavms022_detail_reject_button").disabled = true;
-
+ 
                         if ($('#ahmgavms022_detail_reject_button').hasClass('danger')) {
                             $('#ahmgavms022_detail_reject_button').removeClass('danger');
                         }
                     }, 3000);
-
+ 
                 } else {
                     var errorMessage = '<li>' + ret.message + '</li>';
                     _fw_setMessage(formObject, 0, '<ul class="errorList">' + errorMessage + '</ul>');
@@ -2793,7 +2767,7 @@ function ahmgavms022_detail_btn_sure_action(obj) {
                         approve_reject_confirmation = '';
                         setTimeout(function () {
                             ahmgavms022_list_datatable_total_data -= 1;
-
+ 
                             if (ahmgavms022_list_datatable_total_data == 0) {
                                 _fw_navigateSubPage(obj, 'list');
                                 $('#ahmgavms022_filter_search_button').click();
@@ -2802,7 +2776,7 @@ function ahmgavms022_detail_btn_sure_action(obj) {
                             }
                             document.getElementById("ahmgavms022_detail_approve_button").disabled = true;
                             document.getElementById("ahmgavms022_detail_reject_button").disabled = true;
-
+ 
                             if ($('#ahmgavms022_detail_reject_button').hasClass('danger')) {
                                 $('#ahmgavms022_detail_reject_button').removeClass('danger');
                             }
@@ -2815,38 +2789,38 @@ function ahmgavms022_detail_btn_sure_action(obj) {
                 });
             }
         }
-
+ 
     } else {
         _fw_setMessage(formObject, 0, 'Role Not Exist!');
     }
-
-
+ 
+ 
 }
-
+ 
 function ahmgavms022_list_btn_sure_action(obj) {
     _fw_validation_clear(obj);
     var id = ahmgavms022_list_datatable_check_submit_array;
-
+ 
     var catcher;
     var forJSON;
     var geting = [];
-
+ 
     if (ahmgavms022_roles == "RO_GAVMS_PICAHM" || ahmgavms022_roles == "RO_GAVMS_OFCSECT") {
         var send = "";
         var canSend = "";
-
+ 
         if (approve_reject_confirmation == 'Approve') {
             if (ahmgavms022_roles == "RO_GAVMS_PICAHM") {
-
+ 
                 for (let x in ahmgavms022_list_datatable_check_submit_array) {
                     var getid = ahmgavms022_list_datatable_check_submit_outstatus_array[x].slice(1);
-
+ 
                     if (getid == 'WAITING FOR APPROVAL SECURITY') {
                         _fw_setMessage(formObject, 0, `Cannot Process Outsource Status with data 'WAITING FOR APPROVAL SECURITY'`);
                         return false;
                     }
                 }
-
+ 
                 canSend = "Waiting for Approval PIC";
                 send = "Waiting for Approval Security";
             } else if (ahmgavms022_roles == "RO_GAVMS_OFCSECT") {
@@ -2857,16 +2831,16 @@ function ahmgavms022_list_btn_sure_action(obj) {
             }
         } else if (approve_reject_confirmation == 'Reject') {
             if (ahmgavms022_roles == "RO_GAVMS_PICAHM") {
-
+ 
                 for (let x in ahmgavms022_list_datatable_check_submit_array) {
                     var getid = ahmgavms022_list_datatable_check_submit_outstatus_array[x].slice(1);
-
+ 
                     if (getid == 'WAITING FOR APPROVAL SECURITY') {
                         _fw_setMessage(formObject, 0, `Cannot Process Outsource Status with data 'WAITING FOR APPROVAL SECURITY'`);
                         return false;
                     }
                 }
-
+ 
                 canSend = "Waiting for Approval PIC";
                 send = "Reject";
             } else if (ahmgavms022_roles == "RO_GAVMS_OFCSECT") {
@@ -2876,18 +2850,18 @@ function ahmgavms022_list_btn_sure_action(obj) {
                 send = "";
             }
         }
-
+ 
         var reason_reject = $('#ahmgavms022_reject_note').val();
-
+ 
         for (let x in ahmgavms022_list_datatable_check_submit_array) {
-
+ 
             var forGetArray = parseInt(x);
             forGetArray += 1;
             var getOutid = ahmgavms022_list_datatable_check_submit_outid_array[x].slice(1);
             var getOutName = ahmgavms022_list_datatable_check_submit_outname_array[x].slice(1);
             var getOutStatus = ahmgavms022_list_datatable_check_submit_outstatus_array[x].slice(1);
             var getNote = ahmgavms022_list_datatable_check_submit_note_array[x].slice(1);
-
+ 
             catcher = {
                 "id": ahmgavms022_list_datatable_check_submit_array[x],
                 "outId": getOutid,
@@ -2899,10 +2873,10 @@ function ahmgavms022_list_btn_sure_action(obj) {
                 "dateStatus": dateForStatus
             };
             geting.push(catcher);
-
+ 
         }
         forJSON = JSON.stringify(geting);
-
+ 
         if (approve_reject_confirmation == 'Approve') {
             _fw_postJson(obj, forJSON, ahmgavms022_url_root + '/approve', function (ret) {
                 if (ret.status === '1') {
@@ -2919,7 +2893,7 @@ function ahmgavms022_list_btn_sure_action(obj) {
                 }
             });
         } else if (approve_reject_confirmation == 'Reject') {
-
+ 
             if (reason_reject == "") {
                 _fw_setMessage(formObject, 0, 'Reject Note Must Be Fill!');
                 return false;
@@ -2945,34 +2919,34 @@ function ahmgavms022_list_btn_sure_action(obj) {
         _fw_setMessage(formObject, 0, 'Role Not Exist!');
     }
 }
-
+ 
 //[Begin] Image Preview Modal
 function ahmgavms022_PreviewHandler(obj, idx, type) {
     var modal = document.getElementById("myModal");
     var modalImg = document.getElementById("img01");
-
+ 
     if (idx.endsWith('Photo')) {
         modal.style.display = "block";
         modalImg.src = "data:image/jpg;base64, " + ahmgavms022_Photo_Temp;
-
+ 
     } else if (idx.endsWith('Ktp')) {
         modal.style.display = "block";
         modalImg.src = "data:image/jpg;base64, " + ahmgavms022_Ktp_Temp;
-
+ 
     }
-
+ 
 }
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 span.onclick = function () {
     modal.style.display = "none";
 }
-
+ 
 function ahmgavms022_PreviewMultipleHandler(obj, fileType, idx, indexFile, type) {
-
+ 
     var modal = document.getElementById("myModal");
     var modalImg = document.getElementById("img01");
-
+ 
     if (fileType == 'vaccine') {
         modal.style.display = "block";
         modalImg.src = "data:image/jpg;base64, " + ahmgavms022_Vac_array_Temp[indexFile].name;
@@ -2982,9 +2956,9 @@ function ahmgavms022_PreviewMultipleHandler(obj, fileType, idx, indexFile, type)
     }
 }
 //[End] Imgage Preview Modal
-
+ 
 function Export() {
-
+ 
     var OutsourceIdFilter = $('#ahmgavms022_filter_OutId').val();
     var OutsourceNameFilter = $('#ahmgavms022_filter_OutName').val();
     var NikFilter = $('#ahmgavms022_filter_Nik').val();
@@ -2992,20 +2966,20 @@ function Export() {
     var PeriodeToFilter = $('#ahmgavms022_filter_PeriodeTo').val();
     var PassCardNumberFilter = $('#ahmgavms022_filter_PassCardNum').val();
     var PicAhmFilter = $('#ahmgavms022_filter_IdPicAhm').val();
-
+ 
     if (ahmgavms022_roles == "RO_GAVMS_PICAHM") {
         var OutsourceTypeFilter = $('#ahmgavms022_filter_IdOutType_Pic').val();
-
+ 
     } else {
         var OutsourceTypeFilter = $('#ahmgavms022_filter_IdOutType_Ofc').val();
-
+ 
     }
-
+ 
     var OutsourceCompanyFilter = $('#ahmgavms022_filter_IdOutCompany').val();
     var OutsourceStatusFilter = $('#ahmgavms022_filter_OutStatus').val();
     var PlantFilter = $('#ahmgavms022_filter_Plant').val();
     var Covid19VaccineStatusFilter = $('#ahmgavms022_filter_CovVacStat').val();
-
+ 
     var downloadForm = document.getElementById('ahmgavms022_download_form');
     downloadForm.action = ahmgavms022_url_root + '/exreg';
     downloadForm.oi.value = OutsourceIdFilter;
@@ -3025,7 +2999,7 @@ function Export() {
     downloadForm.sortCol.value = ahmgavms022_excel_order_col;
     downloadForm.sort.value = ahmgavms022_excel_order;
     downloadForm.token.value = ahmgavms022_token;
-
-
+ 
+ 
     downloadForm.submit();
 }
