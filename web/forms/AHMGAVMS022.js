@@ -340,8 +340,8 @@ function ahmgavms022_get_form_authorization() {
             $('#ahmgavms022_list_check').html(htmlCheckboxPic); //for checkbox
             // $('#ahmgavms022_div_filter_OutType_Ofc').addClass('hide-this'); //hide ofc lov
             $('#ahmgavms022_div_picAhm').addClass('hide-this');
-            $('#containerDetail').append(htmlResponseApprove); //for checkbox
-            $('#checkboxResponse').html(htmlResposeCheckBox); //for checkbox
+            $('#ahmgavms022_detail_eula').removeClass('hide-this'); //for checkbox
+            $('#ahmgavms022_detail_disclaimer').removeClass('hide-this');//for checkbox
 
             ahmgavms022_list_datatable = ahmgavms022_list_datatable_init();
 
