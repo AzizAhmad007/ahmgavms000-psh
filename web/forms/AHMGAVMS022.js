@@ -188,6 +188,32 @@ var htmlTableSec = `<thead>
 var htmlCheckboxSec = `<div class="input-control checkbox" style="margin-left: 0px!important">
 </div>`;
 
+var htmlResponseApprove = `<div class="panel-info" id="ahmgavms022_detail_eula">
+<p style="font-size: 12px;">
+    Dengan mengisi data registrasi Mitra / Outsource, Saya menyatakan bahwa : <br><br>
+    1. Saya sudah mendapatkan persetujuan dari pihak mitra atau outsource yang
+    bersangkutan untuk memberikan data yang diperlukan oleh PT. Astra Honda Motor selama
+    bekerja di lingkungan PT. Astra Honda Motor. <br>
+    2. Saya sudah mendapatkan pernyataan dari pihak mitra atau outsource yang
+    bersangkutan bahwa data yang diberikan kepada PT. Astra Honda Motor adalah data yang
+    sesungguhnya dan dapat dipertanggungjawabkan. <br>
+    3. Pass Card Mitra / Outsource memiliki masa berlaku, sebagaimana yang tertera pada
+    data Pass Card Expiry Date. <br>
+    4. Jika terdapat perubahan data karyawan Mitra / Outsource, maka wajib melakukan
+    update terhadap data yang sudah diregistrasi. <br>
+    5. Pass Card yang sudah tidak dipergunakan wajib dikembalikan ke Security System
+    Development. <br>
+    6. Saya telah mensosialisasikan dan memastikan bahwa karyawan Mitra
+    & Outsource telah memahami dan mematuhi semua peraturan yang berlaku di PT. Astra
+    Honda Motor, serta bersedia bertanggung jawab jika ada pelanggaran yang dilakukan
+    terhadap peraturan tersebut.
+</p>
+</div>`
+
+var htmlResposeCheckBox = ` <input type="checkbox" name="ahmgavms022_detail_disclaimer" id="ahmgavms022_detail_disclaimer"
+value="Go" disabled>
+Saya telah membaca dan menyetujui semua ketentuan yang telah disebutkan.`
+
 ahmgavms022_.data = {};
 //[End] Variable Declaration
 
@@ -314,6 +340,8 @@ function ahmgavms022_get_form_authorization() {
             $('#ahmgavms022_list_check').html(htmlCheckboxPic); //for checkbox
             // $('#ahmgavms022_div_filter_OutType_Ofc').addClass('hide-this'); //hide ofc lov
             $('#ahmgavms022_div_picAhm').addClass('hide-this');
+            $('#containerDetail').append(htmlResponseApprove); //for checkbox
+            $('#checkboxResponse').html(htmlResposeCheckBox); //for checkbox
 
             ahmgavms022_list_datatable = ahmgavms022_list_datatable_init();
 
