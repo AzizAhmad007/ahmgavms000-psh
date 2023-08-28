@@ -369,7 +369,6 @@ public class Vms022AhmhrntmHdrotsempsDaoImpl extends HrHibernateDao<AhmhrntmHdro
                 vo.setAccessReader(obj[19] == null ? "" : obj[19] + "");
                 vo.setCanteen(obj[20] == null ? "" : obj[20] + "");
                 vo.setSecurityGate(obj[21] == null ? "" : obj[21] + "");
-                System.out.println("kholish >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + obj[22]);
                 vo.setNote(obj[22] == null ? "" : obj[22] + "");
                 vo.setFileNamePhoto(obj[23] == null ? "" : obj[23] + "");
                 vo.setVacType(obj[24] == null ? "" : obj[24] + "");
