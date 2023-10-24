@@ -52,29 +52,35 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                 + "(SELECT D.VITEMNAME "
                 + "FROM AHMMOERP_DTLSETTINGS D "
                 + "WHERE D.RSET_VID = 'VMS_VST2' "
-                + "AND D.VITEMCODE = A.VTYPE) VTYPE, A.VPURPOSE, A.VSTATUS, B.VCOMPANY, B.NQUOTA "
+                + "AND D.VITEMCODE = A.VTYPE) VTYPE, A.VPURPOSE, A.VSTATUS, B.VCOMPANY, B.NQUOTA, B.VINVITNO "
                 + "FROM AHMGAVMS_HDRINVITS A "
                 + "JOIN AHMGAVMS_HDRCHIEFS B "
                 + "ON A.VMASTERNO = B.VMASTERNO "
                 + "WHERE 1 = 1 ");
         if (!input.getSearch().get("status").toString().equalsIgnoreCase("")) {
-            sql.append("AND VSTATUS = '").append(input.getSearch().get("status").toString().toUpperCase()).append("' ");
+            sql.append("AND A.VSTATUS = '").append(input.getSearch().get("status").toString().toUpperCase()).append("' ");
         }
         if (!input.getSearch().get("visitorType").toString().equalsIgnoreCase("")) {
-            sql.append("AND VTYPE = '").append(input.getSearch().get("visitorType").toString().toUpperCase()).append("' ");
+            sql.append("AND A.VTYPE = '").append(input.getSearch().get("visitorType").toString().toUpperCase()).append("' ");
         }
         if (!input.getSearch().get("plant").toString().equalsIgnoreCase("")) {
-            sql.append("AND VPLANTID = '").append(input.getSearch().get("plant").toString().toUpperCase()).append("' ");
+            sql.append("AND A.VPLANTID = '").append(input.getSearch().get("plant").toString().toUpperCase()).append("' ");
         }
         if (!input.getSearch().get("startDate").toString().equalsIgnoreCase("")) {
-            sql.append("AND DPLSTART BETWEEN TO_DATE('").append(input.getSearch().get("startDate").toString().toUpperCase())
+            sql.append("AND A.DPLSTART BETWEEN TO_DATE('").append(input.getSearch().get("startDate").toString().toUpperCase())
                     .append("', 'DD-MM-YYYY') AND TO_DATE('").append(input.getSearch().get("endDate").toString().toUpperCase())
                     .append("', 'DD-MM-YYYY') ");
         }
         if (!input.getSearch().get("endDate").toString().equalsIgnoreCase("")) {
-            sql.append("AND DPLEND BETWEEN TO_DATE('").append(input.getSearch().get("startDate").toString().toUpperCase())
+            sql.append("AND A.DPLEND BETWEEN TO_DATE('").append(input.getSearch().get("startDate").toString().toUpperCase())
                     .append("', 'DD-MM-YYYY') AND TO_DATE('").append(input.getSearch().get("endDate").toString().toUpperCase())
                     .append("', 'DD-MM-YYYY') ");
+        }
+        if (!input.getSearch().get("nrppic").toString().equalsIgnoreCase("")) {
+            sql.append("AND A.VNRPPIC = '").append(input.getSearch().get("nrppic").toString().toUpperCase()).append("' ");
+        }
+        if (!input.getSearch().get("company").toString().equalsIgnoreCase("")) {
+            sql.append("AND B.VCOMPANY LIKE '%").append(input.getSearch().get("company").toString().toUpperCase()).append("%' ");
         }
         orderClause(input, sql, sortMap, getParam);
         Query query = getCurrentSession().createSQLQuery(sql.toString())
@@ -84,10 +90,11 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
             List<Object[]> list = query.list();
             if (list.size() > 0) {
                 Object[] obj;
+                int i = 0;
                 for(Object object : list) {
                     obj = (Object[]) object;
                     Vms026VoMonitoringOutput vo = new Vms026VoMonitoringOutput();
-                    vo.setInvNo((String) obj[0]);
+                    vo.setMasterNo((String) obj[0]);
                     vo.setStartDate((Date) obj[1]);
                     vo.setStartDateText((String) DateUtil.dateToString((Date) obj[1], "dd-MMM-yyyy"));
                     vo.setEndDate((Date) obj[2]);
@@ -102,6 +109,9 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                     vo.setCompany((String) obj[10]);
                     BigDecimal quota = (BigDecimal) obj[11];
                     vo.setTotalQuota(Integer.valueOf(quota.intValueExact()));
+                    vo.setRownum(i);
+                    vo.setInvitNo((String) obj[12]);
+                    i++;
                     vos.add(vo);
                 }
             }

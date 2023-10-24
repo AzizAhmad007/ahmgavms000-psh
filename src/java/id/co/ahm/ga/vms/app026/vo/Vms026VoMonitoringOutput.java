@@ -13,7 +13,8 @@ import java.util.Date;
  */
 public class Vms026VoMonitoringOutput {
     
-    private String invNo;
+    private String masterNo;
+    private String invitNo;
     private String status;
     private String visitorType;
     private String plant;
@@ -27,13 +28,22 @@ public class Vms026VoMonitoringOutput {
     private String company;
     private Integer totalQuota;
     private String picAhm;
+    private int rowNum;
 
-    public String getInvNo() {
-        return invNo;
+    public String getMasterNo() {
+        return masterNo;
     }
 
-    public void setInvNo(String invNo) {
-        this.invNo = invNo;
+    public void setMasterNo(String masterNo) {
+        this.masterNo = masterNo;
+    }
+
+    public String getInvitNo() {
+        return invitNo;
+    }
+
+    public void setInvitNo(String invitNo) {
+        this.invitNo = invitNo;
     }
 
     public String getStatus() {
@@ -140,5 +150,11 @@ public class Vms026VoMonitoringOutput {
         this.picAhm = picAhm;
     }
 
-    
+    public int getRowNum() {
+        return rowNum;
+    }
+
+    public void setRowNum(int rowNum) {
+        this.rowNum = rowNum;
+    }
 }

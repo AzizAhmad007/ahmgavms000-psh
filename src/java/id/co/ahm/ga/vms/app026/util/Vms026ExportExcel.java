@@ -48,7 +48,7 @@ public class Vms026ExportExcel extends Vms026BaseXlsxStreamingView {
             String picAhm = "All";
  
             for (Map.Entry<String, Object> filter : filters.entrySet()) {
-                if (filter.getKey().equalsIgnoreCase("invNo")) {
+                if (filter.getKey().equalsIgnoreCase("masterNo")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
  
@@ -450,7 +450,7 @@ public class Vms026ExportExcel extends Vms026BaseXlsxStreamingView {
                 
                 Row rowContentData = sheet.createRow(rownum++);
  
-                createCell(rowContentData, item.getInvNo(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, item.getInvitNo(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getStatus(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getVisitorType(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getPlant(), col++, styleContentTable1WithWrap);
