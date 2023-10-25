@@ -12,6 +12,7 @@ import java.util.List;
 import org.hibernate.SQLQuery;
 import org.springframework.stereotype.Repository;
 import id.co.ahm.ga.vms.app026.dao.Vms026AhmgavmsHdrchiefsDao;
+import java.math.BigDecimal;
 
 /**
  *
@@ -27,9 +28,8 @@ public class Vms026AhmgavmsHdrchiefsDaoImpl extends DefaultHibernateDao<Ahmgavms
                     + "FROM AHMGAVMS_DTLVISITS A "
                     + "WHERE A.INVITNO = '" + input.getSearch().get("invitNo").toString().toUpperCase() + "'");
             SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
-            List<Object[]> list = sqlQuery.list();
-            Object[] obj = (Object[]) list.get(0);
-            return (Integer) obj[0];
+            List<BigDecimal> list = sqlQuery.list();
+            return (Integer) list.get(0).intValueExact();
         } catch (Exception e) {
             return 0;
         }
@@ -42,9 +42,8 @@ public class Vms026AhmgavmsHdrchiefsDaoImpl extends DefaultHibernateDao<Ahmgavms
                     + "FROM AHMGAVMS_HDRCHIEFS "
                     + "WHERE VMASTERNO = '" + input.getSearch().get("masterNo").toString() + "'");
             SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
-            List<Object[]> list = sqlQuery.list();
-            Object[] obj = (Object[]) list.get(0);
-            return (Integer) obj[0];
+            List<BigDecimal> list = sqlQuery.list();
+            return (Integer) list.get(0).intValueExact();
         } catch (Exception e) {
             return 0;
         }

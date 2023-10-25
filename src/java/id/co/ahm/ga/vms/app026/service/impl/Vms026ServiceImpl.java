@@ -327,40 +327,6 @@ public class Vms026ServiceImpl implements Vms026Service{
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, null, null);
         }
     }
-    
-    private String getMasterNo() {
-        Map<String, Object> masterNo = vms026AhmmoerpDtlsettingsDao.getMasterNo();
-        String runNumber = masterNo.get("masterNo").toString();
-        switch (runNumber.length()) {
-            case 1:
-                runNumber = "0000" + runNumber;
-                break;
-            case 2:
-                runNumber = "000" + runNumber;
-                break;
-            case 3:
-                runNumber = "00" + runNumber;
-                break;
-            case 4:
-                runNumber = "0" + runNumber;
-                break;
-            default:
-                break;
-        }
-        AhmmoerpDtlsettingsPk dtlPk = new AhmmoerpDtlsettingsPk();
-        AhmmoerpDtlsettings dtl = new AhmmoerpDtlsettings();
-        dtlPk.setRsetVid("VMS_INV_NO");
-        dtlPk.setVitemcode("INV");
-        dtl.setAhmmoerpDtlsettingsPk(dtlPk);
-        dtl.setVitemname(masterNo.get("nextMo").toString());
-        dtl.setVitemdesc(String.valueOf(masterNo.get("nextNo")));
-        vms026AhmmoerpDtlsettingsDao.update(dtl);
-        vms026AhmmoerpDtlsettingsDao.flush();
-        
-        cal.setTime(m);
-        int year = cal.get(Calendar.YEAR);
-        return "VMS/INV/" + String.valueOf(year) + "/" + masterNo.get("nextMo").toString() + "/" + runNumber;
-    }
 
     private String getInvitationLink(String invNo) {
         return vms026AhmmoerpDtlsettingsDao.getInvLink(invNo);
@@ -460,9 +426,11 @@ public class Vms026ServiceImpl implements Vms026Service{
             hdr = vms026AhmgavmsHdrinvitsDao.findOne(masterNo);
             if (hdr.getVstatus().toString().equalsIgnoreCase("DRAFT")) {
                 vms026AhmgavmsHdrchiefsDao.deleteById(invitNo);
+                vms026AhmgavmsHdrchiefsDao.flush();
                 int count = vms026AhmgavmsHdrchiefsDao.getCountData(input);
                 if (count == 0) {
                     vms026AhmgavmsHdrinvitsDao.deleteById(masterNo);
+                    vms026AhmgavmsHdrinvitsDao.flush();
                 }
             }
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);

@@ -147,9 +147,8 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
             Query query = getCurrentSession().createSQLQuery(sql.toString())
                 .setFirstResult(input.getOffset())
                 .setMaxResults(input.getLimit());
-            List<Object[]> list = query.list();
-            Object[] obj = (Object[]) list.get(0);
-            return (Integer) obj[0];
+            List<BigDecimal> list = query.list();
+            return (Integer) list.get(0).intValueExact();
         } catch (Exception e) {
             return 0;
         }
