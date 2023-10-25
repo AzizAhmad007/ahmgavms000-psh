@@ -9,7 +9,6 @@ import id.co.ahm.ga.vms.app000.model.hr.AhmhrntmDtlprmgbls;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
 import id.co.ahm.jxf.dao.HrDao;
 import id.co.ahm.jxf.dto.DtoParamPaging;
-import id.co.ahm.jxf.vo.VoUserCred;
 import java.util.List;
 
 /**

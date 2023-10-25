@@ -237,7 +237,6 @@ public class Vms022Rest {
             @RequestParam(name = "sort") String sort,
             @RequestParam(name = "ro") String role) {
 
-        VoUserCred user = tokenPshUtil.getUserCred(token);
 
         if (StringUtils.isNotEmpty(beginDateText)) {
             Date effectiveDateFrom = Vms022DateTimeUtil.stringToDate(beginDateText);
