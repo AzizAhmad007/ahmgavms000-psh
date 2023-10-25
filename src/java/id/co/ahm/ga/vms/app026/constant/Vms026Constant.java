@@ -15,7 +15,7 @@ public class Vms026Constant {
     public static final String TEMPLATE_PATH_UPLOAD_EXTERNAL = "/data/AHMGA/VMS/Registrasi/Template_Upload_Mitra.xlsx";
 
     public static final String moduleId = "AHMGAVMS";
-    public static final String appId = "AHMGAVMS022";
+    public static final String appId = "AHMGAVMS026";
     
     public static final StringBuilder LOV_PLANTS = new StringBuilder("SELECT DISTINCT VPLANTVAR2, VDESC "
             + "FROM AHMMOSCD_MSTAGPLANTS "

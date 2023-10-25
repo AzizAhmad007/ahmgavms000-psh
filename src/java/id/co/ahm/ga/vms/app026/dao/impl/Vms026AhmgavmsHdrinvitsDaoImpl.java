@@ -77,7 +77,7 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                     .append("', 'DD-MM-YYYY') ");
         }
         if (!input.getSearch().get("nrppic").toString().equalsIgnoreCase("")) {
-            sql.append("AND A.VNRPPIC = '").append(input.getSearch().get("nrppic").toString().toUpperCase()).append("' ");
+            sql.append("AND A.VNRPPIC LIKE '%").append(input.getSearch().get("nrppic").toString().toUpperCase()).append("%' ");
         }
         if (!input.getSearch().get("company").toString().equalsIgnoreCase("")) {
             sql.append("AND B.VCOMPANY LIKE '%").append(input.getSearch().get("company").toString().toUpperCase()).append("%' ");
@@ -109,7 +109,7 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                     vo.setCompany((String) obj[10]);
                     BigDecimal quota = (BigDecimal) obj[11];
                     vo.setTotalQuota(Integer.valueOf(quota.intValueExact()));
-                    vo.setRownum(i);
+                    vo.setRowNum(i);
                     vo.setInvitNo((String) obj[12]);
                     i++;
                     vos.add(vo);

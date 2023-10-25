@@ -121,6 +121,7 @@ public class Vms026ServiceImpl implements Vms026Service{
             String loc = AhmStringUtil.hasValue(input.getSearch().get("loc")) ? (input.getSearch().get("loc") + "").toUpperCase() : "";
             String locSpec = AhmStringUtil.hasValue(input.getSearch().get("locSpec")) ? (input.getSearch().get("locSpec") + "").toUpperCase() : "";
             String purpose = AhmStringUtil.hasValue(input.getSearch().get("purpose")) ? (input.getSearch().get("purpose") + "").toUpperCase() : "";
+            String form = AhmStringUtil.hasValue(input.getSearch().get("form")) ? (input.getSearch().get("form") + "").toUpperCase() : "";
             String userId;
             if (user == null) {
                 userId = "DEVELOPER";
@@ -166,7 +167,9 @@ public class Vms026ServiceImpl implements Vms026Service{
                     cekExist.setVlocspec(locSpec);
                     cekExist.setVtype(visitorType);
                     cekExist.setVpurpose(purpose);
-                    cekExist.setVstatus("AKTIF");
+                    if (form.equalsIgnoreCase("SUBMIT")) {
+                        cekExist.setVstatus("AKTIF");
+                    }
                     cekExist.setLastModDate(new Date());
                     cekExist.setLastModBy(userId);
                     vms026AhmgavmsHdrinvitsDao.update(cekExist);
@@ -190,6 +193,7 @@ public class Vms026ServiceImpl implements Vms026Service{
             String loc = AhmStringUtil.hasValue(input.getSearch().get("loc")) ? (input.getSearch().get("loc") + "").toUpperCase() : "";
             String locSpec = AhmStringUtil.hasValue(input.getSearch().get("locSpec")) ? (input.getSearch().get("locSpec") + "").toUpperCase() : "";
             String purpose = AhmStringUtil.hasValue(input.getSearch().get("purpose")) ? (input.getSearch().get("purpose") + "").toUpperCase() : "";
+            String form = AhmStringUtil.hasValue(input.getSearch().get("form")) ? (input.getSearch().get("form") + "").toUpperCase() : "";
             String userId;
             if (user == null) {
                 userId = "DEVELOPER";
@@ -235,7 +239,9 @@ public class Vms026ServiceImpl implements Vms026Service{
                     cekExist.setVlocspec(locSpec);
                     cekExist.setVtype(visitorType);
                     cekExist.setVpurpose(purpose);
-                    cekExist.setVstatus("DRAFT");
+                    if (form.equalsIgnoreCase("SUBMIT")) {
+                        cekExist.setVstatus("DRAFT");
+                    }
                     cekExist.setLastModDate(new Date());
                     cekExist.setLastModBy(userId);
                     vms026AhmgavmsHdrinvitsDao.update(cekExist);
