@@ -11,7 +11,6 @@ import id.co.ahm.ga.vms.app022.util.Vms022QueryUtil;
 import id.co.ahm.ga.vms.app022.vo.Vms022VoLov;
 import id.co.ahm.jxf.dao.HrHibernateDao;
 import id.co.ahm.jxf.dto.DtoParamPaging;
-import id.co.ahm.jxf.vo.VoUserCred;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
