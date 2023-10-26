@@ -14,29 +14,29 @@
         http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
   
  
-<!--    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
         <property name="jndiName" value="jdbc/ahmpsDS" />
     </bean>
     
-    B2B
+    <!--B2B-->
     <bean id="dataSourceB2e" class="org.springframework.jndi.JndiObjectFactoryBean" >
         <property name="jndiName" value="jdbc/b2eDS"/>
     </bean>
     
-    B2EDV
+    <!--B2EDV-->
     <bean id="dataSourceB2eDv" class="org.springframework.jndi.JndiObjectFactoryBean" >
         <property name="jndiName" value="jdbc/b2edvDS"/>
     </bean>
     
-    WFS 
+    <!--WFS--> 
     <bean id="dataSourceWfs" class="org.springframework.jndi.JndiObjectFactoryBean" >
         <property name="jndiName" value="jdbc/mssqlwfsDS"/>
     </bean>
     
-    HR
+    <!--HR-->
     <bean id="dataSourceHr" class="org.springframework.jndi.JndiObjectFactoryBean" >
         <property name="jndiName" value="jdbc/ahmhrDS"/>
-    </bean>-->
+    </bean>
     
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">  
         <property name="sessionFactory" ref="sessionFactory" />

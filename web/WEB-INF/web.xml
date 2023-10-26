@@ -15,7 +15,7 @@
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
     
-<!--    <filter>
+    <filter>
         <filter-name>securityFilterPsh</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
@@ -28,5 +28,5 @@
         <session-timeout>
             30
         </session-timeout>
-    </session-config>-->
+    </session-config>
 </web-app>

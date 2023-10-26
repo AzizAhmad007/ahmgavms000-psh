@@ -12,7 +12,7 @@
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <web-module-libraries>
                 <library dirs="200">
-                    <file>${libs.JXF-Libaries.classpath}</file>
+                    <file>${libs.jxf-library.classpath}</file>
                 </library>
                 <library dirs="200">
                     <file>${reference.jxf-common.jar}</file>
