@@ -25,6 +25,7 @@ public class Vms026VoMonitoringOutput {
     private String startDateText;
     private Date endDate;
     private String endDateText;
+    private String name;
     private String company;
     private Integer totalQuota;
     private String picAhm;
@@ -124,6 +125,14 @@ public class Vms026VoMonitoringOutput {
 
     public void setEndDateText(String endDateText) {
         this.endDateText = endDateText;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCompany() {

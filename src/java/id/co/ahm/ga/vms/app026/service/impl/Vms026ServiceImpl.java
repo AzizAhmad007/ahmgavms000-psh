@@ -152,7 +152,7 @@ public class Vms026ServiceImpl implements Vms026Service{
                     hdr.setVlocspec(locSpec);
                     hdr.setVtype(visitorType);
                     hdr.setVpurpose(purpose);
-                    hdr.setVstatus("AKTIF");
+                    hdr.setVstatus("Y");
                     hdr.setCreateBy(userId);
                     hdr.setCreateDate(new Date());
                     hdr.setLastModDate(new Date());
@@ -170,7 +170,7 @@ public class Vms026ServiceImpl implements Vms026Service{
                     cekExist.setVtype(visitorType);
                     cekExist.setVpurpose(purpose);
                     if (form.equalsIgnoreCase("SUBMIT")) {
-                        cekExist.setVstatus("AKTIF");
+                        cekExist.setVstatus("Y");
                     }
                     cekExist.setLastModDate(new Date());
                     cekExist.setLastModBy(userId);
@@ -224,7 +224,7 @@ public class Vms026ServiceImpl implements Vms026Service{
                     hdr.setVlocspec(locSpec);
                     hdr.setVtype(visitorType);
                     hdr.setVpurpose(purpose);
-                    hdr.setVstatus("DRAFT");
+                    hdr.setVstatus("D");
                     hdr.setCreateBy(userId);
                     hdr.setCreateDate(new Date());
                     hdr.setLastModDate(new Date());
@@ -242,7 +242,7 @@ public class Vms026ServiceImpl implements Vms026Service{
                     cekExist.setVtype(visitorType);
                     cekExist.setVpurpose(purpose);
                     if (form.equalsIgnoreCase("SUBMIT")) {
-                        cekExist.setVstatus("DRAFT");
+                        cekExist.setVstatus("D");
                     }
                     cekExist.setLastModDate(new Date());
                     cekExist.setLastModBy(userId);

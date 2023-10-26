@@ -34,16 +34,18 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
     public List<Vms026VoMonitoringOutput> getMonitoring(DtoParamPaging input) {
         List<Vms026VoMonitoringOutput> vos = new ArrayList<>();
         Map<String, String> sortMap = new HashMap<>();
+        sortMap.put("ahmgavms026p01MasterNoSort", "");
         sortMap.put("ahmgavms026p01StatusSort", "");
         sortMap.put("ahmgavms026p01VisitorTypeSort", "");
         sortMap.put("ahmgavms026p01PlantSort", "");
         sortMap.put("ahmgavms026p01LocSort", "");
         sortMap.put("ahmgavms026p01LocSpecSort", "");
-        sortMap.put("ahmgavms026p01PurposeSort", "");
         sortMap.put("ahmgavms026p01StartDateSort", "");
         sortMap.put("ahmgavms026p01EndDateSort", "");
+        sortMap.put("ahmgavms026p01NameSort", "");
         sortMap.put("ahmgavms026p01CompanySort", "");
         sortMap.put("ahmgavms026p01TotalQuotaSort", "");
+        sortMap.put("ahmgavms026p01PicAhmSort", "");
 
         StringBuilder sql = new StringBuilder("SELECT A.VMASTERNO, A.DPLSTART, A.DPLEND, A.VNRPPIC, "
                 + "(SELECT C.VDESC "
@@ -52,7 +54,7 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                 + "(SELECT D.VITEMNAME "
                 + "FROM AHMMOERP_DTLSETTINGS D "
                 + "WHERE D.RSET_VID = 'VMS_VST2' "
-                + "AND D.VITEMCODE = A.VTYPE) VTYPE, A.VPURPOSE, A.VSTATUS, B.VCOMPANY, B.NQUOTA, B.VINVITNO "
+                + "AND D.VITEMCODE = A.VTYPE) VTYPE, A.VPURPOSE, A.VSTATUS, B.VNAME, B.VCOMPANY, B.NQUOTA, B.VINVITNO "
                 + "FROM AHMGAVMS_HDRINVITS A "
                 + "JOIN AHMGAVMS_HDRCHIEFS B "
                 + "ON A.VMASTERNO = B.VMASTERNO "
@@ -85,6 +87,7 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
         if (!input.getSearch().get("masterNo").toString().equalsIgnoreCase("")) {
             sql.append("AND A.VMASTERNO LIKE '%").append(input.getSearch().get("masterNo").toString().toUpperCase()).append("%' ");
         }
+        voSetter(input);
         orderClause(input, sql, sortMap, getParam);
         Query query = getCurrentSession().createSQLQuery(sql.toString())
                 .setFirstResult(input.getOffset())
@@ -109,11 +112,12 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                     vo.setVisitorType((String) obj[7]);
                     vo.setPurpose((String) obj[8]);
                     vo.setStatus((String) obj[9]);
-                    vo.setCompany((String) obj[10]);
-                    BigDecimal quota = (BigDecimal) obj[11];
+                    vo.setName((String) obj[10]);
+                    vo.setCompany((String) obj[11]);
+                    BigDecimal quota = (BigDecimal) obj[12];
                     vo.setTotalQuota(Integer.valueOf(quota.intValueExact()));
                     vo.setRowNum(i);
-                    vo.setInvitNo((String) obj[12]);
+                    vo.setInvitNo((String) obj[13]);
                     i++;
                     vos.add(vo);
                 }
@@ -177,6 +181,60 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
             if (input.getOrder() != null && !StringUtils.isEmpty(input.getOrder())) {
                 query.append(input.getOrder() + " ");
             }
+        }
+    }
+    
+    private void voSetter(DtoParamPaging input) {
+        try {
+            if (input.getSort() == null) {
+
+            } else {
+                String param = input.getSort();
+
+                switch (param) {
+                    case "masterNo":
+                        getParam = "A.VMASTERNO";
+                        break;
+                    case "status":
+                        getParam = "A.VSTATUS";
+                        break;
+                    case "visitorType":
+                        getParam = "VTYPE";
+                        break;
+                    case "plant":
+                        getParam = "VPLANTID";
+                        break;
+                    case "loc":
+                        getParam = "A.VLOC";
+                        break;
+                    case "locSpec":
+                        getParam = "A.VLOCSPEC";
+                        break;
+                    case "startDateText":
+                        getParam = "A.DPLSTART";
+                        break;
+                    case "endDateText":
+                        getParam = "A.DPLEND";
+                        break;
+                    case "name":
+                        getParam = "B.VNAME";
+                        break;
+                    case "company":
+                        getParam = "B.VCOMPANY";
+                        break;
+                    case "totalQuota":
+                        getParam = "B.NQUOTA";
+                        break;
+                    case "picAhm":
+                        getParam = "A.VNRPPIC";
+                        break;
+                    default:
+                        getParam = null;
+
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

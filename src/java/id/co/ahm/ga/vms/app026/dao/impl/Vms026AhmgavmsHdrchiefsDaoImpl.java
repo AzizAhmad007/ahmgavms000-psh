@@ -49,5 +49,4 @@ public class Vms026AhmgavmsHdrchiefsDaoImpl extends DefaultHibernateDao<Ahmgavms
             return 0;
         }
     }
-    
 }
