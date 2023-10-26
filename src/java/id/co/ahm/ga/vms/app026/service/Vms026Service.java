@@ -4,10 +4,12 @@
  * and open the template in the editor.
  */
 package id.co.ahm.ga.vms.app026.service;
+import id.co.ahm.ga.vms.app026.vo.Vms026VoSubmitChief;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
 import id.co.ahm.jxf.vo.VoUserCred;
+import java.util.List;
 
 /**
  *
@@ -29,7 +31,7 @@ public interface Vms026Service {
 
     public DtoResponseWorkspace saveInvitation(DtoParamPaging input, VoUserCred user);
 
-    public DtoResponseWorkspace submitChief(DtoParamPaging input, VoUserCred user);
+    public DtoResponseWorkspace submitChief(List<Vms026VoSubmitChief> input, VoUserCred user);
 
     public DtoResponseWorkspace showStatus(DtoParamPaging input);
 
@@ -40,4 +42,6 @@ public interface Vms026Service {
     public DtoResponseWorkspace showLocation(DtoParamPaging input);
 
     public DtoResponseWorkspace deleteInvitation(DtoParamPaging input);
+
+    public DtoResponseWorkspace getReqBody();
 }

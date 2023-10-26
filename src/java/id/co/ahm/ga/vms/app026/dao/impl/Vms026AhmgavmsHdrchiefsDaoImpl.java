@@ -12,6 +12,7 @@ import java.util.List;
 import org.hibernate.SQLQuery;
 import org.springframework.stereotype.Repository;
 import id.co.ahm.ga.vms.app026.dao.Vms026AhmgavmsHdrchiefsDao;
+import id.co.ahm.ga.vms.app026.vo.Vms026VoSubmitChief;
 import java.math.BigDecimal;
 
 /**
@@ -22,11 +23,11 @@ import java.math.BigDecimal;
 public class Vms026AhmgavmsHdrchiefsDaoImpl extends DefaultHibernateDao<AhmgavmsHdrchiefs, String> implements Vms026AhmgavmsHdrchiefsDao{
 
     @Override
-    public int validateQuota(DtoParamPaging input) {
+    public int validateQuota(Vms026VoSubmitChief input) {
         try {
             StringBuilder sql = new StringBuilder("SELECT COUNT(0) "
                     + "FROM AHMGAVMS_DTLVISITS A "
-                    + "WHERE A.INVITNO = '" + input.getSearch().get("invitNo").toString().toUpperCase() + "'");
+                    + "WHERE A.INVITNO = '" + input.getInvitNo().toString().toUpperCase() + "'");
             SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
             List<BigDecimal> list = sqlQuery.list();
             return (Integer) list.get(0).intValueExact();

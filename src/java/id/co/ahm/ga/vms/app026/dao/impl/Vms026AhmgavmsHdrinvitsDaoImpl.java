@@ -82,6 +82,9 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
         if (!input.getSearch().get("company").toString().equalsIgnoreCase("")) {
             sql.append("AND B.VCOMPANY LIKE '%").append(input.getSearch().get("company").toString().toUpperCase()).append("%' ");
         }
+        if (!input.getSearch().get("masterNo").toString().equalsIgnoreCase("")) {
+            sql.append("AND A.VMASTERNO LIKE '%").append(input.getSearch().get("masterNo").toString().toUpperCase()).append("%' ");
+        }
         orderClause(input, sql, sortMap, getParam);
         Query query = getCurrentSession().createSQLQuery(sql.toString())
                 .setFirstResult(input.getOffset())
@@ -125,28 +128,41 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
     public int getMonitoringCount(DtoParamPaging input) {
         try {
             StringBuilder sql = new StringBuilder("SELECT COUNT(0) "
-                + "FROM AHMGAVMS_HDRINVITS A "
-                + "JOIN AHMGAVMS_HDRCHIEFS B "
-                + "ON A.VMASTERNO = B.VMASTERNO "
-                + "WHERE 1 = 1 ");
+                    + "FROM AHMGAVMS_HDRINVITS A "
+                    + "JOIN AHMGAVMS_HDRCHIEFS B "
+                    + "ON A.VMASTERNO = B.VMASTERNO "
+                    + "WHERE 1 = 1 ");
             if (!input.getSearch().get("status").toString().equalsIgnoreCase("")) {
-                sql.append("AND VSTATUS = '").append(input.getSearch().get("status").toString().toUpperCase()).append("' ");
+                sql.append("AND A.VSTATUS = '").append(input.getSearch().get("status").toString().toUpperCase()).append("' ");
             }
             if (!input.getSearch().get("visitorType").toString().equalsIgnoreCase("")) {
-                sql.append("AND VTYPE = '").append(input.getSearch().get("visitorType").toString().toUpperCase()).append("' ");
+                sql.append("AND A.VTYPE = '").append(input.getSearch().get("visitorType").toString().toUpperCase()).append("' ");
             }
             if (!input.getSearch().get("plant").toString().equalsIgnoreCase("")) {
-                sql.append("AND VPLANTID = '").append(input.getSearch().get("plant").toString().toUpperCase()).append("' ");
+                sql.append("AND A.VPLANTID = '").append(input.getSearch().get("plant").toString().toUpperCase()).append("' ");
             }
             if (!input.getSearch().get("startDate").toString().equalsIgnoreCase("")) {
-                sql.append("AND DPLSTART BETWEEN '").append(input.getSearch().get("startDate").toString().toUpperCase()).append("' ");
+                sql.append("AND A.DPLSTART BETWEEN TO_DATE('").append(input.getSearch().get("startDate").toString().toUpperCase())
+                        .append("', 'DD-MM-YYYY') AND TO_DATE('").append(input.getSearch().get("endDate").toString().toUpperCase())
+                        .append("', 'DD-MM-YYYY') ");
             }
             if (!input.getSearch().get("endDate").toString().equalsIgnoreCase("")) {
-                sql.append("AND DPLEND BETWEEN '").append(input.getSearch().get("endDate").toString().toUpperCase()).append("' ");
+                sql.append("AND A.DPLEND BETWEEN TO_DATE('").append(input.getSearch().get("startDate").toString().toUpperCase())
+                        .append("', 'DD-MM-YYYY') AND TO_DATE('").append(input.getSearch().get("endDate").toString().toUpperCase())
+                        .append("', 'DD-MM-YYYY') ");
+            }
+            if (!input.getSearch().get("nrppic").toString().equalsIgnoreCase("")) {
+                sql.append("AND A.VNRPPIC LIKE '%").append(input.getSearch().get("nrppic").toString().toUpperCase()).append("%' ");
+            }
+            if (!input.getSearch().get("company").toString().equalsIgnoreCase("")) {
+                sql.append("AND B.VCOMPANY LIKE '%").append(input.getSearch().get("company").toString().toUpperCase()).append("%' ");
+            }
+            if (!input.getSearch().get("masterNo").toString().equalsIgnoreCase("")) {
+                sql.append("AND A.VMASTERNO LIKE '%").append(input.getSearch().get("masterNo").toString().toUpperCase()).append("%' ");
             }
             Query query = getCurrentSession().createSQLQuery(sql.toString())
-                .setFirstResult(input.getOffset())
-                .setMaxResults(input.getLimit());
+                    .setFirstResult(input.getOffset())
+                    .setMaxResults(input.getLimit());
             List<BigDecimal> list = query.list();
             return (Integer) list.get(0).intValueExact();
         } catch (Exception e) {

@@ -6,6 +6,7 @@
 package id.co.ahm.ga.vms.app026.dao;
 
 import id.co.ahm.ga.vms.app000.model.AhmgavmsHdrchiefs;
+import id.co.ahm.ga.vms.app026.vo.Vms026VoSubmitChief;
 import id.co.ahm.jxf.dao.DefaultDao;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 
@@ -15,7 +16,7 @@ import id.co.ahm.jxf.dto.DtoParamPaging;
  */
 public interface Vms026AhmgavmsHdrchiefsDao extends DefaultDao<AhmgavmsHdrchiefs, String>{
 
-    public int validateQuota(DtoParamPaging input);
+    public int validateQuota(Vms026VoSubmitChief input);
 
     public int getCountData(DtoParamPaging input);
     

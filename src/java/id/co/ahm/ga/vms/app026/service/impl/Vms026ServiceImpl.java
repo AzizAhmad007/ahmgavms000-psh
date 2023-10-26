@@ -31,8 +31,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import id.co.ahm.ga.vms.app026.dao.Vms026AhmgavmsHdrinvitsDao;
 import id.co.ahm.ga.vms.app026.dao.Vms026AhmgavmsHdrchiefsDao;
+import id.co.ahm.ga.vms.app026.vo.Vms026VoSubmitChief;
 import id.co.ahm.jxf.util.AhmStringUtil;
 import id.co.ahm.jxf.util.DateUtil;
+import java.util.ArrayList;
 
 /**
  *
@@ -256,73 +258,71 @@ public class Vms026ServiceImpl implements Vms026Service{
     }
 
     @Override
-    public DtoResponseWorkspace submitChief(DtoParamPaging input, VoUserCred user) {
+    public DtoResponseWorkspace submitChief(List<Vms026VoSubmitChief> input, VoUserCred user) {
         try {
-            String invitNo = AhmStringUtil.hasValue(input.getSearch().get("invitNo")) ? (input.getSearch().get("invitNo") + "").toUpperCase() : "";
-            String masterNo = AhmStringUtil.hasValue(input.getSearch().get("masterNo")) ? (input.getSearch().get("masterNo") + "").toUpperCase() : "";
-            String name = AhmStringUtil.hasValue(input.getSearch().get("name")) ? (input.getSearch().get("name") + "").toUpperCase() : "";
-            String company = AhmStringUtil.hasValue(input.getSearch().get("company")) ? (input.getSearch().get("company") + "").toUpperCase() : "";
-            String email = AhmStringUtil.hasValue(input.getSearch().get("email")) ? (input.getSearch().get("email") + "") : "";
-            String noHp = AhmStringUtil.hasValue(input.getSearch().get("noHp")) ? (input.getSearch().get("noHp") + "").toUpperCase() : "";
-            String strQuota = AhmStringUtil.hasValue(input.getSearch().get("quota")) ? (input.getSearch().get("quota") + "").toUpperCase() : "0";
-            Integer quota = Integer.parseInt(strQuota);
-            String userId;
-            if (user == null) {
-                userId = "DEVELOPER";
-            } else {
-                userId = user.getUserid();
-            }
-            if (company.equalsIgnoreCase("") || 
-                    name.equalsIgnoreCase("") || 
-                    email.equalsIgnoreCase("") || 
-                    noHp.equalsIgnoreCase("") || 
-                    quota == 0) {
-                Map<String, Object> msg = new HashMap<>();
-                msg.put("validate", "Field mandatory tidak boleh kosong");
-                return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, msg, null);
-            } else {
-                AhmgavmsHdrchiefs cekExist = new AhmgavmsHdrchiefs();
-                cekExist = vms026AhmgavmsHdrchiefsDao.findOne(invitNo);
-                if (cekExist == null) {
-                    AhmgavmsHdrchiefs chf = new AhmgavmsHdrchiefs();
-                    chf.setVinvitno(invitNo);
-                    chf.setVmasterno(masterNo);
-                    chf.setVname(name);
-                    chf.setVcompany(company);
-                    chf.setVemail(email);
-                    chf.setVnohp(noHp);
-                    chf.setNquota(quota);
-                    String invLink = getInvitationLink(invitNo);
-                    chf.setVinvlink(invLink);
-                    chf.setCreateBy(userId);
-                    chf.setCreateDate(new Date());
-                    chf.setLastModDate(new Date());
-                    chf.setLastModBy(userId);
-                    vms026AhmgavmsHdrchiefsDao.save(chf);
-                    vms026AhmgavmsHdrchiefsDao.flush();
-                    return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
+            Map<String, Object> msg = new HashMap<>();
+            for (Vms026VoSubmitChief vo : input) {
+                String invitNo = AhmStringUtil.hasValue(vo.getInvitNo()) ? (vo.getInvitNo() + "").toUpperCase() : "";
+                String masterNo = AhmStringUtil.hasValue(vo.getMasterNo()) ? (vo.getMasterNo() + "").toUpperCase() : "";
+                String name = AhmStringUtil.hasValue(vo.getName()) ? (vo.getName() + "").toUpperCase() : "";
+                String company = AhmStringUtil.hasValue(vo.getCompany()) ? (vo.getCompany() + "").toUpperCase() : "";
+                String email = AhmStringUtil.hasValue(vo.getEmail()) ? (vo.getEmail() + "") : "";
+                String noHp = AhmStringUtil.hasValue(vo.getNoHp()) ? (vo.getNoHp() + "").toUpperCase() : "";
+                String strQuota = AhmStringUtil.hasValue(vo.getQuota()) ? (vo.getQuota() + "").toUpperCase() : "0";
+                Integer quota = Integer.parseInt(strQuota);
+                String userId;
+                if (user == null) {
+                    userId = "DEVELOPER";
                 } else {
-                    Integer val = vms026AhmgavmsHdrchiefsDao.validateQuota(input);
-                    if (val > quota) {
-                        Map<String, Object> msg = new HashMap<>();
-                        msg.put("validate", "Quota pada undangan " + invitNo + ""
-                                + "sudah digunakan sebanyak " + String.valueOf(val) + ".");
-                        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, msg, null);
+                    userId = user.getUserid();
+                }
+                if (company.equalsIgnoreCase("")
+                        || name.equalsIgnoreCase("")
+                        || email.equalsIgnoreCase("")
+                        || noHp.equalsIgnoreCase("")
+                        || quota == 0) {
+                    msg.put("validate", "Field mandatory tidak boleh kosong");
+                } else {
+                    AhmgavmsHdrchiefs cekExist = new AhmgavmsHdrchiefs();
+                    cekExist = vms026AhmgavmsHdrchiefsDao.findOne(invitNo);
+                    if (cekExist == null) {
+                        AhmgavmsHdrchiefs chf = new AhmgavmsHdrchiefs();
+                        chf.setVinvitno(invitNo);
+                        chf.setVmasterno(masterNo);
+                        chf.setVname(name);
+                        chf.setVcompany(company);
+                        chf.setVemail(email);
+                        chf.setVnohp(noHp);
+                        chf.setNquota(quota);
+                        String invLink = getInvitationLink(invitNo);
+                        chf.setVinvlink(invLink);
+                        chf.setCreateBy(userId);
+                        chf.setCreateDate(new Date());
+                        chf.setLastModDate(new Date());
+                        chf.setLastModBy(userId);
+                        vms026AhmgavmsHdrchiefsDao.save(chf);
+                        vms026AhmgavmsHdrchiefsDao.flush();
+                    } else {
+                        Integer val = vms026AhmgavmsHdrchiefsDao.validateQuota(vo);
+                        if (val > quota) {
+                            msg.put("validate", "Quota pada undangan " + invitNo + ""
+                                    + "sudah digunakan sebanyak " + String.valueOf(val) + ".");
+                        }
+                        cekExist.setVname(name);
+                        cekExist.setVcompany(company);
+                        cekExist.setVemail(email);
+                        cekExist.setVnohp(noHp);
+                        cekExist.setNquota(quota);
+                        String invLink = getInvitationLink(invitNo);
+                        cekExist.setVinvlink(invLink);
+                        cekExist.setLastModDate(new Date());
+                        cekExist.setLastModBy(userId);
+                        vms026AhmgavmsHdrchiefsDao.update(cekExist);
+                        vms026AhmgavmsHdrchiefsDao.flush();
                     }
-                    cekExist.setVname(name);
-                    cekExist.setVcompany(company);
-                    cekExist.setVemail(email);
-                    cekExist.setVnohp(noHp);
-                    cekExist.setNquota(quota);
-                    String invLink = getInvitationLink(invitNo);
-                    cekExist.setVinvlink(invLink);
-                    cekExist.setLastModDate(new Date());
-                    cekExist.setLastModBy(userId);
-                    vms026AhmgavmsHdrchiefsDao.update(cekExist);
-                    vms026AhmgavmsHdrchiefsDao.flush();
-                    return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
                 }
             }
+            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, msg, null);
         } catch (Exception e) {
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, null, null);
         }
@@ -437,5 +437,29 @@ public class Vms026ServiceImpl implements Vms026Service{
         } catch (Exception e) {
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, null, null);
         }
+    }
+
+    @Override
+    public DtoResponseWorkspace getReqBody() {
+        List<Vms026VoSubmitChief> vos = new ArrayList<>();
+        Vms026VoSubmitChief vo = new Vms026VoSubmitChief();
+        vo.setCompany("1");
+        vo.setEmail("1");
+        vo.setInvitNo("1");
+        vo.setMasterNo("1");
+        vo.setName("1");
+        vo.setNoHp("1");
+        vo.setQuota("1");
+        vos.add(vo);
+        Vms026VoSubmitChief vo2 = new Vms026VoSubmitChief();
+        vo2.setCompany("2");
+        vo2.setEmail("2");
+        vo2.setInvitNo("2");
+        vo2.setMasterNo("2");
+        vo2.setName("2");
+        vo2.setNoHp("2");
+        vo2.setQuota("2");
+        vos.add(vo2);
+        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, vos);
     }
 }
