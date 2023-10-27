@@ -154,7 +154,11 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                     + "ON A.VMASTERNO = B.VMASTERNO "
                     + "WHERE 1 = 1 ");
             if (!input.getSearch().get("status").toString().equalsIgnoreCase("")) {
-                sql.append("AND A.VSTATUS = '").append(input.getSearch().get("status").toString().toUpperCase()).append("' ");
+                if (input.getSearch().get("status").toString().equalsIgnoreCase("N")) {
+                    sql.append("AND TRUNC(A.DPLEND) < TRUNC(SYSDATE) ");
+                } else {
+                    sql.append("AND A.VSTATUS = '").append(input.getSearch().get("status").toString().toUpperCase()).append("' ");
+                }
             }
             if (!input.getSearch().get("visitorType").toString().equalsIgnoreCase("")) {
                 sql.append("AND A.VTYPE = '").append(input.getSearch().get("visitorType").toString().toUpperCase()).append("' ");
@@ -180,6 +184,9 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
             }
             if (!input.getSearch().get("masterNo").toString().equalsIgnoreCase("")) {
                 sql.append("AND A.VMASTERNO LIKE '%").append(input.getSearch().get("masterNo").toString().toUpperCase()).append("%' ");
+            }
+            if (!input.getSearch().get("visitorName").toString().equalsIgnoreCase("")) {
+                sql.append("AND B.VNAME LIKE '%").append(input.getSearch().get("visitorName").toString().toUpperCase()).append("%' ");
             }
             Query query = getCurrentSession().createSQLQuery(sql.toString())
                     .setFirstResult(input.getOffset())
@@ -213,7 +220,7 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                         getParam = "A.VMASTERNO";
                         break;
                     case "status":
-                        getParam = "A.VSTATUS";
+                        getParam = "VSTATUS";
                         break;
                     case "visitorType":
                         getParam = "VTYPE";
