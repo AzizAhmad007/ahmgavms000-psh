@@ -51,16 +51,30 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                 + "(SELECT C.VDESC "
                 + "FROM AHMMOSCD_MSTAGPLANTS C "
                 + "WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTID, A.VLOC, A.VLOCSPEC, "
-                + "(SELECT D.VITEMNAME "
+                + "(SELECT D.VITEMDESC "
                 + "FROM AHMMOERP_DTLSETTINGS D "
                 + "WHERE D.RSET_VID = 'VMS_VST2' "
-                + "AND D.VITEMCODE = A.VTYPE) VTYPE, A.VPURPOSE, A.VSTATUS, B.VNAME, B.VCOMPANY, B.NQUOTA, B.VINVITNO "
+                + "AND D.VITEMCODE = A.VTYPE) VTYPE, A.VPURPOSE, "
+                + "(CASE " 
+                + "WHEN TRUNC(A.DPLEND) < TRUNC(SYSDATE) THEN " 
+                + "    'TIDAK AKTIF' " 
+                + "WHEN A.VSTATUS = 'Y' THEN " 
+                + "    'AKTIF' " 
+                + "WHEN A.VSTATUS = 'D' THEN " 
+                + "    'DRAFT' " 
+                + "ELSE " 
+                + "    '-' " 
+                + "END) VSTATUS, B.VNAME, B.VCOMPANY, B.NQUOTA, B.VINVITNO "
                 + "FROM AHMGAVMS_HDRINVITS A "
                 + "JOIN AHMGAVMS_HDRCHIEFS B "
                 + "ON A.VMASTERNO = B.VMASTERNO "
                 + "WHERE 1 = 1 ");
         if (!input.getSearch().get("status").toString().equalsIgnoreCase("")) {
-            sql.append("AND A.VSTATUS = '").append(input.getSearch().get("status").toString().toUpperCase()).append("' ");
+            if (input.getSearch().get("status").toString().equalsIgnoreCase("N")) {
+                sql.append("AND TRUNC(A.DPLEND) < TRUNC(SYSDATE) ");
+            } else {
+                sql.append("AND A.VSTATUS = '").append(input.getSearch().get("status").toString().toUpperCase()).append("' ");
+            }
         }
         if (!input.getSearch().get("visitorType").toString().equalsIgnoreCase("")) {
             sql.append("AND A.VTYPE = '").append(input.getSearch().get("visitorType").toString().toUpperCase()).append("' ");
@@ -86,6 +100,9 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
         }
         if (!input.getSearch().get("masterNo").toString().equalsIgnoreCase("")) {
             sql.append("AND A.VMASTERNO LIKE '%").append(input.getSearch().get("masterNo").toString().toUpperCase()).append("%' ");
+        }
+        if (!input.getSearch().get("visitorName").toString().equalsIgnoreCase("")) {
+            sql.append("AND B.VNAME LIKE '%").append(input.getSearch().get("visitorName").toString().toUpperCase()).append("%' ");
         }
         voSetter(input);
         orderClause(input, sql, sortMap, getParam);

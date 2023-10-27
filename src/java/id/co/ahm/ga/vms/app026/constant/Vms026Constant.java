@@ -21,7 +21,7 @@ public class Vms026Constant {
             + "FROM AHMMOSCD_MSTAGPLANTS "
             + "ORDER BY VPLANTVAR2");
     
-    public static final StringBuilder LOV_VISITORTYPE = new StringBuilder("SELECT VITEMCODE, VITEMNAME "
+    public static final StringBuilder LOV_VISITORTYPE = new StringBuilder("SELECT VITEMCODE, VITEMDESC "
             + "FROM AHMMOERP_DTLSETTINGS "
             + "WHERE RSET_VID = 'VMS_VST2'");
     
@@ -37,6 +37,5 @@ public class Vms026Constant {
     
     public static final StringBuilder LOV_STATUS = new StringBuilder("SELECT VITEMCODE, VITEMNAME "
             + "FROM AHMMOERP_DTLSETTINGS "
-            + "WHERE RSET_VID = 'VMS_STAT' "
-            + "AND VITEMCODE NOT IN('N')");
+            + "WHERE RSET_VID = 'VMS_STAT'");
 }
