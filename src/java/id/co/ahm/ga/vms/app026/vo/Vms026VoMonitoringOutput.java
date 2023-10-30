@@ -29,6 +29,10 @@ public class Vms026VoMonitoringOutput {
     private String company;
     private Integer totalQuota;
     private String picAhm;
+    private String visitorTypeCode;
+    private String plantCode;
+    private String email;
+    private String noHp;
     private int rowNum;
 
     public String getMasterNo() {
@@ -166,4 +170,38 @@ public class Vms026VoMonitoringOutput {
     public void setRowNum(int rowNum) {
         this.rowNum = rowNum;
     }
+
+    public String getVisitorTypeCode() {
+        return visitorTypeCode;
+    }
+
+    public void setVisitorTypeCode(String visitorTypeCode) {
+        this.visitorTypeCode = visitorTypeCode;
+    }
+
+    public String getPlantCode() {
+        return plantCode;
+    }
+
+    public void setPlantCode(String plantCode) {
+        this.plantCode = plantCode;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNoHp() {
+        return noHp;
+    }
+
+    public void setNoHp(String noHp) {
+        this.noHp = noHp;
+    }
+    
+    
 }

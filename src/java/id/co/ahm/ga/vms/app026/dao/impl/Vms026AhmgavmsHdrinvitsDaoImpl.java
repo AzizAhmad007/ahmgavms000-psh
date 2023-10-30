@@ -50,11 +50,11 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
         StringBuilder sql = new StringBuilder("SELECT A.VMASTERNO, A.DPLSTART, A.DPLEND, A.VNRPPIC, "
                 + "(SELECT C.VDESC "
                 + "FROM AHMMOSCD_MSTAGPLANTS C "
-                + "WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTID, A.VLOC, A.VLOCSPEC, "
+                + "WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTDESC, A.VLOC, A.VLOCSPEC, "
                 + "(SELECT D.VITEMDESC "
                 + "FROM AHMMOERP_DTLSETTINGS D "
                 + "WHERE D.RSET_VID = 'VMS_VST2' "
-                + "AND D.VITEMCODE = A.VTYPE) VTYPE, A.VPURPOSE, "
+                + "AND D.VITEMCODE = A.VTYPE) VTYPEDESC, A.VPURPOSE, "
                 + "(CASE " 
                 + "WHEN TRUNC(A.DPLEND) < TRUNC(SYSDATE) THEN " 
                 + "    'TIDAK AKTIF' " 
@@ -64,7 +64,7 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                 + "    'DRAFT' " 
                 + "ELSE " 
                 + "    '-' " 
-                + "END) VSTATUS, B.VNAME, B.VCOMPANY, B.NQUOTA, B.VINVITNO "
+                + "END) VSTATUS, B.VNAME, B.VCOMPANY, B.NQUOTA, B.VINVITNO, A.VTYPE, A.VPLANTID, B.VEMAIL, B.VNOHP "
                 + "FROM AHMGAVMS_HDRINVITS A "
                 + "JOIN AHMGAVMS_HDRCHIEFS B "
                 + "ON A.VMASTERNO = B.VMASTERNO "
@@ -136,6 +136,11 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                     vo.setTotalQuota(Integer.valueOf(quota.intValueExact()));
                     vo.setRowNum(i);
                     vo.setInvitNo((String) obj[13]);
+                    vo.setVisitorTypeCode((String) obj[14]);
+                    vo.setPlantCode((String) obj[15]);
+                    vo.setEmail((String) obj[16]);
+                    vo.setNoHp((String) obj[17]);
+                    
                     i++;
                     vos.add(vo);
                 }
@@ -159,6 +164,7 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                     sql.append("AND TRUNC(A.DPLEND) < TRUNC(SYSDATE) ");
                 } else {
                     sql.append("AND A.VSTATUS = '").append(input.getSearch().get("status").toString().toUpperCase()).append("' ");
+                    sql.append("AND TRUNC(A.DPLEND) > TRUNC(SYSDATE) + 1 ");
                 }
             }
             if (!input.getSearch().get("visitorType").toString().equalsIgnoreCase("")) {
@@ -198,7 +204,7 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
             return 0;
         }
     }
-    
+
     private void orderClause(DtoParamPaging input, StringBuilder query, Map<String, String> clause, String param) {
         if (input.getSort() != null && !StringUtils.isEmpty(input.getSort())) {
             query.append(" ORDER BY ");
@@ -224,10 +230,10 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                         getParam = "VSTATUS";
                         break;
                     case "visitorType":
-                        getParam = "VTYPE";
+                        getParam = "VTYPEDESC";
                         break;
                     case "plant":
-                        getParam = "VPLANTID";
+                        getParam = "VPLANTDESC";
                         break;
                     case "loc":
                         getParam = "A.VLOC";
