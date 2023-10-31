@@ -169,9 +169,7 @@ public class Vms026ServiceImpl implements Vms026Service{
                     cekExist.setVlocspec(locSpec);
                     cekExist.setVtype(visitorType);
                     cekExist.setVpurpose(purpose);
-                    if (form.equalsIgnoreCase("SUBMIT")) {
-                        cekExist.setVstatus("Y");
-                    }
+                    cekExist.setVstatus("Y");
                     cekExist.setLastModDate(new Date());
                     cekExist.setLastModBy(userId);
                     vms026AhmgavmsHdrinvitsDao.update(cekExist);
@@ -241,9 +239,7 @@ public class Vms026ServiceImpl implements Vms026Service{
                     cekExist.setVlocspec(locSpec);
                     cekExist.setVtype(visitorType);
                     cekExist.setVpurpose(purpose);
-                    if (form.equalsIgnoreCase("SUBMIT")) {
-                        cekExist.setVstatus("D");
-                    }
+                    cekExist.setVstatus("D");
                     cekExist.setLastModDate(new Date());
                     cekExist.setLastModBy(userId);
                     vms026AhmgavmsHdrinvitsDao.update(cekExist);
