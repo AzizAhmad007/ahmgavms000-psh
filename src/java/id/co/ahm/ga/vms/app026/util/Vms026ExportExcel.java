@@ -34,7 +34,7 @@ public class Vms026ExportExcel extends Vms026BaseXlsxStreamingView {
  
         try {
             Map<String, Object> filters = dtoParam.getSearch();
-            String invNo = "All";
+            String masterNo = "All";
             String status = "All";
             String visitorType = "All";
             String plant = "All";
@@ -43,6 +43,7 @@ public class Vms026ExportExcel extends Vms026BaseXlsxStreamingView {
             String purpose = "All";
             String startDateText = "All";
             String endDateText = "All";
+            String nameVisitor = "All";
             String company = "All";
             String totalQuota = "All";
             String picAhm = "All";
@@ -59,7 +60,7 @@ public class Vms026ExportExcel extends Vms026BaseXlsxStreamingView {
                     }
  
                     if (StringUtils.isNotEmpty(valueStr)) {
-                        invNo = valueStr;
+                        masterNo = valueStr;
                     }
                 }
  
@@ -108,21 +109,6 @@ public class Vms026ExportExcel extends Vms026BaseXlsxStreamingView {
                     }
                 }
  
-                if (filter.getKey().equalsIgnoreCase("loc")) {
-                    Object valueObject = filter.getValue();
-                    String valueStr;
- 
-                    if (valueObject == null) {
-                        valueStr = "";
-                    } else {
-                        valueStr = valueObject.toString();
-                    }
- 
-                    if (StringUtils.isNotEmpty(valueStr)) {
-                        loc = valueStr;
-                    }
-                }
- 
                 if (filter.getKey().equalsIgnoreCase("locSpec")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
@@ -135,21 +121,6 @@ public class Vms026ExportExcel extends Vms026BaseXlsxStreamingView {
  
                     if (StringUtils.isNotEmpty(valueStr)) {
                         locSpec = valueStr;
-                    }
-                }
- 
-                if (filter.getKey().equalsIgnoreCase("purpose")) {
-                    Object valueObject = filter.getValue();
-                    String valueStr;
- 
-                    if (valueObject == null) {
-                        valueStr = "";
-                    } else {
-                        valueStr = valueObject.toString();
-                    }
- 
-                    if (StringUtils.isNotEmpty(valueStr)) {
-                        purpose = valueStr;
                     }
                 }
  
@@ -200,24 +171,7 @@ public class Vms026ExportExcel extends Vms026BaseXlsxStreamingView {
                     }
                 }
  
-                if (filter.getKey().equalsIgnoreCase("totalQuota")) {
-                    Object valueObject = filter.getValue();
-                    String valueStr;
- 
-                    if (valueObject == null) {
-                        valueStr = "";
-                    } else {
-                        valueStr = valueObject.toString();
-                    }
- 
-                    if (valueStr.equalsIgnoreCase(" ")) {
-                        totalQuota = "0";
-                    } else if (StringUtils.isNotEmpty(valueStr)) {
-                        totalQuota = valueStr;
-                    }
-                }
- 
-                if (filter.getKey().equalsIgnoreCase("picAhm")) {
+                if (filter.getKey().equalsIgnoreCase("nrppic")) {
                     Object valueObject = filter.getValue();
                     String valueStr;
  
@@ -233,7 +187,23 @@ public class Vms026ExportExcel extends Vms026BaseXlsxStreamingView {
                         picAhm = valueStr;
                     }
                 }
+
+                if (filter.getKey().equalsIgnoreCase("visitorName")) {
+                    Object valueObject = filter.getValue();
+                    String valueStr;
  
+                    if (valueObject == null) {
+                        valueStr = "";
+                    } else {
+                        valueStr = valueObject.toString();
+                    }
+ 
+                    if (valueStr.equalsIgnoreCase(" ")) {
+                        nameVisitor = "-";
+                    } else if (StringUtils.isNotEmpty(valueStr)) {
+                        nameVisitor = valueStr;
+                    }
+                }
             }
  
             //for sheet naming start
@@ -249,9 +219,10 @@ public class Vms026ExportExcel extends Vms026BaseXlsxStreamingView {
             sheet.setColumnWidth(6, 7500);      //Purpose
             sheet.setColumnWidth(7, 7500);      //Start Date
             sheet.setColumnWidth(8, 7500);      //End Date
-            sheet.setColumnWidth(9, 7500);      //Company
-            sheet.setColumnWidth(10, 7500);     //Total Quota
-            sheet.setColumnWidth(11, 7500);     //PIC AHM
+            sheet.setColumnWidth(9, 10000);     //PIC Pengunjung Utama
+            sheet.setColumnWidth(10, 7500);      //Company
+            sheet.setColumnWidth(11, 7500);     //Total Quota
+            sheet.setColumnWidth(12, 7500);     //PIC AHM
  
             Font headerFont = sheet.getWorkbook().createFont();
             headerFont.setBold(true);
@@ -384,15 +355,15 @@ public class Vms026ExportExcel extends Vms026BaseXlsxStreamingView {
             rownum = rownum + 2;
  
             Row rowFilter = sheet.createRow(rownum++);
-            createCell(rowFilter, "Invitation No", col++, styleFilter1);
-            createCell(rowFilter, invNo, col++, styleFilter2WithWrap);
+            createCell(rowFilter, "Nomor Undangan", col++, styleFilter1);
+            createCell(rowFilter, masterNo, col++, styleFilter2WithWrap);
             createCell(rowFilter, "Status", col++, styleFilter1);
             createCell(rowFilter, status, col++, styleFilter2WithWrap);
  
             col = 0;
  
             rowFilter = sheet.createRow(rownum++);
-            createCell(rowFilter, "Visitor Type", col++, styleFilter1);
+            createCell(rowFilter, "Jenis Pengunjung", col++, styleFilter1);
             createCell(rowFilter, visitorType, col++, styleFilter2WithWrap);
             createCell(rowFilter, "Plant", col++, styleFilter1);
             createCell(rowFilter, plant, col++, styleFilter2WithWrap);
@@ -400,44 +371,59 @@ public class Vms026ExportExcel extends Vms026BaseXlsxStreamingView {
             col = 0;
  
             rowFilter = sheet.createRow(rownum++);
-            createCell(rowFilter, "Location", col++, styleFilter1);
+            createCell(rowFilter, "Lokasi", col++, styleFilter1);
             createCell(rowFilter, loc, col++, styleFilter2WithWrap);
-            createCell(rowFilter, "Specific Location", col++, styleFilter1);
+            createCell(rowFilter, "Lokasi Spesifik", col++, styleFilter1);
             createCell(rowFilter, locSpec, col++, styleFilter2WithWrap);
  
             col = 0;
  
             rowFilter = sheet.createRow(rownum++);
-            createCell(rowFilter, "Start Date", col++, styleFilter3);
+            createCell(rowFilter, "Tujuan ", col++, styleFilter3);
+            createCell(rowFilter, purpose, col++, styleFilter2WithWrap);
+            createCell(rowFilter, "Tanggal Mulai", col++, styleFilter3);
             createCell(rowFilter, startDateText, col++, styleFilter2WithWrap);
-            createCell(rowFilter, "EndDate", col++, styleFilter3);
-            createCell(rowFilter, endDateText, col++, styleFilter2WithWrap);
  
             col = 0;
  
             rowFilter = sheet.createRow(rownum++);
-            createCell(rowFilter, "Company", col++, styleFilter3);
+            createCell(rowFilter, "Tanggal Selesai", col++, styleFilter3);
+            createCell(rowFilter, endDateText, col++, styleFilter2WithWrap);
+            createCell(rowFilter, "Nama Pengunjung Utama", col++, styleFilter3);
+            createCell(rowFilter, nameVisitor, col++, styleFilter2WithWrap);
+            
+            col = 0;
+ 
+            rowFilter = sheet.createRow(rownum++);
+            createCell(rowFilter, "Perusahaan", col++, styleFilter3);
             createCell(rowFilter, company, col++, styleFilter2WithWrap);
-            createCell(rowFilter, "PIC AHM", col++, styleFilter3);
+            createCell(rowFilter, "Kuota", col++, styleFilter3);
+            createCell(rowFilter, totalQuota, col++, styleFilter2WithWrap);
+            
+            col = 0;
+ 
+            rowFilter = sheet.createRow(rownum++);
+            createCell(rowFilter, "Pembuat Undangan", col++, styleFilter3);
             createCell(rowFilter, picAhm, col++, styleFilter2WithWrap);
  
             col = 0;
             rownum = rownum + 1;
  
             Row rowHeaderTable = sheet.createRow(rownum++);
-            createCell(rowHeaderTable, "Invitation No", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Nomor Undangan", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Status", col++, styleHeaderTable1);
-            createCell(rowHeaderTable, "Visitor Type", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Jenis Pengunjung", col++, styleHeaderTable1);
             createCell(rowHeaderTable, "Plant", col++, styleHeaderTable1);
-            createCell(rowHeaderTable, "Location", col++, styleHeaderTable1);
-            createCell(rowHeaderTable, "Specific Location", col++, styleHeaderTable1);
-            createCell(rowHeaderTable, "Purpose", col++, styleHeaderTable1);
-            createCell(rowHeaderTable, "Start Date", col++, styleHeaderTable1);
-            createCell(rowHeaderTable, "End Date", col++, styleHeaderTable1);
-            createCell(rowHeaderTable, "Company", col++, styleHeaderTable1);
-            createCell(rowHeaderTable, "Total Kuota", col++, styleHeaderTable1);
-            createCell(rowHeaderTable, "PIC AHM", col++, styleHeaderTable1);
- 
+            createCell(rowHeaderTable, "Lokasi", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Lokasi Spesifik", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Tujuan", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Tanggal Mulai", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Tanggal Selesai", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Nama Pengunjung Utama", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Perusahaan", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Kuota", col++, styleHeaderTable1);
+            createCell(rowHeaderTable, "Pembuat Undangan", col++, styleHeaderTable1);
+            
             for (Vms026VoMonitoringOutput item : data) {
                 col = 0;
                 
@@ -450,7 +436,7 @@ public class Vms026ExportExcel extends Vms026BaseXlsxStreamingView {
                 
                 Row rowContentData = sheet.createRow(rownum++);
  
-                createCell(rowContentData, item.getInvitNo(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, item.getMasterNo(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getStatus(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getVisitorType(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getPlant(), col++, styleContentTable1WithWrap);
@@ -459,6 +445,7 @@ public class Vms026ExportExcel extends Vms026BaseXlsxStreamingView {
                 createCell(rowContentData, item.getPurpose(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getStartDateText(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getEndDateText(), col++, styleContentTable1WithWrap);
+                createCell(rowContentData, item.getName(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getCompany(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getTotalQuota(), col++, styleContentTable1WithWrap);
                 createCell(rowContentData, item.getPicAhm(), col++, styleContentTable1WithWrap);

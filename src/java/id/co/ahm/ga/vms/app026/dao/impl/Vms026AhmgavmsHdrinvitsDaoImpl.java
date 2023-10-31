@@ -105,6 +105,9 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
         if (!input.getSearch().get("visitorName").toString().equalsIgnoreCase("")) {
             sql.append("AND B.VNAME LIKE '%").append(input.getSearch().get("visitorName").toString().toUpperCase()).append("%' ");
         }
+        if (!input.getSearch().get("locSpec").toString().equalsIgnoreCase("")) {
+            sql.append("AND A.VLOC = '").append(input.getSearch().get("locSpec").toString().toUpperCase()).append("' ");
+        }
         voSetter(input);
         orderClause(input, sql, sortMap, getParam);
         Query query = getCurrentSession().createSQLQuery(sql.toString())
@@ -194,6 +197,9 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
             }
             if (!input.getSearch().get("visitorName").toString().equalsIgnoreCase("")) {
                 sql.append("AND B.VNAME LIKE '%").append(input.getSearch().get("visitorName").toString().toUpperCase()).append("%' ");
+            }
+            if (!input.getSearch().get("locSpec").toString().equalsIgnoreCase("")) {
+                sql.append("AND A.VLOC = '").append(input.getSearch().get("locSpec").toString().toUpperCase()).append("' ");
             }
             Query query = getCurrentSession().createSQLQuery(sql.toString())
                     .setFirstResult(input.getOffset())

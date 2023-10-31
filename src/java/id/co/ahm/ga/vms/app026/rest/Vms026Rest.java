@@ -199,24 +199,24 @@ public class Vms026Rest {
     
     @RequestMapping(value = "export-excel", method = RequestMethod.GET)
     public ModelAndView exportInvitation(@RequestParam(name = "token", defaultValue = "") String token,
-            @RequestParam(name = "in") String invNo,
+            @RequestParam(name = "in") String masterNo,
             @RequestParam(name = "st") String status,
             @RequestParam(name = "vt") String visitorType,
             @RequestParam(name = "pl") String plant,
-            @RequestParam(name = "lc") String loc,
             @RequestParam(name = "ls") String locSpec,
-            @RequestParam(name = "pr") String purpose,
             @RequestParam(name = "sd") String startDate,
             @RequestParam(name = "ed") String endDate,
+            @RequestParam(name = "nm") String nameVisitor,
             @RequestParam(name = "cp") String company,
-            @RequestParam(name = "tq") String totalQuota,
             @RequestParam(name = "pa") String picAhm,
             @RequestParam(name = "sortCol") String sortCol,
             @RequestParam(name = "sort") String sort) {
 
         VoUserCred user = tokenPshUtil.getUserCred(token);
         String nrp;
-        if (user == null) {
+        if (!picAhm.toString().equalsIgnoreCase("")) {
+            nrp = picAhm;
+        } else if (user == null) {
             nrp = "DEVELOPER";
         } else {
             nrp = user.getUserid();
@@ -233,18 +233,16 @@ public class Vms026Rest {
         }
 
         Map<String, Object> search = new HashMap<>();
-        search.put("invNo", invNo);
+        search.put("masterNo", masterNo);
         search.put("status", status);
         search.put("visitorType", visitorType);
         search.put("plant", plant);
-        search.put("loc", loc);
         search.put("locSpec", locSpec);
-        search.put("purpose", purpose);
         search.put("startDate", startDate);
         search.put("endDate", endDate);
         search.put("company", company);
-        search.put("totalQuota", totalQuota);
-        search.put("picAhm", nrp);
+        search.put("nrppic", nrp);
+        search.put("visitorName", nameVisitor);
 
         DtoParamPaging dtoParam = new DtoParamPaging();
         dtoParam.setOffset(0);
