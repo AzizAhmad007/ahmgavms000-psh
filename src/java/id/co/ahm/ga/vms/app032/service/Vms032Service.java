@@ -27,5 +27,7 @@ public interface Vms032Service {
     
     public DtoResponseWorkspace showType(DtoParamPaging input);
     
+    public DtoResponseWorkspace showDocType(DtoParamPaging input);
+    
     public DtoResponseWorkspace deleteDeclaration(DtoParamPaging input);
 }

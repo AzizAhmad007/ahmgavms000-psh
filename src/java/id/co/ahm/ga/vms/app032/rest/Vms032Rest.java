@@ -69,6 +69,15 @@ public class Vms032Rest {
         return vms032Service.showType(input);
     }
     
+    @RequestMapping(value = "dropdown-doc", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace getTypeDoc(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody DtoParamPaging input) {
+        return vms032Service.showDocType(input);
+    }
+    
 //    @RequestMapping(value = "upload-test", method = RequestMethod.POST,
 //            consumes = {MediaType.APPLICATION_JSON_VALUE},
 //            produces = MediaType.APPLICATION_JSON_VALUE)

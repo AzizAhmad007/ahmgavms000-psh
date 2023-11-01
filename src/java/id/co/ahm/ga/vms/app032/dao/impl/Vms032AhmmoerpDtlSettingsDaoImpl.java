@@ -67,4 +67,24 @@ public class Vms032AhmmoerpDtlSettingsDaoImpl extends DefaultHibernateDao<Ahmmoe
         return vos;
     }
 
+    @Override
+    public List<Vms032VoLov> lovDocType(DtoParamPaging input) {
+        StringBuilder sql = new StringBuilder(Vms032Constant.LOV_DOC_TYPE_DECLARATION);
+        SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
+        List<Object[]> list = sqlQuery.list();
+        List<Vms032VoLov> vos = new ArrayList<Vms032VoLov>();
+        if (list.size() > 0) {
+            Object[] obj;
+            for(Object object : list) {
+                obj = (Object[]) object;
+                Vms032VoLov vo = new Vms032VoLov();
+                vo.setItemCode((String) obj[0]);
+                vo.setItemName((String) obj[1]);
+                
+                vos.add(vo);
+            }
+        }
+        return vos;
+    }
+
 }

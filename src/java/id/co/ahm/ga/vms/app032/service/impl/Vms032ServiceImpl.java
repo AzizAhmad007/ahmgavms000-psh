@@ -172,6 +172,16 @@ public class Vms032ServiceImpl implements Vms032Service {
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, null, null);
         }
     }
+
+    @Override
+    public DtoResponseWorkspace showDocType(DtoParamPaging input) {
+        try {
+            List<Vms032VoLov> data = vms032AhmmoerpDtlsettingsDao.lovDocType(input);
+            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, data);
+        } catch (Exception e) {
+            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, null, null);
+        }
+    }
     
         
         

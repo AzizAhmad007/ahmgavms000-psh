@@ -20,4 +20,5 @@ import java.util.List;
 public interface Vms032AhmmoerpDtlsettingsDao extends DefaultDao<AhmmoerpDtlsettings, AhmmoerpDtlsettingsPk> {
     public List<Vms032VoLov> lovStatusType(DtoParamPaging input);
     public List<Vms032VoLov> lovDecType(DtoParamPaging input);
+    public List<Vms032VoLov> lovDocType(DtoParamPaging input);
 }

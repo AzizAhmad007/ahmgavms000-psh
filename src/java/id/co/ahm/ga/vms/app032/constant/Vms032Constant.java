@@ -20,6 +20,9 @@ public class Vms032Constant {
     public static final StringBuilder LOV_TYPE_DECLARATION = new StringBuilder("SELECT VITEMCODE, VITEMNAME "
             + "FROM AHMMOERP_DTLSETTINGS "
             + "WHERE RSET_VID = 'VMS_DECLR'");
+    public static final StringBuilder LOV_DOC_TYPE_DECLARATION = new StringBuilder("SELECT VITEMCODE, VITEMNAME "
+            + "FROM AHMMOERP_DTLSETTINGS "
+            + "WHERE RSET_VID = 'VMS_DOCTYP'");
 //    public static final StringBuilder LOV_PLANTS = new StringBuilder("SELECT DISTINCT VPLANTVAR2 "
 //            + "FROM AHMMOSCD_MSTAGPLANTS "
 //            + "ORDER BY VPLANTVAR2");
