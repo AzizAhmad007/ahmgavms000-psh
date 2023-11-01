@@ -167,9 +167,8 @@ public class Vms030ServiceImpl implements Vms030Service {
             String company = AhmStringUtil.hasValue(input.getSearch().get("company")) ? (input.getSearch().get("company") + "").toUpperCase() : "";
             String status = AhmStringUtil.hasValue(input.getSearch().get("status")) ? (input.getSearch().get("status") + "").toUpperCase() : "";
             String nrp = AhmStringUtil.hasValue(input.getSearch().get("nrp")) ? (input.getSearch().get("nrp") + "").toUpperCase() : "";
-            Date dateStart = DateUtil.stringToDate((String) input.getSearch().get("dateStart"), "dd-MM-yyyy");
-            Date dateEnd = DateUtil.stringToDate((String) input.getSearch().get("dateEnd"), "dd-MM-yyyy");
-            
+            Date dateStart = DateUtil.stringToDate((String) input.getSearch().get("dateStart"), "dd-MMM-yyyy");
+            Date dateEnd = DateUtil.stringToDate((String) input.getSearch().get("dateEnd"), "dd-MMM-yyyy");
             String userId;
             if (user == null) {
                 userId = "DEVELOPER";
@@ -254,8 +253,8 @@ public class Vms030ServiceImpl implements Vms030Service {
             String company = AhmStringUtil.hasValue(input.getSearch().get("company")) ? (input.getSearch().get("company") + "").toUpperCase() : "";
             String status = AhmStringUtil.hasValue(input.getSearch().get("status")) ? (input.getSearch().get("status") + "").toUpperCase() : "";
             String nrp = AhmStringUtil.hasValue(input.getSearch().get("nrp")) ? (input.getSearch().get("nrp") + "").toUpperCase() : "";
-            Date dateStart = DateUtil.stringToDate((String) input.getSearch().get("dateStart"), "dd-MM-yyyy");
-            Date dateEnd = DateUtil.stringToDate((String) input.getSearch().get("dateEnd"), "dd-MM-yyyy");
+            Date dateStart = DateUtil.stringToDate((String) input.getSearch().get("dateStart"), "dd-MMM-yyyy");
+            Date dateEnd = DateUtil.stringToDate((String) input.getSearch().get("dateEnd"), "dd-MMM-yyyy");
             
             String userId;
             if (user == null) {

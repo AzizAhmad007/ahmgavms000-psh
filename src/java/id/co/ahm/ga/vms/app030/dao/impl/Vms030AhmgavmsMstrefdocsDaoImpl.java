@@ -35,7 +35,7 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
     
     @Override
     public List<Vms030VoTableResult> getTable(DtoParamPaging input) {
-        
+        List<Vms030VoTableResult> result = new ArrayList<>();
         Map<String, String> sortMap = new HashMap<>();
         
         sortMap.put("ahmgavms030VisitorTypeSort", "");
@@ -55,34 +55,37 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
         String company = AhmStringUtil.hasValue(input.getSearch().get("company")) ? (input.getSearch().get("company") + "").toUpperCase() : "";
         String status = AhmStringUtil.hasValue(input.getSearch().get("status")) ? (input.getSearch().get("status") + "").toUpperCase() : "";
         String nrp = AhmStringUtil.hasValue(input.getSearch().get("nrp")) ? (input.getSearch().get("nrp") + "").toUpperCase() : "";
-        String email = AhmStringUtil.hasValue(input.getSearch().get("nrp")) ? (input.getSearch().get("nrp") + "").toUpperCase() : "";
-        String docType = AhmStringUtil.hasValue(input.getSearch().get("email")) ? (input.getSearch().get("email") + "").toUpperCase() : "";
+        String email = AhmStringUtil.hasValue(input.getSearch().get("email")) ? (input.getSearch().get("email") + "").toLowerCase() : "";
+        String docType = AhmStringUtil.hasValue(input.getSearch().get("docType")) ? (input.getSearch().get("docType") + "").toUpperCase() : "";
         String dateStart = AhmStringUtil.hasValue(input.getSearch().get("dateStart")) ? (input.getSearch().get("dateStart") + "").toUpperCase() : "";
         String dateEnd = AhmStringUtil.hasValue(input.getSearch().get("dateEnd")) ? (input.getSearch().get("dateEnd") + "").toUpperCase() : "";
         
         StringBuilder sql = new StringBuilder();
         
-        sql.append("SELECT DISTINCT "
-                + "A.VTYPE AS VTYPE, "
-                + "A.VSTATUS AS VSTATUS, "
-                + "A.VREFDOCNO AS VREFDOCNO, "
-                + "A.VWORKDESC AS VWORKDESC, "
-                + "'MEMO' VDOCTYPE, "
-                + "B.VDESC AS VDESC, "
-                + "A.VCOMPANY AS VCOMPANY, "
-                + "A.VPICNRP AS VPICNRP, "
-                + "C.VEMAIL AS VEMAIL, "
-                + "A.DWORKSTART AS DWORKSTART, "
-                + "A.DWORKEND AS DWORKEND "
-        );
+        sql.append("SELECT "
+                + "(SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "     WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
+                + "     AND B.VITEMCODE = A.VTYPE) VTYPEDESC, "
+                + "(SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "     WHERE B.RSET_VID = 'VMS_STAT' "
+                + "     AND B.VITEMCODE = A.VSTATUS) VSTATUS, "
+                + "A.VREFDOCNO, "
+                + "A.VWORKDESC, "
+                + "(SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "     WHERE B.RSET_VID = 'VMS_TYPDOC_SI' "
+                + "     AND B.VITEMCODE = 'MEMO') VDOCTYPE, "
+                + "(SELECT C.VDESC FROM AHMMOSCD_MSTAGPLANTS C "
+                + "     WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTDESC, "
+                + "A.VCOMPANY, "
+                + "A.VPICNRP, "
+                + "D.VEMAIL, "
+                + "A.DWORKSTART, "
+                + "A.DWORKEND ");
         
         sql.append("FROM AHMGAVMS_MSTREFDOCS A ");
         
-        sql.append("INNER JOIN AHMMOSCD_MSTAGPLANTS B "
-                + "ON A.VPLANTID = B.VPLANTVAR2 ");
-        
-        sql.append("INNER JOIN AHMMOERP_MSTKARYAWANS C "
-                + "ON A.VPICNRP = TO_CHAR (C.IIDNRP) ");
+        sql.append("JOIN AHMMOERP_MSTKARYAWANS D "
+                + "ON A.VPICNRP = D.IIDNRP ");
         
         sql.append("WHERE 1 = 1 ");
         
@@ -91,180 +94,207 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                     .append(visitorType)
                     .append("' ");
         }
-        if (!StringUtils.isBlank(noDoc)) {
-            sql.append("AND A.VREFDOCNO = '")
-                    .append(noDoc)
-                    .append("' ");
-        }
         if (!StringUtils.isBlank(status)) {
-            sql.append("AND A.VSTATUS = '")
-                    .append(status)
-                    .append("' ");
+            if (status.equalsIgnoreCase("N")) {
+                sql.append("AND A.VSTATUS = 'N' ");
+            }
+            if (status.equalsIgnoreCase("Y")) {
+                sql.append("AND A.VSTATUS = 'Y' ");
+            }
+            if (status.equalsIgnoreCase("D")) {
+                sql.append("AND A.VSTATUS = 'D' ");
+            }
+        }
+        if (!StringUtils.isBlank(noDoc)) {
+            if (noDoc.equalsIgnoreCase("MEMO")) {
+                sql.append("AND A.VREFDOCNO LIKE '%MEMO%'");
+            }
+            else {
+                sql.append("AND A.VREFDOCNO LIKE '%-%'");
+            }
         }
         if (!StringUtils.isBlank(docType)) {
-            sql.append("AND A.VREFDOCNO LIKE '%")
-                    .append(docType)
-                    .append("%' ");
+            if (docType.equalsIgnoreCase("MEMO")) {
+                sql.append("AND A.VREFDOCNO LIKE '%MEMO%'");
+            }
+            else {
+                sql.append("AND A.VREFDOCNO LIKE '%-%'");
+            }
         }
         if (!StringUtils.isBlank(plant)) {
-            sql.append("AND B.VDESC = '")
+            sql.append("AND A.VPLANTID = '")
                     .append(plant)
                     .append("' ");
         }
         if (!StringUtils.isBlank(company)) {
-            sql.append("AND A.VCOMPANY = '")
+            sql.append("AND A.VCOMPANY LIKE '%")
                     .append(company)
-                    .append("' ");
+                    .append("%' ");
         }
         if (!StringUtils.isBlank(nrp)) {
-            sql.append("AND A.VPICNRP = '")
+            sql.append("AND A.VPICNRP LIKE '%")
                     .append(nrp)
-                    .append("' ");
+                    .append("%' ");
         }
-        
-        if (!StringUtils.isBlank(dateStart) || !StringUtils.isBlank(dateEnd)) {
-            sql.append(" AND (");
-
-            if (!StringUtils.isBlank(dateStart)) {
-                sql.append(" ('")
-                        .append(dateStart)
-                        .append("' BETWEEN A.DWORKSTART AND A.DWORKEND)");
-            }
-            if (!StringUtils.isBlank(dateEnd) && StringUtils.isBlank(dateStart)) {
-                sql.append(" ('")
-                        .append(dateEnd)
-                        .append("' BETWEEN A.DWORKSTART AND A.DWORKEND)");
-            } else {
-                sql.append(" OR ('")
-                        .append(dateEnd)
-                        .append("' BETWEEN A.DWORKSTART AND A.DWORKEND)");
-            }
-            if (!StringUtils.isBlank(dateStart) && !StringUtils.isBlank(dateEnd)) {
-                sql.append(" OR (A.DWORKSTART BETWEEN '")
-                        .append(dateStart).append("' AND '").append(dateEnd).append("') ")
-                        .append(" OR (A.DWORKEND BETWEEN '")
-                        .append(dateStart).append("' AND '").append(dateEnd).append("') ");
-            }
-            sql.append(" ) ");
+        if (!StringUtils.isBlank(dateStart)) {
+            sql.append("AND A.DWORKSTART BETWEEN TO_DATE('")
+                .append(dateStart)
+                .append("', 'DD-MM-YYYY') ")
+                .append("AND TO_DATE('")
+                .append(dateEnd)
+                .append("', 'DD-MM-YYYY') ");
         }
-        
+        if (!StringUtils.isBlank(dateEnd)) {
+            sql.append("AND A.DWORKEND BETWEEN TO_DATE('")
+                    .append(dateStart)
+                    .append("', 'DD-MM-YYYY') AND TO_DATE('")
+                    .append(dateEnd)
+                    .append("', 'DD-MM-YYYY') ");
+        }
         if (!StringUtils.isBlank(email)) {
-            sql.append("AND C.VEMAIL = '")
+            sql.append("AND D.VEMAIL LIKE '%")
                     .append(email)
-                    .append("' ");
+                    .append("%' ");
         }
         
         sql.append("UNION ");
         
-        sql.append("SELECT DISTINCT "
-                + "'KONTRAKTOR' VTYPE, "
-                + "'AKTIF' VSTATUS, "
-                + "A.VNOIKP AS VREFDOCNO, "
+        sql.append("SELECT "
+                + "(SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "     WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
+                + "     AND B.VITEMCODE = 'KTR') VTYPEDESC, "
+                + "(CASE "
+                + "     WHEN TRUNC(A.DENDJOB) < TRUNC(SYSDATE) THEN "
+                + "         'TIDAK AKTIF' "
+                + "     WHEN TRUNC(A.DSTARTJOB) < TRUNC(A.DENDJOB) THEN "
+                + "         'AKTIF' "
+                + "     ELSE "
+                + "         '-' "
+                + "END) VSTATUS, "
+                + "A.VIKPID AS VREFDOCNO, "
                 + "A.VPROJDTL AS VWORKDESC, "
-                + "'IKP' VDOCTYPE, "
-                + "B.VDESC AS VDESC, "
+                + "(SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "     WHERE B.RSET_VID = 'VMS_TYPDOC_SI' "
+                + "     AND B.VITEMCODE = 'IKP') VDOCTYPE, "
+                + "(SELECT C.VDESC FROM AHMMOSCD_MSTAGPLANTS C "
+                + "     WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTDESC, "
                 + "A.VSUPPLDESC AS VCOMPANY, "
-                + "TO_CHAR (A.VPICNRPID) AS VPICNRP, "
-                + "C.VEMAIL AS VEMAIL, "
+                + "TO_CHAR(A.VPICNRPID) AS VPICNRP, "
+                + "D.VEMAIL, "
                 + "A.DSTARTJOB AS DWORKSTART, "
                 + "A.DENDJOB AS DWORKEND ");
-        
+     
         sql.append("FROM AHMGAWPM_HDRIKPS A ");
         
-        sql.append("INNER JOIN AHMMOSCD_MSTAGPLANTS B "
-                + "ON A.VPLANTID = B.VPLANTVAR2 ");
-        
-        sql.append("INNER JOIN AHMMOERP_MSTKARYAWANS C "
-                + "ON A.VPICNRPID = TO_CHAR (C.IIDNRP) ");
+        sql.append("JOIN AHMMOERP_MSTKARYAWANS D "
+                + "ON A.VPICNRPID = D.IIDNRP ");
         
         sql.append("WHERE 1 = 1 ");
-        
+        if (!StringUtils.isBlank(visitorType)) {    
+            if (visitorType.equalsIgnoreCase("KTR")) {
+                sql.append("AND A.VIKPID LIKE '%IKP%'");
+            }
+            else {
+                sql.append("AND A.VIKPID LIKE '%-%'");
+            }
+        }
+        if (!StringUtils.isBlank(status)) {
+            if (status.equalsIgnoreCase("N")) {
+                sql.append("AND TRUNC(A.DENDJOB) < TRUNC(SYSDATE) ");
+            }
+            if (status.equalsIgnoreCase("Y")) {
+                sql.append("AND TRUNC(A.DENDJOB) > TRUNC(SYSDATE) + 1 ");
+            }
+            if (status.equalsIgnoreCase("D")) {
+                sql.append("AND A.VIKPID LIKE '%-%'");
+            }
+        }
         if (!StringUtils.isBlank(noDoc)) {
-            sql.append("AND A.VNOIKP = '")
-                    .append(noDoc)
-                    .append("' ");
+            if (noDoc.equalsIgnoreCase("IKP")) {
+                sql.append("AND A.VIKPID LIKE '%IKP%'");
+            }
+            else {
+                sql.append("AND A.VIKPID LIKE '%-%'");
+            }
         }
         if (!StringUtils.isBlank(docType)) {
-            sql.append("AND A.VNOIKP LIKE '%")
-                    .append(docType)
-                    .append("%' ");
+            if (docType.equalsIgnoreCase("IKP")) {
+                sql.append("AND A.VIKPID LIKE '%IKP%'");
+            }
+            else {
+                sql.append("AND A.VIKPID LIKE '%-%'");
+            }
         }
         if (!StringUtils.isBlank(plant)) {
-            sql.append("AND B.VDESC = '")
+            sql.append("AND A.VPLANTID = '")
                     .append(plant)
                     .append("' ");
         }
         if (!StringUtils.isBlank(company)) {
-            sql.append("AND A.VSUPPLDESC = '")
+            sql.append("AND A.VSUPPLDESC LIKE '%")
                     .append(company)
-                    .append("' ");
+                    .append("%' ");
         }
         if (!StringUtils.isBlank(nrp)) {
-            sql.append("AND TO_CHAR (A.VPICNRPID) = '")
+            sql.append("AND A.VPICNRPID LIKE '%")
                     .append(nrp)
-                    .append("' ");
+                    .append("%' ");
         }
-        if (!StringUtils.isBlank(dateStart) || !StringUtils.isBlank(dateEnd)) {
-            sql.append(" AND (");
-
-            if (!StringUtils.isBlank(dateStart)) {
-                sql.append(" ('")
-                        .append(dateStart)
-                        .append("' BETWEEN A.DSTARTJOB AND A.DENDJOB)");
-            }
-            if (!StringUtils.isBlank(dateEnd) && StringUtils.isBlank(dateStart)) {
-                sql.append(" ('")
-                        .append(dateEnd)
-                        .append("' BETWEEN A.DSTARTJOB AND A.DENDJOB)");
-            } else {
-                sql.append(" OR ('")
-                        .append(dateEnd)
-                        .append("' BETWEEN A.DSTARTJOB AND A.DENDJOB)");
-            }
-            if (!StringUtils.isBlank(dateStart) && !StringUtils.isBlank(dateEnd)) {
-                sql.append(" OR (A.DSTARTJOB BETWEEN '")
-                        .append(dateStart).append("' AND '").append(dateEnd).append("') ")
-                        .append(" OR (A.DENDJOB BETWEEN '")
-                        .append(dateStart).append("' AND '").append(dateEnd).append("') ");
-            }
-            sql.append(" ) ");
+        if (!StringUtils.isBlank(dateStart)) {
+            sql.append("AND A.DSTARTJOB BETWEEN TO_DATE('")
+                    .append(dateStart)
+                    .append("', 'DD-MM-YYYY') AND TO_DATE('")
+                    .append(dateEnd)
+                    .append("', 'DD-MM-YYYY') ");
         }
-        
+        if (!StringUtils.isBlank(dateEnd)) {
+            sql.append("AND A.DENDJOB BETWEEN TO_DATE('")
+                    .append(dateStart)
+                    .append("', 'DD-MM-YYYY') AND TO_DATE('")
+                    .append(dateEnd)
+                    .append("', 'DD-MM-YYYY') ");
+        }
         if (!StringUtils.isBlank(email)) {
-            sql.append("AND C.VEMAIL = '")
+            sql.append("AND D.VEMAIL LIKE '%")
                     .append(email)
-                    .append("' ");
+                    .append("%' ");
         }
-        
+
+        voSetter(input);
         orderClause(input, sql, sortMap, getParam);
         
         Query query = getCurrentSession().createSQLQuery(sql.toString())
                 .setFirstResult(input.getOffset())
                 .setMaxResults(input.getLimit());
+        try {
+            List<Object[]> list = query.list();
         
-        List<Object[]> list = query.list();
-        
-        List<Vms030VoTableResult> result = new ArrayList<>();
-        if (list.size() > 0) {
-            Object[] obj;
-            for(Object object : list) {
-                obj = (Object[]) object;
-                Vms030VoTableResult vo = new Vms030VoTableResult();
-                vo.setVisitorType((String) obj[0]);
-                vo.setStatus((String) obj[1]);
-                vo.setNoDoc((String) obj[2]);
-                vo.setWorkDesc((String) obj[3]);
-                vo.setDocType((String) obj[4]);
-                vo.setPlant((String) obj[5]);
-                vo.setCompany((String) obj[6]);
-                vo.setNrp((String) obj[7]);
-                vo.setEmail((String) obj[8]);
-                vo.setDateStart(((Date) obj[9]));
-                vo.setDateStartText(DateUtil.dateToString((Date) obj[9], "dd-MMM-yyyy"));
-                vo.setDateEnd(((Date) obj[10]));
-                vo.setDateEndText(DateUtil.dateToString((Date) obj[10], "dd-MMM-yyyy"));
-                result.add(vo);
+            if (list.size() > 0) {
+                Object[] obj;
+                int i = 0;
+                for(Object object : list) {
+                    obj = (Object[]) object;
+                    Vms030VoTableResult vo = new Vms030VoTableResult();
+                    vo.setVisitorType((String) obj[0]);
+                    vo.setStatus((String) obj[1]);
+                    vo.setNoDoc((String) obj[2]);
+                    vo.setWorkDesc((String) obj[3]);
+                    vo.setDocType((String) obj[4]);
+                    vo.setPlant((String) obj[5]);
+                    vo.setCompany((String) obj[6]);
+                    vo.setNrp((String) obj[7]);
+                    vo.setEmail((String) obj[8]);
+                    vo.setDateStart(((Date) obj[9]));
+                    vo.setDateStartText(DateUtil.dateToString((Date) obj[9], "dd-MMM-yyyy"));
+                    vo.setDateEnd(((Date) obj[10]));
+                    vo.setDateEndText(DateUtil.dateToString((Date) obj[10], "dd-MMM-yyyy"));
+                    
+                    i++;
+                    result.add(vo);
+                }
             }
+        } catch (Exception e) {
+            return result;
         }
         return result;   
     }
@@ -278,8 +308,8 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
             String company = AhmStringUtil.hasValue(input.getSearch().get("company")) ? (input.getSearch().get("company") + "").toUpperCase() : "";
             String status = AhmStringUtil.hasValue(input.getSearch().get("status")) ? (input.getSearch().get("status") + "").toUpperCase() : "";
             String nrp = AhmStringUtil.hasValue(input.getSearch().get("nrp")) ? (input.getSearch().get("nrp") + "").toUpperCase() : "";
-            String email = AhmStringUtil.hasValue(input.getSearch().get("nrp")) ? (input.getSearch().get("nrp") + "").toUpperCase() : "";
-            String docType = AhmStringUtil.hasValue(input.getSearch().get("email")) ? (input.getSearch().get("email") + "").toUpperCase() : "";
+            String email = AhmStringUtil.hasValue(input.getSearch().get("email")) ? (input.getSearch().get("email") + "").toLowerCase() : "";
+            String docType = AhmStringUtil.hasValue(input.getSearch().get("docType")) ? (input.getSearch().get("docType") + "").toUpperCase() : "";
             String dateStart = AhmStringUtil.hasValue(input.getSearch().get("dateStart")) ? (input.getSearch().get("dateStart") + "").toUpperCase() : "";
             String dateEnd = AhmStringUtil.hasValue(input.getSearch().get("dateEnd")) ? (input.getSearch().get("dateEnd") + "").toUpperCase() : "";
 
@@ -289,158 +319,164 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
 
             sql.append("FROM AHMGAVMS_MSTREFDOCS A ");
 
-            sql.append("INNER JOIN AHMMOSCD_MSTAGPLANTS B "
-                    + "ON A.VPLANTID = B.VPLANTVAR2 ");
-
-            sql.append("INNER JOIN AHMMOERP_MSTKARYAWANS C "
-                    + "ON A.VPICNRP = TO_CHAR (C.IIDNRP) ");
+            sql.append("JOIN AHMMOERP_MSTKARYAWANS D "
+                + "ON A.VPICNRP = D.IIDNRP ");
 
             sql.append("WHERE 1 = 1 ");
 
             if (!StringUtils.isBlank(visitorType)) {
                 sql.append("AND A.VTYPE = '")
-                        .append(visitorType)
-                        .append("' ");
-            }
-            if (!StringUtils.isBlank(noDoc)) {
-                sql.append("AND A.VREFDOCNO = '")
-                        .append(noDoc)
-                        .append("' ");
+                .append(visitorType)
+                .append("' ");
             }
             if (!StringUtils.isBlank(status)) {
-                sql.append("AND A.VSTATUS = '")
-                        .append(status)
-                        .append("' ");
+                if (status.equalsIgnoreCase("N")) {
+                    sql.append("AND A.VSTATUS = 'N' ");
+                }
+                if (status.equalsIgnoreCase("Y")) {
+                    sql.append("AND A.VSTATUS = 'Y' ");
+                }
+                if (status.equalsIgnoreCase("D")) {
+                    sql.append("AND A.VSTATUS = 'D' ");
+                }
+            }
+            if (!StringUtils.isBlank(noDoc)) {
+                if (noDoc.equalsIgnoreCase("MEMO")) {
+                    sql.append("AND A.VREFDOCNO LIKE '%MEMO%'");
+                }
+                else {
+                    sql.append("AND A.VREFDOCNO LIKE '%-%'");
+                }
             }
             if (!StringUtils.isBlank(docType)) {
-                sql.append("AND A.VREFDOCNO LIKE '%")
-                        .append(docType)
-                        .append("%' ");
+                if (docType.equalsIgnoreCase("MEMO")) {
+                    sql.append("AND A.VREFDOCNO LIKE '%MEMO%'");
+                }
+                else {
+                    sql.append("AND A.VREFDOCNO LIKE '%-%'");
+                }
             }
             if (!StringUtils.isBlank(plant)) {
-                sql.append("AND B.VDESC = '")
+                sql.append("AND A.VPLANTID = '")
                         .append(plant)
                         .append("' ");
             }
             if (!StringUtils.isBlank(company)) {
-                sql.append("AND A.VCOMPANY = '")
+                sql.append("AND A.VCOMPANY LIKE '%")
                         .append(company)
-                        .append("' ");
+                        .append("%' ");
             }
             if (!StringUtils.isBlank(nrp)) {
-                sql.append("AND A.VPICNRP = '")
+                sql.append("AND A.VPICNRP LIKE '%")
                         .append(nrp)
+                        .append("%' ");
+            }
+            if (!StringUtils.isBlank(dateStart)) {
+                sql.append("AND A.DWORKSTART BETWEEN TO_DATE('")
+                    .append(dateStart)
+                    .append("', 'DD-MM-YYYY') ")
+                    .append("AND TO_DATE('")
+                    .append(dateEnd)
+                    .append("', 'DD-MM-YYYY') ");
+            }
+            if (!StringUtils.isBlank(dateEnd)) {
+                sql.append("AND A.DWORKEND BETWEEN TO_DATE('")
+                        .append(dateStart)
+                        .append("', 'DD-MM-YYYY') AND TO_DATE('")
+                        .append(dateEnd)
+                        .append("', 'DD-MM-YYYY') ");
+            }
+            if (!StringUtils.isBlank(email)) {
+                sql.append("AND D.VEMAIL LIKE '%")
+                        .append(email)
+                        .append("%' ");
+            }
+            
+            sql.append("UNION ");
+
+            sql.append("SELECT COUNT(0) ");
+
+            sql.append("FROM AHMGAWPM_HDRIKPS A ");
+            
+            sql.append("JOIN AHMMOERP_MSTKARYAWANS D "
+                + "ON A.VPICNRPID = D.IIDNRP ");
+            
+            sql.append("WHERE 1 = 1 ");
+            
+            if (!StringUtils.isBlank(visitorType)) {    
+                if (visitorType.equalsIgnoreCase("KTR")) {
+                    sql.append("AND A.VIKPID LIKE '%IKP%'");
+                }
+                else {
+                    sql.append("AND A.VIKPID LIKE '%-%'");
+                }
+            }
+            if (!StringUtils.isBlank(status)) {
+                if (status.equalsIgnoreCase("N")) {
+                    sql.append("AND TRUNC(A.DENDJOB) < TRUNC(SYSDATE) ");
+                }
+                if (status.equalsIgnoreCase("Y")) {
+                    sql.append("AND TRUNC(A.DENDJOB) > TRUNC(SYSDATE) + 1 ");
+                }
+                if (status.equalsIgnoreCase("D")) {
+                    sql.append("AND A.VIKPID LIKE '%-%'");
+                }
+            }
+            if (!StringUtils.isBlank(noDoc)) {
+                if (noDoc.equalsIgnoreCase("IKP")) {
+                    sql.append("AND A.VIKPID LIKE '%IKP%'");
+                }
+                else {
+                    sql.append("AND A.VIKPID LIKE '%-%'");
+                }
+            }
+            if (!StringUtils.isBlank(docType)) {
+                if (docType.equalsIgnoreCase("IKP")) {
+                    sql.append("AND A.VIKPID LIKE '%IKP%'");
+                }
+                else {
+                    sql.append("AND A.VIKPID LIKE '%-%'");
+                }
+            }
+            if (!StringUtils.isBlank(plant)) {
+                sql.append("AND A.VPLANTID = '")
+                        .append(plant)
                         .append("' ");
             }
-
-            if (!StringUtils.isBlank(dateStart) || !StringUtils.isBlank(dateEnd)) {
-                sql.append(" AND (");
-
+            if (!StringUtils.isBlank(company)) {
+                sql.append("AND A.VSUPPLDESC LIKE '%")
+                        .append(company)
+                        .append("%' ");
+            }
+            if (!StringUtils.isBlank(nrp)) {
+                sql.append("AND A.VPICNRPID LIKE '%")
+                        .append(nrp)
+                        .append("%' ");
+            }
             if (!StringUtils.isBlank(dateStart)) {
-                sql.append(" ('")
+                sql.append("AND A.DSTARTJOB BETWEEN TO_DATE('")
                         .append(dateStart)
-                        .append("' BETWEEN A.DWORKSTART AND A.DWORKEND)");
-            }
-            if (!StringUtils.isBlank(dateEnd) && StringUtils.isBlank(dateStart)) {
-                sql.append(" ('")
+                        .append("', 'DD-MM-YYYY') AND TO_DATE('")
                         .append(dateEnd)
-                        .append("' BETWEEN A.DWORKSTART AND A.DWORKEND)");
-            } else {
-                sql.append(" OR ('")
+                        .append("', 'DD-MM-YYYY') ");
+            }
+            if (!StringUtils.isBlank(dateEnd)) {
+                sql.append("AND A.DENDJOB BETWEEN TO_DATE('")
+                        .append(dateStart)
+                        .append("', 'DD-MM-YYYY') AND TO_DATE('")
                         .append(dateEnd)
-                        .append("' BETWEEN A.DWORKSTART AND A.DWORKEND)");
+                        .append("', 'DD-MM-YYYY') ");
             }
-            if (!StringUtils.isBlank(dateStart) && !StringUtils.isBlank(dateEnd)) {
-                sql.append(" OR (A.DWORKSTART BETWEEN '")
-                        .append(dateStart).append("' AND '").append(dateEnd).append("') ")
-                        .append(" OR (A.DWORKEND BETWEEN '")
-                        .append(dateStart).append("' AND '").append(dateEnd).append("') ");
+            if (!StringUtils.isBlank(email)) {
+                sql.append("AND D.VEMAIL LIKE '%")
+                        .append(email)
+                        .append("%' ");
             }
-            sql.append(" ) ");
-        }
-        
-        if (!StringUtils.isBlank(email)) {
-            sql.append("AND C.VEMAIL = '")
-                    .append(email)
-                    .append("' ");
-        }
-        
-        sql.append("UNION ");
-        
-        sql.append("SELECT COUNT(0) ");
-        
-        sql.append("FROM AHMGAWPM_HDRIKPS A ");
-        
-        sql.append("INNER JOIN AHMMOSCD_MSTAGPLANTS B "
-                + "ON A.VPLANTID = B.VPLANTVAR2 ");
-        
-        sql.append("INNER JOIN AHMMOERP_MSTKARYAWANS C "
-                + "ON A.VPICNRPID = TO_CHAR (C.IIDNRP) ");
-        
-        sql.append("WHERE 1 = 1 ");
-        
-        if (!StringUtils.isBlank(noDoc)) {
-            sql.append("AND A.VNOIKP = '")
-                    .append(noDoc)
-                    .append("' ");
-        }
-        if (!StringUtils.isBlank(docType)) {
-            sql.append("AND A.VNOIKP LIKE '%")
-                    .append(docType)
-                    .append("%' ");
-        }
-        if (!StringUtils.isBlank(plant)) {
-            sql.append("AND B.VDESC = '")
-                    .append(plant)
-                    .append("' ");
-        }
-        if (!StringUtils.isBlank(company)) {
-            sql.append("AND A.VSUPPLDESC = '")
-                    .append(company)
-                    .append("' ");
-        }
-        if (!StringUtils.isBlank(nrp)) {
-            sql.append("AND TO_CHAR (A.VPICNRPID) = '")
-                    .append(nrp)
-                    .append("' ");
-        }
-        if (!StringUtils.isBlank(dateStart) || !StringUtils.isBlank(dateEnd)) {
-            sql.append(" AND (");
 
-            if (!StringUtils.isBlank(dateStart)) {
-                sql.append(" ('")
-                        .append(dateStart)
-                        .append("' BETWEEN A.DSTARTJOB AND A.DENDJOB)");
-            }
-            if (!StringUtils.isBlank(dateEnd) && StringUtils.isBlank(dateStart)) {
-                sql.append(" ('")
-                        .append(dateEnd)
-                        .append("' BETWEEN A.DSTARTJOB AND A.DENDJOB)");
-            } else {
-                sql.append(" OR ('")
-                        .append(dateEnd)
-                        .append("' BETWEEN A.DSTARTJOB AND A.DENDJOB)");
-            }
-            if (!StringUtils.isBlank(dateStart) && !StringUtils.isBlank(dateEnd)) {
-                sql.append(" OR (A.DSTARTJOB BETWEEN '")
-                        .append(dateStart).append("' AND '").append(dateEnd).append("') ")
-                        .append(" OR (A.DENDJOB BETWEEN '")
-                        .append(dateStart).append("' AND '").append(dateEnd).append("') ");
-            }
-            sql.append(" ) ");
-        }
-        
-        if (!StringUtils.isBlank(email)) {
-            sql.append("AND C.VEMAIL = '")
-                    .append(email)
-                    .append("' ");
-        }
-             
             Query query = getCurrentSession().createSQLQuery(sql.toString())
-                .setFirstResult(input.getOffset())
-                .setMaxResults(input.getLimit());
+                    .setFirstResult(input.getOffset())
+                    .setMaxResults(input.getLimit());
             List<BigDecimal> list = query.list();
-            
             return (Integer) list.get(0).intValueExact();
         } catch (Exception e) {
             return 0;
@@ -457,4 +493,56 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
         }
     }
     
+
+
+    private void voSetter(DtoParamPaging input) {
+            try {
+                if (input.getSort() == null) {
+
+                } else {
+                    String param = input.getSort();
+
+                    switch (param) {
+                        case "visitorType":
+                            getParam = "VTYPE";
+                            break;
+                        case "status":
+                            getParam = "VSTATUS";
+                            break;
+                        case "noDoc":
+                            getParam = "VREFDOCNO";
+                            break;
+                        case "workDesc":
+                            getParam = "VWORKDESC";
+                            break;
+                        case "docType":
+                            getParam = "VDOCTYPE";
+                            break;        
+                        case "plant":
+                            getParam = "VPLANTDESC";
+                            break;
+                        case "company":
+                            getParam = "VCOMPANY";
+                            break;
+                        case "nrp":
+                            getParam = "VPICNRP";
+                            break;
+                        case "email":
+                            getParam = "VEMAIL";
+                            break;
+                        case "dateStartText":
+                            getParam = "DWORKSTART";
+                            break;
+                        case "dateEndText":
+                            getParam = "DWORKEND";
+                            break;
+                        default:
+                            getParam = null;
+
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 }

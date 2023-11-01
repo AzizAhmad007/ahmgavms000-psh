@@ -23,7 +23,7 @@ public class Vms030VoTableResult {
     private String nrp;
     private String email;
     private Date dateStart;
-    private String dateStartText;
+private String dateStartText;
     private Date dateEnd;
     private String dateEndText;
 
