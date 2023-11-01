@@ -136,9 +136,7 @@ public class Vms026ServiceImpl implements Vms026Service{
                     purpose.equalsIgnoreCase("") || 
                     dateStart.toString().equalsIgnoreCase("") || 
                     dateEnd.toString().equalsIgnoreCase("")) {
-                Map<String, Object> msg = new HashMap<>();
-                msg.put("validate", "Field mandatory tidak boleh kosong");
-                return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, msg, null);
+                return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Field mandatory tidak boleh kosong"), null, null);
             } else {
                 AhmgavmsHdrinvits cekExist = new AhmgavmsHdrinvits();
                 cekExist = vms026AhmgavmsHdrinvitsDao.findOne(masterNo);
@@ -206,9 +204,7 @@ public class Vms026ServiceImpl implements Vms026Service{
                     purpose.equalsIgnoreCase("") || 
                     dateStart.toString().equalsIgnoreCase("") || 
                     dateEnd.toString().equalsIgnoreCase("")) {
-                Map<String, Object> msg = new HashMap<>();
-                msg.put("validate", "Field mandatory tidak boleh kosong");
-                return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, msg, null);
+                return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Field mandatory tidak boleh kosong!"), null, null);
             } else {
                 AhmgavmsHdrinvits cekExist = new AhmgavmsHdrinvits();
                 cekExist = vms026AhmgavmsHdrinvitsDao.findOne(masterNo);
@@ -278,7 +274,7 @@ public class Vms026ServiceImpl implements Vms026Service{
                         || email.equalsIgnoreCase("")
                         || noHp.equalsIgnoreCase("")
                         || quota == 0) {
-                    msg.put("validate", "Field mandatory tidak boleh kosong");
+                    return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Field mandatory tidak boleh kosong!"), null, null);
                 } else {
                     AhmgavmsHdrchiefs cekExist = new AhmgavmsHdrchiefs();
                     cekExist = vms026AhmgavmsHdrchiefsDao.findOne(invitNo);
@@ -302,8 +298,8 @@ public class Vms026ServiceImpl implements Vms026Service{
                     } else {
                         Integer val = vms026AhmgavmsHdrchiefsDao.validateQuota(vo);
                         if (val > quota) {
-                            msg.put("validate", "Quota pada undangan " + invitNo + ""
-                                    + "sudah digunakan sebanyak " + String.valueOf(val) + ".");
+                            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("Quota pada undangan "
+                                    + "" + masterNo + " sudah digunakan sebanyak " + String.valueOf(val) + "."), null, null);
                         }
                         cekExist.setVname(name);
                         cekExist.setVcompany(company);
