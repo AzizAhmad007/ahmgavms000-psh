@@ -74,6 +74,7 @@ public class Vms026AhmmoerpDtlsettingsDaoImpl extends DefaultHibernateDao<Ahmmoe
             ret.put("masterNo", (String) runningNo);
         } else {
             ret.put("masterNo", "1");
+            ret.put("nextNo", "2");
         }
         return ret;
     }

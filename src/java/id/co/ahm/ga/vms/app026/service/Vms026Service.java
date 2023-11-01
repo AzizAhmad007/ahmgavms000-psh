@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package id.co.ahm.ga.vms.app026.service;
+import id.co.ahm.ga.vms.app026.vo.Vms026VoDeleteInvitation;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoSubmitChief;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
@@ -41,7 +42,7 @@ public interface Vms026Service {
 
     public DtoResponseWorkspace showLocation(DtoParamPaging input);
 
-    public DtoResponseWorkspace deleteInvitation(DtoParamPaging input);
-
     public DtoResponseWorkspace getReqBody();
+
+    public DtoResponseWorkspace deleteInvitation(List<Vms026VoDeleteInvitation> input, String token);
 }

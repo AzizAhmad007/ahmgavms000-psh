@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import id.co.ahm.ga.vms.app026.dao.Vms026AhmgavmsHdrinvitsDao;
 import id.co.ahm.ga.vms.app026.dao.Vms026AhmgavmsHdrchiefsDao;
+import id.co.ahm.ga.vms.app026.vo.Vms026VoDeleteInvitation;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoSubmitChief;
 import id.co.ahm.jxf.util.AhmStringUtil;
 import id.co.ahm.jxf.util.DateUtil;
@@ -413,17 +414,21 @@ public class Vms026ServiceImpl implements Vms026Service{
     }
 
     @Override
-    public DtoResponseWorkspace deleteInvitation(DtoParamPaging input) {
+    public DtoResponseWorkspace deleteInvitation(List<Vms026VoDeleteInvitation> input, String token) {
         try {
-            AhmgavmsHdrchiefs chf = new AhmgavmsHdrchiefs();
-            AhmgavmsHdrinvits hdr = new AhmgavmsHdrinvits();
-            String invitNo = AhmStringUtil.hasValue(input.getSearch().get("invitNo")) ? (input.getSearch().get("invitNo") + "").toUpperCase() : "";
-            String masterNo = AhmStringUtil.hasValue(input.getSearch().get("masterNo")) ? (input.getSearch().get("masterNo") + "").toUpperCase() : "";
-            hdr = vms026AhmgavmsHdrinvitsDao.findOne(masterNo);
-            if (hdr.getVstatus().toString().equalsIgnoreCase("DRAFT")) {
+            for (Vms026VoDeleteInvitation vo : input) {
+                AhmgavmsHdrchiefs chf = new AhmgavmsHdrchiefs();
+                
+                String invitNo = vo.getInvitNo();
+                String masterNo;
+                
+                chf = vms026AhmgavmsHdrchiefsDao.findOne(invitNo);
+                masterNo = chf.getVmasterno().toString();
+                
                 vms026AhmgavmsHdrchiefsDao.deleteById(invitNo);
                 vms026AhmgavmsHdrchiefsDao.flush();
-                int count = vms026AhmgavmsHdrchiefsDao.getCountData(input);
+                
+                int count = vms026AhmgavmsHdrchiefsDao.getCountData(masterNo);
                 if (count == 0) {
                     vms026AhmgavmsHdrinvitsDao.deleteById(masterNo);
                     vms026AhmgavmsHdrinvitsDao.flush();

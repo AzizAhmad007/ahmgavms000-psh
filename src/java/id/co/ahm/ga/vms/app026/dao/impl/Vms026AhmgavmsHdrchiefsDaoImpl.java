@@ -7,7 +7,6 @@ package id.co.ahm.ga.vms.app026.dao.impl;
 
 import id.co.ahm.ga.vms.app000.model.AhmgavmsHdrchiefs;
 import id.co.ahm.jxf.dao.DefaultHibernateDao;
-import id.co.ahm.jxf.dto.DtoParamPaging;
 import java.util.List;
 import org.hibernate.SQLQuery;
 import org.springframework.stereotype.Repository;
@@ -37,11 +36,11 @@ public class Vms026AhmgavmsHdrchiefsDaoImpl extends DefaultHibernateDao<Ahmgavms
     }
 
     @Override
-    public int getCountData(DtoParamPaging input) {
+    public int getCountData(String input) {
         try {
             StringBuilder sql = new StringBuilder("SELECT COUNT(0) "
                     + "FROM AHMGAVMS_HDRCHIEFS "
-                    + "WHERE VMASTERNO = '" + input.getSearch().get("masterNo").toString() + "'");
+                    + "WHERE VMASTERNO = '" + input + "'");
             SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
             List<BigDecimal> list = sqlQuery.list();
             return (Integer) list.get(0).intValueExact();

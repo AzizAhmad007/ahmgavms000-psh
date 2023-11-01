@@ -8,6 +8,7 @@ package id.co.ahm.ga.vms.app026.rest;
 import id.co.ahm.ga.vms.app026.service.Vms026Service;
 import id.co.ahm.ga.vms.app026.util.Vms026DateTimeUtil;
 import id.co.ahm.ga.vms.app026.util.Vms026ExportExcel;
+import id.co.ahm.ga.vms.app026.vo.Vms026VoDeleteInvitation;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoMonitoringOutput;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoSubmitChief;
 import id.co.ahm.jxf.constant.StatusMsgEnum;
@@ -131,16 +132,6 @@ public class Vms026Rest {
         return vms026Service.showMonitoring(input);
     }
     
-    @RequestMapping(value = "delete-invitation", method = RequestMethod.POST,
-            consumes = {MediaType.APPLICATION_JSON_VALUE},
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    DtoResponseWorkspace getInvitation(@RequestHeader(value = "token", defaultValue = "") String token,
-            @RequestBody DtoParamPaging input) {
-        VoUserCred user = tokenPshUtil.getUserCred(token);
-        return vms026Service.deleteInvitation(input);
-    }
-    
     @RequestMapping(value = "submit-invitation", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -258,5 +249,15 @@ public class Vms026Rest {
         modelAndView.addObject("data", vms026VoMonitor);
 
         return modelAndView;
+    }
+    
+    @RequestMapping(value = "delete-invitation", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace deleteInvitation(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody List<Vms026VoDeleteInvitation> input) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
+        return vms026Service.deleteInvitation(input, token);
     }
 }

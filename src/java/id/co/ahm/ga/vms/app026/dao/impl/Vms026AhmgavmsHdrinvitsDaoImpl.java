@@ -64,7 +64,8 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                 + "    'DRAFT' " 
                 + "ELSE " 
                 + "    '-' " 
-                + "END) VSTATUS, B.VNAME, B.VCOMPANY, B.NQUOTA, B.VINVITNO, A.VTYPE, A.VPLANTID, B.VEMAIL, B.VNOHP "
+                + "END) VSTATUS, B.VNAME, B.VCOMPANY, B.NQUOTA, B.VINVITNO, A.VTYPE, A.VPLANTID, B.VEMAIL, B.VNOHP, "
+                + "B.VINVLINK "
                 + "FROM AHMGAVMS_HDRINVITS A "
                 + "JOIN AHMGAVMS_HDRCHIEFS B "
                 + "ON A.VMASTERNO = B.VMASTERNO "
@@ -143,6 +144,7 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                     vo.setPlantCode((String) obj[15]);
                     vo.setEmail((String) obj[16]);
                     vo.setNoHp((String) obj[17]);
+                    vo.setLink((String) obj[18]);
                     
                     i++;
                     vos.add(vo);

@@ -33,6 +33,7 @@ public class Vms026VoMonitoringOutput {
     private String plantCode;
     private String email;
     private String noHp;
+    private String link;
     private int rowNum;
 
     public String getMasterNo() {
@@ -202,6 +203,12 @@ public class Vms026VoMonitoringOutput {
     public void setNoHp(String noHp) {
         this.noHp = noHp;
     }
-    
-    
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
 }
