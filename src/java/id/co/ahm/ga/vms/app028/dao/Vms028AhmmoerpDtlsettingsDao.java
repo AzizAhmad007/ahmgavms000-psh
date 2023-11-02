@@ -25,5 +25,5 @@ public interface Vms028AhmmoerpDtlsettingsDao extends DefaultDao<AhmmoerpDtlsett
     public List<Vms028VoLovOutput> lovResult(DtoParamPaging input);
 
     public List<Vms028VoLovOutput> lovTypeSI(DtoParamPaging input);
-    
+     
 }

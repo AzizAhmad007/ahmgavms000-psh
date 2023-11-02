@@ -18,12 +18,17 @@ public class Vms028VoMonitoringOutput {
     private String idNo;
     private String name;
     private String type;
+    private String typeCode;
     private String plant;
+    private String plantCode;
     private Date startDate;
     private String startDateText;
     private String status;
+    private String statusCode;
     private String kategori;
+    private String kategoriCode;
     private String hasil;
+    private String hasilCode;
     private Date endDate;
     private String endDateText;
     private int rowNum;
@@ -148,5 +153,46 @@ public class Vms028VoMonitoringOutput {
         this.rowNum = rowNum;
     }
 
+    public String getTypeCode() {
+        return typeCode;
+    }
+
+    public void setTypeCode(String typeCode) {
+        this.typeCode = typeCode;
+    }
+
+    public String getPlantCode() {
+        return plantCode;
+    }
+
+    public void setPlantCode(String plantCode) {
+        this.plantCode = plantCode;
+    }
+
+    public String getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(String statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public String getKategoriCode() {
+        return kategoriCode;
+    }
+
+    public void setKategoriCode(String kategoriCode) {
+        this.kategoriCode = kategoriCode;
+    }
+
+    public String getHasilCode() {
+        return hasilCode;
+    }
+
+    public void setHasilCode(String hasilCode) {
+        this.hasilCode = hasilCode;
+    }
+    
+    
     
 }
