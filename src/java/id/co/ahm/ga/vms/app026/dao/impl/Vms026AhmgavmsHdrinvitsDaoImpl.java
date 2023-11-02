@@ -76,7 +76,7 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                 sql.append("AND TRUNC(A.DPLEND) < TRUNC(SYSDATE) ");
             } else {
                 sql.append("AND A.VSTATUS = '").append(input.getSearch().get("status").toString().toUpperCase()).append("' ");
-                sql.append("AND TRUNC(A.DPLEND) > TRUNC(SYSDATE) + 1 ");
+                sql.append("AND TRUNC(A.DPLEND) > TRUNC(SYSDATE) - 1 ");
             }
         }
         if (!input.getSearch().get("visitorType").toString().equalsIgnoreCase("")) {
