@@ -51,6 +51,23 @@ public class Vms032Rest {
         return "Apps now running";
     }
     
+    @RequestMapping(value = "get-user-detail", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace getUserDetail(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody DtoParamPaging dto) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
+        Map<String, Object> getDetail = new HashMap();
+        getDetail.put("username", user.getUsername());
+        getDetail.put("userid", user.getUserid());
+        getDetail.put("email", user.getEmail());
+        getDetail.put("domain", user.getDomain());
+        getDetail.put("role", user.getListRole());
+
+        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, getDetail);
+    }
+    
     @RequestMapping(value = "dropdown-status", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)

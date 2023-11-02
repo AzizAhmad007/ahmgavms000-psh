@@ -64,10 +64,11 @@ public class Vms032AhmgavmsDecsDaoImpl extends DefaultHibernateDao<AhmgavmsDecs,
 //        );
 //        
         sql.append("SELECT DISTINCT "
+//                + "VSTATUS, "
                 + "VDECTYPE, "
-                + "VPLANTID, "
-                + "VTITLE, "
-//                + "VVERSION, "
+//                + "VPLANTID, "
+//                + "VTITLE, "
+                + "VVERSION, "
                 + "VBODYID, "
                 + "VBODYEN, "
                 + "VSEQ "
@@ -88,11 +89,11 @@ public class Vms032AhmgavmsDecsDaoImpl extends DefaultHibernateDao<AhmgavmsDecs,
                     .append(declarationType)
                     .append("' ");
         }
-//        if (!StringUtils.isBlank(version)) {
-//            sql.append("AND VVERSION = '")
-//                    .append(version)
-//                    .append("' ");
-//        }
+        if (!StringUtils.isBlank(version)) {
+            sql.append("AND VVERSION = '")
+                    .append(version)
+                    .append("' ");
+        }
         if (!StringUtils.isBlank(sequence)) {
             sql.append("AND VSEQ = '")
                     .append(sequence)
@@ -113,10 +114,10 @@ public class Vms032AhmgavmsDecsDaoImpl extends DefaultHibernateDao<AhmgavmsDecs,
                     Vms032VoShowData vo = new Vms032VoShowData();
 //                    vo.setStatus((String) obj[0]);
                     vo.setDeclarationType((String) obj[0]);
-//                    vo.setVersion((String) obj[2]);
-                    vo.setHtmlIndonesia((String) obj[1]);
-                    vo.setHtmlInggris((String) obj[2]);
-                    vo.setSequence((String) obj[3]);
+                    vo.setVersion((String) obj[1]);
+                    vo.setHtmlIndonesia((String) obj[2]);
+                    vo.setHtmlInggris((String) obj[3]);
+                    vo.setSequence((String) obj[4]);
                     vo.setRowNum(i);
                     i++;
                     result.add(vo);
