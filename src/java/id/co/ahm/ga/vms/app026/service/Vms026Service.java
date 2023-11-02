@@ -5,6 +5,7 @@
  */
 package id.co.ahm.ga.vms.app026.service;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoDeleteInvitation;
+import id.co.ahm.ga.vms.app026.vo.Vms026VoDeleteVisitor;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoSubmitChief;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
@@ -47,4 +48,6 @@ public interface Vms026Service {
     public DtoResponseWorkspace deleteInvitation(List<Vms026VoDeleteInvitation> input, String token);
 
     public DtoResponsePagingWorkspace showMonitoringDetail(DtoParamPaging input);
+
+    public DtoResponseWorkspace deleteVisitor(List<Vms026VoDeleteVisitor> input, String token);
 }

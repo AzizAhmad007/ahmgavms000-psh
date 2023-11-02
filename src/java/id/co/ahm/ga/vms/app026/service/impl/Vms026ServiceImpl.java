@@ -5,8 +5,10 @@
  */
 package id.co.ahm.ga.vms.app026.service.impl;
 
+import id.co.ahm.ga.vms.app000.model.AhmgavmsDtlvisits;
 import id.co.ahm.ga.vms.app000.model.AhmgavmsHdrchiefs;
 import id.co.ahm.ga.vms.app000.model.AhmgavmsHdrinvits;
+import id.co.ahm.ga.vms.app026.dao.Vms026AhmgavmsDtlvisitsDao;
 import id.co.ahm.ga.vms.app026.dao.Vms026AhmmoerpDtlsettingsDao;
 import id.co.ahm.ga.vms.app026.service.Vms026Service;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoLovOutput;
@@ -32,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import id.co.ahm.ga.vms.app026.dao.Vms026AhmgavmsHdrinvitsDao;
 import id.co.ahm.ga.vms.app026.dao.Vms026AhmgavmsHdrchiefsDao;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoDeleteInvitation;
+import id.co.ahm.ga.vms.app026.vo.Vms026VoDeleteVisitor;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoMonitoringDetail;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoSubmitChief;
 import id.co.ahm.jxf.util.AhmStringUtil;
@@ -57,6 +60,10 @@ public class Vms026ServiceImpl implements Vms026Service{
     @Autowired
     @Qualifier("vms026AhmgavmsHdrchiefsDao")
     private Vms026AhmgavmsHdrchiefsDao vms026AhmgavmsHdrchiefsDao;
+    
+    @Autowired
+    @Qualifier("vms026AhmgavmsDtlvisitsDao")
+    private Vms026AhmgavmsDtlvisitsDao vms026AhmgavmsDtlvisitsDao;
     
     SimpleDateFormat sdf = new SimpleDateFormat("d-MMM-YYYY");
     Date m = new Date();
@@ -469,6 +476,23 @@ public class Vms026ServiceImpl implements Vms026Service{
             return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, data, countData);
         } catch (Exception e) {
             return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.GAGAL, "GAGAL", null, null, 0);
+        }
+    }
+
+    @Override
+    public DtoResponseWorkspace deleteVisitor(List<Vms026VoDeleteVisitor> input, String token) {
+        try {
+            for (Vms026VoDeleteVisitor vo : input) {
+                AhmgavmsDtlvisits visit = new AhmgavmsDtlvisits();
+                
+                Integer codeVisit = Integer.parseInt(vo.getIdVisit());
+                
+                vms026AhmgavmsDtlvisitsDao.deleteById(codeVisit);
+                vms026AhmgavmsDtlvisitsDao.flush();
+            }
+            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
+        } catch (Exception e) {
+            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, null, null);
         }
     }
 }
