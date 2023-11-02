@@ -19,6 +19,7 @@ public class Vms026VoMonitoringDetail {
     private String idType;
     private String noId;
     private String noHp;
+    private int noUrut;
 
     public BigDecimal getIdVisit() {
         return idVisit;
@@ -67,6 +68,12 @@ public class Vms026VoMonitoringDetail {
     public void setNoHp(String noHp) {
         this.noHp = noHp;
     }
-    
-    
+
+    public int getNoUrut() {
+        return noUrut;
+    }
+
+    public void setNoUrut(int noUrut) {
+        this.noUrut = noUrut;
+    }
 }

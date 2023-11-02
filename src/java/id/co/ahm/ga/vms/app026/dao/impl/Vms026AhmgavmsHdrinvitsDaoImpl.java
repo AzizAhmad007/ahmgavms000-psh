@@ -311,8 +311,8 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                     vo.setIdType((String) obj[2]);
                     vo.setNoId((String) obj[3]);
                     vo.setRowNum(i);
-                    
                     i++;
+                    vo.setNoUrut(i);
                     vos.add(vo);
                 }
             }
