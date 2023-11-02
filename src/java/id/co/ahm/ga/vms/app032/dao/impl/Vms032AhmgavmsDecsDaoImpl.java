@@ -54,30 +54,30 @@ public class Vms032AhmgavmsDecsDaoImpl extends DefaultHibernateDao<AhmgavmsDecs,
         
         StringBuilder sql = new StringBuilder();
         
+        sql.append("SELECT DISTINCT "
+	+ "(SELECT D.VITEMNAME "
+	+ "FROM AHMMOERP_DTLSETTINGS D "
+	+ "WHERE D.RSET_VID = 'VMS_STAT'"
+	+ "AND D.VITEMCODE = DE.VSTATUS) VSTATUS, "
+	+ "(SELECT D.VITEMDESC "
+	+ "FROM AHMMOERP_DTLSETTINGS D "
+	+ "WHERE D.RSET_VID = 'VMS_DECLR'"
+	+ "AND D.VITEMCODE = DE.VDECTYPE) VDECTYPE, "
+	+ "DE.VVERSION, DE.VBODYID, DE.VBODYEN, DE.VSEQ "
+	+ "FROM AHMGAVMS_MSTDECLARS DE "
+	+ "WHERE 1 = 1 ");
+        
 //        sql.append("SELECT DISTINCT "
 //                + "VSTATUS, "
 //                + "VDECTYPE, "
+//                + "VPLANTID, "
+//                + "VTITLE, "
 //                + "VVERSION, "
 //                + "VBODYID, "
 //                + "VBODYEN, "
 //                + "VSEQ "
 //        );
-//        
-        sql.append("SELECT DISTINCT "
-//                + "VSTATUS, "
-                + "VDECTYPE, "
-//                + "VPLANTID, "
-//                + "VTITLE, "
-                + "VVERSION, "
-                + "VBODYID, "
-                + "VBODYEN, "
-                + "VSEQ "
-        );
         
-        
-        
-        sql.append("FROM AHMGAVMS_MSTDECLARS ");
-        sql.append("WHERE 1 = 1 ");
         
         if (!StringUtils.isBlank(status)) {
             sql.append("AND VSTATUS = '")
@@ -112,12 +112,12 @@ public class Vms032AhmgavmsDecsDaoImpl extends DefaultHibernateDao<AhmgavmsDecs,
                 for(Object object : list) {
                     obj = (Object[]) object;
                     Vms032VoShowData vo = new Vms032VoShowData();
-//                    vo.setStatus((String) obj[0]);
-                    vo.setDeclarationType((String) obj[0]);
-                    vo.setVersion((String) obj[1]);
-                    vo.setHtmlIndonesia((String) obj[2]);
-                    vo.setHtmlInggris((String) obj[3]);
-                    vo.setSequence((String) obj[4]);
+                    vo.setStatus((String) obj[0]);
+                    vo.setDeclarationType((String) obj[1]);
+                    vo.setVersion((String) obj[2]);
+                    vo.setHtmlIndonesia((String) obj[3]);
+                    vo.setHtmlInggris((String) obj[4]);
+                    vo.setSequence((String) obj[5]);
                     vo.setRowNum(i);
                     i++;
                     result.add(vo);

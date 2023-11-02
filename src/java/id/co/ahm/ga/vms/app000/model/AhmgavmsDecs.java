@@ -102,8 +102,8 @@ public class AhmgavmsDecs extends DefaultEntityImpl implements Serializable {
 //    @Column(name = "VSIZE")
 //    private String vsize;
 //    
-//    @Column(name = "VSTATUS")
-//    private String vstatus;
+    @Column(name = "VSTATUS")
+    private String vstatus;
 
     public String getVtitle() {
         return vtitle;
@@ -233,13 +233,13 @@ public class AhmgavmsDecs extends DefaultEntityImpl implements Serializable {
 //        this.vsize = vsize;
 //    }
 //
-//    public String getVstatus() {
-//        return vstatus;
-//    }
-//
-//    public void setVstatus(String vstatus) {
-//        this.vstatus = vstatus;
-//    }
+    public String getVstatus() {
+        return vstatus;
+    }
+
+    public void setVstatus(String vstatus) {
+        this.vstatus = vstatus;
+    }
 
   
 }

@@ -91,16 +91,17 @@ public class Vms032ServiceImpl implements Vms032Service {
     @Override
     public DtoResponseWorkspace submitDeclarationMaster(DtoParamPaging input, VoUserCred user) {
             try{
-//            String status = AhmStringUtil.hasValue(input.getSearch().get("status")) ? (input.getSearch().get("status") + "").toUpperCase() : "";
+            String status = AhmStringUtil.hasValue(input.getSearch().get("status")) ? (input.getSearch().get("status") + "").toUpperCase() : "";
             String declarationType = AhmStringUtil.hasValue(input.getSearch().get("declarationType")) ? (input.getSearch().get("declarationType") + "").toUpperCase() : "";
             String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
             String judul = AhmStringUtil.hasValue(input.getSearch().get("judul")) ? (input.getSearch().get("judul") + "").toUpperCase() : "";
-//            String version = AhmStringUtil.hasValue(input.getSearch().get("version")) ? (input.getSearch().get("version") + "").toUpperCase() : "";
+            String version = AhmStringUtil.hasValue(input.getSearch().get("version")) ? (input.getSearch().get("version") + "").toUpperCase() : "";
             String htmlIndonesia = AhmStringUtil.hasValue(input.getSearch().get("htmlIndonesia")) ? (input.getSearch().get("htmlIndonesia") + "").toUpperCase() : "";
             String htmlInggris = AhmStringUtil.hasValue(input.getSearch().get("htmlInggris")) ? (input.getSearch().get("htmlInggris") + "").toUpperCase() : "";
             String sequence = AhmStringUtil.hasValue(input.getSearch().get("sequence")) ? (input.getSearch().get("sequence") + "").toUpperCase() : "";
             Date dateStart = DateUtil.stringToDate((String) input.getSearch().get("dateStart"), "dd-MM-yyyy");
             Date dateEnd = DateUtil.stringToDate((String) input.getSearch().get("dateEnd"), "dd-MM-yyyy");
+            String form = AhmStringUtil.hasValue(input.getSearch().get("form")) ? (input.getSearch().get("form") + "").toUpperCase() : "";
             String userId;
             if (user == null) {
                 userId = "DEVELOPER";
@@ -116,6 +117,7 @@ public class Vms032ServiceImpl implements Vms032Service {
                     decs.setVdectype(declarationType);
                     decs.setVplantid("ALL");
                     decs.setVtitle(judul);
+                    decs.setVstatus("Y");
                     decs.setDstarteff(dateStart);
                     decs.setDendeff(dateEnd);
                     decs.setVbodyid(htmlIndonesia);
@@ -148,10 +150,68 @@ public class Vms032ServiceImpl implements Vms032Service {
         }
     }
 //
-//    @Override
-//    public DtoResponseWorkspace draftDeclaration(DtoParamPaging input, VoUserCred user) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
+    @Override
+    public DtoResponseWorkspace draftDeclaration(DtoParamPaging input, VoUserCred user) {
+        try{
+            String status = AhmStringUtil.hasValue(input.getSearch().get("status")) ? (input.getSearch().get("status") + "").toUpperCase() : "";
+            String declarationType = AhmStringUtil.hasValue(input.getSearch().get("declarationType")) ? (input.getSearch().get("declarationType") + "").toUpperCase() : "";
+            String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
+            String judul = AhmStringUtil.hasValue(input.getSearch().get("judul")) ? (input.getSearch().get("judul") + "").toUpperCase() : "";
+            String version = AhmStringUtil.hasValue(input.getSearch().get("version")) ? (input.getSearch().get("version") + "").toUpperCase() : "";
+            String htmlIndonesia = AhmStringUtil.hasValue(input.getSearch().get("htmlIndonesia")) ? (input.getSearch().get("htmlIndonesia") + "").toUpperCase() : "";
+            String htmlInggris = AhmStringUtil.hasValue(input.getSearch().get("htmlInggris")) ? (input.getSearch().get("htmlInggris") + "").toUpperCase() : "";
+            String sequence = AhmStringUtil.hasValue(input.getSearch().get("sequence")) ? (input.getSearch().get("sequence") + "").toUpperCase() : "";
+            Date dateStart = DateUtil.stringToDate((String) input.getSearch().get("dateStart"), "dd-MM-yyyy");
+            Date dateEnd = DateUtil.stringToDate((String) input.getSearch().get("dateEnd"), "dd-MM-yyyy");
+            String form = AhmStringUtil.hasValue(input.getSearch().get("form")) ? (input.getSearch().get("form") + "").toUpperCase() : "";
+            String userId;
+            if (user == null) {
+                userId = "DEVELOPER";
+            } else {
+                userId = user.getUserid();
+            }
+                
+                AhmgavmsDecs dec = new AhmgavmsDecs();
+                dec = vms032AhmgavmsDecsDao.findOne(declarationType);
+                List<Vms032VoShowPlant> pl = vms032AhmgavmsDecsDao.getPlant(input);
+                if(dec == null){
+                    AhmgavmsDecs decs = new AhmgavmsDecs();
+                    decs.setVdectype(declarationType);
+                    decs.setVplantid("ALL");
+                    decs.setVtitle(judul);
+                    decs.setVstatus("D");
+                    decs.setDstarteff(dateStart);
+                    decs.setDendeff(dateEnd);
+                    decs.setVbodyid(htmlIndonesia);
+                    decs.setVbodyen(htmlInggris);
+                    decs.setVseq(sequence);
+                    decs.setCreateDate(new Date());
+                    decs.setCreateBy(userId);
+                    decs.setLastModDate(new Date());
+                    decs.setLastModBy(userId);
+
+                    vms032AhmgavmsDecsDao.save(decs);
+                    vms032AhmgavmsDecsDao.flush();
+                    return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
+		} else {
+                    dec.setVbodyid(htmlIndonesia);
+                    dec.setVbodyen(htmlInggris);
+                    dec.setVstatus("D");
+                    dec.setVseq(sequence);
+                    dec.setCreateDate(new Date());
+                    dec.setCreateBy(userId);
+                    dec.setLastModDate(new Date());
+                    dec.setLastModBy(userId);
+                    
+                    vms032AhmgavmsDecsDao.update(dec);
+                    vms032AhmgavmsDecsDao.flush();
+                    return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
+                }
+        } catch (Exception e){
+                e.printStackTrace();
+            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, null, null);
+        }
+    }
 //
 
     @Override

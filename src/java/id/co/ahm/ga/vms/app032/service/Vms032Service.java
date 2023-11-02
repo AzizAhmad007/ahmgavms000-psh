@@ -21,7 +21,7 @@ public interface Vms032Service {
     
     public DtoResponseWorkspace submitDeclarationMaster(DtoParamPaging input, VoUserCred user);
     
-//    public DtoResponseWorkspace draftDeclaration(DtoParamPaging input, VoUserCred user);
+    public DtoResponseWorkspace draftDeclaration(DtoParamPaging input, VoUserCred user);
     
     public DtoResponseWorkspace showStatus(DtoParamPaging input);
     

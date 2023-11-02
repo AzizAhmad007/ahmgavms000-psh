@@ -135,4 +135,13 @@ public class Vms032Rest {
             @RequestBody DtoParamPaging input) {
         return vms032Service.showMonitoring(input);
     }
+    @RequestMapping(value = "draft", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace draft(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody DtoParamPaging input) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
+        return vms032Service.draftDeclaration(input, user);
+    }
 }
