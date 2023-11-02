@@ -6,6 +6,7 @@
 package id.co.ahm.ga.vms.app026.dao;
 
 import id.co.ahm.ga.vms.app000.model.AhmgavmsHdrinvits;
+import id.co.ahm.ga.vms.app026.vo.Vms026VoMonitoringDetail;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoMonitoringOutput;
 import id.co.ahm.jxf.dao.DefaultDao;
 import id.co.ahm.jxf.dto.DtoParamPaging;
@@ -20,5 +21,9 @@ public interface Vms026AhmgavmsHdrinvitsDao extends DefaultDao<AhmgavmsHdrinvits
     public int getMonitoringCount(DtoParamPaging input);
 
     public List<Vms026VoMonitoringOutput> getMonitoring(DtoParamPaging input);
+
+    public List<Vms026VoMonitoringDetail> getMonitoringDetail(DtoParamPaging input);
+
+    public int getMonitoringDetailCount(DtoParamPaging input);
     
 }

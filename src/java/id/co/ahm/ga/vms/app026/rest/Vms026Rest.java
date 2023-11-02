@@ -132,6 +132,15 @@ public class Vms026Rest {
         return vms026Service.showMonitoring(input);
     }
     
+    @RequestMapping(value = "monitoring-detail", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponsePagingWorkspace getMonitoringDetail(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody DtoParamPaging input) {
+        return vms026Service.showMonitoringDetail(input);
+    }
+    
     @RequestMapping(value = "submit-invitation", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)

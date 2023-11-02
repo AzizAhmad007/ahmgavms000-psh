@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import id.co.ahm.ga.vms.app026.dao.Vms026AhmgavmsHdrinvitsDao;
 import id.co.ahm.ga.vms.app026.dao.Vms026AhmgavmsHdrchiefsDao;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoDeleteInvitation;
+import id.co.ahm.ga.vms.app026.vo.Vms026VoMonitoringDetail;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoSubmitChief;
 import id.co.ahm.jxf.util.AhmStringUtil;
 import id.co.ahm.jxf.util.DateUtil;
@@ -458,5 +459,16 @@ public class Vms026ServiceImpl implements Vms026Service{
         vo2.setQuota("2");
         vos.add(vo2);
         return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, vos);
+    }
+
+    @Override
+    public DtoResponsePagingWorkspace showMonitoringDetail(DtoParamPaging input) {
+        try {
+            List<Vms026VoMonitoringDetail> data = vms026AhmgavmsHdrinvitsDao.getMonitoringDetail(input);
+            int countData = vms026AhmgavmsHdrinvitsDao.getMonitoringDetailCount(input);
+            return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, data, countData);
+        } catch (Exception e) {
+            return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.GAGAL, "GAGAL", null, null, 0);
+        }
     }
 }

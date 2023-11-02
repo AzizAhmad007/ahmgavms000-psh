@@ -18,6 +18,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 import id.co.ahm.ga.vms.app026.dao.Vms026AhmgavmsHdrinvitsDao;
+import id.co.ahm.ga.vms.app026.vo.Vms026VoMonitoringDetail;
 import java.math.BigDecimal;
 import org.hibernate.Query;
 
@@ -274,6 +275,68 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<Vms026VoMonitoringDetail> getMonitoringDetail(DtoParamPaging input) {
+        List<Vms026VoMonitoringDetail> vos = new ArrayList<>();
+        Map<String, String> sortMap = new HashMap<>();
+
+        StringBuilder sql = new StringBuilder("SELECT A.NCDVISIT, "
+                + "A.VNAME, "
+                + "(SELECT B.VITEMNAME "
+                + "FROM AHMMOERP_DTLSETTINGS B "
+                + "WHERE B.RSET_VID = 'VMS_IDTYPE' "
+                + "AND B.VITEMCODE = A.VIDTYPE) VIDTYPE, A.VNIK "
+                + "FROM AHMGAVMS_DTLVISITS A "
+                + "WHERE 1 = 1 ");
+        if (!input.getSearch().get("invitNo").toString().equalsIgnoreCase("")) {
+            sql.append("AND A.VINVITNO = '").append(input.getSearch().get("invitNo").toString().toUpperCase()).append("' ");
+        }
+        sql.append("ORDER BY A.NCDVISIT ");
+        Query query = getCurrentSession().createSQLQuery(sql.toString())
+                .setFirstResult(input.getOffset())
+                .setMaxResults(input.getLimit());
+        try {
+            List<Object[]> list = query.list();
+            if (list.size() > 0) {
+                Object[] obj;
+                int i = 0;
+                for(Object object : list) {
+                    obj = (Object[]) object;
+                    Vms026VoMonitoringDetail vo = new Vms026VoMonitoringDetail();
+                    vo.setName((String) obj[1]);
+                    vo.setIdType((String) obj[2]);
+                    vo.setNoId((String) obj[3]);
+                    vo.setRowNum(i);
+                    
+                    i++;
+                    vos.add(vo);
+                }
+            }
+        } catch (Exception e) {
+            return vos;
+        }
+        return vos;
+    }
+
+    @Override
+    public int getMonitoringDetailCount(DtoParamPaging input) {
+        try {
+            StringBuilder sql = new StringBuilder("SELECT COUNT(0) "
+                    + "FROM AHMGAVMS_DTLVISITS A "
+                    + "WHERE 1 = 1 ");
+            if (!input.getSearch().get("invitNo").toString().equalsIgnoreCase("")) {
+                sql.append("AND A.VINVITNO = '").append(input.getSearch().get("invitNo").toString().toUpperCase()).append("' ");
+            }
+            Query query = getCurrentSession().createSQLQuery(sql.toString())
+                    .setFirstResult(input.getOffset())
+                    .setMaxResults(input.getLimit());
+            List<BigDecimal> list = query.list();
+            return (Integer) list.get(0).intValueExact();
+        } catch (Exception e) {
+            return 0;
         }
     }
 }

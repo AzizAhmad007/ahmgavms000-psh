@@ -45,4 +45,6 @@ public interface Vms026Service {
     public DtoResponseWorkspace getReqBody();
 
     public DtoResponseWorkspace deleteInvitation(List<Vms026VoDeleteInvitation> input, String token);
+
+    public DtoResponsePagingWorkspace showMonitoringDetail(DtoParamPaging input);
 }
