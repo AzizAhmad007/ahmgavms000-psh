@@ -5,17 +5,28 @@
  */
 package id.co.ahm.ga.vms.app026.vo;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author kahfi
  */
 public class Vms026VoMonitoringDetail {
     
+    private BigDecimal idVisit;
     private int rowNum;
     private String name;
     private String idType;
     private String noId;
     private String noHp;
+
+    public BigDecimal getIdVisit() {
+        return idVisit;
+    }
+
+    public void setIdVisit(BigDecimal idVisit) {
+        this.idVisit = idVisit;
+    }
 
     public int getRowNum() {
         return rowNum;

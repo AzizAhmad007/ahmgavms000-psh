@@ -306,6 +306,7 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                 for(Object object : list) {
                     obj = (Object[]) object;
                     Vms026VoMonitoringDetail vo = new Vms026VoMonitoringDetail();
+                    vo.setIdVisit((BigDecimal) obj[0]);
                     vo.setName((String) obj[1]);
                     vo.setIdType((String) obj[2]);
                     vo.setNoId((String) obj[3]);
