@@ -81,6 +81,18 @@ public class Vms031ServiceImpl implements Vms031Service {
         List<Vms031VoLovOutput> data = vms031AhmmoerpDtlsettingsDao.LovBlstCardType(input);
         return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, data);
     }
+    
+    @Override
+    public DtoResponseWorkspace showHeadIdType(DtoParamPaging input) {
+        List<Vms031VoLovOutput> data = vms031AhmmoerpDtlsettingsDao.LovHeadBlstCardType(input);
+        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, data);
+    }
+    
+    @Override
+    public DtoResponseWorkspace showDetailIdType(DtoParamPaging input) {
+         List<Vms031VoLovOutput> data = vms031AhmmoerpDtlsettingsDao.LovDtlBlstCardType(input);
+        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, data);
+    }
 
     @Override
     public DtoResponseWorkspace submitKaryawan(DtoParamPaging input, VoUserCred user) {
@@ -127,6 +139,7 @@ public class Vms031ServiceImpl implements Vms031Service {
                     AhmgavmsHdrblst hdr = new AhmgavmsHdrblst();
                     AhmgavmsHdrblstPk hdrPK = new AhmgavmsHdrblstPk();
                     hdr.setAhmgavmsHdrblstPk(hdrPK);
+                    hdr.setNrp(input.getSearch().get("nrp").toString());
                     hdr.setNik(input.getSearch().get("nik").toString());
                     hdr.setNama(input.getSearch().get("nama").toString());
                     hdr.setJenisKelamin(input.getSearch().get("jenisKelamin").toString());
@@ -152,6 +165,7 @@ public class Vms031ServiceImpl implements Vms031Service {
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
                 } else {
                     //UPDATE DATE 
+                    data.setNrp(input.getSearch().get("nrp").toString());
                     data.setNik(input.getSearch().get("nik").toString());
                     data.setNama(input.getSearch().get("nama").toString());
                     data.setJenisKelamin(input.getSearch().get("jenisKelamin").toString());
@@ -193,8 +207,7 @@ public class Vms031ServiceImpl implements Vms031Service {
                 userId = user.getUserid();
             }
             //VALIDASI INPUT DATA TIDAK BOLEH KOSONG
-            if (input.getSearch().get("nrp").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("nik").toString().equalsIgnoreCase("")
+            if ( input.getSearch().get("nik").toString().equalsIgnoreCase("")
                     || input.getSearch().get("nama").toString().equalsIgnoreCase("")
                     || input.getSearch().get("jenisKelamin").toString().equalsIgnoreCase("")
                     || input.getSearch().get("alamatKtp").toString().equalsIgnoreCase("")
@@ -421,6 +434,8 @@ public class Vms031ServiceImpl implements Vms031Service {
 //        columnPropertyMap.put(4, "TANGGAL_START_EFFECTIVE");//P
 //        columnPropertyMap.put(4, "TANGGAL_ENDEFFECTIVE");//Q
 //    }
+
+    
     
     
     

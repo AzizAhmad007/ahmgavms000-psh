@@ -21,6 +21,10 @@ public interface Vms031AhmmoerpDtlsettingsDao extends DefaultDao<AhmmoerpDtlsett
     
     public List<Vms031VoLovOutput> LovBlstCardType(DtoParamPaging input);
     
+    public List<Vms031VoLovOutput> LovHeadBlstCardType(DtoParamPaging input);
+    
+    public List<Vms031VoLovOutput> LovDtlBlstCardType(DtoParamPaging input);
+    
     public List<Vms031VoLovOutput> lovBlstStatus(DtoParamPaging input);
     
     public List<Vms031VoLovOutput> lovBlstType(DtoParamPaging input);

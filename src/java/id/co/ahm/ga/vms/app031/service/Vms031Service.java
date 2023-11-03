@@ -23,8 +23,12 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Ahmad Mukaram Aziz
  */
 public interface Vms031Service {
-     
+    
      public DtoResponseWorkspace showIdType(DtoParamPaging input);
+     
+     public DtoResponseWorkspace showHeadIdType(DtoParamPaging input);
+     
+     public DtoResponseWorkspace showDetailIdType(DtoParamPaging input);
      
      public DtoResponseWorkspace showStatus(DtoParamPaging input);
      

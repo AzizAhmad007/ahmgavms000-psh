@@ -29,6 +29,9 @@ public class AhmgavmsHdrblst extends DefaultEntityImpl implements Serializable{
     @EmbeddedId
     private AhmgavmsHdrblstPk ahmgavmsHdrblstPk;
     
+    @Column(name = "VNRPPIC",length=50)
+    private String nrp;
+    
     @Column(name = "VNIK",length=50)
     private String nik;
 
@@ -70,6 +73,14 @@ public class AhmgavmsHdrblst extends DefaultEntityImpl implements Serializable{
 
     @Column(name = "DENDEFF")
     private Date tglEndEffective;
+
+    public String getNrp() {
+        return nrp;
+    }
+
+    public void setNrp(String nrp) {
+        this.nrp = nrp;
+    }
 
     public AhmgavmsHdrblstPk getAhmgavmsHdrblstPk() {
         return ahmgavmsHdrblstPk;

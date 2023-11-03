@@ -63,7 +63,7 @@ public class Vms031Rest {
         return "run App";
     }
     
-    @RequestMapping(value = "lov-blidtype", method = RequestMethod.POST,
+    @RequestMapping(value = "lov-idtype", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
@@ -72,7 +72,25 @@ public class Vms031Rest {
         return vms031Service.showIdType(input);
     }
     
-    @RequestMapping(value = "lov-blstatus", method = RequestMethod.POST,
+    @RequestMapping(value = "lov-head-idtype", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace showHeadIdType(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody DtoParamPaging input){
+        return vms031Service.showHeadIdType(input);
+    }
+    
+    @RequestMapping(value = "lov-detail-idtype", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace showDetailIdType(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody DtoParamPaging input){
+        return vms031Service.showDetailIdType(input);
+    }
+    
+    @RequestMapping(value = "lov-status", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
@@ -90,7 +108,7 @@ public class Vms031Rest {
         return vms031Service.showBlacklistType(input);
     }
     
-    @RequestMapping(value = "lov-blgender", method = RequestMethod.POST,
+    @RequestMapping(value = "lov-gender", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
