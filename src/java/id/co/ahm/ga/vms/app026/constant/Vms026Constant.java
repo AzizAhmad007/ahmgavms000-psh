@@ -38,4 +38,6 @@ public class Vms026Constant {
     public static final StringBuilder LOV_STATUS = new StringBuilder("SELECT VITEMCODE, VITEMNAME "
             + "FROM AHMMOERP_DTLSETTINGS "
             + "WHERE RSET_VID = 'VMS_STAT'");
+    
+    public static final String FROM = "no-reply@astra-honda.com";
 }

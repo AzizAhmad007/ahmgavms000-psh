@@ -42,6 +42,9 @@ public class FmhrdGeneralDatas {
 
     @Column(name = "DP_HEAD_NAME")
     private String namaHeadDepartemen;
+    
+    @Column(name = "TELEPHONE")
+    private String telephone;
 
     public BigDecimal getNrp() {
         return nrp;
@@ -106,5 +109,14 @@ public class FmhrdGeneralDatas {
     public void setNamaHeadDepartemen(String namaHeadDepartemen) {
         this.namaHeadDepartemen = namaHeadDepartemen;
     }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+    
     
 }

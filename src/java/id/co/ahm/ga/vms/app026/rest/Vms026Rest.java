@@ -11,6 +11,7 @@ import id.co.ahm.ga.vms.app026.util.Vms026ExportExcel;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoDeleteInvitation;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoDeleteVisitor;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoMonitoringOutput;
+import id.co.ahm.ga.vms.app026.vo.Vms026VoSendEmail;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoSubmitChief;
 import id.co.ahm.jxf.constant.StatusMsgEnum;
 import id.co.ahm.jxf.dto.DtoParamPaging;
@@ -120,6 +121,8 @@ public class Vms026Rest {
         getDetail.put("email", user.getEmail());
         getDetail.put("domain", user.getDomain());
         getDetail.put("role", user.getListRole());
+        String noHp = vms026Service.getNoHpUser(user.getUserid());
+        getDetail.put("noHp", noHp);
 
         return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, getDetail);
     }
@@ -279,5 +282,15 @@ public class Vms026Rest {
             @RequestBody List<Vms026VoDeleteVisitor> input) {
         VoUserCred user = tokenPshUtil.getUserCred(token);
         return vms026Service.deleteVisitor(input, token);
+    }
+    
+    @RequestMapping(value = "send-email", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace sendEmail(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody List<Vms026VoSendEmail> input) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
+        return vms026Service.sendEmail(input, user);
     }
 }

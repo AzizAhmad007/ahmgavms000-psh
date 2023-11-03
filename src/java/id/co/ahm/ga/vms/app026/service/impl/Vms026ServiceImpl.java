@@ -8,6 +8,9 @@ package id.co.ahm.ga.vms.app026.service.impl;
 import id.co.ahm.ga.vms.app000.model.AhmgavmsDtlvisits;
 import id.co.ahm.ga.vms.app000.model.AhmgavmsHdrchiefs;
 import id.co.ahm.ga.vms.app000.model.AhmgavmsHdrinvits;
+import id.co.ahm.ga.vms.app000.model.AhmgavmsLogemails;
+import id.co.ahm.ga.vms.app000.model.hr.FmhrdGeneralDatas;
+import static id.co.ahm.ga.vms.app026.constant.Vms026Constant.FROM;
 import id.co.ahm.ga.vms.app026.dao.Vms026AhmgavmsDtlvisitsDao;
 import id.co.ahm.ga.vms.app026.dao.Vms026AhmmoerpDtlsettingsDao;
 import id.co.ahm.ga.vms.app026.service.Vms026Service;
@@ -33,13 +36,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import id.co.ahm.ga.vms.app026.dao.Vms026AhmgavmsHdrinvitsDao;
 import id.co.ahm.ga.vms.app026.dao.Vms026AhmgavmsHdrchiefsDao;
+import id.co.ahm.ga.vms.app026.dao.Vms026AhmgavmsLogemailsDao;
+import id.co.ahm.ga.vms.app026.dao.Vms026FmhrdGeneralDatasDao;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoDeleteInvitation;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoDeleteVisitor;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoMonitoringDetail;
+import id.co.ahm.ga.vms.app026.vo.Vms026VoSendEmail;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoSubmitChief;
 import id.co.ahm.jxf.util.AhmStringUtil;
 import id.co.ahm.jxf.util.DateUtil;
 import java.util.ArrayList;
+import id.co.ahm.jx.email.service.EmailService;
+import java.math.BigDecimal;
 
 /**
  *
@@ -64,6 +72,18 @@ public class Vms026ServiceImpl implements Vms026Service{
     @Autowired
     @Qualifier("vms026AhmgavmsDtlvisitsDao")
     private Vms026AhmgavmsDtlvisitsDao vms026AhmgavmsDtlvisitsDao;
+    
+    @Autowired
+    @Qualifier("mailService")
+    private EmailService emailService;
+    
+    @Autowired
+    @Qualifier("vms026AhmgavmsLogemailsDao")
+    private Vms026AhmgavmsLogemailsDao vms026AhmgavmsLogemailsDao;
+    
+    @Autowired
+    @Qualifier("vms026FmhrdGeneralDatasDao")
+    private Vms026FmhrdGeneralDatasDao vms026FmhrdGeneralDatasDao;
     
     SimpleDateFormat sdf = new SimpleDateFormat("d-MMM-YYYY");
     Date m = new Date();
@@ -494,5 +514,152 @@ public class Vms026ServiceImpl implements Vms026Service{
         } catch (Exception e) {
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, null, null);
         }
+    }
+    
+    @Override
+    public DtoResponseWorkspace sendEmail(List<Vms026VoSendEmail> input, VoUserCred user) {
+        try {
+            for (Vms026VoSendEmail vo : input) {
+                sendEmailInvitationLink(vo, user);
+            }
+            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
+        } catch (Exception e) {
+            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, null, null);
+        }
+    }
+    
+    private void sendEmailInvitationLink(Vms026VoSendEmail data, VoUserCred user) {
+        String to = data.getTo();
+        String masterNo = data.getMasterNo();
+        String invitNo = data.getInvitNo();
+        String picName = data.getPicName();
+        String companyName = data.getCompany();
+        String plant = data.getPlant();
+        String picAhm = data.getPicAhm();
+        Date dateStart = DateUtil.stringToDate(data.getDateStart(), "dd-MMM-yyyy");
+        Date dateEnd = DateUtil.stringToDate(data.getDateEnd(), "dd-MMM-yyyy");
+        String emailPicAhm = data.getEmailPicAhm();
+        String noHpPicAhm = data.getNoHpPicAhm();
+        String userId;
+        if (user == null) {
+            userId = "DEVELOPER";
+        } else {
+            userId = user.getUserid();
+        }
+        
+        try {
+
+            String link = getInvitationLink(invitNo);
+
+            String subject = subjectEmailInvitationLink(masterNo);
+
+            String header = headerEmailInvitationLink(companyName);
+
+            String body = bodyEmailInvitationLink(companyName, plant, (String) DateUtil.dateToString(dateStart, "dd-MMM-yyyy"), (String) DateUtil.dateToString(dateEnd, "dd-MMM-yyyy"), link,
+                    picAhm, emailPicAhm, noHpPicAhm);
+
+            String footer = "<br><i>\n NB : Email ini dihasilkan secara otomatis oleh sistem kami dan tidak memerlukan balasan. "
+                    + "Pesan ini hanya bertujuan untuk memberikan informasi atau pemberitahuan tertentu dan tidak dimaksudkan "
+                    + "untuk memulai percakapan atau interaksi email.<i/></p>";
+
+            body = header + body + footer;
+            emailService.callProcSendMail(subject, FROM, to.toString(), null, body);
+
+            logEmails(masterNo, FROM, to, "1", userId);
+        } catch (NullPointerException npE) {
+            logEmails(masterNo, FROM, to, "0", userId);
+        }
+    }
+
+    private String headerEmailInvitationLink(String companyName) {
+	return "<p>Kepada Yth.</p>\n"
+                + "<p>Tim Project</p>\n"
+                + "<p>" + companyName + "</p>\n";
+    }
+
+    private String subjectEmailInvitationLink(String masterNo) {
+	return "Surat Undangan No. " + masterNo + " Kunjungan ke PT. Astra Honda Motor.";
+    }
+
+    private String bodyEmailInvitationLink(String companyName, String plant, String dateStart, String dateEnd, 
+            String link, String picAhmName, String emailPicAhm, String noHpPicAhm) {
+	return "<table border='0'>\n"
+		+ "    <tbody>\n"
+		+ "        <tr>\n"
+		+ "            <td colspan=3>Sehubungan dengan adanya keperluan " + companyName + " berkunjung ke PT. Astra Honda Motor " + plant + ","
+                + " kami mengundang bapak / ibu pada : </td>\n"
+		+ "        </tr>\n"
+                + "        <tr>\n"
+		+ "             <td><p> </p></td>\n"
+                + "        </tr>\n"
+		+ "        <tr>\n"
+		+ "            <td>     Tanggal : " + dateStart + " - " + dateEnd + " </td>\n"
+                + "        </tr>\n"
+                + "        <tr>\n"
+		+ "            <td>     Lokasi  : " + plant + " </td>\n"
+		+ "        </tr>\n"
+                + "        <tr>\n"
+		+ "             <td><p> </p></td>\n"
+                + "        </tr>\n"
+		+ "        <tr>\n"
+		+ "            <td colspan=3>Kami telah menyediakan link pendaftaran online yang dapat anda akses melalui email ini. </td>\n"
+                + "        </tr>\n"
+                + "        <tr>\n"
+		+ "            <td> Link Registrasi: <a href=" + link + ">" + link + "</a></td>\n"
+                + "        </tr>\n"
+                + "        <tr>\n"
+		+ "             <td><p> </p></td>\n"
+                + "        </tr>\n"
+                + "        <tr>\n"
+                + "            <td>Diharapkan bapak / ibu sebagai PIC Visitor dari perusahaan " + companyName + " dapat membagikan Link "
+                + "Register ini kepada anggota dari tim bapak / ibu yang akan berkunjung ke AHM.</td>\n"
+                + "        </tr>\n"
+                + "        <tr>\n"
+		+ "             <td><p> </p></td>\n"
+                + "        </tr>\n"
+                + "        <tr>\n"
+                + "            <td>Jika anda memiliki pertanyaan lebih lanjut atau mengalami kesulitan dalam proses registrasi, jangan ragu "
+                + "untuk menghubungi " + picAhmName + " di " + emailPicAhm + " atau " + noHpPicAhm + "</td>\n"
+                + "        </tr>\n"
+                + "        <tr>\n"
+		+ "             <td><p> </p></td>\n"
+                + "        </tr>\n"
+                + "        <tr>\n"
+                + "             <td>Hormat kami,</td>\n"
+                + "        </tr>\n"
+                + "        <tr>\n"
+                + "             <td>PT. Astra Honda Motor</td>\n"
+                + "        </tr>\n"
+		+ "    </tbody>\n"
+		+ "</table>";
+
+    }
+    
+    private void logEmails(String code, String from, String to, String flag, String userId) {
+        try {
+            AhmgavmsLogemails log = new AhmgavmsLogemails();
+
+            log.setVcode(code);
+            log.setVfrom(from);
+            log.setVto(to);
+            log.setVflag(flag);
+            log.setCreateBy(userId);
+            log.setCreateDate(new Date());
+            log.setLastModBy(userId);
+            log.setLastModDate(new Date());
+
+            vms026AhmgavmsLogemailsDao.save(log);
+            vms026AhmgavmsLogemailsDao.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public String getNoHpUser(String userId) {
+        FmhrdGeneralDatas data = new FmhrdGeneralDatas();
+        BigDecimal nrp = new BigDecimal(userId);
+        data = vms026FmhrdGeneralDatasDao.findOne(nrp);
+        return data.getTelephone();
     }
 }
