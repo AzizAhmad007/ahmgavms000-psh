@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author kahfi
  */
-@Repository("vms026FmhrdGeneralDatasDaoImpl")
+@Repository("vms026FmhrdGeneralDatasDao")
 public class Vms026FmhrdGeneralDatasDaoImpl extends HrHibernateDao<FmhrdGeneralDatas, BigDecimal> implements Vms026FmhrdGeneralDatasDao{
     
 }
