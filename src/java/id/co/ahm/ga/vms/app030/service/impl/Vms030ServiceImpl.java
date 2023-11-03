@@ -7,7 +7,6 @@ package id.co.ahm.ga.vms.app030.service.impl;
 
 import id.co.ahm.ga.vms.app000.model.AhmgavmsMstrefdocs;
 import id.co.ahm.ga.vms.app000.model.AhmgavmsMstrefdocsPk;
-import static id.co.ahm.ga.vms.app030.constant.Vms030Constant.*;
 import id.co.ahm.ga.vms.app030.dao.Vms030AhmmoerpDtlsettingsDao;
 import id.co.ahm.ga.vms.app030.service.Vms030Service;
 import id.co.ahm.ga.vms.app030.vo.Vms030VoLovDocType;
@@ -33,6 +32,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import id.co.ahm.ga.vms.app030.dao.Vms030AhmgavmsMstrefdocsDao;
+import id.co.ahm.ga.vms.app030.dao.Vms030ObjectDao;
 import id.co.ahm.ga.vms.app030.vo.Vms030VoLovPic;
 import id.co.ahm.jxf.util.AhmStringUtil;
 import id.co.ahm.jxf.util.DateUtil;
@@ -53,6 +53,10 @@ public class Vms030ServiceImpl implements Vms030Service {
     @Autowired
     @Qualifier("vms030AhmmoerpDtlsettingsDao")
     private Vms030AhmmoerpDtlsettingsDao vms030AhmmoerpDtlsettingsDao;
+    
+    @Autowired
+    @Qualifier("vms030ObjectDao")
+    private Vms030ObjectDao vms030ObjectDao;
     
     
     private String getUserId(VoUserCred userCred) {
@@ -137,9 +141,9 @@ public class Vms030ServiceImpl implements Vms030Service {
     }
     
     @Override
-    public DtoResponseWorkspace showPic(Vms030VoLovPic input) {
+    public DtoResponseWorkspace showPic(DtoParamPaging input) {
         try {
-            List<Vms030VoLovPic> data = vms030AhmmoerpDtlsettingsDao.getPic(input.getNrp());
+            List<Vms030VoLovPic> data = vms030ObjectDao.getPic(input);
             return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, null, null, data, 1);
         } catch (Exception e) {
             return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.GAGAL, null, null, null, 0);
@@ -291,6 +295,24 @@ public class Vms030ServiceImpl implements Vms030Service {
                     AhmgavmsMstrefdocs ref = new AhmgavmsMstrefdocs();
                     ref.setAhmgavmsMstrefdocsPk(refPk);
                     
+//                    List<Vms030VoTableResult> data = vms030AhmgavmsMstrefdocsDao.getTable(input);
+//                    
+//                    for (Vms030VoTableResult ls : data) {
+//                        List<Vms030VoFileAttachment> listAtc = new ArrayList<>();
+//                        List<String> fAtc = vms030AhmmoerpDtlsettingsDao.getFileName(ls.getFileAtc(), ls.getFileNameAtc(), "MEMO");
+//                        if (!fAtc.isEmpty()) 
+//                        for (String v : fAtc) {
+//                            Vms030VoFileAttachment dtAtc = new Vms030VoFileAttachment();
+//
+//                            byte[] bFileAtc = readBytesFromFile(pathServer + v);
+//                            dtAtc.setName(Base64.getEncoder().encodeToString(bFileAtc));
+//
+//                            listAtc.add(dtAtc);
+//                        }
+//                        ls.setFileAtc(listAtc);
+//                    }
+                    
+                    
                     ref.setVworkdesc(workDesc);
                     ref.setVplantid(plant);
                     ref.setVtype(visitorType);
@@ -330,7 +352,7 @@ public class Vms030ServiceImpl implements Vms030Service {
 
     @Override
     public DtoResponseWorkspace getExcel(DtoParamPaging dto) {
-        String nrp = AhmStringUtil.hasValue(dto.getSearch().get("nrp")) ? (dto.getSearch().get("nrp") + "").toUpperCase() : "";
+         String nrp = AhmStringUtil.hasValue(dto.getSearch().get("nrp")) ? (dto.getSearch().get("nrp") + "").toUpperCase() : "";
         
         
         List<Vms030VoTableResult> list = vms030AhmgavmsMstrefdocsDao.getTable(dto);
@@ -338,6 +360,6 @@ public class Vms030ServiceImpl implements Vms030Service {
         
         return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, list, count);
     }
+     
 
-    
 }

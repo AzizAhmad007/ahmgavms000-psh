@@ -21,7 +21,9 @@ import id.co.ahm.jxf.dao.DefaultHibernateDao;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
+import org.hibernate.exception.SQLGrammarException;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -213,6 +215,38 @@ public class Vms030AhmmoerpDtlsettingsDaoImpl extends DefaultHibernateDao<Ahmmoe
             }
         }
         return result;
+    }
+
+    @Override
+    public List<String> getFileName(String type, String name, String ext) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT "
+                + "    VFPATHDOC "
+                + "FROM "
+                + "    AHMGAVMS_MSTREFDOCS "
+                + "WHERE "
+                + "    VFNAMEDOC = :name "
+                + "    AND VFEXTDOC = :ext "
+                + "    AND VFTYPEDOC = :type ");
+
+        Query query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setParameter("VFTYPEDOC", type);
+        query.setParameter("VFNAMEDOC", name);
+        query.setParameter("VFEXTDOC", ext);
+
+        List<String> results = new ArrayList<>();
+        try {
+            List lists = query.list();
+            for (int i = 0; i < lists.size(); i++) {
+                Object obj = (Object) lists.get(i);
+                
+                results.add((String) obj);
+            }
+            
+            return results;
+        } catch (SQLGrammarException e) {
+            return results;
+        }
     }
     
     

@@ -126,7 +126,7 @@ public class Vms030Rest {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     DtoResponseWorkspace getPic(@RequestHeader(value = "token", defaultValue = "") String token,
-            @RequestBody Vms030VoLovPic input) {
+            @RequestBody DtoParamPaging input) {
         return vms030Service.showPic(input);
     }
     

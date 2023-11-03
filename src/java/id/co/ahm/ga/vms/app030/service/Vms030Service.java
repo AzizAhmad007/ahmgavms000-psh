@@ -31,7 +31,7 @@ public interface Vms030Service {
     
     public DtoResponseWorkspace showDocType(DtoParamPaging input);
     
-    public DtoResponseWorkspace showPic(Vms030VoLovPic input);
+    public DtoResponseWorkspace showPic(DtoParamPaging input);
     
     public DtoResponsePagingWorkspace showTable(DtoParamPaging input);
     
