@@ -6,6 +6,7 @@
 package id.co.ahm.ga.vms.app030.vo;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -13,19 +14,25 @@ import java.util.Date;
  */
 public class Vms030VoTableResult {
     
+    private String visitorTypeCode;
     private String visitorType;
+    private String statusCode;
     private String status;
     private String noDoc;
     private String workDesc;
     private String docType;
+    private String plantCode;
     private String plant;
     private String company;
     private String nrp;
     private String email;
     private Date dateStart;
-private String dateStartText;
+    private String dateStartText;
     private Date dateEnd;
     private String dateEndText;
+    public int rowNum;
+    private String fileNameAtc;
+    private List<Vms030VoFileAttachment> fileAtc;
 
     public String getVisitorType() {
         return visitorType;
@@ -130,5 +137,56 @@ private String dateStartText;
     public void setDateEndText(String dateEndText) {
         this.dateEndText = dateEndText;
     }
+
+    public String getFileNameAtc() {
+        return fileNameAtc;
+    }
+
+    public void setFileNameAtc(String fileNameAtc) {
+        this.fileNameAtc = fileNameAtc;
+    }
+
+    public List<Vms030VoFileAttachment> getFileAtc() {
+        return fileAtc;
+    }
+
+    public void setFileAtc(List<Vms030VoFileAttachment> fileAtc) {
+        this.fileAtc = fileAtc;
+    }
+
+    public String getVisitorTypeCode() {
+        return visitorTypeCode;
+    }
+
+    public void setVisitorTypeCode(String visitorTypeCode) {
+        this.visitorTypeCode = visitorTypeCode;
+    }
+
+    public String getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(String statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public String getPlantCode() {
+        return plantCode;
+    }
+
+    public void setPlantCode(String plantCode) {
+        this.plantCode = plantCode;
+    }
+
+    public int getRowNum() {
+        return rowNum;
+    }
+
+    public void setRowNum(int rowNum) {
+        this.rowNum = rowNum;
+    }
+
+    
+    
     
 }
