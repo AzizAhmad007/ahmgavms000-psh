@@ -50,10 +50,10 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
         sortMap.put("ahmgavms030DateEndSort", "");
         
         String noDoc = AhmStringUtil.hasValue(input.getSearch().get("noDoc")) ? (input.getSearch().get("noDoc") + "").toUpperCase() : "";
-        String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
-        String visitorType = AhmStringUtil.hasValue(input.getSearch().get("visitorType")) ? (input.getSearch().get("visitorType") + "").toUpperCase() : "";
+        String plant = AhmStringUtil.hasValue(input.getSearch().get("plantCode")) ? (input.getSearch().get("plantCode") + "").toUpperCase() : "";
+        String visitorType = AhmStringUtil.hasValue(input.getSearch().get("visitorTypeCode")) ? (input.getSearch().get("visitorTypeCode") + "").toUpperCase() : "";
         String company = AhmStringUtil.hasValue(input.getSearch().get("company")) ? (input.getSearch().get("company") + "").toUpperCase() : "";
-        String status = AhmStringUtil.hasValue(input.getSearch().get("status")) ? (input.getSearch().get("status") + "").toUpperCase() : "";
+        String status = AhmStringUtil.hasValue(input.getSearch().get("statusCode")) ? (input.getSearch().get("statusCode") + "").toUpperCase() : "";
         String nrp = AhmStringUtil.hasValue(input.getSearch().get("nrp")) ? (input.getSearch().get("nrp") + "").toUpperCase() : "";
         String email = AhmStringUtil.hasValue(input.getSearch().get("email")) ? (input.getSearch().get("email") + "").toLowerCase() : "";
         String docType = AhmStringUtil.hasValue(input.getSearch().get("docType")) ? (input.getSearch().get("docType") + "").toUpperCase() : "";
@@ -62,82 +62,121 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
         
         StringBuilder sql = new StringBuilder();
         
+        sql.append("SELECT * FROM ( ");
+        
         sql.append("SELECT "
-                + "(SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
-                + "     WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
-                + "     AND B.VITEMCODE = A.VTYPE) VTYPEDESC, "
-                + "(SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
-                + "     WHERE B.RSET_VID = 'VMS_STAT' "
-                + "     AND B.VITEMCODE = A.VSTATUS) VSTATUS, "
-                + "A.VREFDOCNO, "
-                + "A.VWORKDESC, "
-                + "(SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
-                + "     WHERE B.RSET_VID = 'VMS_TYPDOC_SI' "
-                + "     AND B.VITEMCODE = 'MEMO') VDOCTYPE, "
-                + "(SELECT C.VDESC FROM AHMMOSCD_MSTAGPLANTS C "
-                + "     WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTDESC, "
-                + "A.VCOMPANY, "
-                + "A.VPICNRP, "
-                + "D.VEMAIL, "
-                + "A.DWORKSTART, "
-                + "A.DWORKEND ");
-        
-        sql.append("FROM AHMGAVMS_MSTREFDOCS A ");
-        
-        sql.append("JOIN AHMMOERP_MSTKARYAWANS D "
-                + "ON A.VPICNRP = D.IIDNRP ");
+                + "     A.VTYPE AS VTYPE, "
+                + "     (SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "         WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
+                + "         AND B.VITEMCODE = A.VTYPE) VTYPEDESC, "
+                + "     A.VSTATUS AS VSTATUS, "
+                + "     (CASE "
+                + "         WHEN A.VSTATUS = 'Y' THEN "
+                + "             'AKTIF' "
+                + "         WHEN A.VSTATUS = 'N' THEN "
+                + "             'TIDAK AKTIF' "
+                + "         WHEN A.VSTATUS = 'D' THEN "
+                + "             'DRAFT' "
+                + "         ELSE "
+                + "             '-' "
+                + "     END) VSTATUSDESC, "
+                + "     A.VREFDOCNO AS VREFDOCNO, "
+                + "     A.VWORKDESC AS VWORKDESC, "
+                + "     (SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "         WHERE B.RSET_VID = 'VMS_TYPDOC_SI' "
+                + "         AND B.VITEMCODE = 'MEMO') VDOCTYPE, "
+                + "      A.VPLANTID AS VPLANTID, "
+                + "     (SELECT C.VDESC FROM AHMMOSCD_MSTAGPLANTS C "
+                + "         WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTDESC, "
+                + "     A.VCOMPANY AS VCOMPANY, "
+                + "     A.VPICNRP AS VPICNRP, "
+                + "     D.VEMAIL AS VEMAIL, "
+                + "     A.DWORKSTART AS DWORKSTART, "
+                + "     A.DWORKEND AS DWORKEND "
+                + "FROM AHMGAVMS_MSTREFDOCS A "
+                + "JOIN AHMMOERP_MSTKARYAWANS D "
+                + "     ON A.VPICNRP = D.IIDNRP "
+                + "UNION "
+                + "SELECT "
+                + "     (SELECT B.VITEMCODE FROM AHMMOERP_DTLSETTINGS B "
+                + "         WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
+                + "         AND B.VITEMCODE = 'KTR') VTYPE, "
+                + "     (SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "         WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
+                + "         AND B.VITEMCODE = 'KTR') VTYPEDESC, "
+                + "     (CASE "
+                + "         WHEN TRUNC(A.DENDJOB) < TRUNC(SYSDATE) THEN "
+                + "             'N' "
+                + "         WHEN TRUNC(A.DSTARTJOB) < TRUNC(A.DENDJOB) THEN "
+                + "             'Y' "
+                + "         ELSE "
+                + "             '-' "
+                + "     END) VSTATUS, "
+                + "     (CASE "
+                + "         WHEN TRUNC(A.DENDJOB) < TRUNC(SYSDATE) THEN "
+                + "             'TIDAK AKTIF' "
+                + "         WHEN TRUNC(A.DSTARTJOB) < TRUNC(A.DENDJOB) THEN "
+                + "             'AKTIF' "
+                + "         ELSE "
+                + "             '-' "
+                + "     END) VSTATUSDESC, "
+                + "     A.VIKPID AS VREFDOCNO, "
+                + "     A.VPROJDTL AS VWORKDESC, "
+                + "     (SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "         WHERE B.RSET_VID = 'VMS_TYPDOC_SI' "
+                + "         AND B.VITEMCODE = 'IKP') VDOCTYPE, "
+                + "     A.VPLANTID AS VPLANTID, "
+                + "     (SELECT C.VDESC FROM AHMMOSCD_MSTAGPLANTS C "
+                + "         WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTDESC, "
+                + "     A.VSUPPLDESC AS VCOMPANY, "
+                + "     TO_CHAR(A.VPICNRPID) AS VPICNRP, "
+                + "     D.VEMAIL AS VEMAIL, "
+                + "     A.DSTARTJOB AS DWORKSTART, "
+                + "     A.DENDJOB AS DWORKEND "
+                + "FROM AHMGAWPM_HDRIKPS A "
+                + "JOIN AHMMOERP_MSTKARYAWANS D "
+                + "     ON A.VPICNRPID = D.IIDNRP "
+                + " ) ");
         
         sql.append("WHERE 1 = 1 ");
         
         if (!StringUtils.isBlank(visitorType)) {
-            sql.append("AND A.VTYPE = '")
+            sql.append("AND VTYPE = '")
                     .append(visitorType)
                     .append("' ");
         }
-        if (!StringUtils.isBlank(status)) {
-            if (status.equalsIgnoreCase("N")) {
-                sql.append("AND A.VSTATUS = 'N' ");
-            }
-            if (status.equalsIgnoreCase("Y")) {
-                sql.append("AND A.VSTATUS = 'Y' ");
-            }
-            if (status.equalsIgnoreCase("D")) {
-                sql.append("AND A.VSTATUS = 'D' ");
-            }
-        }
         if (!StringUtils.isBlank(noDoc)) {
-            if (noDoc.equalsIgnoreCase("MEMO")) {
-                sql.append("AND A.VREFDOCNO LIKE '%MEMO%'");
-            }
-            else {
-                sql.append("AND A.VREFDOCNO LIKE '%-%'");
-            }
+            sql.append("AND VREFDOCNO LIKE '%")
+                    .append(noDoc)
+                    .append("%' ");
+        }
+        if (!StringUtils.isBlank(status)) {
+            sql.append("AND VSTATUS = '")
+                    .append(status)
+                    .append("' ");
         }
         if (!StringUtils.isBlank(docType)) {
-            if (docType.equalsIgnoreCase("MEMO")) {
-                sql.append("AND A.VREFDOCNO LIKE '%MEMO%'");
-            }
-            else {
-                sql.append("AND A.VREFDOCNO LIKE '%-%'");
-            }
+            sql.append("AND VDOCTYPE = '")
+                    .append(docType)
+                    .append("' ");
         }
         if (!StringUtils.isBlank(plant)) {
-            sql.append("AND A.VPLANTID = '")
+            sql.append("AND VPLANTID = '")
                     .append(plant)
                     .append("' ");
         }
         if (!StringUtils.isBlank(company)) {
-            sql.append("AND A.VCOMPANY LIKE '%")
+            sql.append("AND VCOMPANY LIKE '%")
                     .append(company)
                     .append("%' ");
         }
         if (!StringUtils.isBlank(nrp)) {
-            sql.append("AND A.VPICNRP LIKE '%")
+            sql.append("AND VPICNRP LIKE '%")
                     .append(nrp)
                     .append("%' ");
         }
         if (!StringUtils.isBlank(dateStart)) {
-            sql.append("AND A.DWORKSTART BETWEEN TO_DATE('")
+            sql.append("AND DWORKSTART BETWEEN TO_DATE('")
                 .append(dateStart)
                 .append("', 'DD-MM-YYYY') ")
                 .append("AND TO_DATE('")
@@ -145,121 +184,18 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                 .append("', 'DD-MM-YYYY') ");
         }
         if (!StringUtils.isBlank(dateEnd)) {
-            sql.append("AND A.DWORKEND BETWEEN TO_DATE('")
+            sql.append("AND DWORKEND BETWEEN TO_DATE('")
                     .append(dateStart)
                     .append("', 'DD-MM-YYYY') AND TO_DATE('")
                     .append(dateEnd)
                     .append("', 'DD-MM-YYYY') ");
         }
         if (!StringUtils.isBlank(email)) {
-            sql.append("AND D.VEMAIL LIKE '%")
+            sql.append("AND VEMAIL LIKE '%")
                     .append(email)
                     .append("%' ");
         }
         
-        sql.append("UNION ");
-        
-        sql.append("SELECT "
-                + "(SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
-                + "     WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
-                + "     AND B.VITEMCODE = 'KTR') VTYPEDESC, "
-                + "(CASE "
-                + "     WHEN TRUNC(A.DENDJOB) < TRUNC(SYSDATE) THEN "
-                + "         'TIDAK AKTIF' "
-                + "     WHEN TRUNC(A.DSTARTJOB) < TRUNC(A.DENDJOB) THEN "
-                + "         'AKTIF' "
-                + "     ELSE "
-                + "         '-' "
-                + "END) VSTATUS, "
-                + "A.VIKPID AS VREFDOCNO, "
-                + "A.VPROJDTL AS VWORKDESC, "
-                + "(SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
-                + "     WHERE B.RSET_VID = 'VMS_TYPDOC_SI' "
-                + "     AND B.VITEMCODE = 'IKP') VDOCTYPE, "
-                + "(SELECT C.VDESC FROM AHMMOSCD_MSTAGPLANTS C "
-                + "     WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTDESC, "
-                + "A.VSUPPLDESC AS VCOMPANY, "
-                + "TO_CHAR(A.VPICNRPID) AS VPICNRP, "
-                + "D.VEMAIL, "
-                + "A.DSTARTJOB AS DWORKSTART, "
-                + "A.DENDJOB AS DWORKEND ");
-     
-        sql.append("FROM AHMGAWPM_HDRIKPS A ");
-        
-        sql.append("JOIN AHMMOERP_MSTKARYAWANS D "
-                + "ON A.VPICNRPID = D.IIDNRP ");
-        
-        sql.append("WHERE 1 = 1 ");
-        if (!StringUtils.isBlank(visitorType)) {    
-            if (visitorType.equalsIgnoreCase("KTR")) {
-                sql.append("AND A.VIKPID LIKE '%IKP%'");
-            }
-            else {
-                sql.append("AND A.VIKPID LIKE '%-%'");
-            }
-        }
-        if (!StringUtils.isBlank(status)) {
-            if (status.equalsIgnoreCase("N")) {
-                sql.append("AND TRUNC(A.DENDJOB) < TRUNC(SYSDATE) ");
-            }
-            if (status.equalsIgnoreCase("Y")) {
-                sql.append("AND TRUNC(A.DENDJOB) > TRUNC(SYSDATE) + 1 ");
-            }
-            if (status.equalsIgnoreCase("D")) {
-                sql.append("AND A.VIKPID LIKE '%-%'");
-            }
-        }
-        if (!StringUtils.isBlank(noDoc)) {
-            if (noDoc.equalsIgnoreCase("IKP")) {
-                sql.append("AND A.VIKPID LIKE '%IKP%'");
-            }
-            else {
-                sql.append("AND A.VIKPID LIKE '%-%'");
-            }
-        }
-        if (!StringUtils.isBlank(docType)) {
-            if (docType.equalsIgnoreCase("IKP")) {
-                sql.append("AND A.VIKPID LIKE '%IKP%'");
-            }
-            else {
-                sql.append("AND A.VIKPID LIKE '%-%'");
-            }
-        }
-        if (!StringUtils.isBlank(plant)) {
-            sql.append("AND A.VPLANTID = '")
-                    .append(plant)
-                    .append("' ");
-        }
-        if (!StringUtils.isBlank(company)) {
-            sql.append("AND A.VSUPPLDESC LIKE '%")
-                    .append(company)
-                    .append("%' ");
-        }
-        if (!StringUtils.isBlank(nrp)) {
-            sql.append("AND A.VPICNRPID LIKE '%")
-                    .append(nrp)
-                    .append("%' ");
-        }
-        if (!StringUtils.isBlank(dateStart)) {
-            sql.append("AND A.DSTARTJOB BETWEEN TO_DATE('")
-                    .append(dateStart)
-                    .append("', 'DD-MM-YYYY') AND TO_DATE('")
-                    .append(dateEnd)
-                    .append("', 'DD-MM-YYYY') ");
-        }
-        if (!StringUtils.isBlank(dateEnd)) {
-            sql.append("AND A.DENDJOB BETWEEN TO_DATE('")
-                    .append(dateStart)
-                    .append("', 'DD-MM-YYYY') AND TO_DATE('")
-                    .append(dateEnd)
-                    .append("', 'DD-MM-YYYY') ");
-        }
-        if (!StringUtils.isBlank(email)) {
-            sql.append("AND D.VEMAIL LIKE '%")
-                    .append(email)
-                    .append("%' ");
-        }
-
         voSetter(input);
         orderClause(input, sql, sortMap, getParam);
         
@@ -275,20 +211,23 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                 for(Object object : list) {
                     obj = (Object[]) object;
                     Vms030VoTableResult vo = new Vms030VoTableResult();
-                    vo.setVisitorType((String) obj[0]);
-                    vo.setStatus((String) obj[1]);
-                    vo.setNoDoc((String) obj[2]);
-                    vo.setWorkDesc((String) obj[3]);
-                    vo.setDocType((String) obj[4]);
-                    vo.setPlant((String) obj[5]);
-                    vo.setCompany((String) obj[6]);
-                    vo.setNrp((String) obj[7]);
-                    vo.setEmail((String) obj[8]);
-                    vo.setDateStart(((Date) obj[9]));
-                    vo.setDateStartText(DateUtil.dateToString((Date) obj[9], "dd-MMM-yyyy"));
-                    vo.setDateEnd(((Date) obj[10]));
-                    vo.setDateEndText(DateUtil.dateToString((Date) obj[10], "dd-MMM-yyyy"));
-                    
+                    vo.setVisitorTypeCode((String) obj[0]);
+                    vo.setVisitorType((String) obj[1]);
+                    vo.setStatusCode((String) obj[2]);
+                    vo.setStatus((String) obj[3]);
+                    vo.setNoDoc((String) obj[4]);
+                    vo.setWorkDesc((String) obj[5]);
+                    vo.setDocType((String) obj[6]);
+                    vo.setPlantCode((String) obj[7]);
+                    vo.setPlant((String) obj[8]);
+                    vo.setCompany((String) obj[9]);
+                    vo.setNrp((String) obj[10]);
+                    vo.setEmail((String) obj[11]);
+                    vo.setDateStart(((Date) obj[12]));
+                    vo.setDateStartText(DateUtil.dateToString((Date) obj[12], "dd-MMM-yyyy"));
+                    vo.setDateEnd(((Date) obj[13]));
+                    vo.setDateEndText(DateUtil.dateToString((Date) obj[13], "dd-MMM-yyyy"));
+                    vo.setRowNum(i);
                     i++;
                     result.add(vo);
                 }
@@ -303,10 +242,10 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
     public int getTableCount(DtoParamPaging input) {
         try {
             String noDoc = AhmStringUtil.hasValue(input.getSearch().get("noDoc")) ? (input.getSearch().get("noDoc") + "").toUpperCase() : "";
-            String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
-            String visitorType = AhmStringUtil.hasValue(input.getSearch().get("visitorType")) ? (input.getSearch().get("visitorType") + "").toUpperCase() : "";
+            String plant = AhmStringUtil.hasValue(input.getSearch().get("plantCode")) ? (input.getSearch().get("plantCode") + "").toUpperCase() : "";
+            String visitorType = AhmStringUtil.hasValue(input.getSearch().get("visitorTypeCode")) ? (input.getSearch().get("visitorTypeCode") + "").toUpperCase() : "";
             String company = AhmStringUtil.hasValue(input.getSearch().get("company")) ? (input.getSearch().get("company") + "").toUpperCase() : "";
-            String status = AhmStringUtil.hasValue(input.getSearch().get("status")) ? (input.getSearch().get("status") + "").toUpperCase() : "";
+            String status = AhmStringUtil.hasValue(input.getSearch().get("statusCode")) ? (input.getSearch().get("statusCode") + "").toUpperCase() : "";
             String nrp = AhmStringUtil.hasValue(input.getSearch().get("nrp")) ? (input.getSearch().get("nrp") + "").toUpperCase() : "";
             String email = AhmStringUtil.hasValue(input.getSearch().get("email")) ? (input.getSearch().get("email") + "").toLowerCase() : "";
             String docType = AhmStringUtil.hasValue(input.getSearch().get("docType")) ? (input.getSearch().get("docType") + "").toUpperCase() : "";
@@ -315,64 +254,121 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
 
             StringBuilder sql = new StringBuilder();
 
-            sql.append("SELECT COUNT(0) ");
-
-            sql.append("FROM AHMGAVMS_MSTREFDOCS A ");
-
-            sql.append("JOIN AHMMOERP_MSTKARYAWANS D "
-                + "ON A.VPICNRP = D.IIDNRP ");
-
+            sql.append("SELECT COUNT (0) FROM ( ");
+            
+            sql.append("SELECT "
+                + "     A.VTYPE AS VTYPE, "
+                + "     (SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "         WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
+                + "         AND B.VITEMCODE = A.VTYPE) VTYPEDESC, "
+                + "     A.VSTATUS AS VSTATUS, "
+                + "     (CASE "
+                + "         WHEN A.VSTATUS = 'Y' THEN "
+                + "             'AKTIF' "
+                + "         WHEN A.VSTATUS = 'N' THEN "
+                + "             'TIDAK AKTIF' "
+                + "         WHEN A.VSTATUS = 'D' THEN "
+                + "             'DRAFT' "
+                + "         ELSE "
+                + "             '-' "
+                + "     END) VSTATUSDESC, "
+                + "     A.VREFDOCNO AS VREFDOCNO, "
+                + "     A.VWORKDESC AS VWORKDESC, "
+                + "     (SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "         WHERE B.RSET_VID = 'VMS_TYPDOC_SI' "
+                + "         AND B.VITEMCODE = 'MEMO') VDOCTYPE, "
+                + "      A.VPLANTID AS VPLANTID, "
+                + "     (SELECT C.VDESC FROM AHMMOSCD_MSTAGPLANTS C "
+                + "         WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTDESC, "
+                + "     A.VCOMPANY AS VCOMPANY, "
+                + "     A.VPICNRP AS VPICNRP, "
+                + "     D.VEMAIL AS VEMAIL, "
+                + "     A.DWORKSTART AS DWORKSTART, "
+                + "     A.DWORKEND AS DWORKEND "
+                + "FROM AHMGAVMS_MSTREFDOCS A "
+                + "JOIN AHMMOERP_MSTKARYAWANS D "
+                + "     ON A.VPICNRP = D.IIDNRP "
+                + "UNION "
+                + "SELECT "
+                + "     (SELECT B.VITEMCODE FROM AHMMOERP_DTLSETTINGS B "
+                + "         WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
+                + "         AND B.VITEMCODE = 'KTR') VTYPE, "
+                + "     (SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "         WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
+                + "         AND B.VITEMCODE = 'KTR') VTYPEDESC, "
+                + "     (CASE "
+                + "         WHEN TRUNC(A.DENDJOB) < TRUNC(SYSDATE) THEN "
+                + "             'N' "
+                + "         WHEN TRUNC(A.DSTARTJOB) < TRUNC(A.DENDJOB) THEN "
+                + "             'Y' "
+                + "         ELSE "
+                + "             '-' "
+                + "     END) VSTATUS, "
+                + "     (CASE "
+                + "         WHEN TRUNC(A.DENDJOB) < TRUNC(SYSDATE) THEN "
+                + "             'TIDAK AKTIF' "
+                + "         WHEN TRUNC(A.DSTARTJOB) < TRUNC(A.DENDJOB) THEN "
+                + "             'AKTIF' "
+                + "         ELSE "
+                + "             '-' "
+                + "     END) VSTATUSDESC, "
+                + "     A.VIKPID AS VREFDOCNO, "
+                + "     A.VPROJDTL AS VWORKDESC, "
+                + "     (SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "         WHERE B.RSET_VID = 'VMS_TYPDOC_SI' "
+                + "         AND B.VITEMCODE = 'IKP') VDOCTYPE, "
+                + "     A.VPLANTID AS VPLANTID, "
+                + "     (SELECT C.VDESC FROM AHMMOSCD_MSTAGPLANTS C "
+                + "         WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTDESC, "
+                + "     A.VSUPPLDESC AS VCOMPANY, "
+                + "     TO_CHAR(A.VPICNRPID) AS VPICNRP, "
+                + "     D.VEMAIL AS VEMAIL, "
+                + "     A.DSTARTJOB AS DWORKSTART, "
+                + "     A.DENDJOB AS DWORKEND "
+                + "FROM AHMGAWPM_HDRIKPS A "
+                + "JOIN AHMMOERP_MSTKARYAWANS D "
+                + "     ON A.VPICNRPID = D.IIDNRP "
+                + " ) ");
+        
             sql.append("WHERE 1 = 1 ");
-
+          
             if (!StringUtils.isBlank(visitorType)) {
-                sql.append("AND A.VTYPE = '")
-                .append(visitorType)
-                .append("' ");
-            }
-            if (!StringUtils.isBlank(status)) {
-                if (status.equalsIgnoreCase("N")) {
-                    sql.append("AND A.VSTATUS = 'N' ");
-                }
-                if (status.equalsIgnoreCase("Y")) {
-                    sql.append("AND A.VSTATUS = 'Y' ");
-                }
-                if (status.equalsIgnoreCase("D")) {
-                    sql.append("AND A.VSTATUS = 'D' ");
-                }
+            sql.append("AND VTYPE = '")
+                    .append(visitorType)
+                    .append("' ");
             }
             if (!StringUtils.isBlank(noDoc)) {
-                if (noDoc.equalsIgnoreCase("MEMO")) {
-                    sql.append("AND A.VREFDOCNO LIKE '%MEMO%'");
-                }
-                else {
-                    sql.append("AND A.VREFDOCNO LIKE '%-%'");
-                }
+                sql.append("AND VREFDOCNO LIKE '%")
+                        .append(noDoc)
+                        .append("%' ");
+            }
+            if (!StringUtils.isBlank(status)) {
+                sql.append("AND VSTATUS = '")
+                        .append(status)
+                        .append("' ");
             }
             if (!StringUtils.isBlank(docType)) {
-                if (docType.equalsIgnoreCase("MEMO")) {
-                    sql.append("AND A.VREFDOCNO LIKE '%MEMO%'");
-                }
-                else {
-                    sql.append("AND A.VREFDOCNO LIKE '%-%'");
-                }
+                sql.append("AND VDOCTYPE = '")
+                        .append(docType)
+                        .append("' ");
             }
             if (!StringUtils.isBlank(plant)) {
-                sql.append("AND A.VPLANTID = '")
+                sql.append("AND VPLANTID = '")
                         .append(plant)
                         .append("' ");
             }
             if (!StringUtils.isBlank(company)) {
-                sql.append("AND A.VCOMPANY LIKE '%")
+                sql.append("AND VCOMPANY LIKE '%")
                         .append(company)
                         .append("%' ");
             }
             if (!StringUtils.isBlank(nrp)) {
-                sql.append("AND A.VPICNRP LIKE '%")
+                sql.append("AND VPICNRP LIKE '%")
                         .append(nrp)
                         .append("%' ");
             }
             if (!StringUtils.isBlank(dateStart)) {
-                sql.append("AND A.DWORKSTART BETWEEN TO_DATE('")
+                sql.append("AND DWORKSTART BETWEEN TO_DATE('")
                     .append(dateStart)
                     .append("', 'DD-MM-YYYY') ")
                     .append("AND TO_DATE('")
@@ -380,95 +376,14 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                     .append("', 'DD-MM-YYYY') ");
             }
             if (!StringUtils.isBlank(dateEnd)) {
-                sql.append("AND A.DWORKEND BETWEEN TO_DATE('")
+                sql.append("AND DWORKEND BETWEEN TO_DATE('")
                         .append(dateStart)
                         .append("', 'DD-MM-YYYY') AND TO_DATE('")
                         .append(dateEnd)
                         .append("', 'DD-MM-YYYY') ");
             }
             if (!StringUtils.isBlank(email)) {
-                sql.append("AND D.VEMAIL LIKE '%")
-                        .append(email)
-                        .append("%' ");
-            }
-            
-            sql.append("UNION ");
-
-            sql.append("SELECT COUNT(0) ");
-
-            sql.append("FROM AHMGAWPM_HDRIKPS A ");
-            
-            sql.append("JOIN AHMMOERP_MSTKARYAWANS D "
-                + "ON A.VPICNRPID = D.IIDNRP ");
-            
-            sql.append("WHERE 1 = 1 ");
-            
-            if (!StringUtils.isBlank(visitorType)) {    
-                if (visitorType.equalsIgnoreCase("KTR")) {
-                    sql.append("AND A.VIKPID LIKE '%IKP%'");
-                }
-                else {
-                    sql.append("AND A.VIKPID LIKE '%-%'");
-                }
-            }
-            if (!StringUtils.isBlank(status)) {
-                if (status.equalsIgnoreCase("N")) {
-                    sql.append("AND TRUNC(A.DENDJOB) < TRUNC(SYSDATE) ");
-                }
-                if (status.equalsIgnoreCase("Y")) {
-                    sql.append("AND TRUNC(A.DENDJOB) > TRUNC(SYSDATE) + 1 ");
-                }
-                if (status.equalsIgnoreCase("D")) {
-                    sql.append("AND A.VIKPID LIKE '%-%'");
-                }
-            }
-            if (!StringUtils.isBlank(noDoc)) {
-                if (noDoc.equalsIgnoreCase("IKP")) {
-                    sql.append("AND A.VIKPID LIKE '%IKP%'");
-                }
-                else {
-                    sql.append("AND A.VIKPID LIKE '%-%'");
-                }
-            }
-            if (!StringUtils.isBlank(docType)) {
-                if (docType.equalsIgnoreCase("IKP")) {
-                    sql.append("AND A.VIKPID LIKE '%IKP%'");
-                }
-                else {
-                    sql.append("AND A.VIKPID LIKE '%-%'");
-                }
-            }
-            if (!StringUtils.isBlank(plant)) {
-                sql.append("AND A.VPLANTID = '")
-                        .append(plant)
-                        .append("' ");
-            }
-            if (!StringUtils.isBlank(company)) {
-                sql.append("AND A.VSUPPLDESC LIKE '%")
-                        .append(company)
-                        .append("%' ");
-            }
-            if (!StringUtils.isBlank(nrp)) {
-                sql.append("AND A.VPICNRPID LIKE '%")
-                        .append(nrp)
-                        .append("%' ");
-            }
-            if (!StringUtils.isBlank(dateStart)) {
-                sql.append("AND A.DSTARTJOB BETWEEN TO_DATE('")
-                        .append(dateStart)
-                        .append("', 'DD-MM-YYYY') AND TO_DATE('")
-                        .append(dateEnd)
-                        .append("', 'DD-MM-YYYY') ");
-            }
-            if (!StringUtils.isBlank(dateEnd)) {
-                sql.append("AND A.DENDJOB BETWEEN TO_DATE('")
-                        .append(dateStart)
-                        .append("', 'DD-MM-YYYY') AND TO_DATE('")
-                        .append(dateEnd)
-                        .append("', 'DD-MM-YYYY') ");
-            }
-            if (!StringUtils.isBlank(email)) {
-                sql.append("AND D.VEMAIL LIKE '%")
+                sql.append("AND VEMAIL LIKE '%")
                         .append(email)
                         .append("%' ");
             }
@@ -503,10 +418,10 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                     String param = input.getSort();
 
                     switch (param) {
-                        case "visitorType":
+                        case "visitorTypeCode":
                             getParam = "VTYPE";
                             break;
-                        case "status":
+                        case "statusCode":
                             getParam = "VSTATUS";
                             break;
                         case "noDoc":
@@ -518,8 +433,8 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                         case "docType":
                             getParam = "VDOCTYPE";
                             break;        
-                        case "plant":
-                            getParam = "VPLANTDESC";
+                        case "plantCode":
+                            getParam = "VPLANTID";
                             break;
                         case "company":
                             getParam = "VCOMPANY";
@@ -530,10 +445,10 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                         case "email":
                             getParam = "VEMAIL";
                             break;
-                        case "dateStartText":
+                        case "dateStart":
                             getParam = "DWORKSTART";
                             break;
-                        case "dateEndText":
+                        case "dateEnd":
                             getParam = "DWORKEND";
                             break;
                         default:

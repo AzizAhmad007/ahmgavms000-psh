@@ -77,11 +77,15 @@ public class Vms028AhmgavmsHdrregsisDaoImpl extends DefaultHibernateDao<Ahmgavms
                 + "(SELECT C.VITEMNAME FROM AHMMOERP_DTLSETTINGS C "
                 + "     WHERE RSET_VID = 'VMS_RSL_SI' "
                 + "     AND C.VITEMCODE = B.VRESULT) VRESULTDESC, "
-                + "B.DENDSI AS ENDDATE "
+                + "B.DENDSI AS ENDDATE, "
+                + "D.VPICNRP AS NRP, "
+                + "(SELECT E.VNAMA FROM AHMMOERP_MSTKARYAWANS E "
+                + "WHERE E.IIDNRP = D.VPICNRP) PICNAME "
                 + "FROM AHMGAVMS_HDRREGSIS A "
                 + "JOIN AHMGAVMS_DTLREGSIS B "
                 + "ON B.VNOREQSI = A.VNOREQSI "
-                + "WHERE 1 = 1 ");
+                + "JOIN AHMGAVMS_MSTREFDOCS D "
+                + "ON A.VREFDOCNO = D.VREFDOCNO");
         
         
         voSetter(input);
@@ -117,6 +121,8 @@ public class Vms028AhmgavmsHdrregsisDaoImpl extends DefaultHibernateDao<Ahmgavms
                     vo.setHasil((String) obj[15]);
                     vo.setEndDate((Date) obj[16]);
                     vo.setEndDateText((String) DateUtil.dateToString((Date) obj[16], "dd-MMM-yyyy"));
+                    vo.setPicNrp((String) obj[17]);
+                    vo.setPicName((String) obj[18]);
                     vo.setRowNum(i);
                     i++;
                     vos.add(vo);
@@ -144,7 +150,7 @@ public class Vms028AhmgavmsHdrregsisDaoImpl extends DefaultHibernateDao<Ahmgavms
             
             StringBuilder sql = new StringBuilder();
             
-            sql.append("SELECT COUNT (*) FROM ( ");
+            sql.append("SELECT COUNT (0) FROM ( ");
                
              sql.append("SELECT A.VNOREQSI AS NOREQSI, A.VREFDOCNO AS REFDOCNO, A.VIDTYPE AS IDTYPE, "
                 + "A.VIDNO AS IDNO, A.VNAME AS NAME, "
@@ -167,10 +173,15 @@ public class Vms028AhmgavmsHdrregsisDaoImpl extends DefaultHibernateDao<Ahmgavms
                 + "(SELECT C.VITEMNAME FROM AHMMOERP_DTLSETTINGS C "
                 + "     WHERE RSET_VID = 'VMS_RSL_SI' "
                 + "     AND C.VITEMCODE = B.VRESULT) VRESULTDESC, "
-                + "B.DENDSI AS ENDDATE "
+                + "B.DENDSI AS ENDDATE, "
+                + "D.VPICNRP AS NRP, "
+                + "(SELECT E.VNAMA FROM AHMMOERP_MSTKARYAWANS E "
+                + "WHERE E.IIDNRP = D.VPICNRP) PICNAME "
                 + "FROM AHMGAVMS_HDRREGSIS A "
                 + "JOIN AHMGAVMS_DTLREGSIS B "
-                + "ON B.VNOREQSI = A.VNOREQSI ");
+                + "ON B.VNOREQSI = A.VNOREQSI "
+                + "JOIN AHMGAVMS_MSTREFDOCS D "
+                + "ON A.VREFDOCNO = D.VREFDOCNO");
               
             sql.append(" )");
             

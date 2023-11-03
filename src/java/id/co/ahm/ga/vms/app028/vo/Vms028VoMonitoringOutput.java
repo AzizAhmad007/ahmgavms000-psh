@@ -31,6 +31,8 @@ public class Vms028VoMonitoringOutput {
     private String hasilCode;
     private Date endDate;
     private String endDateText;
+    private String picNrp;
+    private String picName;
     private int rowNum;
 
     public String getReqNo() {
@@ -191,6 +193,22 @@ public class Vms028VoMonitoringOutput {
 
     public void setHasilCode(String hasilCode) {
         this.hasilCode = hasilCode;
+    }
+
+    public String getPicNrp() {
+        return picNrp;
+    }
+
+    public void setPicNrp(String picNrp) {
+        this.picNrp = picNrp;
+    }
+
+    public String getPicName() {
+        return picName;
+    }
+
+    public void setPicName(String picName) {
+        this.picName = picName;
     }
     
     
