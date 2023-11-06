@@ -657,9 +657,13 @@ public class Vms026ServiceImpl implements Vms026Service{
 
     @Override
     public String getNoHpUser(String userId) {
-        FmhrdGeneralDatas data = new FmhrdGeneralDatas();
-        BigDecimal nrp = new BigDecimal(userId);
-        data = vms026FmhrdGeneralDatasDao.findOne(nrp);
+        try {
+            FmhrdGeneralDatas data = new FmhrdGeneralDatas();
+            BigDecimal nrp = new BigDecimal(userId);
+            data = vms026FmhrdGeneralDatasDao.findOne(nrp);
         return data.getTelephone();
+        } catch (Exception e) {
+            return "-";
+        }
     }
 }
