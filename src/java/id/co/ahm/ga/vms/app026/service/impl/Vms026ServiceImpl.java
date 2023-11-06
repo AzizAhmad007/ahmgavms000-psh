@@ -41,6 +41,7 @@ import id.co.ahm.ga.vms.app026.dao.Vms026FmhrdGeneralDatasDao;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoDeleteInvitation;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoDeleteVisitor;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoMonitoringDetail;
+import id.co.ahm.ga.vms.app026.vo.Vms026VoMonitoringEmail;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoSendEmail;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoSubmitChief;
 import id.co.ahm.jxf.util.AhmStringUtil;
@@ -565,9 +566,9 @@ public class Vms026ServiceImpl implements Vms026Service{
             body = header + body + footer;
             emailService.callProcSendMail(subject, FROM, to.toString(), null, body);
 
-            logEmails(masterNo, FROM, to, "1", userId);
+            logEmails(invitNo, FROM, to, "1", userId);
         } catch (NullPointerException npE) {
-            logEmails(masterNo, FROM, to, "0", userId);
+            logEmails(invitNo, FROM, to, "0", userId);
         }
     }
 
@@ -689,6 +690,17 @@ public class Vms026ServiceImpl implements Vms026Service{
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
         } catch (Exception e) {
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, null, null);
+        }
+    }
+
+    @Override
+    public DtoResponsePagingWorkspace showMonitoringEmail(DtoParamPaging input) {
+        try {
+            List<Vms026VoMonitoringEmail> data = vms026AhmgavmsHdrinvitsDao.getMonitoringEmail(input);
+            int countData = 1;
+            return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, data, countData);
+        } catch (Exception e) {
+            return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.GAGAL, "GAGAL", null, null, 0);
         }
     }
 }

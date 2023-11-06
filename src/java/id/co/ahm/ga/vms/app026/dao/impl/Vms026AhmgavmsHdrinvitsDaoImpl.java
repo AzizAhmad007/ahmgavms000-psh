@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 import id.co.ahm.ga.vms.app026.dao.Vms026AhmgavmsHdrinvitsDao;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoMonitoringDetail;
+import id.co.ahm.ga.vms.app026.vo.Vms026VoMonitoringEmail;
 import java.math.BigDecimal;
 import org.hibernate.Query;
 
@@ -320,6 +321,48 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
             return vos;
         }
         return vos;
+    }
+    
+    @Override
+    public List<Vms026VoMonitoringEmail> getMonitoringEmail(DtoParamPaging input) {
+        List<Vms026VoMonitoringEmail> vos = new ArrayList<>();
+        
+        StringBuilder sql = new StringBuilder("SELECT DCREA, VTO, "
+                + "(CASE "
+                + "WHEN VFLAG == '1' THEN "
+                + "     'Success' "
+                + "WHEN VFLAG == '0' THEN "
+                + "     'Failed' "
+                + "ELSE "
+                + "     '-' "
+                + "END) VSTATUS "
+                + "FROM AHMGAVMS_LOGEMAILS "
+                + "WHERE 1 = 1 ");
+        if (!input.getSearch().get("invitNo").toString().equalsIgnoreCase("")) {
+            sql.append("AND VCODE = '").append(input.getSearch().get("invitNo").toString().toUpperCase()).append("' ");
+        }
+        Query query = getCurrentSession().createSQLQuery(sql.toString())
+                .setFirstResult(input.getOffset())
+                .setMaxResults(input.getLimit());
+        try {
+            List<Object[]> list = query.list();
+            if (list.size() > 0) {
+                Object[] obj;
+                int i = 0;
+                for (Object object : list) {
+                    obj = (Object[]) object;
+                    Vms026VoMonitoringEmail vo = new Vms026VoMonitoringEmail();
+                    vo.setDateSend((String) DateUtil.dateToString((Date) obj[0], "dd-MMM-yyyy"));
+                    vo.setEmailTo((String) obj[1]);
+                    vo.setStatus((String) obj[2]);
+                    
+                    vos.add(vo);
+                }
+            }
+            return vos;
+        } catch (Exception e) {
+            return vos;
+        }
     }
 
     @Override

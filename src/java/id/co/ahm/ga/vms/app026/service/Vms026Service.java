@@ -57,4 +57,6 @@ public interface Vms026Service {
     public String getNoHpUser(String userid);
 
     public DtoResponseWorkspace sendEmailMultiple(Vms026VoSendEmail input, VoUserCred user);
+
+    public DtoResponsePagingWorkspace showMonitoringEmail(DtoParamPaging input);
 }
