@@ -10,10 +10,19 @@ package id.co.ahm.ga.vms.app026.vo;
  * @author kahfi
  */
 public class Vms026VoMonitoringEmail {
+    int rowNum;
     String dateSend;
     String emailTo;
     String status;
 
+    public int getRowNum() {
+        return rowNum;
+    }
+
+    public void setRowNum(int rowNum) {
+        this.rowNum = rowNum;
+    }
+    
     public String getDateSend() {
         return dateSend;
     }

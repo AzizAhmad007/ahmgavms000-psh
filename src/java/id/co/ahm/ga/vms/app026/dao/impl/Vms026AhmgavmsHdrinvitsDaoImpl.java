@@ -355,7 +355,7 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                     vo.setDateSend((String) DateUtil.dateToString((Date) obj[0], "dd-MMM-yyyy"));
                     vo.setEmailTo((String) obj[1]);
                     vo.setStatus((String) obj[2]);
-                    
+                    vo.setRowNum(i);
                     vos.add(vo);
                 }
             }
