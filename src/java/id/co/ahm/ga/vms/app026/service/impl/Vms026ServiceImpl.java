@@ -667,4 +667,28 @@ public class Vms026ServiceImpl implements Vms026Service{
             return "-";
         }
     }
+
+    @Override
+    public DtoResponseWorkspace sendEmailMultiple(Vms026VoSendEmail input, VoUserCred user) {
+        try {
+            String masterNo = AhmStringUtil.hasValue(input.getMasterNo()) ? (input.getMasterNo()+ "").toUpperCase() : "";
+            List<String> data = new ArrayList<>();
+            AhmgavmsHdrinvits hdr = new AhmgavmsHdrinvits();
+            hdr = vms026AhmgavmsHdrinvitsDao.findOne(masterNo);
+            data = vms026AhmgavmsHdrchiefsDao.getInvitNoList(masterNo);
+            for (String str : data) {
+                String invitNo = data.get(0);
+                AhmgavmsHdrchiefs chf = new AhmgavmsHdrchiefs();
+                chf = vms026AhmgavmsHdrchiefsDao.findOne(invitNo);
+                input.setTo(chf.getVemail());
+                input.setCompany(chf.getVcompany());
+                input.setInvitNo(invitNo);
+                
+                sendEmailInvitationLink(input, user);
+            }
+            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
+        } catch (Exception e) {
+            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, null, null);
+        }
+    }
 }

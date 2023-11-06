@@ -48,4 +48,18 @@ public class Vms026AhmgavmsHdrchiefsDaoImpl extends DefaultHibernateDao<Ahmgavms
             return 0;
         }
     }
+
+    @Override
+    public List<String> getInvitNoList(String masterNo) {
+        try {
+            StringBuilder sql = new StringBuilder("SELECT VINVITNO "
+                    + "FROM AHMGAVMS_HDRCHIEFS "
+                    + "WHERE VMASTERNO = '" + masterNo + "'");
+            SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
+            List<String> list = sqlQuery.list();
+            return list;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

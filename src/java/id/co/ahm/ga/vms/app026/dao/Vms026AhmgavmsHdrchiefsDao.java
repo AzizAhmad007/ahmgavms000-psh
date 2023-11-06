@@ -8,6 +8,7 @@ package id.co.ahm.ga.vms.app026.dao;
 import id.co.ahm.ga.vms.app000.model.AhmgavmsHdrchiefs;
 import id.co.ahm.ga.vms.app026.vo.Vms026VoSubmitChief;
 import id.co.ahm.jxf.dao.DefaultDao;
+import java.util.List;
 
 /**
  *
@@ -18,5 +19,7 @@ public interface Vms026AhmgavmsHdrchiefsDao extends DefaultDao<AhmgavmsHdrchiefs
     public int validateQuota(Vms026VoSubmitChief input);
 
     public int getCountData(String input);
+
+    public List<String> getInvitNoList(String masterNo);
     
 }

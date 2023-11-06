@@ -55,4 +55,6 @@ public interface Vms026Service {
     public DtoResponseWorkspace sendEmail(List<Vms026VoSendEmail> input, VoUserCred user);
 
     public String getNoHpUser(String userid);
+
+    public DtoResponseWorkspace sendEmailMultiple(Vms026VoSendEmail input, VoUserCred user);
 }

@@ -293,4 +293,14 @@ public class Vms026Rest {
         VoUserCred user = tokenPshUtil.getUserCred(token);
         return vms026Service.sendEmail(input, user);
     }
+    
+    @RequestMapping(value = "send-email-multiple", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace sendEmailMultiple(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody Vms026VoSendEmail input) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
+        return vms026Service.sendEmailMultiple(input, user);
+    }
 }
