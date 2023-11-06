@@ -123,7 +123,7 @@ public class Vms026Rest {
         getDetail.put("role", user.getListRole());
         String noHp = vms026Service.getNoHpUser(user.getUserid());
         getDetail.put("noHp", noHp);
-        getDetail.put("token", token);
+        getDetail.put("token", token.toString());
 
         return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, getDetail);
     }
