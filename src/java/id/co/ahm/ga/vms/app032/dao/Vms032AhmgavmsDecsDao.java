@@ -25,5 +25,5 @@ public interface Vms032AhmgavmsDecsDao extends DefaultDao<AhmgavmsDecs, String> 
     public List<Vms032VoShowData> getMonitoring(DtoParamPaging input);
     public int getMonitoringCount(DtoParamPaging input);
     public int getCountData(DtoParamPaging input);
-    public List<Vms032VoShowPlant> getPlant(DtoParamPaging input);
+    public int getVersionData(DtoParamPaging input);
 }

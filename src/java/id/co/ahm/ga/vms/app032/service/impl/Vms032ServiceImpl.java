@@ -6,7 +6,9 @@
 package id.co.ahm.ga.vms.app032.service.impl;
 
 import id.co.ahm.ga.vms.app000.model.AhmgavmsDecs;
+import id.co.ahm.ga.vms.app000.model.AhmgavmsHisDeclrs;
 import id.co.ahm.ga.vms.app032.dao.Vms032AhmgavmsDecsDao;
+import id.co.ahm.ga.vms.app032.dao.Vms032AhmgavmsHisDeclrsDao;
 import id.co.ahm.ga.vms.app032.dao.Vms032AhmmoerpDtlsettingsDao;
 import id.co.ahm.ga.vms.app032.service.Vms032Service;
 import id.co.ahm.ga.vms.app032.vo.Vms032VoLov;
@@ -20,6 +22,7 @@ import id.co.ahm.jxf.util.AhmStringUtil;
 import id.co.ahm.jxf.util.DateUtil;
 import id.co.ahm.jxf.util.DtoHelper;
 import id.co.ahm.jxf.vo.VoUserCred;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -42,6 +45,10 @@ public class Vms032ServiceImpl implements Vms032Service {
     @Autowired
     @Qualifier("vms032AhmmoerpDtlsettingsDao")
     private Vms032AhmmoerpDtlsettingsDao vms032AhmmoerpDtlsettingsDao;
+    
+    @Autowired
+    @Qualifier("vms032AhmgavmsHisDeclrsDao")
+    private Vms032AhmgavmsHisDeclrsDao vms032AhmgavmsHisDeclrsDao;
     
     @Autowired
     @Qualifier("vms032AhmgavmsDecsDao")
@@ -95,7 +102,6 @@ public class Vms032ServiceImpl implements Vms032Service {
             String declarationType = AhmStringUtil.hasValue(input.getSearch().get("declarationType")) ? (input.getSearch().get("declarationType") + "").toUpperCase() : "";
             String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
             String judul = AhmStringUtil.hasValue(input.getSearch().get("judul")) ? (input.getSearch().get("judul") + "").toUpperCase() : "";
-            String version = AhmStringUtil.hasValue(input.getSearch().get("version")) ? (input.getSearch().get("version") + "").toUpperCase() : "";
             String htmlIndonesia = AhmStringUtil.hasValue(input.getSearch().get("htmlIndonesia")) ? (input.getSearch().get("htmlIndonesia") + "").toUpperCase() : "";
             String htmlInggris = AhmStringUtil.hasValue(input.getSearch().get("htmlInggris")) ? (input.getSearch().get("htmlInggris") + "").toUpperCase() : "";
             String sequence = AhmStringUtil.hasValue(input.getSearch().get("sequence")) ? (input.getSearch().get("sequence") + "").toUpperCase() : "";
@@ -108,20 +114,22 @@ public class Vms032ServiceImpl implements Vms032Service {
             } else {
                 userId = user.getUserid();
             }
-                
-                AhmgavmsDecs dec = new AhmgavmsDecs();
-                dec = vms032AhmgavmsDecsDao.findOne(declarationType);
-                List<Vms032VoShowPlant> pl = vms032AhmgavmsDecsDao.getPlant(input);
-                if(dec == null){
+            
+            AhmgavmsDecs dec = new AhmgavmsDecs();
+            dec = vms032AhmgavmsDecsDao.findOne(declarationType);
+            
+            int count = vms032AhmgavmsDecsDao.getVersionData(input);
+            if(dec == null ){
                     AhmgavmsDecs decs = new AhmgavmsDecs();
                     decs.setVdectype(declarationType);
                     decs.setVplantid("ALL");
-                    decs.setVtitle(judul);
-                    decs.setVstatus("Y");
+                    decs.setVtitle(declarationType);
+                    decs.setVstatus(status);
                     decs.setDstarteff(dateStart);
                     decs.setDendeff(dateEnd);
                     decs.setVbodyid(htmlIndonesia);
                     decs.setVbodyen(htmlInggris);
+                    decs.setVversion(count+1);
                     decs.setVseq(sequence);
                     decs.setCreateDate(new Date());
                     decs.setCreateBy(userId);
@@ -131,20 +139,46 @@ public class Vms032ServiceImpl implements Vms032Service {
                     vms032AhmgavmsDecsDao.save(decs);
                     vms032AhmgavmsDecsDao.flush();
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
-		} else {
+           }else{
+                    
+                    if(status.equals("N")){
+                        AhmgavmsHisDeclrs his = new AhmgavmsHisDeclrs();
+                        his.setVdecstype(declarationType);
+                        his.setVplantid("ALL");
+                        his.setVtitle(declarationType);
+                        his.setVbodyid(htmlIndonesia);
+                        his.setVbodyen(htmlInggris);
+                        his.setDstarteff(dateStart);
+                        his.setDendeff(dateEnd);
+                        his.setVseq(sequence);
+                        his.setVversion(count);
+                        his.setCreateDate(new Date());
+                        his.setCreateBy(userId);
+                        his.setLastModDate(new Date());
+                        his.setLastModBy(userId);
+                        
+                        vms032AhmgavmsHisDeclrsDao.save(his);
+                        vms032AhmgavmsHisDeclrsDao.flush();
+                        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
+                    }else{
+                    dec.setVstatus(status);
+                    dec.setDstarteff(dateStart);
+                    dec.setDendeff(dateEnd);
                     dec.setVbodyid(htmlIndonesia);
                     dec.setVbodyen(htmlInggris);
                     dec.setVseq(sequence);
+                    dec.setVversion(count+1);
                     dec.setCreateDate(new Date());
                     dec.setCreateBy(userId);
                     dec.setLastModDate(new Date());
                     dec.setLastModBy(userId);
-                    
+
                     vms032AhmgavmsDecsDao.update(dec);
                     vms032AhmgavmsDecsDao.flush();
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
+                    }
                 }
-        } catch (Exception e){
+            }catch (Exception e){
                 e.printStackTrace();
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, null, null);
         }
@@ -173,7 +207,6 @@ public class Vms032ServiceImpl implements Vms032Service {
                 
                 AhmgavmsDecs dec = new AhmgavmsDecs();
                 dec = vms032AhmgavmsDecsDao.findOne(declarationType);
-                List<Vms032VoShowPlant> pl = vms032AhmgavmsDecsDao.getPlant(input);
                 if(dec == null){
                     AhmgavmsDecs decs = new AhmgavmsDecs();
                     decs.setVdectype(declarationType);

@@ -17,7 +17,6 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-
 /**
  *
  * @author Hitoshi Mario Naga M
@@ -25,32 +24,15 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicInsert
 @DynamicUpdate
 @Entity
-@Table(name = "AHMGAVMS_MSTDECLARS")
-public class AhmgavmsDecs extends DefaultEntityImpl implements Serializable {
-
+@Table(name = "AHMGAVMS_HISDECLARS")
+public class AhmgavmsHisDeclrs extends DefaultEntityImpl implements Serializable {
     @Id
-    @Column(name = "VDECTYPE", nullable = false, length = 50)
-    private String vdectype;
+    @Column(name = "VDECTYPE")
+    private String vdecstype;
     
-    @Column(name = "VPLANTID", nullable = false, length = 50)
+    @Column(name = "VPLANTID")
     private String vplantid;
     
-    public String getVdectype() {
-        return vdectype;
-    }
-
-    public void setVdectype(String vdectype) {
-        this.vdectype = vdectype;
-    }
-    
-    public String getVplantid() {
-        return vplantid;
-    }
-
-    public void setVplantid(String vplantid) {
-        this.vplantid = vplantid;
-    }
-
     @Column(name = "VTITLE")
     private String vtitle;
     
@@ -70,14 +52,6 @@ public class AhmgavmsDecs extends DefaultEntityImpl implements Serializable {
     
     @Column(name = "VVERSION")
     private int vversion;
-
-    public int getVversion() {
-        return vversion;
-    }
-
-    public void setVversion(int vversion) {
-        this.vversion = vversion;
-    }
     
     @Column(name = "VSEQ")
     private String vseq;
@@ -108,9 +82,22 @@ public class AhmgavmsDecs extends DefaultEntityImpl implements Serializable {
 
 //    @Column(name = "VSIZE")
 //    private String vsize;
-//    
-    @Column(name = "VSTATUS")
-    private String vstatus;
+
+    public String getVdecstype() {
+        return vdecstype;
+    }
+
+    public void setVdecstype(String vdecstype) {
+        this.vdecstype = vdecstype;
+    }
+
+    public String getVplantid() {
+        return vplantid;
+    }
+
+    public void setVplantid(String vplantid) {
+        this.vplantid = vplantid;
+    }
 
     public String getVtitle() {
         return vtitle;
@@ -150,6 +137,14 @@ public class AhmgavmsDecs extends DefaultEntityImpl implements Serializable {
 
     public void setDendeff(Date dendeff) {
         this.dendeff = dendeff;
+    }
+
+    public int getVversion() {
+        return vversion;
+    }
+
+    public void setVversion(int vversion) {
+        this.vversion = vversion;
     }
 
     public String getVseq() {
@@ -231,13 +226,5 @@ public class AhmgavmsDecs extends DefaultEntityImpl implements Serializable {
 //    public void setVsize(String vsize) {
 //        this.vsize = vsize;
 //    }
-//
-    public String getVstatus() {
-        return vstatus;
-    }
-
-    public void setVstatus(String vstatus) {
-        this.vstatus = vstatus;
-    }
-  
+//    
 }

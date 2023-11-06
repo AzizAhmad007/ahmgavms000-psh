@@ -36,7 +36,8 @@ public class Vms032AhmgavmsDecsDaoImpl extends DefaultHibernateDao<AhmgavmsDecs,
     
     @Override
     public List<Vms032VoShowData> getMonitoring(DtoParamPaging input) {;
-        Map<String, String> sortMap = new HashMap<>();
+        List<Vms032VoShowData> vos = new ArrayList<>();
+	Map<String, String> sortMap = new HashMap<>();
         
         sortMap.put("ahmgavms032p01StatusSort", "");
         sortMap.put("ahmgavms032p01DeclarationTypeSort", "");
@@ -44,68 +45,49 @@ public class Vms032AhmgavmsDecsDaoImpl extends DefaultHibernateDao<AhmgavmsDecs,
         sortMap.put("ahmgavms032p01HtmlIndonesiaSort", "");
         sortMap.put("ahmgavms032p01HtmlInggrisSort", "");
         sortMap.put("ahmgavms032p01SequenceSort", "");
-        
-        String status = AhmStringUtil.hasValue(input.getSearch().get("status")) ? (input.getSearch().get("status") + "").toUpperCase() : "";
-        String declarationType = AhmStringUtil.hasValue(input.getSearch().get("declarationType")) ? (input.getSearch().get("declarationType") + "").toUpperCase() : "";
-        String version = AhmStringUtil.hasValue(input.getSearch().get("version")) ? (input.getSearch().get("version") + "").toUpperCase() : "";
-        String htmlIndonesia = AhmStringUtil.hasValue(input.getSearch().get("htmlIndonesia")) ? (input.getSearch().get("htmlIndonesia") + "").toUpperCase() : "";
-        String htmlInggris = AhmStringUtil.hasValue(input.getSearch().get("htmlInggris")) ? (input.getSearch().get("htmlInggris") + "").toUpperCase() : "";
-        String sequence = AhmStringUtil.hasValue(input.getSearch().get("sequence")) ? (input.getSearch().get("sequence") + "").toUpperCase() : "";
-        
+             
         StringBuilder sql = new StringBuilder();
         
         sql.append("SELECT DISTINCT "
-	+ "(SELECT D.VITEMNAME "
-	+ "FROM AHMMOERP_DTLSETTINGS D "
-	+ "WHERE D.RSET_VID = 'VMS_STAT'"
-	+ "AND D.VITEMCODE = DE.VSTATUS) VSTATUS, "
-	+ "(SELECT D.VITEMDESC "
-	+ "FROM AHMMOERP_DTLSETTINGS D "
-	+ "WHERE D.RSET_VID = 'VMS_DECLR'"
-	+ "AND D.VITEMCODE = DE.VDECTYPE) VDECTYPE, "
-	+ "DE.VVERSION, DE.VBODYID, DE.VBODYEN, DE.VSEQ "
-	+ "FROM AHMGAVMS_MSTDECLARS DE "
-	+ "WHERE 1 = 1 ");
-        
-//        sql.append("SELECT DISTINCT "
-//                + "VSTATUS, "
-//                + "VDECTYPE, "
-//                + "VPLANTID, "
-//                + "VTITLE, "
-//                + "VVERSION, "
-//                + "VBODYID, "
-//                + "VBODYEN, "
-//                + "VSEQ "
-//        );
-        
-        
-        if (!StringUtils.isBlank(status)) {
-            sql.append("AND VSTATUS = '")
-                    .append(status)
-                    .append("' ");
-        }
-        if (!StringUtils.isBlank(declarationType)) {
-            sql.append("AND VDECTYPE = '")
-                    .append(declarationType)
-                    .append("' ");
-        }
-        if (!StringUtils.isBlank(version)) {
-            sql.append("AND VVERSION = '")
-                    .append(version)
-                    .append("' ");
-        }
-        if (!StringUtils.isBlank(sequence)) {
-            sql.append("AND VSEQ = '")
-                    .append(sequence)
-                    .append("' ");
-        }
-        orderClause(input, sql, sortMap, getParam);
-        Query query = getCurrentSession().createSQLQuery(sql.toString())
+		+ "(CASE " 
+                + "WHEN TRUNC(DE.DENDEFF) < TRUNC(SYSDATE) THEN " 
+                + "    'TIDAK AKTIF' " 
+                + "WHEN DE.VSTATUS = 'Y' THEN " 
+                + "    'AKTIF' " 
+                + "WHEN DE.VSTATUS = 'D' THEN " 
+                + "    'DRAFT' " 
+                + "ELSE " 
+                + "    '-' " 
+                + "END) VSTATUS, "
+		+ "(SELECT D.VITEMDESC "
+		+ "FROM AHMMOERP_DTLSETTINGS D "
+		+ "WHERE D.RSET_VID = 'VMS_DECLR'"
+		+ "AND D.VITEMCODE = DE.VDECTYPE) VDECTYPE, "
+		+ "DE.VVERSION, DE.VBODYID, DE.VBODYEN, DE.VSEQ "
+		+ "FROM AHMGAVMS_MSTDECLARS DE "
+		+ "WHERE 1 = 1 ");
+
+		if (!input.getSearch().get("status").toString().equalsIgnoreCase("")) {
+                    if (input.getSearch().get("status").toString().equalsIgnoreCase("N")) {
+                        sql.append("AND TRUNC(DE.DENDEFF) < TRUNC(SYSDATE) ");
+                    } else {
+                        sql.append("AND DE.VSTATUS = '").append(input.getSearch().get("status").toString().toUpperCase()).append("' ");
+                        sql.append("AND TRUNC(DE.DENDEFF) > TRUNC(SYSDATE) - 1 ");
+                    }
+                }
+		
+		if (!input.getSearch().get("declarationType").toString().equalsIgnoreCase("")) {
+                    sql.append("AND DE.VDECTYPE = '").append(input.getSearch().get("declarationType").toString().toUpperCase()).append("' ");
+                }
+		
+		voSetter(input);
+		
+            orderClause(input, sql, sortMap, getParam);
+            Query query = getCurrentSession().createSQLQuery(sql.toString())
                 .setFirstResult(input.getOffset())
                 .setMaxResults(input.getLimit());
-        
+        try{
            List<Object[]> list = query.list();
-           List<Vms032VoShowData> result = new ArrayList<>();
            if (list.size() > 0) {
                 Object[] obj;
                 int i = 0;
@@ -119,51 +101,35 @@ public class Vms032AhmgavmsDecsDaoImpl extends DefaultHibernateDao<AhmgavmsDecs,
                     vo.setHtmlInggris((String) obj[4]);
                     vo.setSequence((String) obj[5]);
                     vo.setRowNum(i);
+					
                     i++;
-                    result.add(vo);
+                    vos.add(vo);
                 }
            }
-        return result;
+		}catch (Exception e) {
+            return vos;
+        }
+		return vos;
     }
     
     @Override
     public int getMonitoringCount(DtoParamPaging input) {
         try {
-            String status = AhmStringUtil.hasValue(input.getSearch().get("status")) ? (input.getSearch().get("status") + "").toUpperCase() : "";
-            String declarationType = AhmStringUtil.hasValue(input.getSearch().get("declarationType")) ? (input.getSearch().get("declarationType") + "").toUpperCase() : "";
-            String version = AhmStringUtil.hasValue(input.getSearch().get("version")) ? (input.getSearch().get("version") + "").toUpperCase() : "";
-            String htmlIndonesia = AhmStringUtil.hasValue(input.getSearch().get("htmlIndonesia")) ? (input.getSearch().get("htmlIndonesia") + "").toUpperCase() : "";
-            String htmlInggris = AhmStringUtil.hasValue(input.getSearch().get("htmlInggris")) ? (input.getSearch().get("htmlInggris") + "").toUpperCase() : "";
-            String sequence = AhmStringUtil.hasValue(input.getSearch().get("sequence")) ? (input.getSearch().get("sequence") + "").toUpperCase() : "";
-
-            StringBuilder sql = new StringBuilder();
-            
-            sql.append("SELECT COUNT(0) ");
-            
-            sql.append("FROM AHMGAVMS_MSTDECLARS ");
-            
-            sql.append("WHERE 1 = 1 ");
-            
-            if (!StringUtils.isBlank(status)) {
-                sql.append("AND VSTATUS = '")
-                        .append(status)
-                        .append("' ");
+			StringBuilder sql = new StringBuilder("SELECT COUNT(0) "
+                + "FROM AHMGAVMS_MSTDECLARS DE "
+                + "WHERE 1 = 1 ");
+		if (!input.getSearch().get("status").toString().equalsIgnoreCase("")) {
+            if (input.getSearch().get("status").toString().equalsIgnoreCase("N")) {
+                sql.append("AND TRUNC(DE.DENDEFF) < TRUNC(SYSDATE) ");
+            } else {
+                sql.append("AND DE.VSTATUS = '").append(input.getSearch().get("status").toString().toUpperCase()).append("' ");
+                sql.append("AND TRUNC(DE.DENDEFF) > TRUNC(SYSDATE) - 1 ");
             }
-            if (!StringUtils.isBlank(declarationType)) {
-                sql.append("AND VDECTYPE = '")
-                        .append(declarationType)
-                        .append("' ");
-            }
-            if (!StringUtils.isBlank(version)) {
-                sql.append("AND VVERSION = '")
-                        .append(version)
-                        .append("' ");
-            }
-            if (!StringUtils.isBlank(sequence)) {
-                sql.append("AND VSEQ = '")
-                        .append(sequence)
-                        .append("' ");
-            }
+        }
+		
+		if (!input.getSearch().get("declarationType").toString().equalsIgnoreCase("")) {
+            sql.append("AND DE.VDECTYPE = '").append(input.getSearch().get("declarationType").toString().toUpperCase()).append("' ");
+        }
 
                 Query query = getCurrentSession().createSQLQuery(sql.toString())
                     .setFirstResult(input.getOffset())
@@ -186,12 +152,42 @@ public class Vms032AhmgavmsDecsDaoImpl extends DefaultHibernateDao<AhmgavmsDecs,
             }
         }
     }
+	
+	private void voSetter(DtoParamPaging input) {
+        try {
+            if (input.getSort() == null) {
+
+            } else {
+                String param = input.getSort();
+
+                switch (param) {
+                    case "status":
+                        getParam = "VSTATUS";
+                        break;
+                    case "declarationType":
+                        getParam = "VDECTYPE";
+                        break;
+                    case "version":
+                        getParam = "DE.VVERSION";
+                        break;
+                    case "sequence":
+                        getParam = "DE.VSEQ";
+                        break;
+                    default:
+                        getParam = null;
+
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public int getCountData(DtoParamPaging input) {
         try {
             StringBuilder sql = new StringBuilder("SELECT COUNT(0) "
-                    + "FROM AHMGAVMS_MSTDECLARS "
+                    + "FROM AHMGAVMS_HISDECLARS "
                     + "WHERE VDECTYPE = '" + input.getSearch().get("declarationType").toString() + "'");
             SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
             List<BigDecimal> list = sqlQuery.list();
@@ -200,42 +196,18 @@ public class Vms032AhmgavmsDecsDaoImpl extends DefaultHibernateDao<AhmgavmsDecs,
             return 0;
         }
     }
-//    @Override
-//    public int getCountData(DtoParamPaging input) {
-//        try {
-//            StringBuilder sql = new StringBuilder("SELECT COUNT(0) "
-//                    + "FROM AHMGAVMS_MSTDECLARS "
-//                    + "WHERE VDECTYPE = '" + input.getSearch().get("declarationType").toString() + "'"
-//                    + "AND VVERSION = '" + input.getSearch().get("version").toString() +"'");
-//            SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
-//            List<BigDecimal> list = sqlQuery.list();
-//            return (Integer) list.get(0).intValueExact();
-//        } catch (Exception e) {
-//            return 0;
-//        }
-//    }
-
+    
     @Override
-    public List<Vms032VoShowPlant> getPlant(DtoParamPaging input) {
-        String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
-        StringBuilder sql = new StringBuilder();
-        sql.append("SELECT DISTINCT VPLANTVAR2 ");
-        sql.append("FROM AHMMOSCD_MSTAGPLANTS ");
-        sql.append("ORDER BY VPLANTVAR2 ");
-        
-        Query query = getCurrentSession().createSQLQuery(sql.toString());
-        List<Object[]> list = query.list();
-        List<Vms032VoShowPlant> result = new ArrayList<>();
-        if (list.size() > 0) {
-                Object[] obj;
-                for(Object object : list) {
-                    obj = (Object[]) object;
-                    Vms032VoShowPlant vo = new Vms032VoShowPlant();
-                    vo.setPlantId((String) obj[0]);
-                    result.add(vo);
-                }
-           }
-        return result;
+    public int getVersionData(DtoParamPaging input) {
+        try {
+            StringBuilder sql = new StringBuilder("SELECT COUNT(0) "
+                    + "FROM AHMGAVMS_HISDECLARS "
+                    + "WHERE VDECTYPE = '" + input.getSearch().get("declarationType").toString() + "'");
+            SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
+            List<BigDecimal> list = sqlQuery.list();
+            return (Integer) list.get(0).intValueExact();
+        } catch (Exception e) {
+            return 0;
+        }
     }
-
 }
