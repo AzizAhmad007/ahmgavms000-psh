@@ -329,9 +329,9 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
         
         StringBuilder sql = new StringBuilder("SELECT DCREA, VTO, "
                 + "(CASE "
-                + "WHEN VFLAG == '1' THEN "
+                + "WHEN VFLAG = '1' THEN "
                 + "     'Success' "
-                + "WHEN VFLAG == '0' THEN "
+                + "WHEN VFLAG = '0' THEN "
                 + "     'Failed' "
                 + "ELSE "
                 + "     '-' "
