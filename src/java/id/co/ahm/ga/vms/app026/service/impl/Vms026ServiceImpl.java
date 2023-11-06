@@ -660,8 +660,9 @@ public class Vms026ServiceImpl implements Vms026Service{
         try {
             FmhrdGeneralDatas data = new FmhrdGeneralDatas();
             BigDecimal nrp = new BigDecimal(userId);
+            nrp.setScale(0);
             data = vms026FmhrdGeneralDatasDao.findOne(nrp);
-        return data.getTelephone();
+            return data.getTelephone();
         } catch (Exception e) {
             return "-";
         }
