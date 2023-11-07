@@ -12,7 +12,7 @@ package id.co.ahm.ga.vms.app031.vo;
 public class Vms031VoLovOutput {
     private String itemCode;
     
-    private String itemName;
+    private String itemName; 
 
     public String getItemCode() {
         return itemCode;

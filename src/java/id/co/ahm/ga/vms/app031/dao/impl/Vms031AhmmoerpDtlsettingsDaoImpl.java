@@ -30,7 +30,7 @@ public class Vms031AhmmoerpDtlsettingsDaoImpl extends DefaultHibernateDao<Ahmmoe
       public static final StringBuilder LOV_TYPEBLST = new StringBuilder("SELECT VITEMCODE, VITEMNAME FROM AHMMOERP_DTLSETTINGS " +
                                                                           "WHERE RSET_VID = 'VMS_BLST_TYP'");
     
-      public static final StringBuilder LOV_STATUS = new StringBuilder("SELECT V ITEMCODE, VITEMNAME FROM AHMMOERP_DTLSETTINGS " +
+      public static final StringBuilder LOV_STATUS = new StringBuilder("SELECT VITEMCODE, VITEMNAME FROM AHMMOERP_DTLSETTINGS " +
                                                                        "WHERE RSET_VID = 'VMS_BLST_STAT'");
       
       public static final StringBuilder LOV_CARDTYPE = new StringBuilder("SELECT VITEMCODE, VITEMNAME "
