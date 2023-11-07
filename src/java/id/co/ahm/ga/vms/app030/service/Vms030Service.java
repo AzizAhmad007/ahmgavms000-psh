@@ -5,11 +5,12 @@
  */
 package id.co.ahm.ga.vms.app030.service;
 
-import id.co.ahm.ga.vms.app030.vo.Vms030VoLovPic;
+import id.co.ahm.ga.vms.app030.vo.Vms030VoEmail;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
 import id.co.ahm.jxf.vo.VoUserCred;
+import java.util.List;
 
 /**
  *
@@ -41,4 +42,8 @@ public interface Vms030Service {
     
     public DtoResponseWorkspace getExcel(DtoParamPaging dtoParam);
     
+    public DtoResponseWorkspace sendEmail(List<Vms030VoEmail> input, VoUserCred user);
+    
+    public String getNoHpUser(String userid);
+       
 }

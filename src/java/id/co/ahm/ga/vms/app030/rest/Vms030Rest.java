@@ -8,12 +8,14 @@ package id.co.ahm.ga.vms.app030.rest;
 import id.co.ahm.ga.vms.app030.service.Vms030Service;
 import id.co.ahm.ga.vms.app030.util.Vms030DateTimeUtil;
 import id.co.ahm.ga.vms.app030.util.Vms030ExportExcel;
-import id.co.ahm.ga.vms.app030.vo.Vms030VoLovPic;
+import id.co.ahm.ga.vms.app030.vo.Vms030VoEmail;
 import id.co.ahm.ga.vms.app030.vo.Vms030VoTableResult;
+import id.co.ahm.jxf.constant.StatusMsgEnum;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
 import id.co.ahm.jxf.security.TokenPshUtil;
+import id.co.ahm.jxf.util.DtoHelper;
 import id.co.ahm.jxf.vo.VoUserCred;
 import java.util.Date;
 import java.util.HashMap;
@@ -56,6 +58,22 @@ public class Vms030Rest {
     String testApp(@RequestHeader(value = "token", defaultValue = "") String token
     ) {
         return "Now Testing App!";
+    }
+    
+    @RequestMapping(value = "get-user-detail", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace getUserDetail(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody DtoParamPaging dto) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
+        Map<String, Object> getDetail = new HashMap();
+        getDetail.put("username", user.getUsername());
+        getDetail.put("userid", user.getUserid());
+        getDetail.put("email", user.getEmail());
+        getDetail.put("domain", user.getDomain());
+
+        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, getDetail);
     }
     
     @RequestMapping(value = "lov-plant", method = RequestMethod.POST,
@@ -219,6 +237,16 @@ public class Vms030Rest {
         modelAndView.addObject("data", vms030VoTableResult);
         
         return modelAndView;
+    }
+    
+    @RequestMapping(value = "send-email", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace sendEmail(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody List<Vms030VoEmail> input) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
+        return vms030Service.sendEmail(input, user);
     }
              
 }

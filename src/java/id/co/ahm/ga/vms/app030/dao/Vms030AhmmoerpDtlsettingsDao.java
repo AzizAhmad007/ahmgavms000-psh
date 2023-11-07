@@ -39,7 +39,7 @@ public interface Vms030AhmmoerpDtlsettingsDao extends DefaultDao<AhmmoerpDtlsett
     
     public List<Vms030VoLovDocType> lovDocType(DtoParamPaging input);
     
-    public List<Vms030VoLovPic> getPic(String nrp);
-    
     public List<String> getFileName(String otsId, String name, String regId);
+    
+    public String getInvLink(String noDoc);
 }

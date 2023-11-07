@@ -19,6 +19,7 @@ import id.co.ahm.jx.sys.app000.model.AhmmoerpDtlsettings;
 import id.co.ahm.jx.sys.app000.model.AhmmoerpDtlsettingsPk;
 import id.co.ahm.jxf.dao.DefaultHibernateDao;
 import id.co.ahm.jxf.dto.DtoParamPaging;
+import id.co.ahm.jxf.security.CryptoSecurity;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Query;
@@ -175,49 +176,6 @@ public class Vms030AhmmoerpDtlsettingsDaoImpl extends DefaultHibernateDao<Ahmmoe
     }
 
     @Override
-    public List<Vms030VoLovPic> getPic(String nrp) {
-        StringBuilder sql = new StringBuilder();
-        
-        sql.append("SELECT "
-            + "TO_CHAR(A.NRP), "
-            + "A.NAME, "
-            + "A.NAMA_DIVISI, "
-            + "A.NAMA_DEPARTEMEN, "
-            + "A.NAMA_SUBDEPARTEMEN, "
-            + "A.NAMA_SEKSI, "
-            + "B.VEMAIL "
-            + "FROM FMHRD_GENERAL_DATAS@DBHRDTXN A "
-            + "LEFT JOIN AHMMOERP_MSTKARYAWANS B "
-            + "ON A.NRP = B.IIDNRP ");
-         
-        sql.append("WHERE A.NRP = '");
-        sql.append(nrp);
-        sql.append("'");
-        
-        
-        SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
-        List<Object[]> list = sqlQuery.list();
-        List<Vms030VoLovPic> result = new ArrayList<>();
-        if (list.size() > 0) {
-            Object[] obj;  
-            for(Object object : list) {
-                obj = (Object[]) object;
-                Vms030VoLovPic vo = new Vms030VoLovPic();
-                vo.setNrp((String) obj [0]);
-                vo.setNama((String) obj[1]);
-                vo.setDivisi((String) obj[2]);
-                vo.setDepartment((String) obj[3]);
-                vo.setSubdepartment((String) obj[4]);
-                vo.setSeksi((String) obj[5]);
-                vo.setEmail((String) obj[6]);
-                
-                result.add(vo);
-            }
-        }
-        return result;
-    }
-
-    @Override
     public List<String> getFileName(String type, String name, String ext) {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT "
@@ -247,6 +205,16 @@ public class Vms030AhmmoerpDtlsettingsDaoImpl extends DefaultHibernateDao<Ahmmoe
         } catch (SQLGrammarException e) {
             return results;
         }
+    }
+
+    @Override
+    public String getInvLink(String noDoc) {
+        StringBuilder sql = new StringBuilder(GET_LINK);
+        SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
+        List<String> list = sqlQuery.list();
+        String link = list.get(0);
+        String token = CryptoSecurity.encrypt(noDoc);
+        return link + "id=" + token;
     }
     
     

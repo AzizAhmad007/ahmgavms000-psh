@@ -11,23 +11,96 @@ package id.co.ahm.ga.vms.app030.vo;
  */
 public class Vms030VoEmail {
 
-    public String getNrp() {
-        return nrp;
+    String to;
+    String noDoc;
+    String picName;
+    String company;
+    String plant;
+    String picAhm;
+    String dateStart;
+    String dateEnd;
+    String emailPicAhm;
+    String noHpPicAhm;
+
+    public String getTo() {
+        return to;
     }
 
-    public void setNrp(String nrp) {
-        this.nrp = nrp;
+    public void setTo(String to) {
+        this.to = to;
     }
 
-    public String getEmail() {
-        return email;
+    public String getNoDoc() {
+        return noDoc;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setNoDoc(String noDoc) {
+        this.noDoc = noDoc;
+    }
+
+    public String getPicName() {
+        return picName;
+    }
+
+    public void setPicName(String picName) {
+        this.picName = picName;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getPlant() {
+        return plant;
+    }
+
+    public void setPlant(String plant) {
+        this.plant = plant;
+    }
+
+    public String getPicAhm() {
+        return picAhm;
+    }
+
+    public void setPicAhm(String picAhm) {
+        this.picAhm = picAhm;
+    }
+
+    public String getDateStart() {
+        return dateStart;
+    }
+
+    public void setDateStart(String dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public String getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(String dateEnd) {
+        this.dateEnd = dateEnd;
+    }
+
+    public String getEmailPicAhm() {
+        return emailPicAhm;
+    }
+
+    public void setEmailPicAhm(String emailPicAhm) {
+        this.emailPicAhm = emailPicAhm;
+    }
+
+    public String getNoHpPicAhm() {
+        return noHpPicAhm;
+    }
+
+    public void setNoHpPicAhm(String noHpPicAhm) {
+        this.noHpPicAhm = noHpPicAhm;
     }
     
-    private String nrp;
-    private String email;
     
 }

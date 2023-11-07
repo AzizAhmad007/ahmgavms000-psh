@@ -62,7 +62,7 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
         
         StringBuilder sql = new StringBuilder();
         
-        sql.append("SELECT * FROM ( ");
+        sql.append("SELECT * FROM (");
         
         sql.append("SELECT "
                 + "     A.VTYPE AS VTYPE, "
@@ -95,7 +95,7 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                 + "     A.DWORKEND AS DWORKEND "
                 + "FROM AHMGAVMS_MSTREFDOCS A "
                 + "JOIN AHMMOERP_MSTKARYAWANS D "
-                + "     ON A.VPICNRP = D.IIDNRP "
+                + "     ON A.VPICNRP = TO_CHAR(D.IIDNRP) "
                 + "UNION "
                 + "SELECT "
                 + "     (SELECT B.VITEMCODE FROM AHMMOERP_DTLSETTINGS B "
@@ -135,8 +135,8 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                 + "     A.DENDJOB AS DWORKEND "
                 + "FROM AHMGAWPM_HDRIKPS A "
                 + "JOIN AHMMOERP_MSTKARYAWANS D "
-                + "     ON A.VPICNRPID = D.IIDNRP "
-                + " ) ");
+                + "     ON TO_CHAR(A.VPICNRPID) = TO_CHAR(D.IIDNRP) "
+                + ") ");
         
         sql.append("WHERE 1 = 1 ");
         
@@ -287,7 +287,7 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                 + "     A.DWORKEND AS DWORKEND "
                 + "FROM AHMGAVMS_MSTREFDOCS A "
                 + "JOIN AHMMOERP_MSTKARYAWANS D "
-                + "     ON A.VPICNRP = D.IIDNRP "
+                + "     ON A.VPICNRP = TO_CHAR(D.IIDNRP) "
                 + "UNION "
                 + "SELECT "
                 + "     (SELECT B.VITEMCODE FROM AHMMOERP_DTLSETTINGS B "
@@ -327,8 +327,8 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                 + "     A.DENDJOB AS DWORKEND "
                 + "FROM AHMGAWPM_HDRIKPS A "
                 + "JOIN AHMMOERP_MSTKARYAWANS D "
-                + "     ON A.VPICNRPID = D.IIDNRP "
-                + " ) ");
+                + "     ON TO_CHAR(A.VPICNRPID) = TO_CHAR(D.IIDNRP) "
+                + ") ");
         
             sql.append("WHERE 1 = 1 ");
           
@@ -408,56 +408,54 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
         }
     }
     
-
-
     private void voSetter(DtoParamPaging input) {
-            try {
-                if (input.getSort() == null) {
+        try {
+            if (input.getSort() == null) {
 
-                } else {
-                    String param = input.getSort();
+            } else {
+                String param = input.getSort();
 
-                    switch (param) {
-                        case "visitorTypeCode":
-                            getParam = "VTYPE";
-                            break;
-                        case "statusCode":
-                            getParam = "VSTATUS";
-                            break;
-                        case "noDoc":
-                            getParam = "VREFDOCNO";
-                            break;
-                        case "workDesc":
-                            getParam = "VWORKDESC";
-                            break;
-                        case "docType":
-                            getParam = "VDOCTYPE";
-                            break;        
-                        case "plantCode":
-                            getParam = "VPLANTID";
-                            break;
-                        case "company":
-                            getParam = "VCOMPANY";
-                            break;
-                        case "nrp":
-                            getParam = "VPICNRP";
-                            break;
-                        case "email":
-                            getParam = "VEMAIL";
-                            break;
-                        case "dateStart":
-                            getParam = "DWORKSTART";
-                            break;
-                        case "dateEnd":
-                            getParam = "DWORKEND";
-                            break;
-                        default:
-                            getParam = null;
+                switch (param) {
+                    case "visitorTypeCode":
+                        getParam = "VTYPE";
+                        break;
+                    case "statusCode":
+                        getParam = "VSTATUS";
+                        break;
+                    case "noDoc":
+                        getParam = "VREFDOCNO";
+                        break;
+                    case "workDesc":
+                        getParam = "VWORKDESC";
+                        break;
+                    case "docType":
+                        getParam = "VDOCTYPE";
+                        break;        
+                    case "plantCode":
+                        getParam = "VPLANTID";
+                        break;
+                    case "company":
+                        getParam = "VCOMPANY";
+                        break;
+                    case "nrp":
+                        getParam = "VPICNRP";
+                        break;
+                    case "email":
+                        getParam = "VEMAIL";
+                        break;
+                    case "dateStart":
+                        getParam = "DWORKSTART";
+                        break;
+                    case "dateEnd":
+                        getParam = "DWORKEND";
+                        break;
+                    default:
+                        getParam = null;
 
-                    }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
 }

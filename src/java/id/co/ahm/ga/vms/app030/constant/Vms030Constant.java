@@ -39,5 +39,11 @@ public class Vms030Constant {
             + "WHERE RSET_VID = 'VMS_TYPDOC_SI' "
             + "AND VITEMCODE IN ('IKP','MEMO')");
     
-
+    public static final StringBuilder GET_LINK = new StringBuilder("SELECT VITEMDESC "
+            + "FROM AHMMOERP_DTLSETTINGS "
+            + "WHERE RSET_VID = 'VMS_INV_LINK' "
+            + "AND VITEMCODE = 'L'");
+    
+    public static final String FROM = "no-reply@astra-honda.com";
+    
 }
