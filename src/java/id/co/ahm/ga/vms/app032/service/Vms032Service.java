@@ -5,10 +5,12 @@
  */
 package id.co.ahm.ga.vms.app032.service;
 
+import id.co.ahm.ga.vms.app032.vo.Vms032VoFileDtl;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
 import id.co.ahm.jxf.vo.VoUserCred;
+import org.springframework.web.multipart.MultipartFile;
 
 
 
@@ -30,4 +32,6 @@ public interface Vms032Service {
     public DtoResponseWorkspace showDocType(DtoParamPaging input);
     
     public DtoResponseWorkspace deleteDeclaration(DtoParamPaging input);
+    
+//    public Vms032VoFileDtl uploadToServer(String pathServer, MultipartFile fileToUpload, String tipeFile, VoUserCred user);
 }

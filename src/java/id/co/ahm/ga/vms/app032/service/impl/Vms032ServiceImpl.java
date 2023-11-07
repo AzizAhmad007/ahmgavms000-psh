@@ -11,6 +11,7 @@ import id.co.ahm.ga.vms.app032.dao.Vms032AhmgavmsDecsDao;
 import id.co.ahm.ga.vms.app032.dao.Vms032AhmgavmsHisDeclrsDao;
 import id.co.ahm.ga.vms.app032.dao.Vms032AhmmoerpDtlsettingsDao;
 import id.co.ahm.ga.vms.app032.service.Vms032Service;
+import id.co.ahm.ga.vms.app032.vo.Vms032VoFileDtl;
 import id.co.ahm.ga.vms.app032.vo.Vms032VoLov;
 import id.co.ahm.ga.vms.app032.vo.Vms032VoShowData;
 import id.co.ahm.ga.vms.app032.vo.Vms032VoShowPlant;
@@ -32,6 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.HtmlUtils;
 
 
 
@@ -103,7 +106,9 @@ public class Vms032ServiceImpl implements Vms032Service {
             String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
             String judul = AhmStringUtil.hasValue(input.getSearch().get("judul")) ? (input.getSearch().get("judul") + "").toUpperCase() : "";
             String htmlIndonesia = AhmStringUtil.hasValue(input.getSearch().get("htmlIndonesia")) ? (input.getSearch().get("htmlIndonesia") + "").toUpperCase() : "";
+            String escapeHtmlIndonesia = HtmlUtils.htmlEscape(htmlIndonesia);
             String htmlInggris = AhmStringUtil.hasValue(input.getSearch().get("htmlInggris")) ? (input.getSearch().get("htmlInggris") + "").toUpperCase() : "";
+            String escapeHtmlInggris = HtmlUtils.htmlEscape(htmlInggris);
             String sequence = AhmStringUtil.hasValue(input.getSearch().get("sequence")) ? (input.getSearch().get("sequence") + "").toUpperCase() : "";
             Date dateStart = DateUtil.stringToDate((String) input.getSearch().get("dateStart"), "dd-MM-yyyy");
             Date dateEnd = DateUtil.stringToDate((String) input.getSearch().get("dateEnd"), "dd-MM-yyyy");
@@ -127,8 +132,8 @@ public class Vms032ServiceImpl implements Vms032Service {
                     decs.setVstatus(status);
                     decs.setDstarteff(dateStart);
                     decs.setDendeff(dateEnd);
-                    decs.setVbodyid(htmlIndonesia);
-                    decs.setVbodyen(htmlInggris);
+                    decs.setVbodyid(escapeHtmlIndonesia);
+                    decs.setVbodyen(escapeHtmlInggris);
                     decs.setVversion(count+1);
                     decs.setVseq(sequence);
                     decs.setCreateDate(new Date());
@@ -146,8 +151,8 @@ public class Vms032ServiceImpl implements Vms032Service {
                         his.setVdecstype(declarationType);
                         his.setVplantid("ALL");
                         his.setVtitle(declarationType);
-                        his.setVbodyid(htmlIndonesia);
-                        his.setVbodyen(htmlInggris);
+                        his.setVbodyid(escapeHtmlIndonesia);
+                        his.setVbodyen(escapeHtmlInggris);
                         his.setDstarteff(dateStart);
                         his.setDendeff(dateEnd);
                         his.setVseq(sequence);
@@ -164,8 +169,8 @@ public class Vms032ServiceImpl implements Vms032Service {
                     dec.setVstatus(status);
                     dec.setDstarteff(dateStart);
                     dec.setDendeff(dateEnd);
-                    dec.setVbodyid(htmlIndonesia);
-                    dec.setVbodyen(htmlInggris);
+                    dec.setVbodyid(escapeHtmlIndonesia);
+                    dec.setVbodyen(escapeHtmlInggris);
                     dec.setVseq(sequence);
                     dec.setVversion(count+1);
                     dec.setCreateDate(new Date());
@@ -191,9 +196,10 @@ public class Vms032ServiceImpl implements Vms032Service {
             String declarationType = AhmStringUtil.hasValue(input.getSearch().get("declarationType")) ? (input.getSearch().get("declarationType") + "").toUpperCase() : "";
             String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
             String judul = AhmStringUtil.hasValue(input.getSearch().get("judul")) ? (input.getSearch().get("judul") + "").toUpperCase() : "";
-            String version = AhmStringUtil.hasValue(input.getSearch().get("version")) ? (input.getSearch().get("version") + "").toUpperCase() : "";
             String htmlIndonesia = AhmStringUtil.hasValue(input.getSearch().get("htmlIndonesia")) ? (input.getSearch().get("htmlIndonesia") + "").toUpperCase() : "";
+            String escapeHtmlIndonesia = HtmlUtils.htmlEscape(htmlIndonesia);
             String htmlInggris = AhmStringUtil.hasValue(input.getSearch().get("htmlInggris")) ? (input.getSearch().get("htmlInggris") + "").toUpperCase() : "";
+            String escapeHtmlInggris = HtmlUtils.htmlEscape(htmlInggris);
             String sequence = AhmStringUtil.hasValue(input.getSearch().get("sequence")) ? (input.getSearch().get("sequence") + "").toUpperCase() : "";
             Date dateStart = DateUtil.stringToDate((String) input.getSearch().get("dateStart"), "dd-MM-yyyy");
             Date dateEnd = DateUtil.stringToDate((String) input.getSearch().get("dateEnd"), "dd-MM-yyyy");
@@ -207,16 +213,19 @@ public class Vms032ServiceImpl implements Vms032Service {
                 
                 AhmgavmsDecs dec = new AhmgavmsDecs();
                 dec = vms032AhmgavmsDecsDao.findOne(declarationType);
+                
+                int count = vms032AhmgavmsDecsDao.getVersionData(input);
                 if(dec == null){
                     AhmgavmsDecs decs = new AhmgavmsDecs();
                     decs.setVdectype(declarationType);
                     decs.setVplantid("ALL");
-                    decs.setVtitle(judul);
+                    decs.setVtitle(declarationType);
                     decs.setVstatus("D");
                     decs.setDstarteff(dateStart);
                     decs.setDendeff(dateEnd);
-                    decs.setVbodyid(htmlIndonesia);
-                    decs.setVbodyen(htmlInggris);
+                    decs.setVbodyid(escapeHtmlIndonesia);
+                    decs.setVbodyen(escapeHtmlInggris);
+                    decs.setVversion(count+1);
                     decs.setVseq(sequence);
                     decs.setCreateDate(new Date());
                     decs.setCreateBy(userId);
@@ -227,15 +236,18 @@ public class Vms032ServiceImpl implements Vms032Service {
                     vms032AhmgavmsDecsDao.flush();
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
 		} else {
-                    dec.setVbodyid(htmlIndonesia);
-                    dec.setVbodyen(htmlInggris);
                     dec.setVstatus("D");
+                    dec.setDstarteff(dateStart);
+                    dec.setDendeff(dateEnd);
+                    dec.setVbodyid(escapeHtmlIndonesia);
+                    dec.setVbodyen(escapeHtmlInggris);
                     dec.setVseq(sequence);
+                    dec.setVversion(count+1);
                     dec.setCreateDate(new Date());
                     dec.setCreateBy(userId);
                     dec.setLastModDate(new Date());
                     dec.setLastModBy(userId);
-                    
+
                     vms032AhmgavmsDecsDao.update(dec);
                     vms032AhmgavmsDecsDao.flush();
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
@@ -252,15 +264,13 @@ public class Vms032ServiceImpl implements Vms032Service {
         try{
         AhmgavmsDecs dec = new AhmgavmsDecs();
         String declarationType = AhmStringUtil.hasValue(input.getSearch().get("declarationType")) ? (input.getSearch().get("declarationType") + "").toUpperCase() : "";
-//        String plant = AhmStringUtil.hasValue(input.getSearch().get("plant")) ? (input.getSearch().get("plant") + "").toUpperCase() : "";
 
-        int count = vms032AhmgavmsDecsDao.getCountData(input);
-//            System.out.println("VALUE =>" +decId);
-            if(count != 0){
-                vms032AhmgavmsDecsDao.deleteById(declarationType);
-                vms032AhmgavmsDecsDao.flush();
-            }
-        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
+            int count = vms032AhmgavmsDecsDao.getCountData(input);
+                if(count != 0){
+                    vms032AhmgavmsDecsDao.deleteById(declarationType);
+                    vms032AhmgavmsDecsDao.flush();
+                }
+            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
         }catch (Exception e) {
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, null, null);
         }
@@ -275,6 +285,18 @@ public class Vms032ServiceImpl implements Vms032Service {
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, null, null);
         }
     }
+
+//    @Override
+//    public Vms032VoFileDtl uploadToServer(String pathServer, MultipartFile fileToUpload, String tipeFile, VoUserCred user) {
+//        Vms032VoFileDtl fileDtl = new Vms032VoFileDtl();
+//        try{
+//            String fileName = fileToUpload.getOriginalFilename();
+//            String fileType = fileToUpload.getContentType();
+//            String fileExt = fileName.substring(fileName.lastIndexOf(".") + 1);
+//            String newFileName = fileName + "_" + tipeFile + "." + fileExt;
+//            String pathServer
+//        }
+//    }
     
         
         
