@@ -278,7 +278,6 @@ public class Vms030ServiceImpl implements Vms030Service {
             String nrp = AhmStringUtil.hasValue(input.getSearch().get("nrp")) ? (input.getSearch().get("nrp") + "").toUpperCase() : "";
             Date dateStart = DateUtil.stringToDate((String) input.getSearch().get("dateStart"), "dd-MMM-yyyy");
             Date dateEnd = DateUtil.stringToDate((String) input.getSearch().get("dateEnd"), "dd-MMM-yyyy");
-            
             String userId;
             if (user == null) {
                 userId = "DEVELOPER";
@@ -287,7 +286,7 @@ public class Vms030ServiceImpl implements Vms030Service {
             }
             
             if (noDoc.equalsIgnoreCase("") || 
-                    visitorType.equalsIgnoreCase("") ||
+                    visitorType.equalsIgnoreCase("") || 
                     plant.equalsIgnoreCase("") ||
                     company.equalsIgnoreCase("") ||
                     workDesc.equalsIgnoreCase("") ||
@@ -299,13 +298,13 @@ public class Vms030ServiceImpl implements Vms030Service {
                 msg.put("validate", "Field mandatory tidak boleh kosong");
                 return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, msg, null);
             } else {
-            
+                
                 AhmgavmsMstrefdocsPk pk = new AhmgavmsMstrefdocsPk();
                 pk.setVrefdocno(noDoc);
-                        
+                
                 AhmgavmsMstrefdocs vo = new AhmgavmsMstrefdocs();
                 vo = vms030AhmgavmsMstrefdocsDao.findOne(pk);
-                
+
                 if (vo == null) {
                     
                     AhmgavmsMstrefdocsPk refPk = new AhmgavmsMstrefdocsPk();
@@ -314,32 +313,15 @@ public class Vms030ServiceImpl implements Vms030Service {
                     AhmgavmsMstrefdocs ref = new AhmgavmsMstrefdocs();
                     ref.setAhmgavmsMstrefdocsPk(refPk);
                     
-//                    List<Vms030VoTableResult> data = vms030AhmgavmsMstrefdocsDao.getTable(input);
-//                    
-//                    for (Vms030VoTableResult ls : data) {
-//                        List<Vms030VoFileAttachment> listAtc = new ArrayList<>();
-//                        List<String> fAtc = vms030AhmmoerpDtlsettingsDao.getFileName(ls.getFileAtc(), ls.getFileNameAtc(), "MEMO");
-//                        if (!fAtc.isEmpty()) 
-//                        for (String v : fAtc) {
-//                            Vms030VoFileAttachment dtAtc = new Vms030VoFileAttachment();
-//
-//                            byte[] bFileAtc = readBytesFromFile(pathServer + v);
-//                            dtAtc.setName(Base64.getEncoder().encodeToString(bFileAtc));
-//
-//                            listAtc.add(dtAtc);
-//                        }
-//                        ls.setFileAtc(listAtc);
-//                    }
-                    
-                    
                     ref.setVworkdesc(workDesc);
                     ref.setVplantid(plant);
-                    ref.setVtype(visitorType);
+                    ref.setVtype(visitorType);    
                     ref.setVcompany(company);
-                    ref.setVstatus(status);
+                    ref.setVstatus(status);    
                     ref.setDworkstart(dateStart);
-                    ref.setDworkend(dateEnd);
+                    ref.setDworkend(dateEnd);   
                     ref.setVpicnrp(nrp);
+                    ref.setCreateDate(new Date());
                     ref.setCreateBy(userId);
                     ref.setLastModDate(new Date());
                     ref.setLastModBy(userId);
@@ -350,12 +332,13 @@ public class Vms030ServiceImpl implements Vms030Service {
                 else {
                     vo.setVworkdesc(workDesc);
                     vo.setVplantid(plant);
-                    vo.setVtype(visitorType);
+                    vo.setVtype(visitorType);    
                     vo.setVcompany(company);
-                    vo.setVstatus(status);
+                    vo.setVstatus(status);    
                     vo.setDworkstart(dateStart);
-                    vo.setDworkend(dateEnd);
-                    vo.setVpicnrp(nrp);
+                    vo.setDworkend(dateEnd);   
+                    vo.setVpicnrp(nrp); 
+                    vo.setCreateDate(new Date());
                     vo.setCreateBy(userId);
                     vo.setLastModDate(new Date());
                     vo.setLastModBy(userId);
