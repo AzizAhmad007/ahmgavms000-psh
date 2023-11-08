@@ -205,9 +205,7 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
             if (!input.getSearch().get("locSpec").toString().equalsIgnoreCase("")) {
                 sql.append("AND A.VLOC = '").append(input.getSearch().get("locSpec").toString().toUpperCase()).append("' ");
             }
-            Query query = getCurrentSession().createSQLQuery(sql.toString())
-                    .setFirstResult(input.getOffset())
-                    .setMaxResults(input.getLimit());
+            Query query = getCurrentSession().createSQLQuery(sql.toString());
             List<BigDecimal> list = query.list();
             return (Integer) list.get(0).intValueExact();
         } catch (Exception e) {
