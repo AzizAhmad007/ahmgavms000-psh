@@ -52,7 +52,7 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
         StringBuilder sql = new StringBuilder("SELECT A.VMASTERNO, A.DPLSTART, A.DPLEND, A.VNRPPIC, "
                 + "(SELECT C.VDESC "
                 + "FROM AHMMOSCD_MSTAGPLANTS C "
-                + "WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTDESC, A.VLOC, A.VLOCSPEC, "
+                + "WHERE C.VPLANTVAR1 = A.VPLANTID) VPLANTDESC, A.VLOC, A.VLOCSPEC, "
                 + "(SELECT D.VITEMDESC "
                 + "FROM AHMMOERP_DTLSETTINGS D "
                 + "WHERE D.RSET_VID = 'VMS_VST2' "
