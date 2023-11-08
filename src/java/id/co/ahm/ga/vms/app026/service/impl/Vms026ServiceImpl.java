@@ -86,7 +86,7 @@ public class Vms026ServiceImpl implements Vms026Service{
     @Qualifier("vms026FmhrdGeneralDatasDao")
     private Vms026FmhrdGeneralDatasDao vms026FmhrdGeneralDatasDao;
     
-    SimpleDateFormat sdf = new SimpleDateFormat("d-MMM-YYYY");
+    SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-YYYY");
     Date m = new Date();
     Calendar cal = Calendar.getInstance();
     

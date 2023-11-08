@@ -17,9 +17,9 @@ public class Vms026Constant {
     public static final String moduleId = "AHMGAVMS";
     public static final String appId = "AHMGAVMS026";
     
-    public static final StringBuilder LOV_PLANTS = new StringBuilder("SELECT DISTINCT VPLANTVAR2, VDESC "
+    public static final StringBuilder LOV_PLANTS = new StringBuilder("SELECT DISTINCT VPLANTVAR1, VDESC "
             + "FROM AHMMOSCD_MSTAGPLANTS "
-            + "ORDER BY VPLANTVAR2");
+            + "ORDER BY VPLANTVAR1");
     
     public static final StringBuilder LOV_VISITORTYPE = new StringBuilder("SELECT VITEMCODE, VITEMDESC "
             + "FROM AHMMOERP_DTLSETTINGS "

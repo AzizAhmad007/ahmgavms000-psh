@@ -185,7 +185,7 @@ public class Vms026AhmmoerpDtlsettingsDaoImpl extends DefaultHibernateDao<Ahmmoe
                 + "JOIN AHMMOSCD_MSTAGPLANTS C "
                 + "ON C.VPLANTVAR1 = B.MPLANT_VPLANTID "
                 + "WHERE A.VCTG IN ('LOB', 'RME', 'MAS') "
-                + "AND C.VPLANTVAR2 = '" + input.getSearch().get("plant").toString() + "'");
+                + "AND C.VPLANTVAR1 = '" + input.getSearch().get("plant").toString() + "'");
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
         List<Object[]> list = sqlQuery.list();
         List<Vms026VoLovOutput> vos = new ArrayList<>();
