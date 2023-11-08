@@ -40,8 +40,8 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
         sortMap.put("ahmgavms026p01StatusSort", "");
         sortMap.put("ahmgavms026p01VisitorTypeSort", "");
         sortMap.put("ahmgavms026p01PlantSort", "");
-        sortMap.put("ahmgavms026p01LocSort", "");
         sortMap.put("ahmgavms026p01LocSpecSort", "");
+        sortMap.put("ahmgavms026p01ReasonSort", "");
         sortMap.put("ahmgavms026p01StartDateSort", "");
         sortMap.put("ahmgavms026p01EndDateSort", "");
         sortMap.put("ahmgavms026p01NameSort", "");
@@ -245,11 +245,11 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                     case "plant":
                         getParam = "VPLANTDESC";
                         break;
-                    case "loc":
-                        getParam = "A.VLOC";
-                        break;
                     case "locSpec":
                         getParam = "A.VLOCSPEC";
+                        break;
+                    case "purpose":
+                        getParam = "A.VPURPOSE";
                         break;
                     case "startDateText":
                         getParam = "A.DPLSTART";
