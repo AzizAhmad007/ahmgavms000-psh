@@ -13,7 +13,6 @@ public class Vms030VoLovPic {
     
     private String nrp;
     private String nama;
-    private String email;
     private String divisi;
     private String department;
     private String subdepartment;
@@ -33,14 +32,6 @@ public class Vms030VoLovPic {
 
     public void setNama(String nama) {
         this.nama = nama;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getDivisi() {

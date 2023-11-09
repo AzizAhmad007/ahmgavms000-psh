@@ -5,7 +5,7 @@
  */
 package id.co.ahm.ga.vms.app030.service;
 
-import id.co.ahm.ga.vms.app030.vo.Vms030VoEmail;
+import id.co.ahm.ga.vms.app030.vo.Vms030VoSendEmail;
 import id.co.ahm.jxf.dto.DtoParamPaging;
 import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
@@ -42,8 +42,8 @@ public interface Vms030Service {
     
     public DtoResponseWorkspace getExcel(DtoParamPaging dtoParam);
     
-    public DtoResponseWorkspace sendEmail(List<Vms030VoEmail> input, VoUserCred user);
+    public DtoResponseWorkspace sendEmail(List<Vms030VoSendEmail> input, VoUserCred user);
     
-    public String getNoHpUser(String userid);
+    public DtoResponsePagingWorkspace showMonitoringEmail(DtoParamPaging input);
        
 }

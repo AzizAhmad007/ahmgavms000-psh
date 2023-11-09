@@ -38,8 +38,9 @@ import org.springframework.transaction.annotation.Transactional;
 import id.co.ahm.ga.vms.app030.dao.Vms030AhmgavmsMstrefdocsDao;
 import id.co.ahm.ga.vms.app030.dao.Vms030FmhrdGeneralDatasDao;
 import id.co.ahm.ga.vms.app030.dao.Vms030ObjectDao;
-import id.co.ahm.ga.vms.app030.vo.Vms030VoEmail;
+import id.co.ahm.ga.vms.app030.vo.Vms030VoSendEmail;
 import id.co.ahm.ga.vms.app030.vo.Vms030VoLovPic;
+import id.co.ahm.ga.vms.app030.vo.Vms030VoMonitoringEmail;
 import id.co.ahm.jx.email.service.EmailService;
 import id.co.ahm.jxf.util.AhmStringUtil;
 import id.co.ahm.jxf.util.DateUtil;
@@ -364,10 +365,10 @@ public class Vms030ServiceImpl implements Vms030Service {
     }
 
     @Override
-    public DtoResponseWorkspace sendEmail(List<Vms030VoEmail> input, VoUserCred user) {
+    public DtoResponseWorkspace sendEmail(List<Vms030VoSendEmail> input, VoUserCred user) {
         try {
-            for (Vms030VoEmail vo : input) {
-                sendEmailInvitationLink(vo, user);
+            for (Vms030VoSendEmail vo : input) {
+                sendEmailRegistrationLink(vo, user);
             }
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
         } catch (Exception e) {
@@ -375,17 +376,16 @@ public class Vms030ServiceImpl implements Vms030Service {
         }
     }
      
-    private void sendEmailInvitationLink(Vms030VoEmail data, VoUserCred user) {
+    private void sendEmailRegistrationLink(Vms030VoSendEmail data, VoUserCred user) {
         String to = data.getTo();
         String noDoc = data.getNoDoc();
         String picName = data.getPicName();
-        String companyName = data.getCompany();
+        String workDesc = data.getWorkDesc();
         String plant = data.getPlant();
         String picAhm = data.getPicAhm();
         Date dateStart = DateUtil.stringToDate(data.getDateStart(), "dd-MMM-yyyy");
         Date dateEnd = DateUtil.stringToDate(data.getDateEnd(), "dd-MMM-yyyy");
-        String emailPicAhm = data.getEmailPicAhm();
-        String noHpPicAhm = data.getNoHpPicAhm();
+        String emailPic = data.getEmailPic();
         String userId;
         if (user == null) {
             userId = "DEVELOPER";
@@ -395,14 +395,13 @@ public class Vms030ServiceImpl implements Vms030Service {
         
         try {
 
-            String link = getInvitationLink(noDoc);
+            String link = getRegisterLink(noDoc);
 
-            String subject = subjectEmailInvitationLink(noDoc);
+            String subject = subjectEmailRegistrationLink(noDoc);
 
-            String header = headerEmailInvitationLink(companyName);
+            String header = headerEmailRegistrationLink(picName);
 
-            String body = bodyEmailInvitationLink(companyName, plant, (String) DateUtil.dateToString(dateStart, "dd-MMM-yyyy"), (String) DateUtil.dateToString(dateEnd, "dd-MMM-yyyy"), link,
-                    picAhm, emailPicAhm, noHpPicAhm);
+            String body = bodyEmailRegistrationLink(noDoc, workDesc, plant, (String) DateUtil.dateToString(dateStart, "dd-MMM-yyyy"), (String) DateUtil.dateToString(dateEnd, "dd-MMM-yyyy"), link);
 
             String footer = "<br><i>\n NB : Email ini dihasilkan secara otomatis oleh sistem kami dan tidak memerlukan balasan. "
                     + "Pesan ini hanya bertujuan untuk memberikan informasi atau pemberitahuan tertentu dan tidak dimaksudkan "
@@ -417,68 +416,63 @@ public class Vms030ServiceImpl implements Vms030Service {
         }
     }
 
-    private String headerEmailInvitationLink(String companyName) {
+    private String headerEmailRegistrationLink(String picName) {
 	return "<p>Kepada Yth.</p>\n"
-                + "<p>Tim Project</p>\n"
-                + "<p>" + companyName + "</p>\n";
+                + "<p>" + picName + " </p>\n";
     }
 
-    private String subjectEmailInvitationLink(String masterNo) {
-	return "Surat Undangan No. " + masterNo + " Kunjungan ke PT. Astra Honda Motor.";
+    private String subjectEmailRegistrationLink(String docNo) {
+	return "Permintaan Safety Induction No. Reference Doc" + docNo + " di PT. Astra Honda Motor.";
     }
 
-    private String bodyEmailInvitationLink(String companyName, String plant, String dateStart, String dateEnd, 
-            String link, String picAhmName, String emailPicAhm, String noHpPicAhm) {
+    private String bodyEmailRegistrationLink(String noDoc, String workDesc, String plant, String dateStart, 
+            String dateEnd, String link) {
 	return "<table border='0'>\n"
 		+ "    <tbody>\n"
 		+ "        <tr>\n"
-		+ "            <td colspan=3>Sehubungan dengan adanya keperluan " + companyName + " berkunjung ke PT. Astra Honda Motor " + plant + ","
-                + " kami mengundang bapak / ibu pada : </td>\n"
+		+ "            <td colspan=3>Sehubungan dengan adanya keperluan Safety Induction yang sudah diajukan sebelumnya berikut diinformasikan :\n"
 		+ "        </tr>\n"
                 + "        <tr>\n"
 		+ "             <td><p> </p></td>\n"
                 + "        </tr>\n"
 		+ "        <tr>\n"
-		+ "            <td>     Tanggal : " + dateStart + " - " + dateEnd + " </td>\n"
+		+ "            <td>     No Reference Doc        : " + noDoc + " </td>\n"
                 + "        </tr>\n"
                 + "        <tr>\n"
-		+ "            <td>     Lokasi  : " + plant + " </td>\n"
+		+ "            <td>     Deskripsi Pekerjaan     : " + plant + " </td>\n"
 		+ "        </tr>\n"
                 + "        <tr>\n"
-		+ "             <td><p> </p></td>\n"
-                + "        </tr>\n"
-		+ "        <tr>\n"
-		+ "            <td colspan=3>Kami telah menyediakan link pendaftaran online yang dapat anda akses melalui email ini. </td>\n"
-                + "        </tr>\n"
+                + "            <td>     Tanggal Pekerjaan (Start)   : " + dateStart + "</td>\n"
+                + "        <tr/>\n"
                 + "        <tr>\n"
-		+ "            <td> Link Registrasi: <a href=" + link + ">" + link + "</a></td>\n"
-                + "        </tr>\n"
-                + "        <tr>\n"
+                + "            <td>     Tanggal Pekerjaan (End)   : " + dateEnd + "</td>\n"
+                + "        <tr/>"
 		+ "             <td><p> </p></td>\n"
                 + "        </tr>\n"
                 + "        <tr>\n"
-                + "            <td>Diharapkan bapak / ibu sebagai PIC Visitor dari perusahaan " + companyName + " dapat membagikan Link "
-                + "Register ini kepada anggota dari tim bapak / ibu yang akan berkunjung ke AHM.</td>\n"
+		+ "            <td>     <b>Link Registrasi: <a href=" + link + ">" + link + "</a></b></td>\n"
                 + "        </tr>\n"
                 + "        <tr>\n"
 		+ "             <td><p> </p></td>\n"
                 + "        </tr>\n"
                 + "        <tr>\n"
-                + "            <td>Jika anda memiliki pertanyaan lebih lanjut atau mengalami kesulitan dalam proses registrasi, jangan ragu "
-                + "untuk menghubungi " + picAhmName + " di " + emailPicAhm + " atau " + noHpPicAhm + "</td>\n"
+                + "            <td>Diharapkan bapak / ibu sebagai PIC Project yang mengajukan permohonan safety induction untuk "
+                + "Karyawan, Mitra / Outsource ataupun Tamu / Pengunjung Spesifik yang akan \n"
+                + "bekerja di PT. Astra Honda Motor dapat menginformasikan <b>Link Registrasi Safety Induction yang terlampir "
+                + "pada email ini kepada personil terkait.\n"
                 + "        </tr>\n"
                 + "        <tr>\n"
 		+ "             <td><p> </p></td>\n"
                 + "        </tr>\n"
                 + "        <tr>\n"
-                + "             <td>Hormat kami,</td>\n"
+                + "            <td>Terima kasih atas perhatian Anda.\n"
+                + "No Safety No Production</tr>\n"
+                + "        <tr>\n"
+		+ "             <td><p> </p></td>\n"
                 + "        </tr>\n"
                 + "        <tr>\n"
-                + "             <td>PT. Astra Honda Motor</td>\n"
-                + "        </tr>\n"
 		+ "    </tbody>\n"
 		+ "</table>";
-
     }
     
     private void logEmails(String code, String from, String to, String flag, String userId) {
@@ -501,15 +495,18 @@ public class Vms030ServiceImpl implements Vms030Service {
         }
     }
     
-    @Override
-    public String getNoHpUser(String userId) {
-        FmhrdGeneralDatas data = new FmhrdGeneralDatas();
-        BigDecimal nrp = new BigDecimal(userId);
-        data = vms030FmhrdGeneralDatasDao.findOne(nrp);
-        return data.getTelephone();
+    private String getRegisterLink(String noDoc) {
+        return vms030AhmmoerpDtlsettingsDao.getLink(noDoc);
     }
-    
-    private String getInvitationLink(String noDoc) {
-        return vms030AhmmoerpDtlsettingsDao.getInvLink(noDoc);
+
+    @Override
+    public DtoResponsePagingWorkspace showMonitoringEmail(DtoParamPaging input) {
+        try {
+            List<Vms030VoMonitoringEmail> data = vms030AhmgavmsMstrefdocsDao.getMonitoringEmail(input);
+            int countData = 1;
+            return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, "SUCCESS", null, data, countData);
+        } catch (Exception e) {
+            return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.GAGAL, "GAGAL", null, null, 0);
+        }
     }
 }

@@ -8,6 +8,7 @@ package id.co.ahm.ga.vms.app030.dao;
 
 import id.co.ahm.ga.vms.app000.model.AhmgavmsMstrefdocs;
 import id.co.ahm.ga.vms.app000.model.AhmgavmsMstrefdocsPk;
+import id.co.ahm.ga.vms.app030.vo.Vms030VoMonitoringEmail;
 import id.co.ahm.ga.vms.app030.vo.Vms030VoTableResult;
 import id.co.ahm.jxf.dao.DefaultDao;
 import id.co.ahm.jxf.dto.DtoParamPaging;
@@ -22,5 +23,7 @@ public interface Vms030AhmgavmsMstrefdocsDao extends DefaultDao<AhmgavmsMstrefdo
     public List<Vms030VoTableResult> getTable(DtoParamPaging input);
     
     public int getTableCount(DtoParamPaging input);
+    
+    public List<Vms030VoMonitoringEmail> getMonitoringEmail(DtoParamPaging input);
       
 }

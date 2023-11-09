@@ -9,18 +9,17 @@ package id.co.ahm.ga.vms.app030.vo;
  *
  * @author Nurvan Afandi
  */
-public class Vms030VoEmail {
+public class Vms030VoSendEmail {
 
     String to;
     String noDoc;
     String picName;
-    String company;
+    String workDesc;
     String plant;
     String picAhm;
     String dateStart;
     String dateEnd;
-    String emailPicAhm;
-    String noHpPicAhm;
+    String emailPic;
 
     public String getTo() {
         return to;
@@ -46,12 +45,12 @@ public class Vms030VoEmail {
         this.picName = picName;
     }
 
-    public String getCompany() {
-        return company;
+    public String getWorkDesc() {
+        return workDesc;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
+    public void setWorkDesc(String workDesc) {
+        this.workDesc = workDesc;
     }
 
     public String getPlant() {
@@ -86,20 +85,12 @@ public class Vms030VoEmail {
         this.dateEnd = dateEnd;
     }
 
-    public String getEmailPicAhm() {
-        return emailPicAhm;
+    public String getEmailPic() {
+        return emailPic;
     }
 
-    public void setEmailPicAhm(String emailPicAhm) {
-        this.emailPicAhm = emailPicAhm;
-    }
-
-    public String getNoHpPicAhm() {
-        return noHpPicAhm;
-    }
-
-    public void setNoHpPicAhm(String noHpPicAhm) {
-        this.noHpPicAhm = noHpPicAhm;
+    public void setEmailPic(String emailPic) {
+        this.emailPic = emailPic;
     }
     
     

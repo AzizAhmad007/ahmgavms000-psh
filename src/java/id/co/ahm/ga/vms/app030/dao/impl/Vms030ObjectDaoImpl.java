@@ -35,13 +35,12 @@ public class Vms030ObjectDaoImpl extends HrHibernateDao<Object, Serializable> im
             + "A.NAMA_DIVISI, "
             + "A.NAMA_DEPARTEMEN, "
             + "A.NAMA_SUBDEPARTEMEN, "
-            + "A.NAMA_SEKSI, "
-            + "B.VEMAIL "
-            + "FROM FMHRD_GENERAL_DATAS A "
-            + "LEFT JOIN AHMMOERP_MSTKARYAWANS B "
-            + "ON A.NRP = B.IIDNRP ");
+            + "A.NAMA_SEKSI "
+            + "FROM FMHRD_GENERAL_DATAS A ");
          
-        sql.append("WHERE A.NRP = '");
+        sql.append("WHERE 1 = 1 ");
+        
+        sql.append("AND TO_CHAR(A.NRP) = '");
         sql.append(nrp);
         sql.append("'");
         
@@ -60,7 +59,6 @@ public class Vms030ObjectDaoImpl extends HrHibernateDao<Object, Serializable> im
                 vo.setDepartment((String) obj[3]);
                 vo.setSubdepartment((String) obj[4]);
                 vo.setSeksi((String) obj[5]);
-                vo.setEmail((String) obj[6]);
                 
                 result.add(vo);
             }

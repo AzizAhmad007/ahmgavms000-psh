@@ -8,7 +8,7 @@ package id.co.ahm.ga.vms.app030.rest;
 import id.co.ahm.ga.vms.app030.service.Vms030Service;
 import id.co.ahm.ga.vms.app030.util.Vms030DateTimeUtil;
 import id.co.ahm.ga.vms.app030.util.Vms030ExportExcel;
-import id.co.ahm.ga.vms.app030.vo.Vms030VoEmail;
+import id.co.ahm.ga.vms.app030.vo.Vms030VoSendEmail;
 import id.co.ahm.ga.vms.app030.vo.Vms030VoTableResult;
 import id.co.ahm.jxf.constant.StatusMsgEnum;
 import id.co.ahm.jxf.dto.DtoParamPaging;
@@ -244,9 +244,18 @@ public class Vms030Rest {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     DtoResponseWorkspace sendEmail(@RequestHeader(value = "token", defaultValue = "") String token,
-            @RequestBody List<Vms030VoEmail> input) {
+            @RequestBody List<Vms030VoSendEmail> input) {
         VoUserCred user = tokenPshUtil.getUserCred(token);
         return vms030Service.sendEmail(input, user);
+    }
+    
+    @RequestMapping(value = "monitoring-email", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponsePagingWorkspace getMonitoringEmail(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody DtoParamPaging input) {
+        return vms030Service.showMonitoringEmail(input);
     }
              
 }

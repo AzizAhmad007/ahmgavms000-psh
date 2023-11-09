@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import id.co.ahm.ga.vms.app030.dao.Vms030AhmgavmsMstrefdocsDao;
+import id.co.ahm.ga.vms.app030.vo.Vms030VoMonitoringEmail;
 import id.co.ahm.jxf.util.AhmStringUtil;
 import java.math.BigDecimal;
 import org.hibernate.Query;
@@ -416,23 +417,20 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                 String param = input.getSort();
 
                 switch (param) {
-                    case "visitorTypeCode":
-                        getParam = "VTYPE";
-                        break;
-                    case "statusCode":
-                        getParam = "VSTATUS";
+                    case "visitorType":
+                        getParam = "VTYPEDESC";
                         break;
                     case "noDoc":
                         getParam = "VREFDOCNO";
                         break;
-                    case "workDesc":
-                        getParam = "VWORKDESC";
+                    case "status":
+                        getParam = "VSTATUSDESC";
                         break;
                     case "docType":
                         getParam = "VDOCTYPE";
                         break;        
-                    case "plantCode":
-                        getParam = "VPLANTID";
+                    case "plant":
+                        getParam = "VPLANTDESC";
                         break;
                     case "company":
                         getParam = "VCOMPANY";
@@ -440,22 +438,68 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                     case "nrp":
                         getParam = "VPICNRP";
                         break;
-                    case "email":
-                        getParam = "VEMAIL";
-                        break;
                     case "dateStart":
                         getParam = "DWORKSTART";
                         break;
                     case "dateEnd":
                         getParam = "DWORKEND";
                         break;
+                    case "email":
+                        getParam = "VEMAIL";
+                        break;
                     default:
                         getParam = null;
-
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<Vms030VoMonitoringEmail> getMonitoringEmail(DtoParamPaging input) {
+        List<Vms030VoMonitoringEmail> result = new ArrayList<>();
+        
+        String noDoc = AhmStringUtil.hasValue(input.getSearch().get("noDoc")) ? (input.getSearch().get("noDoc") + "").toUpperCase() : "";
+        
+        StringBuilder sql = new StringBuilder("SELECT DCREA, VTO, "
+                + "(CASE "
+                + "WHEN VFLAG = '1' THEN "
+                + "     'Success' "
+                + "WHEN VFLAG = '0' THEN "
+                + "     'Failed' "
+                + "ELSE "
+                + "     '-' "
+                + "END) VSTATUS "
+                + "FROM AHMGAVMS_LOGEMAILS "
+                + "WHERE 1 = 1 ");
+        if (!StringUtils.isBlank(noDoc)) {
+            sql.append("AND VCODE = '")
+                    .append(input.getSearch().get("invitNo").toString().toUpperCase())
+                    .append("' ");
+        }
+        
+        Query query = getCurrentSession().createSQLQuery(sql.toString())
+                .setFirstResult(input.getOffset())
+                .setMaxResults(input.getLimit());
+        try {
+            List<Object[]> list = query.list();
+            if (list.size() > 0) {
+                Object[] obj;
+                int i = 0;
+                for (Object object : list) {
+                    obj = (Object[]) object;
+                    Vms030VoMonitoringEmail vo = new Vms030VoMonitoringEmail();
+                    vo.setDateSend((String) DateUtil.dateToString((Date) obj[0], "dd-MMM-yyyy"));
+                    vo.setEmailTo((String) obj[1]);
+                    vo.setStatus((String) obj[2]);
+                    vo.setRowNum(i);
+                    result.add(vo);
+                }
+            }
+            return result;
+        } catch (Exception e) {
+            return result;
         }
     }
 }
