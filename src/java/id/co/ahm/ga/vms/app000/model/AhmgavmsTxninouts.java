@@ -12,6 +12,8 @@ import java.sql.Timestamp;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,9 +28,10 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicInsert
 @DynamicUpdate
 @Entity
-@Table(name = "AHMGAVMS_MSTREFDOCS")
+@Table(name = "AHMGAVMS_TXNINOUTS")
 public class AhmgavmsTxninouts extends DefaultEntityImpl implements Serializable{
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "NIDCHECKIN")
     private BigDecimal nidcheckin;
     
@@ -36,7 +39,7 @@ public class AhmgavmsTxninouts extends DefaultEntityImpl implements Serializable
     private String vinvitno;
     
     @Column(name = "VNIK")
-    private String nik;
+    private String vnik;
     
     @Column(name = "VNOHP")
     private String vnohp;
@@ -105,12 +108,12 @@ public class AhmgavmsTxninouts extends DefaultEntityImpl implements Serializable
         this.vinvitno = vinvitno;
     }
 
-    public String getNik() {
-        return nik;
+    public String getVnik() {
+        return vnik;
     }
 
-    public void setNik(String nik) {
-        this.nik = nik;
+    public void setVnik(String vnik) {
+        this.vnik = vnik;
     }
 
     public String getVnohp() {

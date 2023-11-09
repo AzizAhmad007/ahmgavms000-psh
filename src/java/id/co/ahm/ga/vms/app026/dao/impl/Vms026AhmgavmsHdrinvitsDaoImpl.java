@@ -71,7 +71,7 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                 + "FROM AHMGAVMS_HDRINVITS A "
                 + "JOIN AHMGAVMS_HDRCHIEFS B "
                 + "ON A.VMASTERNO = B.VMASTERNO "
-                + "WHERE 1 = 1 ");
+                + "WHERE A.VMASTERNO LIKE '%INV%' ");
         if (!input.getSearch().get("status").toString().equalsIgnoreCase("")) {
             if (input.getSearch().get("status").toString().equalsIgnoreCase("N")) {
                 sql.append("AND TRUNC(A.DPLEND) < TRUNC(SYSDATE) ");
@@ -165,7 +165,7 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
                     + "FROM AHMGAVMS_HDRINVITS A "
                     + "JOIN AHMGAVMS_HDRCHIEFS B "
                     + "ON A.VMASTERNO = B.VMASTERNO "
-                    + "WHERE 1 = 1 ");
+                    + "WHERE A.VMASTERNO LIKE '%INV%' ");
             if (!input.getSearch().get("status").toString().equalsIgnoreCase("")) {
                 if (input.getSearch().get("status").toString().equalsIgnoreCase("N")) {
                     sql.append("AND TRUNC(A.DPLEND) < TRUNC(SYSDATE) ");

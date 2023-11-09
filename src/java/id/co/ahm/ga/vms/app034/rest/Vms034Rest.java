@@ -6,11 +6,17 @@
 package id.co.ahm.ga.vms.app034.rest;
 
 import id.co.ahm.ga.vms.app034.service.Vms034Service;
+import id.co.ahm.jxf.constant.StatusMsgEnum;
 import id.co.ahm.jxf.dto.DtoParamPaging;
+import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
 import id.co.ahm.jxf.security.TokenPshUtil;
+import id.co.ahm.jxf.util.DtoHelper;
+import id.co.ahm.jxf.vo.VoUserCred;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -100,12 +106,49 @@ public class Vms034Rest {
         return vms034Service.showIdCardTypeFilter(input);
     }
     
+    @RequestMapping(value = "get-user-detail", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace getUserDetail(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody DtoParamPaging dto) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
+        Map<String, Object> getDetail = new HashMap();
+        getDetail.put("username", user.getUsername());
+        getDetail.put("userid", user.getUserid());
+        getDetail.put("email", user.getEmail());
+        getDetail.put("domain", user.getDomain());
+        getDetail.put("role", user.getListRole());
+
+        return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, getDetail);
+    }
+    
     @RequestMapping(value = "check-in", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     DtoResponseWorkspace submitCheckIn(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody DtoParamPaging input) {
-        return vms034Service.submitCheckIn(input);
+        VoUserCred user = tokenPshUtil.getUserCred(token);
+        return vms034Service.submitCheckIn(input, user);
+    }
+    
+    @RequestMapping(value = "check-out", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace submitCheckOut(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody DtoParamPaging input) {
+        VoUserCred user = tokenPshUtil.getUserCred(token);
+        return vms034Service.submitCheckOut(input, user);
+    }
+    
+    @RequestMapping(value = "monitoring", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponsePagingWorkspace getMonitoring(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody DtoParamPaging input) {
+        return vms034Service.showMonitoring(input);
     }
 }

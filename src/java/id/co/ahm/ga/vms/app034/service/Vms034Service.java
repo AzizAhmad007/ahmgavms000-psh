@@ -6,7 +6,9 @@
 package id.co.ahm.ga.vms.app034.service;
 
 import id.co.ahm.jxf.dto.DtoParamPaging;
+import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
 import id.co.ahm.jxf.dto.DtoResponseWorkspace;
+import id.co.ahm.jxf.vo.VoUserCred;
 
 /**
  *
@@ -24,8 +26,12 @@ public interface Vms034Service {
 
     public DtoResponseWorkspace showIdCardTypeFilter(DtoParamPaging input);
 
-    public DtoResponseWorkspace submitCheckIn(DtoParamPaging input);
+    public DtoResponseWorkspace submitCheckIn(DtoParamPaging input, VoUserCred user);
 
     public DtoResponseWorkspace showStatusCheck(DtoParamPaging input);
+
+    public DtoResponseWorkspace submitCheckOut(DtoParamPaging input, VoUserCred user);
+
+    public DtoResponsePagingWorkspace showMonitoring(DtoParamPaging input);
     
 }
