@@ -41,5 +41,4 @@ public interface Vms030AhmmoerpDtlsettingsDao extends DefaultDao<AhmmoerpDtlsett
     
     public List<String> getFileName(String otsId, String name, String regId);
     
-    public String getLink(String noDoc);
 }

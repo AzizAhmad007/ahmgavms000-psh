@@ -7,6 +7,7 @@ package id.co.ahm.ga.vms.app030.dao.impl;
 
 import id.co.ahm.ga.vms.app000.model.AhmgavmsMstrefdocs;
 import id.co.ahm.ga.vms.app000.model.AhmgavmsMstrefdocsPk;
+import static id.co.ahm.ga.vms.app030.constant.Vms030Constant.GET_LINK;
 import id.co.ahm.ga.vms.app030.vo.Vms030VoTableResult;
 import id.co.ahm.jxf.dao.DefaultHibernateDao;
 import id.co.ahm.jxf.dto.DtoParamPaging;
@@ -19,9 +20,11 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import id.co.ahm.ga.vms.app030.dao.Vms030AhmgavmsMstrefdocsDao;
 import id.co.ahm.ga.vms.app030.vo.Vms030VoMonitoringEmail;
+import id.co.ahm.jxf.security.CryptoSecurity;
 import id.co.ahm.jxf.util.AhmStringUtil;
 import java.math.BigDecimal;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -230,6 +233,7 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                     vo.setDateEndText(DateUtil.dateToString((Date) obj[13], "dd-MMM-yyyy"));
                     vo.setRowNum(i);
                     i++;
+                    vo.setLink(getLink(noDoc));
                     result.add(vo);
                 }
             }
@@ -462,7 +466,7 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
         
         String noDoc = AhmStringUtil.hasValue(input.getSearch().get("noDoc")) ? (input.getSearch().get("noDoc") + "").toUpperCase() : "";
         
-        StringBuilder sql = new StringBuilder("SELECT DCREA, VTO, "
+        StringBuilder sql = new StringBuilder("SELECT VCODE, DCREA, VTO, "
                 + "(CASE "
                 + "WHEN VFLAG = '1' THEN "
                 + "     'Success' "
@@ -475,7 +479,7 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                 + "WHERE 1 = 1 ");
         if (!StringUtils.isBlank(noDoc)) {
             sql.append("AND VCODE = '")
-                    .append(input.getSearch().get("invitNo").toString().toUpperCase())
+                    .append(noDoc)
                     .append("' ");
         }
         
@@ -490,9 +494,10 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                 for (Object object : list) {
                     obj = (Object[]) object;
                     Vms030VoMonitoringEmail vo = new Vms030VoMonitoringEmail();
-                    vo.setDateSend((String) DateUtil.dateToString((Date) obj[0], "dd-MMM-yyyy"));
-                    vo.setEmailTo((String) obj[1]);
-                    vo.setStatus((String) obj[2]);
+                    vo.setNoDoc((String) obj[0]);
+                    vo.setDateSend((String) DateUtil.dateToString((Date) obj[1], "dd-MMM-yyyy"));
+                    vo.setEmailTo((String) obj[2]);
+                    vo.setStatus((String) obj[3]);
                     vo.setRowNum(i);
                     result.add(vo);
                 }
@@ -502,4 +507,15 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
             return result;
         }
     }
+    
+    @Override
+    public String getLink(String noDoc) {
+        StringBuilder sql = new StringBuilder(GET_LINK);
+        SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
+        List<String> list = sqlQuery.list();
+        String link = list.get(0);
+        String token = CryptoSecurity.encrypt(noDoc);
+        return link + "id=" + token;
+    }
+    
 }

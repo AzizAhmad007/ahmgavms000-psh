@@ -11,10 +11,19 @@ package id.co.ahm.ga.vms.app030.vo;
  */
 public class Vms030VoMonitoringEmail {
     int rowNum;
+    String noDoc;
     String dateSend;
     String emailTo;
     String status;
 
+    public String getNoDoc() {
+        return noDoc;
+    }
+
+    public void setNoDoc(String noDoc) {
+        this.noDoc = noDoc;
+    }
+    
     public int getRowNum() {
         return rowNum;
     }

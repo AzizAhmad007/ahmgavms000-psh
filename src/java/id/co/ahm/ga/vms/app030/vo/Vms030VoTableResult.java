@@ -31,8 +31,8 @@ public class Vms030VoTableResult {
     private Date dateEnd;
     private String dateEndText;
     public int rowNum;
-    private String fileNameAtc;
-    private List<Vms030VoFileAttachment> fileAtc;
+    public String link;
+
 
     public String getVisitorType() {
         return visitorType;
@@ -138,22 +138,6 @@ public class Vms030VoTableResult {
         this.dateEndText = dateEndText;
     }
 
-    public String getFileNameAtc() {
-        return fileNameAtc;
-    }
-
-    public void setFileNameAtc(String fileNameAtc) {
-        this.fileNameAtc = fileNameAtc;
-    }
-
-    public List<Vms030VoFileAttachment> getFileAtc() {
-        return fileAtc;
-    }
-
-    public void setFileAtc(List<Vms030VoFileAttachment> fileAtc) {
-        this.fileAtc = fileAtc;
-    }
-
     public String getVisitorTypeCode() {
         return visitorTypeCode;
     }
@@ -186,7 +170,12 @@ public class Vms030VoTableResult {
         this.rowNum = rowNum;
     }
 
-    
-    
-    
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
 }

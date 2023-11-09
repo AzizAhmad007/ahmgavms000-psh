@@ -25,5 +25,7 @@ public interface Vms030AhmgavmsMstrefdocsDao extends DefaultDao<AhmgavmsMstrefdo
     public int getTableCount(DtoParamPaging input);
     
     public List<Vms030VoMonitoringEmail> getMonitoringEmail(DtoParamPaging input);
+    
+    public String getLink(String noDoc);
       
 }

@@ -206,17 +206,5 @@ public class Vms030AhmmoerpDtlsettingsDaoImpl extends DefaultHibernateDao<Ahmmoe
             return results;
         }
     }
-
-    @Override
-    public String getLink(String noDoc) {
-        StringBuilder sql = new StringBuilder(GET_LINK);
-        SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
-        List<String> list = sqlQuery.list();
-        String link = list.get(0);
-        String token = CryptoSecurity.encrypt(noDoc);
-        return link + "id=" + token;
-    }
-    
-    
-    
+   
 }

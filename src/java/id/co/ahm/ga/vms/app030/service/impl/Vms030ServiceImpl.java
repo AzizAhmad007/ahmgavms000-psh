@@ -407,8 +407,8 @@ public class Vms030ServiceImpl implements Vms030Service {
                     + "Pesan ini hanya bertujuan untuk memberikan informasi atau pemberitahuan tertentu dan tidak dimaksudkan "
                     + "untuk memulai percakapan atau interaksi email.<i/></p>";
 
-            body = header + body + footer;
-            emailService.callProcSendMail(subject, FROM, to.toString(), null, body);
+            String content = header + body + footer;
+            emailService.callProcSendMail(subject, FROM, to.toString(), null, content);
 
             logEmails(noDoc, FROM, to, "1", userId);
         } catch (NullPointerException npE) {
@@ -421,8 +421,8 @@ public class Vms030ServiceImpl implements Vms030Service {
                 + "<p>" + picName + " </p>\n";
     }
 
-    private String subjectEmailRegistrationLink(String docNo) {
-	return "Permintaan Safety Induction No. Reference Doc" + docNo + " di PT. Astra Honda Motor.";
+    private String subjectEmailRegistrationLink(String noDoc) {
+	return "Permintaan Safety Induction No. Reference Doc" + noDoc + " di PT. Astra Honda Motor.";
     }
 
     private String bodyEmailRegistrationLink(String noDoc, String workDesc, String plant, String dateStart, 
@@ -478,7 +478,7 @@ public class Vms030ServiceImpl implements Vms030Service {
     private void logEmails(String code, String from, String to, String flag, String userId) {
         try {
             AhmgavmsLogemails log = new AhmgavmsLogemails();
-
+            
             log.setVcode(code);
             log.setVfrom(from);
             log.setVto(to);
@@ -496,7 +496,7 @@ public class Vms030ServiceImpl implements Vms030Service {
     }
     
     private String getRegisterLink(String noDoc) {
-        return vms030AhmmoerpDtlsettingsDao.getLink(noDoc);
+        return vms030AhmgavmsMstrefdocsDao.getLink(noDoc);
     }
 
     @Override
