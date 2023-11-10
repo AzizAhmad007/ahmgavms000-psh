@@ -36,9 +36,9 @@ public interface Vms031Service {
      
      public DtoResponseWorkspace showGender(DtoParamPaging input);
       
-     public DtoResponseWorkspace submitKaryawan(DtoParamPaging input, VoUserCred user);
+     public DtoResponseWorkspace submitblacklist(DtoParamPaging input, VoUserCred user);
      
-     public DtoResponseWorkspace submitPengunjung(DtoParamPaging input, VoUserCred user);
+//     public DtoResponseWorkspace submitPengunjung(DtoParamPaging input, VoUserCred user);
      
      public DtoResponseWorkspace submitDetail(DtoParamPaging input, VoUserCred user);
      

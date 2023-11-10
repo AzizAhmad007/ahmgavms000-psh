@@ -95,8 +95,21 @@ public class Vms031ServiceImpl implements Vms031Service {
     }
 
     @Override
-    public DtoResponseWorkspace submitKaryawan(DtoParamPaging input, VoUserCred user) {
+    public DtoResponseWorkspace submitblacklist(DtoParamPaging input, VoUserCred user) {
         try {
+            String nrp = AhmStringUtil.hasValue(input.getSearch().get("nrp")) ? (input.getSearch().get("nrp") + "").toUpperCase() : "";
+            String nik = AhmStringUtil.hasValue(input.getSearch().get("nik")) ? (input.getSearch().get("nik") + "").toUpperCase() : "";
+            String nama = AhmStringUtil.hasValue(input.getSearch().get("nama")) ? (input.getSearch().get("nama") + "").toUpperCase() : "";
+            String jenisKelamin = AhmStringUtil.hasValue(input.getSearch().get("jenisKelamin")) ? (input.getSearch().get("jenisKelamin") + "").toUpperCase() : "";
+            String alamatKtp = AhmStringUtil.hasValue(input.getSearch().get("alamatKtp")) ? (input.getSearch().get("alamatKtp") + "").toUpperCase() : "";
+            String alamatDomisili = AhmStringUtil.hasValue(input.getSearch().get("alamatDomisili")) ? (input.getSearch().get("alamatDomisili") + "").toUpperCase() : "";
+            String tipeKaryawanBlacklist = AhmStringUtil.hasValue(input.getSearch().get("tipeKaryawanBlacklist")) ? (input.getSearch().get("tipeKaryawanBlacklist") + "").toUpperCase() : "";
+            String namaPerusahaan = AhmStringUtil.hasValue(input.getSearch().get("namaPerusahaan")) ? (input.getSearch().get("namaPerusahaan") + "").toUpperCase() : "";
+            String alasanBlacklist = AhmStringUtil.hasValue(input.getSearch().get("alasanBlacklist")) ? (input.getSearch().get("alasanBlacklist") + "").toUpperCase() : "";
+            String typeFoto = AhmStringUtil.hasValue(input.getSearch().get("typeFoto")) ? (input.getSearch().get("typeFoto") + "").toUpperCase() : "";
+            String namaFoto = AhmStringUtil.hasValue(input.getSearch().get("namaFoto")) ? (input.getSearch().get("namaFoto") + "").toUpperCase() : "";
+            String extensionFoto = AhmStringUtil.hasValue(input.getSearch().get("extensionFoto")) ? (input.getSearch().get("extensionFoto") + "").toUpperCase() : "";
+            String pathFoto = AhmStringUtil.hasValue(input.getSearch().get("pathFoto")) ? (input.getSearch().get("pathFoto") + "").toUpperCase() : "";
             Date tglStartEffective = DateUtil.stringToDate((String) input.getSearch().get("tglStartEffective"), "dd-MMM-yyyy");
             Date tglEndEffective = DateUtil.stringToDate((String) input.getSearch().get("tglEndEffective"), "dd-MMM-yyy");
             String userId;
@@ -106,30 +119,24 @@ public class Vms031ServiceImpl implements Vms031Service {
                 userId = user.getUserid();
             }
             //VALIDASI INPUT DATA TIDAK BOLEH KOSONG
-            if (input.getSearch().get("nrp").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("nik").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("nama").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("jenisKelamin").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("alamatKtp").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("alamatDomisili").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("tipeKaryawanBlacklist").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("namaPerusahaan").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("alasanBlacklist").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("typeFoto").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("namaFoto").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("extensionFoto").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("pathFoto").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("tglStartEffective").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("tglEndEffective").toString().equalsIgnoreCase("")) {
-                Map<String, Object> msg = new HashMap<>();
-                msg.put("validate", "Field ini tidak boleh kosong");
-                return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, msg, null);
+            if (nik.equalsIgnoreCase("")
+                    || nama.equalsIgnoreCase("")
+                    || jenisKelamin.equalsIgnoreCase("")
+                    || alamatKtp.equalsIgnoreCase("")
+                    || alamatDomisili.equalsIgnoreCase("")
+                    || tipeKaryawanBlacklist.equalsIgnoreCase("")
+                    || namaPerusahaan.equalsIgnoreCase("")
+                    || alasanBlacklist.equalsIgnoreCase("")
+                    || typeFoto.equalsIgnoreCase("")
+                    || namaFoto.equalsIgnoreCase("")
+                    || extensionFoto.equalsIgnoreCase("")
+                    || pathFoto.equalsIgnoreCase("")
+                    || tglStartEffective.toString().equalsIgnoreCase("")
+                    || tglEndEffective.toString().equalsIgnoreCase("")) {
+                
+                return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("FIeld tidak boleh kosong"), null, null);
             } else {
 
-                //COUNT VALIDASI NIK
-                //BigDecimal val = vms031AhmgavmsHdrblstDao.validateNik(input);
-                //MENCARI BERDASARKAN NIK
-                //BigDecimal pk = vms031AhmgavmsHdrblstDao.getNik(input);
                 AhmgavmsHdrblstPk pk = new AhmgavmsHdrblstPk();
                 pk.setHeaderId((Integer) input.getSearch().get("headerId"));
                 AhmgavmsHdrblst data = new AhmgavmsHdrblst();
@@ -139,19 +146,19 @@ public class Vms031ServiceImpl implements Vms031Service {
                     AhmgavmsHdrblst hdr = new AhmgavmsHdrblst();
                     AhmgavmsHdrblstPk hdrPK = new AhmgavmsHdrblstPk();
                     hdr.setAhmgavmsHdrblstPk(hdrPK);
-                    hdr.setNrp(input.getSearch().get("nrp").toString());
-                    hdr.setNik(input.getSearch().get("nik").toString());
-                    hdr.setNama(input.getSearch().get("nama").toString());
-                    hdr.setJenisKelamin(input.getSearch().get("jenisKelamin").toString());
-                    hdr.setAlamatKtp(input.getSearch().get("alamatKtp").toString());
-                    hdr.setAlamatDomisili(input.getSearch().get("alamatDomisili").toString());
-                    hdr.setTipeKaryawanBlacklist(input.getSearch().get("tipeKaryawanBlacklist").toString());
-                    hdr.setNamaPerusahaan(input.getSearch().get("namaPerusahaan").toString());
-                    hdr.setAlasanBlacklist(input.getSearch().get("alasanBlacklist").toString());
-                    hdr.setTypeFoto(input.getSearch().get("typeFoto").toString());
-                    hdr.setNamaFoto(input.getSearch().get("namaFoto").toString());
-                    hdr.setExtensionFoto(input.getSearch().get("extensionFoto").toString());
-                    hdr.setPathFoto(input.getSearch().get("pathFoto").toString());
+                    hdr.setNrp(nrp);
+                    hdr.setNik(nik);
+                    hdr.setNama(nama);
+                    hdr.setJenisKelamin(jenisKelamin);
+                    hdr.setAlamatKtp(alamatKtp);
+                    hdr.setAlamatDomisili(alamatDomisili);
+                    hdr.setTipeKaryawanBlacklist(tipeKaryawanBlacklist);
+                    hdr.setNamaPerusahaan(namaPerusahaan);
+                    hdr.setAlasanBlacklist(alasanBlacklist);
+                    hdr.setTypeFoto(typeFoto);
+                    hdr.setNamaFoto(namaFoto);
+                    hdr.setExtensionFoto(extensionFoto);
+                    hdr.setPathFoto(pathFoto);
                     hdr.setTglStartEffective(tglStartEffective);
                     hdr.setTglEndEffective(tglEndEffective);
                     hdr.setCreateBy(userId);
@@ -165,19 +172,19 @@ public class Vms031ServiceImpl implements Vms031Service {
                     return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
                 } else {
                     //UPDATE DATE 
-                    data.setNrp(input.getSearch().get("nrp").toString());
-                    data.setNik(input.getSearch().get("nik").toString());
-                    data.setNama(input.getSearch().get("nama").toString());
-                    data.setJenisKelamin(input.getSearch().get("jenisKelamin").toString());
-                    data.setAlamatKtp(input.getSearch().get("alamatKtp").toString());
-                    data.setAlamatDomisili(input.getSearch().get("alamatDomisili").toString());
-                    data.setTipeKaryawanBlacklist(input.getSearch().get("tipeKaryawanBlacklist").toString());
-                    data.setNamaPerusahaan(input.getSearch().get("namaPerusahaan").toString());
-                    data.setAlasanBlacklist(input.getSearch().get("alasanBlacklist").toString());
-                    data.setTypeFoto(input.getSearch().get("typeFoto").toString());
-                    data.setNamaFoto(input.getSearch().get("namaFoto").toString());
-                    data.setExtensionFoto(input.getSearch().get("extensionFoto").toString());
-                    data.setPathFoto(input.getSearch().get("pathFoto").toString());
+                    data.setNrp(nrp);
+                    data.setNik(nik);
+                    data.setNama(nama);
+                    data.setJenisKelamin(jenisKelamin);
+                    data.setAlamatKtp(alamatKtp);
+                    data.setAlamatDomisili(alamatDomisili);
+                    data.setTipeKaryawanBlacklist(tipeKaryawanBlacklist);
+                    data.setNamaPerusahaan(namaPerusahaan);
+                    data.setAlasanBlacklist(alasanBlacklist);
+                    data.setTypeFoto(typeFoto);
+                    data.setNamaFoto(namaFoto);
+                    data.setExtensionFoto(extensionFoto);
+                    data.setPathFoto(pathFoto);
                     data.setTglStartEffective(tglStartEffective);
                     data.setTglEndEffective(tglEndEffective);
                     data.setLastModBy(userId);
@@ -195,107 +202,115 @@ public class Vms031ServiceImpl implements Vms031Service {
         }
     }
     
-    @Override
-    public DtoResponseWorkspace submitPengunjung(DtoParamPaging input, VoUserCred user) {
-        try {
-            Date tglStartEffective = DateUtil.stringToDate((String) input.getSearch().get("tglStartEffective"), "dd-MMM-yyyy");
-            Date tglEndEffective = DateUtil.stringToDate((String) input.getSearch().get("tglEndEffective"), "dd-MMM-yyy");
-            String userId;
-            if (user == null) {
-                userId = "DEVELOPER";
-            } else {
-                userId = user.getUserid();
-            }
-            //VALIDASI INPUT DATA TIDAK BOLEH KOSONG
-            if ( input.getSearch().get("nik").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("nama").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("jenisKelamin").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("alamatKtp").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("alamatDomisili").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("tipeKaryawanBlacklist").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("namaPerusahaan").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("alasanBlacklist").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("typeFoto").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("namaFoto").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("extensionFoto").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("pathFoto").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("tglStartEffective").toString().equalsIgnoreCase("")
-                    || input.getSearch().get("tglEndEffective").toString().equalsIgnoreCase("")) {
-                Map<String, Object> msg = new HashMap<>();
-                msg.put("validate", "Field ini tidak boleh kosong");
-                return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, msg, null);
-            } else {
+//    @Override
+//    public DtoResponseWorkspace submitPengunjungblacklist(DtoParamPaging input, VoUserCred user) {
+//        try {
+//            String nik = AhmStringUtil.hasValue(input.getSearch().get("nik")) ? (input.getSearch().get("nik") + "").toUpperCase() : "";
+//            String nama = AhmStringUtil.hasValue(input.getSearch().get("nama")) ? (input.getSearch().get("nama") + "").toUpperCase() : "";
+//            String jenisKelamin = AhmStringUtil.hasValue(input.getSearch().get("jenisKelamin")) ? (input.getSearch().get("jenisKelamin") + "").toUpperCase() : "";
+//            String alamatKtp = AhmStringUtil.hasValue(input.getSearch().get("alamatKtp")) ? (input.getSearch().get("alamatKtp") + "").toUpperCase() : "";
+//            String alamatDomisili = AhmStringUtil.hasValue(input.getSearch().get("alamatDomisili")) ? (input.getSearch().get("alamatDomisili") + "").toUpperCase() : "";
+//            String tipeKaryawanBlacklist = AhmStringUtil.hasValue(input.getSearch().get("tipeKaryawanBlacklist")) ? (input.getSearch().get("tipeKaryawanBlacklist") + "").toUpperCase() : "";
+//            String namaPerusahaan = AhmStringUtil.hasValue(input.getSearch().get("namaPerusahaan")) ? (input.getSearch().get("namaPerusahaan") + "").toUpperCase() : "";
+//            String alasanBlacklist = AhmStringUtil.hasValue(input.getSearch().get("alasanBlacklist")) ? (input.getSearch().get("alasanBlacklist") + "").toUpperCase() : "";
+//            String typeFoto = AhmStringUtil.hasValue(input.getSearch().get("typeFoto")) ? (input.getSearch().get("typeFoto") + "").toUpperCase() : "";
+//            String namaFoto = AhmStringUtil.hasValue(input.getSearch().get("namaFoto")) ? (input.getSearch().get("namaFoto") + "").toUpperCase() : "";
+//            String extensionFoto = AhmStringUtil.hasValue(input.getSearch().get("extensionFoto")) ? (input.getSearch().get("extensionFoto") + "").toUpperCase() : "";
+//            String pathFoto = AhmStringUtil.hasValue(input.getSearch().get("pathFoto")) ? (input.getSearch().get("pathFoto") + "").toUpperCase() : "";
+//            Date tglStartEffective = DateUtil.stringToDate((String) input.getSearch().get("tglStartEffective"), "dd-MMM-yyyy");
+//            Date tglEndEffective = DateUtil.stringToDate((String) input.getSearch().get("tglEndEffective"), "dd-MMM-yyy");
+//            String userId;
+//            if (user == null) {
+//                userId = "DEVELOPER";
+//            } else {
+//                userId = user.getUserid();
+//            }
+//            //VALIDASI INPUT DATA TIDAK BOLEH KOSONG
+//            if (nik.equalsIgnoreCase("")
+//                    || nama.equalsIgnoreCase("")
+//                    || jenisKelamin.equalsIgnoreCase("")
+//                    || alamatKtp.equalsIgnoreCase("")
+//                    || alamatDomisili.equalsIgnoreCase("")
+//                    || tipeKaryawanBlacklist.equalsIgnoreCase("")
+//                    || namaPerusahaan.equalsIgnoreCase("")
+//                    || alasanBlacklist.equalsIgnoreCase("")
+//                    || typeFoto.equalsIgnoreCase("")
+//                    || namaFoto.equalsIgnoreCase("")
+//                    || extensionFoto.equalsIgnoreCase("")
+//                    || pathFoto.equalsIgnoreCase("")
+//                    || tglStartEffective.toString().equalsIgnoreCase("")
+//                    || tglEndEffective.toString().equalsIgnoreCase("")) {
+//                
+//                return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("FIeld tidak boleh kosong"), null, null);
+//            } else {
+//
+//                AhmgavmsHdrblstPk pk = new AhmgavmsHdrblstPk();
+//                pk.setHeaderId((Integer) input.getSearch().get("headerId"));
+//                AhmgavmsHdrblst data = new AhmgavmsHdrblst();
+//                data = vms031AhmgavmsHdrblstDao.findOne(pk);
+//                if (data == null) {
+//                    //INSERT DATA
+//                    AhmgavmsHdrblst hdr = new AhmgavmsHdrblst();
+//                    AhmgavmsHdrblstPk hdrPK = new AhmgavmsHdrblstPk();
+//                    hdr.setAhmgavmsHdrblstPk(hdrPK);
+//                    hdr.setNik(nik);
+//                    hdr.setNama(nama);
+//                    hdr.setJenisKelamin(jenisKelamin);
+//                    hdr.setAlamatKtp(alamatKtp);
+//                    hdr.setAlamatDomisili(alamatDomisili);
+//                    hdr.setTipeKaryawanBlacklist(tipeKaryawanBlacklist);
+//                    hdr.setNamaPerusahaan(namaPerusahaan);
+//                    hdr.setAlasanBlacklist(alasanBlacklist);
+//                    hdr.setTypeFoto(typeFoto);
+//                    hdr.setNamaFoto(namaFoto);
+//                    hdr.setExtensionFoto(extensionFoto);
+//                    hdr.setPathFoto(pathFoto);
+//                    hdr.setTglStartEffective(tglStartEffective);
+//                    hdr.setTglEndEffective(tglEndEffective);
+//                    hdr.setCreateBy(userId);
+//                    hdr.setCreateDate(new Date());
+//
+//                    vms031AhmgavmsHdrblstDao.save(hdr);
+//                    vms031AhmgavmsHdrblstDao.flush();
+//
+//                    return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
+//                } else {
+//                    //UPDATE DATE 
+//                    data.setNik(nik);
+//                    data.setNama(nama);
+//                    data.setJenisKelamin(jenisKelamin);
+//                    data.setAlamatKtp(alamatKtp);
+//                    data.setAlamatDomisili(alamatDomisili);
+//                    data.setTipeKaryawanBlacklist(tipeKaryawanBlacklist);
+//                    data.setNamaPerusahaan(namaPerusahaan);
+//                    data.setAlasanBlacklist(alasanBlacklist);
+//                    data.setTypeFoto(typeFoto);
+//                    data.setNamaFoto(namaFoto);
+//                    data.setExtensionFoto(extensionFoto);
+//                    data.setPathFoto(pathFoto);
+//                    data.setTglStartEffective(tglStartEffective);
+//                    data.setTglEndEffective(tglEndEffective);
+//                    data.setLastModBy(userId);
+//                    data.setLastModDate(new Date());
+//
+//                    vms031AhmgavmsHdrblstDao.update(data);
+//                    vms031AhmgavmsHdrblstDao.flush();
+//
+//                    return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
+//                }
+//            }
+//
+//        } catch (Exception e) {
+//            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, null, null);
+//        }
+//    }
 
-                //COUNT VALIDASI NIK
-                //BigDecimal val = vms031AhmgavmsHdrblstDao.validateNik(input);
-                //MENCARI BERDASARKAN NIK
-                //BigDecimal pk = vms031AhmgavmsHdrblstDao.getNik(input);
-                AhmgavmsHdrblstPk pk = new AhmgavmsHdrblstPk();
-                pk.setHeaderId((Integer) input.getSearch().get("headerId"));
-                AhmgavmsHdrblst data = new AhmgavmsHdrblst();
-                data = vms031AhmgavmsHdrblstDao.findOne(pk);
-                if (data == null) {
-                    //INSERT DATA
-                    AhmgavmsHdrblst hdr = new AhmgavmsHdrblst();
-                    AhmgavmsHdrblstPk hdrPK = new AhmgavmsHdrblstPk();
-                    hdr.setAhmgavmsHdrblstPk(hdrPK);
-                    hdr.setNik(input.getSearch().get("nik").toString());
-                    hdr.setNama(input.getSearch().get("nama").toString());
-                    hdr.setJenisKelamin(input.getSearch().get("jenisKelamin").toString());
-                    hdr.setAlamatKtp(input.getSearch().get("alamatKtp").toString());
-                    hdr.setAlamatDomisili(input.getSearch().get("alamatDomisili").toString());
-                    hdr.setTipeKaryawanBlacklist(input.getSearch().get("tipeKaryawanBlacklist").toString());
-                    hdr.setNamaPerusahaan(input.getSearch().get("namaPerusahaan").toString());
-                    hdr.setAlasanBlacklist(input.getSearch().get("alasanBlacklist").toString());
-                    hdr.setTypeFoto(input.getSearch().get("typeFoto").toString());
-                    hdr.setNamaFoto(input.getSearch().get("namaFoto").toString());
-                    hdr.setExtensionFoto(input.getSearch().get("extensionFoto").toString());
-                    hdr.setPathFoto(input.getSearch().get("pathFoto").toString());
-                    hdr.setTglStartEffective(tglStartEffective);
-                    hdr.setTglEndEffective(tglEndEffective);
-                    hdr.setCreateBy(userId);
-                    hdr.setCreateDate(new Date());
-                    hdr.setLastModBy(userId);
-                    hdr.setLastModDate(new Date());
-
-                    vms031AhmgavmsHdrblstDao.save(hdr);
-                    vms031AhmgavmsHdrblstDao.flush();
-
-                    return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
-                } else {
-                    //UPDATE DATE 
-                    data.setNik(input.getSearch().get("nik").toString());
-                    data.setNama(input.getSearch().get("nama").toString());
-                    data.setJenisKelamin(input.getSearch().get("jenisKelamin").toString());
-                    data.setAlamatKtp(input.getSearch().get("alamatKtp").toString());
-                    data.setAlamatDomisili(input.getSearch().get("alamatDomisili").toString());
-                    data.setTipeKaryawanBlacklist(input.getSearch().get("tipeKaryawanBlacklist").toString());
-                    data.setNamaPerusahaan(input.getSearch().get("namaPerusahaan").toString());
-                    data.setAlasanBlacklist(input.getSearch().get("alasanBlacklist").toString());
-                    data.setTypeFoto(input.getSearch().get("typeFoto").toString());
-                    data.setNamaFoto(input.getSearch().get("namaFoto").toString());
-                    data.setExtensionFoto(input.getSearch().get("extensionFoto").toString());
-                    data.setPathFoto(input.getSearch().get("pathFoto").toString());
-                    data.setTglStartEffective(tglStartEffective);
-                    data.setTglEndEffective(tglEndEffective);
-                    data.setLastModBy(userId);
-                    data.setLastModDate(new Date());
-
-                    vms031AhmgavmsHdrblstDao.update(data);
-                    vms031AhmgavmsHdrblstDao.flush();
-
-                    return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
-                }
-            }
-
-        } catch (Exception e) {
-            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, null, null);
-        }
-    }
 
     @Override
     public DtoResponseWorkspace submitDetail(DtoParamPaging input, VoUserCred user) {
         try {
+            String jenisKartuIdentitas = AhmStringUtil.hasValue(input.getSearch().get("jenisKartuIdentitas")) ? (input.getSearch().get("jenisKartuIdentitas") + "").toUpperCase() : "";
+            String noIdentitas = AhmStringUtil.hasValue(input.getSearch().get("noIdentitas")) ? (input.getSearch().get("noIdentitas") + "").toUpperCase() : "";
             String userId;
             if (user == null) {
                 userId = "DEVELOPER";
@@ -317,8 +332,8 @@ public class Vms031ServiceImpl implements Vms031Service {
                 AhmgavmsDtlblstPk dtlPk = new AhmgavmsDtlblstPk();
                 dtl.setAhmgavmsDtlBlstPk(dtlPk);
                 dtl.setHeaderId((Integer) input.getSearch().get("headerId"));
-                dtl.setJenisKartuIdentitas(input.getSearch().get("jenisKartuIdentitas").toString());
-                dtl.setNoIdentitas(input.getSearch().get("noIdentitas").toString());
+                dtl.setJenisKartuIdentitas(jenisKartuIdentitas);
+                dtl.setNoIdentitas(noIdentitas);
                 dtl.setCreateBy(userId);
                 dtl.setCreateDate(new Date());
                 dtl.setLastModBy(userId);
@@ -333,8 +348,8 @@ public class Vms031ServiceImpl implements Vms031Service {
 
                 //UPDATE DETAIL
                 data.setHeaderId((Integer) input.getSearch().get("headerId"));
-                data.setJenisKartuIdentitas(input.getSearch().get("jenisKartuIdentitas").toString());
-                data.setNoIdentitas(input.getSearch().get("jenisKartuIdentitas").toString());
+                data.setJenisKartuIdentitas(jenisKartuIdentitas);
+                data.setNoIdentitas(jenisKartuIdentitas);
                 data.setLastModBy(userId);
                 data.setLastModDate(new Date());
 
@@ -440,3 +455,4 @@ public class Vms031ServiceImpl implements Vms031Service {
     
     
 }
+

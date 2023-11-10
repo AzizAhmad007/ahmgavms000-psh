@@ -29,6 +29,10 @@ public class AhmgavmsHdrblst extends DefaultEntityImpl implements Serializable{
     @EmbeddedId
     private AhmgavmsHdrblstPk ahmgavmsHdrblstPk;
     
+    
+    //    @Column(name = "VSTATUS")
+    //    private String vstatus; 
+    
     @Column(name = "VNRPPIC",length=50)
     private String nrp;
     

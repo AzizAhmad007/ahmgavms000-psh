@@ -99,8 +99,10 @@ public class Vms031AhmgavmsHdrblstDaoImpl extends DefaultHibernateDao<AhmgavmsHd
     public List<Vms031VoMonitoring> getMonitoring(DtoParamPaging input) {
         List<Vms031VoMonitoring> vos = new ArrayList<>();
         Map<String, String> sortMap = new HashMap<>();
-        sortMap.put("ahmgavms031p01NamaSort", "");
+        
         sortMap.put("ahmgavms031p01StatusSort", "");
+        sortMap.put("ahmgavms031p01NrpSort", "");
+        sortMap.put("ahmgavms031p01NamaSort", "");
         sortMap.put("ahmgavms031p01NikSort", "");
         sortMap.put("ahmgavms031p01JenisKelaminSort", "");
         sortMap.put("ahmgavms031p01AlamatKtpSort", "");
@@ -122,10 +124,10 @@ public class Vms031AhmgavmsHdrblstDaoImpl extends DefaultHibernateDao<AhmgavmsHd
         sortMap.put("ahmgavms031p01NoIdentitasSort", "");
         sortMap.put("ahmgavms031p01TotalMonitoring", "");
 
-        StringBuilder sql = new StringBuilder("SELECT DISTINCT A.VNIK, A.VNAME, "
+        StringBuilder sql = new StringBuilder("SELECT DISTINCT A.VNIK, A.VNRPPIC, A.VNAME, "
                 + "A.VGENDER, A.VADRESKTP, A.VADRESDOM, A.VISEMP, "
                 + "A.VCOMPANY, A.VREASON, A.VFTYPEFOTO, A.VFNAMEFOTO, "
-                + "A.VFEXTFOTO, A.VFPATHFOTO, A.DSTARTEFF, A.DENDEFF, "
+                + "A.VFEXTFOTO, A.VFPATHFOTO, A.DSTARTEFF, A.DENDEFF, A.DCREA, A.VCREA, "
                 + "B.VIDTYPE, B.VIDNO, "
                 + "(CASE " 
                 + "WHEN A.DENDEFF > SYSDATE - 1 THEN " 
@@ -137,10 +139,12 @@ public class Vms031AhmgavmsHdrblstDaoImpl extends DefaultHibernateDao<AhmgavmsHd
                 + "INNER JOIN AHMGAVMS_DTLBLCKLSTS B "
                 + "ON A.NIDHDR = B.NIDHDR "
                 + "WHERE 1 = 1 ");
-        if (!input.getSearch().get("status").toString().equalsIgnoreCase("A")) {
-                if (input.getSearch().get("status").toString().equalsIgnoreCase("I")) {
+        if (!input.getSearch().get("status").toString().equalsIgnoreCase("")) {
+                if (input.getSearch().get("status").toString().equalsIgnoreCase("A")) {
                     sql.append("AND A.DENDEFF > SYSDATE - 1 THEN ");
-                } 
+                } else {
+                sql.append("AND A.DENDEFF <  SYSDATE ");
+            }
             }
         if (!input.getSearch().get("nik").toString().equalsIgnoreCase("")) {
             sql.append("AND A.VNIK LIKE '%").append(input.getSearch().get("nik").toString().toUpperCase()).append("' ");
@@ -160,6 +164,10 @@ public class Vms031AhmgavmsHdrblstDaoImpl extends DefaultHibernateDao<AhmgavmsHd
             sql.append("AND A.VISEMP = '").append(input.getSearch().get("tipeKaryawanBlacklist").toString().toUpperCase()).append("' ");
         }
 
+        if (!input.getSearch().get("nrp").toString().equalsIgnoreCase("")) {
+            sql.append("AND A.VNRPPIC = '").append(input.getSearch().get("nrp").toString().toUpperCase()).append("' ");
+        }
+        
         if (!input.getSearch().get("tglStartEffective").toString().equalsIgnoreCase("")) {
 //            sql.append("AND DSTARTEFF = '").append(input.getSearch().get("tglStartEffective").toString().toUpperCase()).append("' ");
               sql.append("AND A.DSTARTEFF BETWEEN TO_DATE('").append(input.getSearch().get("tglStartEffective").toString().toUpperCase())
@@ -185,24 +193,30 @@ public class Vms031AhmgavmsHdrblstDaoImpl extends DefaultHibernateDao<AhmgavmsHd
             for(Object object : list) {
                 obj = (Object[]) object;
                 Vms031VoMonitoring vo = new Vms031VoMonitoring();
-                vo.setNama((String) obj[0]);
-                vo.setNik((String) obj[1]);
-                vo.setJenisKelamin((String) obj[2]);
-                vo.setAlamatKtp((String) obj[3]);
-                vo.setAlamatDomisili((String) obj[4]);
-                vo.setTipeKaryawanBlacklist((String) obj[5]);
-                vo.setNamaPerusahaan((String) obj[6]);
-                vo.setAlasanBlacklist((String) obj[7]);
-                vo.setTypeFoto((String) obj[8]);
-                vo.setNamaFoto((String) obj[9]);
-                vo.setExtensionFoto((String) obj[10]);
-                vo.setPathFoto((String) obj[11]);
-                vo.setTglStartEffective((Date) obj[12]);
-                vo.setTglStartEffectiveText((String) DateUtil.dateToString((Date) obj[12], "dd-MMM-yyyy"));
-                vo.setTglEndEffective((Date) obj[13]);
-                vo.setTglEndEffectiveText((String) DateUtil.dateToString((Date) obj[13], "dd-MMM-yyyy"));
-                vo.setJenisKartuIdentitas((String) obj[14]);
-                vo.setNoIdentitas((String) obj[15]);
+                vo.setNik((String) obj[0]);
+                vo.setNrp((String) obj[1]);
+                vo.setNama((String) obj[2]);
+                vo.setJenisKelamin((String) obj[3]);
+                vo.setAlamatKtp((String) obj[4]);
+                vo.setAlamatDomisili((String) obj[5]);
+                vo.setTipeKaryawanBlacklist((String) obj[6]);
+                vo.setNamaPerusahaan((String) obj[7]);
+                vo.setAlasanBlacklist((String) obj[8]);
+                vo.setTypeFoto((String) obj[9]);
+                vo.setNamaFoto((String) obj[10]);
+                vo.setExtensionFoto((String) obj[11]);
+                vo.setPathFoto((String) obj[12]);
+                vo.setTglStartEffective((Date) obj[13]);
+                vo.setTglStartEffectiveText((String) DateUtil.dateToString((Date) obj[13], "dd-MMM-yyyy"));
+                vo.setTglEndEffective((Date) obj[14]);
+                vo.setTglEndEffectiveText((String) DateUtil.dateToString((Date) obj[14], "dd-MMM-yyyy"));
+
+                vo.setCreateDate((Date) obj[15]);
+                vo.setCreateDateText((String) DateUtil.dateToString((Date) obj[15], "dd-MMM-yyyy"));
+                vo.setCreateBy((String) obj[16]);
+                
+                vo.setJenisKartuIdentitas((String) obj[17]);
+                vo.setNoIdentitas((String) obj[18]);
                 i++;
                 vos.add(vo);
             }
@@ -216,10 +230,11 @@ public class Vms031AhmgavmsHdrblstDaoImpl extends DefaultHibernateDao<AhmgavmsHd
     @Override
     public int getMonitoringCount(DtoParamPaging input) {
         try {
-            StringBuilder sql = new StringBuilder("SELECT DISTINCT A.VNIK, A.VNAME, "
+            StringBuilder sql = new StringBuilder(" SELECT COUNT (0) FROM ( "
+                + "SELECT DISTINCT A.VNIK, A.VNRPPIC, A.VNAME, "
                 + "A.VGENDER, A.VADRESKTP, A.VADRESDOM, A.VISEMP, "
                 + "A.VCOMPANY, A.VREASON, A.VFTYPEFOTO, A.VFNAMEFOTO, "
-                + "A.VFEXTFOTO, A.VFPATHFOTO, A.DSTARTEFF, A.DENDEFF, "
+                + "A.VFEXTFOTO, A.VFPATHFOTO, A.DSTARTEFF, A.DENDEFF, A.DCREA, A.VCREA, A.DMODI, A.VMODI, "
                 + "B.VIDTYPE, B.VIDNO, "
                 + "(CASE " 
                 + "WHEN A.DENDEFF > SYSDATE - 1 THEN " 
@@ -230,11 +245,14 @@ public class Vms031AhmgavmsHdrblstDaoImpl extends DefaultHibernateDao<AhmgavmsHd
                 + "FROM AHMGAVMS_HDRBLCKLSTS A "
                 + "INNER JOIN AHMGAVMS_DTLBLCKLSTS B "
                 + "ON A.NIDHDR = B.NIDHDR "
+                + ")"
                 + "WHERE 1 = 1");
-             if (!input.getSearch().get("status").toString().equalsIgnoreCase("A")) {
-                if (input.getSearch().get("status").toString().equalsIgnoreCase("I")) {
-                    sql.append("AND A.DENDEFF > SYSDATE - 1 THEN  ");
-                } 
+             if (!input.getSearch().get("status").toString().equalsIgnoreCase("")) {
+                if (input.getSearch().get("status").toString().equalsIgnoreCase("A")) {
+                    sql.append("AND A.DENDEFF > SYSDATE - 1 ");
+                } else {
+                sql.append("AND A.DENDEFF <  SYSDATE ");
+            }
             }
 
             if (!input.getSearch().get("nik").toString().equalsIgnoreCase("")) {
@@ -255,22 +273,27 @@ public class Vms031AhmgavmsHdrblstDaoImpl extends DefaultHibernateDao<AhmgavmsHd
                 sql.append("AND A.VISEMP = '").append(input.getSearch().get("tipeKaryawanBlacklist").toString().toUpperCase()).append("' ");
             }
             
+            if (!input.getSearch().get("nrp").toString().equalsIgnoreCase("")) {
+            sql.append("AND A.VNRPPIC = '").append(input.getSearch().get("nrp").toString().toUpperCase()).append("' ");
+            }
+            
             if (!input.getSearch().get("tglStartEffective").toString().equalsIgnoreCase("")) {
-//            sql.append("AND DSTARTEFF = '").append(input.getSearch().get("tglStartEffective").toString().toUpperCase()).append("' ");
+
               sql.append("AND A.DSTARTEFF BETWEEN TO_DATE('").append(input.getSearch().get("tglStartEffective").toString().toUpperCase())
                         .append("', 'DD-MM-YYYY') AND TO_DATE('").append(input.getSearch().get("tglEndEffective").toString().toUpperCase())
                         .append("', 'DD-MM-YYYY') ");
             }
             if (!input.getSearch().get("tglEndEffective").toString().equalsIgnoreCase("")) {
-//            sql.append("AND DENDEFF = '").append(input.getSearch().get("tglEndEffective").toString().toUpperCase()).append("' ");
+
               sql.append("AND A.DENDEFF BETWEEN TO_DATE('").append(input.getSearch().get("tglStartEffective").toString().toUpperCase())
                         .append("', 'DD-MM-YYYY') AND TO_DATE('").append(input.getSearch().get("tglEndEffective").toString().toUpperCase())
                         .append("', 'DD-MM-YYYY') ");
             }
-            SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
-            List<Object[]> list = sqlQuery.list();
-            Object[] obj = (Object[]) list.get(0);
-            return (Integer) obj[0];
+            Query query = getCurrentSession().createSQLQuery(sql.toString())
+                    .setFirstResult(input.getOffset())
+                    .setMaxResults(input.getLimit());
+            List<BigDecimal> list = query.list();
+            return (Integer) list.get(0).intValueExact();
         } catch (Exception e) {
             return 0;
         }

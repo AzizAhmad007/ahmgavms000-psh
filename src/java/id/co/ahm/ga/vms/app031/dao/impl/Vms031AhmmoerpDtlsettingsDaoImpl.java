@@ -40,12 +40,12 @@ public class Vms031AhmmoerpDtlsettingsDaoImpl extends DefaultHibernateDao<Ahmmoe
       public static final StringBuilder LOV_HEADCARDTYPE = new StringBuilder("SELECT VITEMCODE, VITEMNAME "
                                                                        + "FROM AHMMOERP_DTLSETTINGS "
                                                                        + "WHERE RSET_VID = 'VMS_IDTYPE'"
-                                                                       + "AND VITEMCODE NOT IN ('SIMA', 'SIMB', 'SIMC')");
+                                                                       + "AND VITEMCODE NOT IN ('SIMA', 'SIMB', 'SIMC', 'SIM')");
       
       public static final StringBuilder LOV_DETAILCARDTYPE = new StringBuilder("SELECT VITEMCODE, VITEMNAME "
                                                                        + "FROM AHMMOERP_DTLSETTINGS "
                                                                        + "WHERE RSET_VID = 'VMS_IDTYPE'"
-                                                                       + "AND VITEMCODE NOT IN ('KTP', 'PASSPORT')");
+                                                                       + "AND VITEMCODE NOT IN ('KTP', 'PASSPORT', 'SIM')");
     
       
     @Override
@@ -183,3 +183,4 @@ public class Vms031AhmmoerpDtlsettingsDaoImpl extends DefaultHibernateDao<Ahmmoe
 
     
 }
+

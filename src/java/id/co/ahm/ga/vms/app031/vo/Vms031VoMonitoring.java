@@ -14,15 +14,17 @@ import java.util.Date;
 public class Vms031VoMonitoring {
     private Integer headerId;
     private String status;
+    private String tipeKaryawanBlacklist;
     private String nrp;
-    private String nama;
+    private String jenisKartuIdentitas;
+    private String noIdentitas;
     private String nik;
+    private String nama;
+    private String namaPerusahaan;
     private String jenisKelamin;
+    private String alasanBlacklist;
     private String alamatKtp;
     private String alamatDomisili;
-    private String tipeKaryawanBlacklist;
-    private String namaPerusahaan;
-    private String alasanBlacklist;
     private String typeFoto;
     private String namaFoto;
     private String extensionFoto;
@@ -31,17 +33,46 @@ public class Vms031VoMonitoring {
     private String tglStartEffectiveText;
     private Date tglEndEffective;
     private String tglEndEffectiveText;
-    private Date dateCreated;
-    private String dateCreatedText;
-    private String picCreate;
-    private Date dateUpdate;
-    private String dateUpdateText;
-    private String picUpdate;
+    private String createBy;
+    private String lastModBy;
+    private Date createDate;
+    private String createDateText;
     
     private Integer detailId;
-    private String jenisKartuIdentitas;
-    private String noIdentitas;
+    
     private Integer totalMonitoring;
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public String getLastModBy() {
+        return lastModBy;
+    }
+
+    public void setLastModBy(String lastModBy) {
+        this.lastModBy = lastModBy;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getCreateDateText() {
+        return createDateText;
+    }
+
+    public void setCreateDateText(String createDateText) {
+        this.createDateText = createDateText;
+    }
 
     public String getStatus() {
         return status;
@@ -74,25 +105,7 @@ public class Vms031VoMonitoring {
     public void setTglEndEffectiveText(String tglEndEffectiveText) {
         this.tglEndEffectiveText = tglEndEffectiveText;
     }
-
-    public String getDateCreatedText() {
-        return dateCreatedText;
-    }
-
-    public void setDateCreatedText(String dateCreatedText) {
-        this.dateCreatedText = dateCreatedText;
-    }
-
-    public String getDateUpdateText() {
-        return dateUpdateText;
-    }
-
-    public void setDateUpdateText(String dateUpdateText) {
-        this.dateUpdateText = dateUpdateText;
-    }
-
-  
-
+    
     public Integer getTotalMonitoring() {
         return totalMonitoring;
     }
@@ -237,38 +250,6 @@ public class Vms031VoMonitoring {
 
     public void setTglEndEffective(Date tglEndEffective) {
         this.tglEndEffective = tglEndEffective;
-    }
-
-    public Date getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public String getPicCreate() {
-        return picCreate;
-    }
-
-    public void setPicCreate(String picCreate) {
-        this.picCreate = picCreate;
-    }
-
-    public Date getDateUpdate() {
-        return dateUpdate;
-    }
-
-    public void setDateUpdate(Date dateUpdate) {
-        this.dateUpdate = dateUpdate;
-    }
-
-    public String getPicUpdate() {
-        return picUpdate;
-    }
-
-    public void setPicUpdate(String picUpdate) {
-        this.picUpdate = picUpdate;
     }
 
     public String getNik() {

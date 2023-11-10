@@ -117,25 +117,25 @@ public class Vms031Rest {
         return vms031Service.showGender(input);
     }
     
-    @RequestMapping(value = "save-karyawan-blst", method = RequestMethod.POST,
+    @RequestMapping(value = "save-blacklist", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     DtoResponseWorkspace saveKaryawanBlacklist(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody DtoParamPaging input){
         VoUserCred user = tokenPshUtil.getUserCred(token);
-        return vms031Service.submitKaryawan(input, user);
+        return vms031Service.submitblacklist(input, user);
     }
     
-    @RequestMapping(value = "save-pengunjung-blst", method = RequestMethod.POST,
-            consumes = {MediaType.APPLICATION_JSON_VALUE},
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    DtoResponseWorkspace savePengujungBlacklist(@RequestHeader(value = "token", defaultValue = "") String token,
-            @RequestBody DtoParamPaging input){
-        VoUserCred user = tokenPshUtil.getUserCred(token);
-        return vms031Service.submitPengunjung(input, user);
-    }
+//    @RequestMapping(value = "save-pengunjung-blst", method = RequestMethod.POST,
+//            consumes = {MediaType.APPLICATION_JSON_VALUE},
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//    public @ResponseBody
+//    DtoResponseWorkspace savePengujungBlacklist(@RequestHeader(value = "token", defaultValue = "") String token,
+//            @RequestBody DtoParamPaging input){
+//        VoUserCred user = tokenPshUtil.getUserCred(token);
+//        return vms031Service.submitPengunjung(input, user);
+//    }
     
     @RequestMapping(value = "save-dtlblacklist", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
