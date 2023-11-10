@@ -233,7 +233,7 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                     vo.setDateEndText(DateUtil.dateToString((Date) obj[13], "dd-MMM-yyyy"));
                     vo.setRowNum(i);
                     i++;
-                    vo.setLink(getLink(noDoc));
+                    vo.setLink(getLink((String) obj[4]));
                     result.add(vo);
                 }
             }

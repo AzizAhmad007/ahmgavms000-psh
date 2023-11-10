@@ -79,6 +79,7 @@ public class Vms030ServiceImpl implements Vms030Service {
     @Qualifier("vms030AhmgavmsLogemailsDao")
     private Vms030AhmgavmsLogemailsDao vms030AhmgavmsLogemailsDao;
     
+    
     private String getUserId(VoUserCred userCred) {
         String userId = userCred.getUsername();
 
@@ -205,7 +206,6 @@ public class Vms030ServiceImpl implements Vms030Service {
                     plant.equalsIgnoreCase("") ||
                     company.equalsIgnoreCase("") ||
                     workDesc.equalsIgnoreCase("") ||
-                    status.equalsIgnoreCase("") ||
                     dateStart.toString().equalsIgnoreCase("") || 
                     dateEnd.toString().equalsIgnoreCase("") ||
                     nrp.equalsIgnoreCase("")) {
@@ -291,7 +291,6 @@ public class Vms030ServiceImpl implements Vms030Service {
                     plant.equalsIgnoreCase("") ||
                     company.equalsIgnoreCase("") ||
                     workDesc.equalsIgnoreCase("") ||
-                    status.equalsIgnoreCase("") ||
                     dateStart.toString().equalsIgnoreCase("") || 
                     dateEnd.toString().equalsIgnoreCase("") ||
                     nrp.equalsIgnoreCase("")) {
@@ -318,7 +317,7 @@ public class Vms030ServiceImpl implements Vms030Service {
                     ref.setVplantid(plant);
                     ref.setVtype(visitorType);    
                     ref.setVcompany(company);
-                    ref.setVstatus(status);    
+                    ref.setVstatus("Y");    
                     ref.setDworkstart(dateStart);
                     ref.setDworkend(dateEnd);   
                     ref.setVpicnrp(nrp);
@@ -377,7 +376,7 @@ public class Vms030ServiceImpl implements Vms030Service {
     }
      
     private void sendEmailRegistrationLink(Vms030VoSendEmail data, VoUserCred user) {
-        String to = data.getTo();
+        String to = data.getTo().toString();
         String noDoc = data.getNoDoc();
         String picName = data.getPicName();
         String workDesc = data.getWorkDesc();
@@ -408,11 +407,15 @@ public class Vms030ServiceImpl implements Vms030Service {
                     + "untuk memulai percakapan atau interaksi email.<i/></p>";
 
             String content = header + body + footer;
-            emailService.callProcSendMail(subject, FROM, to.toString(), null, content);
+            emailService.callProcSendMail(subject, FROM, to, null, content);
 
             logEmails(noDoc, FROM, to, "1", userId);
-        } catch (NullPointerException npE) {
+            
+        }
+        catch (NullPointerException npE) {
+            
             logEmails(noDoc, FROM, to, "0", userId);
+            
         }
     }
 
@@ -422,7 +425,7 @@ public class Vms030ServiceImpl implements Vms030Service {
     }
 
     private String subjectEmailRegistrationLink(String noDoc) {
-	return "Permintaan Safety Induction No. Reference Doc" + noDoc + " di PT. Astra Honda Motor.";
+	return "Permintaan Safety Induction No. Reference Doc " + noDoc + " di PT. Astra Honda Motor.";
     }
 
     private String bodyEmailRegistrationLink(String noDoc, String workDesc, String plant, String dateStart, 
@@ -430,7 +433,7 @@ public class Vms030ServiceImpl implements Vms030Service {
 	return "<table border='0'>\n"
 		+ "    <tbody>\n"
 		+ "        <tr>\n"
-		+ "            <td colspan=3>Sehubungan dengan adanya keperluan Safety Induction yang sudah diajukan sebelumnya berikut diinformasikan :\n"
+		+ "            <td colspan=3>Sehubungan dengan adanya keperluan Safety Induction yang sudah diajukan sebelumnya berikut diinformasikan : </td>\n"
 		+ "        </tr>\n"
                 + "        <tr>\n"
 		+ "             <td><p> </p></td>\n"
@@ -439,7 +442,10 @@ public class Vms030ServiceImpl implements Vms030Service {
 		+ "            <td>     No Reference Doc        : " + noDoc + " </td>\n"
                 + "        </tr>\n"
                 + "        <tr>\n"
-		+ "            <td>     Deskripsi Pekerjaan     : " + plant + " </td>\n"
+		+ "            <td>     Deskripsi Pekerjaan     : " + workDesc + " </td>\n"
+		+ "        </tr>\n"
+                + "        <tr>\n"
+		+ "            <td>     Plant Pekerjaan     : " + plant + " </td>\n"
 		+ "        </tr>\n"
                 + "        <tr>\n"
                 + "            <td>     Tanggal Pekerjaan (Start)   : " + dateStart + "</td>\n"
@@ -459,14 +465,17 @@ public class Vms030ServiceImpl implements Vms030Service {
                 + "            <td>Diharapkan bapak / ibu sebagai PIC Project yang mengajukan permohonan safety induction untuk "
                 + "Karyawan, Mitra / Outsource ataupun Tamu / Pengunjung Spesifik yang akan \n"
                 + "bekerja di PT. Astra Honda Motor dapat menginformasikan <b>Link Registrasi Safety Induction yang terlampir "
-                + "pada email ini kepada personil terkait.\n"
+                + "pada email ini kepada personil terkait.</td>\n"
                 + "        </tr>\n"
                 + "        <tr>\n"
 		+ "             <td><p> </p></td>\n"
                 + "        </tr>\n"
                 + "        <tr>\n"
-                + "            <td>Terima kasih atas perhatian Anda.\n"
-                + "No Safety No Production</tr>\n"
+                + "            <td>Terima kasih atas perhatian Anda.</td>\n"
+                + "         </tr>\n"
+                + "         <tr>\n"
+                + "            <td>No Safety No Production</td>\n"
+                + "        </tr>\n"
                 + "        <tr>\n"
 		+ "             <td><p> </p></td>\n"
                 + "        </tr>\n"
