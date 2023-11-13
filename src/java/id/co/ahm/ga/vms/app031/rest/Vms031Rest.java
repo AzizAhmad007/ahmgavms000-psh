@@ -127,16 +127,6 @@ public class Vms031Rest {
         return vms031Service.submitblacklist(input, user);
     }
     
-//    @RequestMapping(value = "save-pengunjung-blst", method = RequestMethod.POST,
-//            consumes = {MediaType.APPLICATION_JSON_VALUE},
-//            produces = MediaType.APPLICATION_JSON_VALUE)
-//    public @ResponseBody
-//    DtoResponseWorkspace savePengujungBlacklist(@RequestHeader(value = "token", defaultValue = "") String token,
-//            @RequestBody DtoParamPaging input){
-//        VoUserCred user = tokenPshUtil.getUserCred(token);
-//        return vms031Service.submitPengunjung(input, user);
-//    }
-    
     @RequestMapping(value = "save-dtlblacklist", method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -154,6 +144,15 @@ public class Vms031Rest {
     DtoResponsePagingWorkspace getMonitoring(@RequestHeader(value = "token", defaultValue = "") String token,
             @RequestBody DtoParamPaging input) {
         return vms031Service.showMonitoring(input);
+    }
+    
+    @RequestMapping(value = "show-pic", method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    DtoResponseWorkspace getPic(@RequestHeader(value = "token", defaultValue = "") String token,
+            @RequestBody DtoParamPaging input) {
+        return vms031Service.showPic(input);
     }
     
     @RequestMapping(value = "download-template-blacklist", method = RequestMethod.GET)

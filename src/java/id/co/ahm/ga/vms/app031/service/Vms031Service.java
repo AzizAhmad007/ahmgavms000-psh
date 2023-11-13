@@ -48,6 +48,8 @@ public interface Vms031Service {
      
      List<Vms031VoMonitoring> exportData(Map<String, Object> param);
      
+     public DtoResponseWorkspace showPic(DtoParamPaging input);
+
      
 //     DtoResponseWorkspace uploadBlacklist(Vms031VoUploadFileBlaclist param, VoPstUserCred user) throws Exception;
 }

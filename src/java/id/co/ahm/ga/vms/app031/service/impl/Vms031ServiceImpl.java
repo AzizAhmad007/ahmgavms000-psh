@@ -25,11 +25,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import id.co.ahm.ga.vms.app031.dao.Vms031AhmmoerpDtlsettingsDao;
+import id.co.ahm.ga.vms.app031.dao.Vms031ObjectDao;
 import id.co.ahm.ga.vms.app031.exception.Vms031Exception;
 import id.co.ahm.ga.vms.app031.rest.view.Vms031DownloadTemplateView;
 import id.co.ahm.ga.vms.app031.util.upload.Vms031UploadConfigDTO;
 import id.co.ahm.ga.vms.app031.util.validator.Vms031BasicValidatorService;
 import id.co.ahm.ga.vms.app031.vo.Vms031VoErrorUpload;
+import id.co.ahm.ga.vms.app031.vo.Vms031VoLovPic;
 import id.co.ahm.ga.vms.app031.vo.Vms031VoMonitoring;
 import id.co.ahm.ga.vms.app031.vo.Vms031VoUploadFileBlaclist;
 import id.co.ahm.jxf.dto.DtoResponsePagingWorkspace;
@@ -75,6 +77,10 @@ public class Vms031ServiceImpl implements Vms031Service {
     @Autowired
     @Qualifier(value = "vms031BasicValidatorService")
     private Vms031BasicValidatorService basicValidatorService;
+    
+    @Autowired
+    @Qualifier("vms031ObjectDao")
+    private Vms031ObjectDao vms031ObjectDao;
 
     @Override
     public DtoResponseWorkspace showIdType(DtoParamPaging input) {
@@ -141,6 +147,7 @@ public class Vms031ServiceImpl implements Vms031Service {
                 pk.setHeaderId((Integer) input.getSearch().get("headerId"));
                 AhmgavmsHdrblst data = new AhmgavmsHdrblst();
                 data = vms031AhmgavmsHdrblstDao.findOne(pk);
+                
                 if (data == null) {
                     //INSERT DATA
                     AhmgavmsHdrblst hdr = new AhmgavmsHdrblst();
@@ -201,109 +208,6 @@ public class Vms031ServiceImpl implements Vms031Service {
             return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, null, null);
         }
     }
-    
-//    @Override
-//    public DtoResponseWorkspace submitPengunjungblacklist(DtoParamPaging input, VoUserCred user) {
-//        try {
-//            String nik = AhmStringUtil.hasValue(input.getSearch().get("nik")) ? (input.getSearch().get("nik") + "").toUpperCase() : "";
-//            String nama = AhmStringUtil.hasValue(input.getSearch().get("nama")) ? (input.getSearch().get("nama") + "").toUpperCase() : "";
-//            String jenisKelamin = AhmStringUtil.hasValue(input.getSearch().get("jenisKelamin")) ? (input.getSearch().get("jenisKelamin") + "").toUpperCase() : "";
-//            String alamatKtp = AhmStringUtil.hasValue(input.getSearch().get("alamatKtp")) ? (input.getSearch().get("alamatKtp") + "").toUpperCase() : "";
-//            String alamatDomisili = AhmStringUtil.hasValue(input.getSearch().get("alamatDomisili")) ? (input.getSearch().get("alamatDomisili") + "").toUpperCase() : "";
-//            String tipeKaryawanBlacklist = AhmStringUtil.hasValue(input.getSearch().get("tipeKaryawanBlacklist")) ? (input.getSearch().get("tipeKaryawanBlacklist") + "").toUpperCase() : "";
-//            String namaPerusahaan = AhmStringUtil.hasValue(input.getSearch().get("namaPerusahaan")) ? (input.getSearch().get("namaPerusahaan") + "").toUpperCase() : "";
-//            String alasanBlacklist = AhmStringUtil.hasValue(input.getSearch().get("alasanBlacklist")) ? (input.getSearch().get("alasanBlacklist") + "").toUpperCase() : "";
-//            String typeFoto = AhmStringUtil.hasValue(input.getSearch().get("typeFoto")) ? (input.getSearch().get("typeFoto") + "").toUpperCase() : "";
-//            String namaFoto = AhmStringUtil.hasValue(input.getSearch().get("namaFoto")) ? (input.getSearch().get("namaFoto") + "").toUpperCase() : "";
-//            String extensionFoto = AhmStringUtil.hasValue(input.getSearch().get("extensionFoto")) ? (input.getSearch().get("extensionFoto") + "").toUpperCase() : "";
-//            String pathFoto = AhmStringUtil.hasValue(input.getSearch().get("pathFoto")) ? (input.getSearch().get("pathFoto") + "").toUpperCase() : "";
-//            Date tglStartEffective = DateUtil.stringToDate((String) input.getSearch().get("tglStartEffective"), "dd-MMM-yyyy");
-//            Date tglEndEffective = DateUtil.stringToDate((String) input.getSearch().get("tglEndEffective"), "dd-MMM-yyy");
-//            String userId;
-//            if (user == null) {
-//                userId = "DEVELOPER";
-//            } else {
-//                userId = user.getUserid();
-//            }
-//            //VALIDASI INPUT DATA TIDAK BOLEH KOSONG
-//            if (nik.equalsIgnoreCase("")
-//                    || nama.equalsIgnoreCase("")
-//                    || jenisKelamin.equalsIgnoreCase("")
-//                    || alamatKtp.equalsIgnoreCase("")
-//                    || alamatDomisili.equalsIgnoreCase("")
-//                    || tipeKaryawanBlacklist.equalsIgnoreCase("")
-//                    || namaPerusahaan.equalsIgnoreCase("")
-//                    || alasanBlacklist.equalsIgnoreCase("")
-//                    || typeFoto.equalsIgnoreCase("")
-//                    || namaFoto.equalsIgnoreCase("")
-//                    || extensionFoto.equalsIgnoreCase("")
-//                    || pathFoto.equalsIgnoreCase("")
-//                    || tglStartEffective.toString().equalsIgnoreCase("")
-//                    || tglEndEffective.toString().equalsIgnoreCase("")) {
-//                
-//                return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, ("FIeld tidak boleh kosong"), null, null);
-//            } else {
-//
-//                AhmgavmsHdrblstPk pk = new AhmgavmsHdrblstPk();
-//                pk.setHeaderId((Integer) input.getSearch().get("headerId"));
-//                AhmgavmsHdrblst data = new AhmgavmsHdrblst();
-//                data = vms031AhmgavmsHdrblstDao.findOne(pk);
-//                if (data == null) {
-//                    //INSERT DATA
-//                    AhmgavmsHdrblst hdr = new AhmgavmsHdrblst();
-//                    AhmgavmsHdrblstPk hdrPK = new AhmgavmsHdrblstPk();
-//                    hdr.setAhmgavmsHdrblstPk(hdrPK);
-//                    hdr.setNik(nik);
-//                    hdr.setNama(nama);
-//                    hdr.setJenisKelamin(jenisKelamin);
-//                    hdr.setAlamatKtp(alamatKtp);
-//                    hdr.setAlamatDomisili(alamatDomisili);
-//                    hdr.setTipeKaryawanBlacklist(tipeKaryawanBlacklist);
-//                    hdr.setNamaPerusahaan(namaPerusahaan);
-//                    hdr.setAlasanBlacklist(alasanBlacklist);
-//                    hdr.setTypeFoto(typeFoto);
-//                    hdr.setNamaFoto(namaFoto);
-//                    hdr.setExtensionFoto(extensionFoto);
-//                    hdr.setPathFoto(pathFoto);
-//                    hdr.setTglStartEffective(tglStartEffective);
-//                    hdr.setTglEndEffective(tglEndEffective);
-//                    hdr.setCreateBy(userId);
-//                    hdr.setCreateDate(new Date());
-//
-//                    vms031AhmgavmsHdrblstDao.save(hdr);
-//                    vms031AhmgavmsHdrblstDao.flush();
-//
-//                    return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
-//                } else {
-//                    //UPDATE DATE 
-//                    data.setNik(nik);
-//                    data.setNama(nama);
-//                    data.setJenisKelamin(jenisKelamin);
-//                    data.setAlamatKtp(alamatKtp);
-//                    data.setAlamatDomisili(alamatDomisili);
-//                    data.setTipeKaryawanBlacklist(tipeKaryawanBlacklist);
-//                    data.setNamaPerusahaan(namaPerusahaan);
-//                    data.setAlasanBlacklist(alasanBlacklist);
-//                    data.setTypeFoto(typeFoto);
-//                    data.setNamaFoto(namaFoto);
-//                    data.setExtensionFoto(extensionFoto);
-//                    data.setPathFoto(pathFoto);
-//                    data.setTglStartEffective(tglStartEffective);
-//                    data.setTglEndEffective(tglEndEffective);
-//                    data.setLastModBy(userId);
-//                    data.setLastModDate(new Date());
-//
-//                    vms031AhmgavmsHdrblstDao.update(data);
-//                    vms031AhmgavmsHdrblstDao.flush();
-//
-//                    return DtoHelper.constructResponseWorkspace(StatusMsgEnum.SUKSES, null, null);
-//                }
-//            }
-//
-//        } catch (Exception e) {
-//            return DtoHelper.constructResponseWorkspace(StatusMsgEnum.GAGAL, null, null);
-//        }
-//    }
 
 
     @Override
@@ -449,6 +353,16 @@ public class Vms031ServiceImpl implements Vms031Service {
 //        columnPropertyMap.put(4, "TANGGAL_START_EFFECTIVE");//P
 //        columnPropertyMap.put(4, "TANGGAL_ENDEFFECTIVE");//Q
 //    }
+
+    @Override
+    public DtoResponseWorkspace showPic(DtoParamPaging input) {
+       try {
+            List<Vms031VoLovPic> data = vms031ObjectDao.getPic(input);
+            return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.SUKSES, null, null, data, 1);
+        } catch (Exception e) {
+            return DtoHelper.constructResponsePagingWorkspace(StatusMsgEnum.GAGAL, null, null, null, 0);
+        }
+    }
 
     
     

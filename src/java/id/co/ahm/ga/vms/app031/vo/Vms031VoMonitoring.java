@@ -12,7 +12,6 @@ import java.util.Date;
  * @author Ahmad Mukaram Aziz
  */
 public class Vms031VoMonitoring {
-    private Integer headerId;
     private String status;
     private String tipeKaryawanBlacklist;
     private String nrp;
@@ -37,10 +36,6 @@ public class Vms031VoMonitoring {
     private String lastModBy;
     private Date createDate;
     private String createDateText;
-    
-    private Integer detailId;
-    
-    private Integer totalMonitoring;
 
     public String getCreateBy() {
         return createBy;
@@ -105,23 +100,6 @@ public class Vms031VoMonitoring {
     public void setTglEndEffectiveText(String tglEndEffectiveText) {
         this.tglEndEffectiveText = tglEndEffectiveText;
     }
-    
-    public Integer getTotalMonitoring() {
-        return totalMonitoring;
-    }
-
-    public void setTotalMonitoring(Integer totalMonitoring) {
-        this.totalMonitoring = totalMonitoring;
-    }
-
-
-    public Integer getDetailId() {
-        return detailId;
-    }
-
-    public void setDetailId(Integer detailId) {
-        this.detailId = detailId;
-    }
 
     public String getJenisKartuIdentitas() {
         return jenisKartuIdentitas;
@@ -137,15 +115,6 @@ public class Vms031VoMonitoring {
 
     public void setNoIdentitas(String noIdentitas) {
         this.noIdentitas = noIdentitas;
-    }
-    
-
-    public Integer getHeaderId() {
-        return headerId;
-    }
-
-    public void setHeaderId(Integer headerId) {
-        this.headerId = headerId;
     }
 
     public String getNama() {
