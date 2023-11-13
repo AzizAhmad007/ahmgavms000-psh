@@ -36,18 +36,6 @@ public class Vms026AhmgavmsHdrinvitsDaoImpl extends DefaultHibernateDao<Ahmgavms
     public List<Vms026VoMonitoringOutput> getMonitoring(DtoParamPaging input) {
         List<Vms026VoMonitoringOutput> vos = new ArrayList<>();
         Map<String, String> sortMap = new HashMap<>();
-        sortMap.put("ahmgavms026p01MasterNoSort", "");
-        sortMap.put("ahmgavms026p01StatusSort", "");
-        sortMap.put("ahmgavms026p01VisitorTypeSort", "");
-        sortMap.put("ahmgavms026p01PlantSort", "");
-        sortMap.put("ahmgavms026p01LocSpecSort", "");
-        sortMap.put("ahmgavms026p01ReasonSort", "");
-        sortMap.put("ahmgavms026p01StartDateSort", "");
-        sortMap.put("ahmgavms026p01EndDateSort", "");
-        sortMap.put("ahmgavms026p01NameSort", "");
-        sortMap.put("ahmgavms026p01CompanySort", "");
-        sortMap.put("ahmgavms026p01TotalQuotaSort", "");
-        sortMap.put("ahmgavms026p01PicAhmSort", "");
 
         StringBuilder sql = new StringBuilder("SELECT A.VMASTERNO, A.DPLSTART, A.DPLEND, A.VNRPPIC, "
                 + "(SELECT C.VDESC "
