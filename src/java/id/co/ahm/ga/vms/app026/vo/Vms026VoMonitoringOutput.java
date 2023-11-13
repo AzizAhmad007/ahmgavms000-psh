@@ -13,10 +13,12 @@ import java.util.Date;
  */
 public class Vms026VoMonitoringOutput {
     
-    private String masterNo;
     private String invitNo;
+    private String masterNo;
     private String status;
+    private String visitorTypeCode;
     private String visitorType;
+    private String plantCode;
     private String plant;
     private String loc;
     private String locSpec;
@@ -27,22 +29,12 @@ public class Vms026VoMonitoringOutput {
     private String endDateText;
     private String name;
     private String company;
-    private Integer totalQuota;
-    private String picAhm;
-    private String visitorTypeCode;
-    private String plantCode;
     private String email;
     private String noHp;
+    private Integer totalQuota;
     private String link;
+    private String picAhm;
     private int rowNum;
-
-    public String getMasterNo() {
-        return masterNo;
-    }
-
-    public void setMasterNo(String masterNo) {
-        this.masterNo = masterNo;
-    }
 
     public String getInvitNo() {
         return invitNo;
@@ -50,6 +42,14 @@ public class Vms026VoMonitoringOutput {
 
     public void setInvitNo(String invitNo) {
         this.invitNo = invitNo;
+    }
+
+    public String getMasterNo() {
+        return masterNo;
+    }
+
+    public void setMasterNo(String masterNo) {
+        this.masterNo = masterNo;
     }
 
     public String getStatus() {
@@ -60,12 +60,28 @@ public class Vms026VoMonitoringOutput {
         this.status = status;
     }
 
+    public String getVisitorTypeCode() {
+        return visitorTypeCode;
+    }
+
+    public void setVisitorTypeCode(String visitorTypeCode) {
+        this.visitorTypeCode = visitorTypeCode;
+    }
+
     public String getVisitorType() {
         return visitorType;
     }
 
     public void setVisitorType(String visitorType) {
         this.visitorType = visitorType;
+    }
+
+    public String getPlantCode() {
+        return plantCode;
+    }
+
+    public void setPlantCode(String plantCode) {
+        this.plantCode = plantCode;
     }
 
     public String getPlant() {
@@ -148,12 +164,36 @@ public class Vms026VoMonitoringOutput {
         this.company = company;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNoHp() {
+        return noHp;
+    }
+
+    public void setNoHp(String noHp) {
+        this.noHp = noHp;
+    }
+
     public Integer getTotalQuota() {
         return totalQuota;
     }
 
     public void setTotalQuota(Integer totalQuota) {
         this.totalQuota = totalQuota;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public String getPicAhm() {
@@ -172,43 +212,5 @@ public class Vms026VoMonitoringOutput {
         this.rowNum = rowNum;
     }
 
-    public String getVisitorTypeCode() {
-        return visitorTypeCode;
-    }
-
-    public void setVisitorTypeCode(String visitorTypeCode) {
-        this.visitorTypeCode = visitorTypeCode;
-    }
-
-    public String getPlantCode() {
-        return plantCode;
-    }
-
-    public void setPlantCode(String plantCode) {
-        this.plantCode = plantCode;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getNoHp() {
-        return noHp;
-    }
-
-    public void setNoHp(String noHp) {
-        this.noHp = noHp;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
-    }
+    
 }
