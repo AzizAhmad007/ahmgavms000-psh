@@ -42,16 +42,16 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
         List<Vms030VoTableResult> result = new ArrayList<>();
         Map<String, String> sortMap = new HashMap<>();
         
-        sortMap.put("ahmgavms030VisitorTypeSort", "");
-        sortMap.put("ahmgavms030NoDocSort", "");
-        sortMap.put("ahmgavms030StatusSort", "");
-        sortMap.put("ahmgavms030DocTypeSort","");
-        sortMap.put("ahmgavms030PlantSort", "");
-        sortMap.put("ahmgavms030CompanySort", "");
-        sortMap.put("ahmgavms030NrpSort", "");
-        sortMap.put("ahmgavms030EmailSort", "");
-        sortMap.put("ahmgavms030DateStartSort", "");
-        sortMap.put("ahmgavms030DateEndSort", "");
+        sortMap.put("ahmgavms030p01VisitorTypeSort", "");
+        sortMap.put("ahmgavms030p01NoDocSort", "");
+        sortMap.put("ahmgavms030p01StatusSort", "");
+        sortMap.put("ahmgavms030p01DocTypeSort","");
+        sortMap.put("ahmgavms030p01PlantSort", "");
+        sortMap.put("ahmgavms030p01CompanySort", "");
+        sortMap.put("ahmgavms030p01NrpSort", "");
+        sortMap.put("ahmgavms030p01EmailSort", "");
+        sortMap.put("ahmgavms030p01DateStartSort", "");
+        sortMap.put("ahmgavms030p01DateEndSort", "");
         
         String noDoc = AhmStringUtil.hasValue(input.getSearch().get("noDoc")) ? (input.getSearch().get("noDoc") + "").toUpperCase() : "";
         String plant = AhmStringUtil.hasValue(input.getSearch().get("plantCode")) ? (input.getSearch().get("plantCode") + "").toUpperCase() : "";
@@ -69,78 +69,73 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
         sql.append("SELECT * FROM (");
         
         sql.append("SELECT "
-                + "     A.VTYPE AS VTYPE, "
-                + "     (SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
-                + "         WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
-                + "         AND B.VITEMCODE = A.VTYPE) VTYPEDESC, "
-                + "     A.VSTATUS AS VSTATUS, "
-                + "     (CASE "
-                + "         WHEN A.VSTATUS = 'Y' THEN "
-                + "             'AKTIF' "
-                + "         WHEN A.VSTATUS = 'N' THEN "
-                + "             'TIDAK AKTIF' "
-                + "         WHEN A.VSTATUS = 'D' THEN "
-                + "             'DRAFT' "
-                + "         ELSE "
-                + "             '-' "
-                + "     END) VSTATUSDESC, "
-                + "     A.VREFDOCNO AS VREFDOCNO, "
-                + "     A.VWORKDESC AS VWORKDESC, "
-                + "     (SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
-                + "         WHERE B.RSET_VID = 'VMS_TYPDOC_SI' "
-                + "         AND B.VITEMCODE = 'MEMO') VDOCTYPE, "
-                + "      A.VPLANTID AS VPLANTID, "
-                + "     (SELECT C.VDESC FROM AHMMOSCD_MSTAGPLANTS C "
-                + "         WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTDESC, "
-                + "     A.VCOMPANY AS VCOMPANY, "
-                + "     A.VPICNRP AS VPICNRP, "
-                + "     D.VEMAIL AS VEMAIL, "
-                + "     A.DWORKSTART AS DWORKSTART, "
-                + "     A.DWORKEND AS DWORKEND "
+                + "A.VTYPE AS VTYPE, "
+                + "(SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "     WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
+                + "     AND B.VITEMCODE = A.VTYPE) VTYPEDESC, "
+                + "A.VSTATUS AS VSTATUS, "
+                + "(CASE "
+                + "     WHEN A.VSTATUS = 'Y' THEN "
+                + "         'AKTIF' "
+                + "     WHEN A.VSTATUS = 'N' THEN "
+                + "         'TIDAK AKTIF' "
+                + "     WHEN A.VSTATUS = 'D' THEN "
+                + "         'DRAFT' "
+                + "     ELSE "
+                + "         '-' "
+                + "END) VSTATUSDESC, "
+                + "A.VREFDOCNO AS VREFDOCNO, "
+                + "A.VWORKDESC AS VWORKDESC, "
+                + "(SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "     WHERE B.RSET_VID = 'VMS_TYPDOC_SI' "
+                + "     AND B.VITEMCODE = 'MEMO') VDOCTYPE, "
+                + "A.VPLANTID AS VPLANTID, "
+                + "(SELECT C.VDESC FROM AHMMOSCD_MSTAGPLANTS C "
+                + "     WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTDESC, "
+                + "A.VCOMPANY AS VCOMPANY, "
+                + "A.VPICNRP AS VPICNRP, "
+                + "(SELECT D.VEMAIL FROM AHMMOERP_MSTKARYAWANS D "
+                + "     WHERE TO_CHAR(D.IIDNRP) = A.VPICNRP) VEMAIL, "
+                + "A.DWORKSTART AS DWORKSTART, "
+                + "A.DWORKEND AS DWORKEND "
                 + "FROM AHMGAVMS_MSTREFDOCS A "
-                + "JOIN AHMMOERP_MSTKARYAWANS D "
-                + "     ON A.VPICNRP = TO_CHAR(D.IIDNRP) "
                 + "UNION "
                 + "SELECT "
-                + "     (SELECT B.VITEMCODE FROM AHMMOERP_DTLSETTINGS B "
-                + "         WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
-                + "         AND B.VITEMCODE = 'KTR') VTYPE, "
-                + "     (SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
-                + "         WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
-                + "         AND B.VITEMCODE = 'KTR') VTYPEDESC, "
-                + "     (CASE "
-                + "         WHEN TRUNC(A.DENDJOB) < TRUNC(SYSDATE) THEN "
-                + "             'N' "
-                + "         WHEN TRUNC(A.DSTARTJOB) < TRUNC(A.DENDJOB) THEN "
-                + "             'Y' "
-                + "         ELSE "
-                + "             '-' "
+                + "(SELECT B.VITEMCODE FROM AHMMOERP_DTLSETTINGS B "
+                + "     WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
+                + "     AND B.VITEMCODE = 'KTR') VTYPE, "
+                + "(SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "     WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
+                + "     AND B.VITEMCODE = 'KTR') VTYPEDESC, "
+                + "(CASE "
+                + "     WHEN A.VSTATUS = '06-IKP' THEN "
+                + "         'Y' "
+                + "     ELSE "
+                + "         'N' "
                 + "     END) VSTATUS, "
-                + "     (CASE "
-                + "         WHEN TRUNC(A.DENDJOB) < TRUNC(SYSDATE) THEN "
-                + "             'TIDAK AKTIF' "
-                + "         WHEN TRUNC(A.DSTARTJOB) < TRUNC(A.DENDJOB) THEN "
-                + "             'AKTIF' "
-                + "         ELSE "
-                + "             '-' "
+                + "(CASE "
+                + "     WHEN A.VSTATUS = '06-IKP' THEN "
+                + "         'AKTIF' "
+                + "     ELSE "
+                + "         'TIDAK AKTIF' "
                 + "     END) VSTATUSDESC, "
-                + "     A.VIKPID AS VREFDOCNO, "
-                + "     A.VPROJDTL AS VWORKDESC, "
-                + "     (SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
-                + "         WHERE B.RSET_VID = 'VMS_TYPDOC_SI' "
-                + "         AND B.VITEMCODE = 'IKP') VDOCTYPE, "
-                + "     A.VPLANTID AS VPLANTID, "
-                + "     (SELECT C.VDESC FROM AHMMOSCD_MSTAGPLANTS C "
-                + "         WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTDESC, "
-                + "     A.VSUPPLDESC AS VCOMPANY, "
-                + "     TO_CHAR(A.VPICNRPID) AS VPICNRP, "
-                + "     D.VEMAIL AS VEMAIL, "
-                + "     A.DSTARTJOB AS DWORKSTART, "
-                + "     A.DENDJOB AS DWORKEND "
-                + "FROM AHMGAWPM_HDRIKPS A "
-                + "JOIN AHMMOERP_MSTKARYAWANS D "
-                + "     ON TO_CHAR(A.VPICNRPID) = TO_CHAR(D.IIDNRP) "
-                + ") ");
+                + "A.VIKPID AS VREFDOCNO, "
+                + "A.VPROJDTL AS VWORKDESC, "
+                + "(SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "     WHERE B.RSET_VID = 'VMS_TYPDOC_SI' "
+                + "     AND B.VITEMCODE = 'IKP') VDOCTYPE, "
+                + "A.VPLANTID AS VPLANTID, "
+                + "(SELECT C.VDESC FROM AHMMOSCD_MSTAGPLANTS C "
+                + "     WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTDESC, "
+                + "A.VSUPPLDESC AS VCOMPANY, "
+                + "TO_CHAR(A.VPICNRPID) AS VPICNRP, "
+                + "(SELECT D.VEMAIL FROM AHMMOERP_MSTKARYAWANS D "
+                + "     WHERE TO_CHAR(D.IIDNRP) = TO_CHAR(A.VPICNRPID)) VEMAIL, "
+                + "A.DSTARTJOB AS DWORKSTART, "
+                + "A.DENDJOB AS DWORKEND "
+                + "FROM AHMGAWPM_HDRIKPS A ");
+        
+        sql.append(") ");
         
         sql.append("WHERE 1 = 1 ");
         
@@ -262,78 +257,73 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
             sql.append("SELECT COUNT (0) FROM ( ");
             
             sql.append("SELECT "
-                + "     A.VTYPE AS VTYPE, "
-                + "     (SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
-                + "         WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
-                + "         AND B.VITEMCODE = A.VTYPE) VTYPEDESC, "
-                + "     A.VSTATUS AS VSTATUS, "
-                + "     (CASE "
-                + "         WHEN A.VSTATUS = 'Y' THEN "
-                + "             'AKTIF' "
-                + "         WHEN A.VSTATUS = 'N' THEN "
-                + "             'TIDAK AKTIF' "
-                + "         WHEN A.VSTATUS = 'D' THEN "
-                + "             'DRAFT' "
-                + "         ELSE "
-                + "             '-' "
-                + "     END) VSTATUSDESC, "
-                + "     A.VREFDOCNO AS VREFDOCNO, "
-                + "     A.VWORKDESC AS VWORKDESC, "
-                + "     (SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
-                + "         WHERE B.RSET_VID = 'VMS_TYPDOC_SI' "
-                + "         AND B.VITEMCODE = 'MEMO') VDOCTYPE, "
-                + "      A.VPLANTID AS VPLANTID, "
-                + "     (SELECT C.VDESC FROM AHMMOSCD_MSTAGPLANTS C "
-                + "         WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTDESC, "
-                + "     A.VCOMPANY AS VCOMPANY, "
-                + "     A.VPICNRP AS VPICNRP, "
-                + "     D.VEMAIL AS VEMAIL, "
-                + "     A.DWORKSTART AS DWORKSTART, "
-                + "     A.DWORKEND AS DWORKEND "
+                + "A.VTYPE AS VTYPE, "
+                + "(SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "     WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
+                + "     AND B.VITEMCODE = A.VTYPE) VTYPEDESC, "
+                + "A.VSTATUS AS VSTATUS, "
+                + "(CASE "
+                + "     WHEN A.VSTATUS = 'Y' THEN "
+                + "         'AKTIF' "
+                + "     WHEN A.VSTATUS = 'N' THEN "
+                + "         'TIDAK AKTIF' "
+                + "     WHEN A.VSTATUS = 'D' THEN "
+                + "         'DRAFT' "
+                + "     ELSE "
+                + "         '-' "
+                + "END) VSTATUSDESC, "
+                + "A.VREFDOCNO AS VREFDOCNO, "
+                + "A.VWORKDESC AS VWORKDESC, "
+                + "(SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "     WHERE B.RSET_VID = 'VMS_TYPDOC_SI' "
+                + "     AND B.VITEMCODE = 'MEMO') VDOCTYPE, "
+                + "A.VPLANTID AS VPLANTID, "
+                + "(SELECT C.VDESC FROM AHMMOSCD_MSTAGPLANTS C "
+                + "     WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTDESC, "
+                + "A.VCOMPANY AS VCOMPANY, "
+                + "A.VPICNRP AS VPICNRP, "
+                + "(SELECT D.VEMAIL FROM AHMMOERP_MSTKARYAWANS D "
+                + "     WHERE TO_CHAR(D.IIDNRP) = A.VPICNRP) VEMAIL, "
+                + "A.DWORKSTART AS DWORKSTART, "
+                + "A.DWORKEND AS DWORKEND "
                 + "FROM AHMGAVMS_MSTREFDOCS A "
-                + "JOIN AHMMOERP_MSTKARYAWANS D "
-                + "     ON A.VPICNRP = TO_CHAR(D.IIDNRP) "
                 + "UNION "
                 + "SELECT "
-                + "     (SELECT B.VITEMCODE FROM AHMMOERP_DTLSETTINGS B "
-                + "         WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
-                + "         AND B.VITEMCODE = 'KTR') VTYPE, "
-                + "     (SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
-                + "         WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
-                + "         AND B.VITEMCODE = 'KTR') VTYPEDESC, "
-                + "     (CASE "
-                + "         WHEN TRUNC(A.DENDJOB) < TRUNC(SYSDATE) THEN "
-                + "             'N' "
-                + "         WHEN TRUNC(A.DSTARTJOB) < TRUNC(A.DENDJOB) THEN "
-                + "             'Y' "
-                + "         ELSE "
-                + "             '-' "
+                + "(SELECT B.VITEMCODE FROM AHMMOERP_DTLSETTINGS B "
+                + "     WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
+                + "     AND B.VITEMCODE = 'KTR') VTYPE, "
+                + "(SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "     WHERE B.RSET_VID = 'VMS_TYPE_PRTCP' "
+                + "     AND B.VITEMCODE = 'KTR') VTYPEDESC, "
+                + "(CASE "
+                + "     WHEN A.VSTATUS = '06-IKP' THEN "
+                + "         'Y' "
+                + "     ELSE "
+                + "         'N' "
                 + "     END) VSTATUS, "
-                + "     (CASE "
-                + "         WHEN TRUNC(A.DENDJOB) < TRUNC(SYSDATE) THEN "
-                + "             'TIDAK AKTIF' "
-                + "         WHEN TRUNC(A.DSTARTJOB) < TRUNC(A.DENDJOB) THEN "
-                + "             'AKTIF' "
-                + "         ELSE "
-                + "             '-' "
+                + "(CASE "
+                + "     WHEN A.VSTATUS = '06-IKP' THEN "
+                + "         'AKTIF' "
+                + "     ELSE "
+                + "         'TIDAK AKTIF' "
                 + "     END) VSTATUSDESC, "
-                + "     A.VIKPID AS VREFDOCNO, "
-                + "     A.VPROJDTL AS VWORKDESC, "
-                + "     (SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
-                + "         WHERE B.RSET_VID = 'VMS_TYPDOC_SI' "
-                + "         AND B.VITEMCODE = 'IKP') VDOCTYPE, "
-                + "     A.VPLANTID AS VPLANTID, "
-                + "     (SELECT C.VDESC FROM AHMMOSCD_MSTAGPLANTS C "
-                + "         WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTDESC, "
-                + "     A.VSUPPLDESC AS VCOMPANY, "
-                + "     TO_CHAR(A.VPICNRPID) AS VPICNRP, "
-                + "     D.VEMAIL AS VEMAIL, "
-                + "     A.DSTARTJOB AS DWORKSTART, "
-                + "     A.DENDJOB AS DWORKEND "
-                + "FROM AHMGAWPM_HDRIKPS A "
-                + "JOIN AHMMOERP_MSTKARYAWANS D "
-                + "     ON TO_CHAR(A.VPICNRPID) = TO_CHAR(D.IIDNRP) "
-                + ") ");
+                + "A.VIKPID AS VREFDOCNO, "
+                + "A.VPROJDTL AS VWORKDESC, "
+                + "(SELECT B.VITEMNAME FROM AHMMOERP_DTLSETTINGS B "
+                + "     WHERE B.RSET_VID = 'VMS_TYPDOC_SI' "
+                + "     AND B.VITEMCODE = 'IKP') VDOCTYPE, "
+                + "A.VPLANTID AS VPLANTID, "
+                + "(SELECT C.VDESC FROM AHMMOSCD_MSTAGPLANTS C "
+                + "     WHERE C.VPLANTVAR2 = A.VPLANTID) VPLANTDESC, "
+                + "A.VSUPPLDESC AS VCOMPANY, "
+                + "TO_CHAR(A.VPICNRPID) AS VPICNRP, "
+                + "(SELECT D.VEMAIL FROM AHMMOERP_MSTKARYAWANS D "
+                + "     WHERE TO_CHAR(D.IIDNRP) = TO_CHAR(A.VPICNRPID)) VEMAIL, "
+                + "A.DSTARTJOB AS DWORKSTART, "
+                + "A.DENDJOB AS DWORKEND "
+                + "FROM AHMGAWPM_HDRIKPS A ");  
+                    
+            sql.append(") ");
         
             sql.append("WHERE 1 = 1 ");
           
@@ -393,9 +383,8 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                         .append("%' ");
             }
 
-            Query query = getCurrentSession().createSQLQuery(sql.toString())
-                    .setFirstResult(input.getOffset())
-                    .setMaxResults(input.getLimit());
+            Query query = getCurrentSession().createSQLQuery(sql.toString());
+
             List<BigDecimal> list = query.list();
             return (Integer) list.get(0).intValueExact();
         } catch (Exception e) {
@@ -483,9 +472,8 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
                     .append("' ");
         }
         
-        Query query = getCurrentSession().createSQLQuery(sql.toString())
-                .setFirstResult(input.getOffset())
-                .setMaxResults(input.getLimit());
+        Query query = getCurrentSession().createSQLQuery(sql.toString());
+        
         try {
             List<Object[]> list = query.list();
             if (list.size() > 0) {
@@ -518,4 +506,5 @@ public class Vms030AhmgavmsMstrefdocsDaoImpl extends DefaultHibernateDao<Ahmgavm
         return link + "id=" + token;
     }
     
+
 }
