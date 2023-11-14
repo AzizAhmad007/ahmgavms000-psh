@@ -253,7 +253,7 @@ public class Vms031ServiceImpl implements Vms031Service {
                 //UPDATE DETAIL
                 data.setHeaderId((Integer) input.getSearch().get("headerId"));
                 data.setJenisKartuIdentitas(jenisKartuIdentitas);
-                data.setNoIdentitas(jenisKartuIdentitas);
+                data.setNoIdentitas(noIdentitas);
                 data.setLastModBy(userId);
                 data.setLastModDate(new Date());
 

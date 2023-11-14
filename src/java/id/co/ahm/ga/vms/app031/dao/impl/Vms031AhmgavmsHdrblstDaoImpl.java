@@ -134,16 +134,17 @@ public class Vms031AhmgavmsHdrblstDaoImpl extends DefaultHibernateDao<AhmgavmsHd
                 + "    'AKTIF' " 
                 + "ELSE " 
                 + "    'TIDAK AKTIF' " 
-                + "END) STATUS "
+                + "END) AS STATUS "
                 + "FROM AHMGAVMS_HDRBLCKLSTS A "
-                + "INNER JOIN AHMGAVMS_DTLBLCKLSTS B "
+                + "LEFT JOIN AHMGAVMS_DTLBLCKLSTS B "
                 + "ON A.NIDHDR = B.NIDHDR "
                 + "WHERE 1 = 1 ");
         if (!input.getSearch().get("status").toString().equalsIgnoreCase("")) {
                 if (input.getSearch().get("status").toString().equalsIgnoreCase("A")) {
-                    sql.append("AND A.DENDEFF > SYSDATE - 1 THEN ");
+                    sql.append("AND A.DENDEFF <  SYSDATE ");
                 } else {
-                sql.append("AND A.DENDEFF <  SYSDATE ");
+                sql.append("AND A.VSTATUS = '").append(input.getSearch().get("status").toString().toUpperCase()).append("' ");    
+                sql.append("AND A.DENDEFF > SYSDATE - 1 THEN ");
             }
             }
         if (!input.getSearch().get("nik").toString().equalsIgnoreCase("")) {
@@ -217,6 +218,7 @@ public class Vms031AhmgavmsHdrblstDaoImpl extends DefaultHibernateDao<AhmgavmsHd
                 
                 vo.setJenisKartuIdentitas((String) obj[17]);
                 vo.setNoIdentitas((String) obj[18]);
+                vo.setStatus((String) obj[19]);
                 i++;
                 vos.add(vo);
             }
@@ -241,9 +243,9 @@ public class Vms031AhmgavmsHdrblstDaoImpl extends DefaultHibernateDao<AhmgavmsHd
                 + "    'AKTIF' " 
                 + "ELSE " 
                 + "    'TIDAK AKTIF' " 
-                + "END) STATUS "
+                + "END) AS STATUS "
                 + "FROM AHMGAVMS_HDRBLCKLSTS A "
-                + "INNER JOIN AHMGAVMS_DTLBLCKLSTS B "
+                + "LEFT JOIN AHMGAVMS_DTLBLCKLSTS B "
                 + "ON A.NIDHDR = B.NIDHDR "
                 + ")"
                 + "WHERE 1 = 1");
